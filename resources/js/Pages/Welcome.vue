@@ -8,7 +8,7 @@ defineProps({
   canRegister: {
     type: Boolean,
   },
-  laravelVersion: {
+  version: {
     type: String,
     required: true,
   },
@@ -33,7 +33,7 @@ defineProps({
         <template v-else>
           <Link
             :href="route('login')"
-            class="rounded-md px-3 py-2 text-black font-medium text-3xl ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20]"
+            class="rounded-md px-3 py-2 text-sky-600 font-medium text-3xl ring-1 ring-transparent transition hover:text-sky-800 focus:outline-none focus-visible:ring-[#FF2D20]"
           >
             ВХОД
           </Link>
@@ -60,7 +60,7 @@ defineProps({
       </main>
 
       <footer class="py-16 text-center text-sm text-black">
-        Laravel v{{ laravelVersion }} (Avalon)
+        Laravel v{{ version }} (Avalon)
       </footer>
     </div>
   </div>
