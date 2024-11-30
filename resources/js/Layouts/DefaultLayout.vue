@@ -178,13 +178,19 @@ const toDashboard = () => { router.get(route('dashboard')) }
 
         <q-footer
             bordered
-            class="bg-grey-8 text-white"
+            class="bg-grey-8 text-white q-custom-toolbar"
         >
-            <q-toolbar>
-                <q-toolbar-title>
-                    <div>Title</div>
-                </q-toolbar-title>
+            <q-toolbar class="select-none q-custom-toolbar">
+                <q-toolbar-title class="text-left text-subtitle1">{{ $page.props.app_name }}: v. {{ $page.props.version
+                    }}</q-toolbar-title>
+                <q-toolbar-title class="text-right text-subtitle1">Avalon</q-toolbar-title>
             </q-toolbar>
         </q-footer>
     </q-layout>
 </template>
+
+<style scoped>
+.q-custom-toolbar {
+    min-height: 30px !important;
+}
+</style>
