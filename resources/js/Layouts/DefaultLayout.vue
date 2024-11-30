@@ -124,50 +124,104 @@ const toDashboard = () => { router.get(route('dashboard')) }
 
                     <q-separator />
 
-                    <q-expansion-item
-                        group="module1"
-                        icon="store"
-                        label="Майки"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
-                    >
-                        <q-card>
-                            <q-card-section>
-                            </q-card-section>
-                        </q-card>
-                    </q-expansion-item>
+                    <template v-if="$page.props.auth.user.roles.includes('admin')">
+                        <q-item
+                            clickable
+                            v-close-popup
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="person"
+                                />
+                            </q-item-section>
+                            <q-item-section>Потребители</q-item-section>
+                        </q-item>
 
-                    <q-separator />
+                        <q-separator />
 
-                    <q-expansion-item
-                        group="module2"
-                        icon="add_business"
-                        label="Угояване"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
-                    >
-                        <q-card>
-                            <q-card-section>
-                            </q-card-section>
-                        </q-card>
-                    </q-expansion-item>
+                        <q-item
+                            clickable
+                            v-close-popup
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="groups"
+                                />
+                            </q-item-section>
+                            <q-item-section>Роли</q-item-section>
+                        </q-item>
 
-                    <q-separator />
+                        <q-separator />
 
-                    <q-expansion-item
-                        group="nomenclature"
-                        icon="settings"
-                        label="Настройки"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
-                    >
-                        <q-card>
-                            <q-card-section>
-                            </q-card-section>
-                        </q-card>
-                    </q-expansion-item>
+                        <q-item
+                            clickable
+                            v-close-popup
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="verified_user"
+                                />
+                            </q-item-section>
+                            <q-item-section>Права</q-item-section>
+                        </q-item>
 
-                    <q-separator />
+                        <q-separator />
+                    </template>
+                    <template v-else>
+                        <q-expansion-item
+                            group="module1"
+                            icon="store"
+                            label="Майки"
+                            expand-icon-class="text-primary"
+                            header-class="text-primary"
+                        >
+                            <q-card>
+                                <q-card-section>
+                                </q-card-section>
+                            </q-card>
+                        </q-expansion-item>
+
+                        <q-separator />
+
+                        <q-expansion-item
+                            group="module2"
+                            icon="add_business"
+                            label="Угояване"
+                            expand-icon-class="text-primary"
+                            header-class="text-primary"
+                        >
+                            <q-card>
+                                <q-card-section>
+                                </q-card-section>
+                            </q-card>
+                        </q-expansion-item>
+
+                        <q-separator />
+
+                        <q-expansion-item
+                            group="nomenclature"
+                            icon="settings"
+                            label="Настройки"
+                            expand-icon-class="text-primary"
+                            header-class="text-primary"
+                        >
+                            <q-card>
+                                <q-card-section>
+                                </q-card-section>
+                            </q-card>
+                        </q-expansion-item>
+
+                        <q-separator />
+                    </template>
                 </q-list>
 
             </q-scroll-area>
