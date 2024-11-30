@@ -9,7 +9,7 @@ import { Quasar } from 'quasar'
 import '@quasar/extras/mdi-v7/mdi-v7.css'
 import 'quasar/src/css/index.sass'
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel'
+const appName = import.meta.env.VITE_APP_NAME || 'Мултимес'
 
 createInertiaApp({
   title: (title) => `${title} - ${appName}`,
