@@ -48,7 +48,7 @@ const toDashboard = () => { router.get(route('dashboard')) }
                 <q-space />
 
                 <div class="q-mr-md text-subtitle1">
-                    Мултимес
+                    {{ $page.props.auth.user.name }} - {{ $page.props.auth.user.roles }}
                 </div>
 
                 <q-separator
@@ -64,6 +64,7 @@ const toDashboard = () => { router.get(route('dashboard')) }
                 >
                     <q-list style="min-width: 100px">
                         <q-item
+                            v-if="$page.props.auth.user.roles.includes('admin')"
                             clickable
                             v-close-popup
                             @click="toAdmin"
