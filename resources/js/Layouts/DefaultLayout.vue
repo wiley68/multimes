@@ -28,6 +28,13 @@ const toDashboard = () => { router.get(route('dashboard')) }
                     round
                     icon="menu"
                     @click="toggleLeftDrawer"
+                    class="q-mr-sm"
+                />
+
+                <q-separator
+                    dark
+                    vertical
+                    inset
                 />
 
                 <q-toolbar-title>
@@ -38,45 +45,53 @@ const toDashboard = () => { router.get(route('dashboard')) }
                     Мултимес
                 </q-toolbar-title>
 
-                <q-btn
-                    color="secondary"
+                <q-space />
+
+                <div class="q-mr-md text-subtitle1">
+                    Мултимес
+                </div>
+
+                <q-separator
+                    dark
+                    vertical
+                    inset
+                />
+
+                <q-btn-dropdown
+                    stretch
+                    flat
                     label="Меню"
                 >
-                    <q-menu
-                        transition-show="flip-right"
-                        transition-hide="flip-left"
-                    >
-                        <q-list style="min-width: 100px">
-                            <q-item
-                                clickable
-                                v-close-popup
-                                @click="toAdmin"
-                            >
-                                <q-item-section avatar>
-                                    <q-icon
-                                        color="primary"
-                                        name="group"
-                                    />
-                                </q-item-section>
-                                <q-item-section>Потребители</q-item-section>
-                            </q-item>
-                            <q-separator />
-                            <q-item
-                                clickable
-                                v-close-popup
-                                @click="logout"
-                            >
-                                <q-item-section avatar>
-                                    <q-icon
-                                        color="negative"
-                                        name="close"
-                                    />
-                                </q-item-section>
-                                <q-item-section>Изход</q-item-section>
-                            </q-item>
-                        </q-list>
-                    </q-menu>
-                </q-btn>
+                    <q-list style="min-width: 100px">
+                        <q-item
+                            clickable
+                            v-close-popup
+                            @click="toAdmin"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="group"
+                                />
+                            </q-item-section>
+                            <q-item-section>Потребители</q-item-section>
+                        </q-item>
+                        <q-separator />
+                        <q-item
+                            clickable
+                            v-close-popup
+                            @click="logout"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="negative"
+                                    name="close"
+                                />
+                            </q-item-section>
+                            <q-item-section>Изход</q-item-section>
+                        </q-item>
+                    </q-list>
+                </q-btn-dropdown>
             </q-toolbar>
         </q-header>
 
