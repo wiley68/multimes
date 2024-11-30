@@ -6,7 +6,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createApp, h } from 'vue'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 import { Quasar } from 'quasar'
-import '@quasar/extras/mdi-v7/mdi-v7.css'
+import '@quasar/extras/material-icons/material-icons.css'
 import 'quasar/src/css/index.sass'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Мултимес'

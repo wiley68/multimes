@@ -11,6 +11,8 @@ const toggleLeftDrawer = () => {
 const logout = () => { router.post(route('logout')) }
 
 const toAdmin = () => { router.get(route('admin.index')) }
+
+const toDashboard = () => { router.get(route('dashboard')) }
 </script>
 
 <template>
@@ -24,13 +26,13 @@ const toAdmin = () => { router.get(route('admin.index')) }
                     dense
                     flat
                     round
-                    icon="mdi-menu"
+                    icon="menu"
                     @click="toggleLeftDrawer"
                 />
 
                 <q-toolbar-title>
                     <q-icon
-                        name="mdi-pig-variant-outline"
+                        name="savings"
                         size="md"
                     ></q-icon>
                     Мултимес
@@ -38,7 +40,7 @@ const toAdmin = () => { router.get(route('admin.index')) }
 
                 <q-btn
                     color="secondary"
-                    label="Basic Menu"
+                    label="Меню"
                 >
                     <q-menu
                         transition-show="flip-right"
@@ -53,7 +55,7 @@ const toAdmin = () => { router.get(route('admin.index')) }
                                 <q-item-section avatar>
                                     <q-icon
                                         color="primary"
-                                        name="mdi-bluetooth"
+                                        name="group"
                                     />
                                 </q-item-section>
                                 <q-item-section>Потребители</q-item-section>
@@ -67,7 +69,7 @@ const toAdmin = () => { router.get(route('admin.index')) }
                                 <q-item-section avatar>
                                     <q-icon
                                         color="negative"
-                                        name="mdi-close"
+                                        name="close"
                                     />
                                 </q-item-section>
                                 <q-item-section>Изход</q-item-section>
@@ -85,7 +87,74 @@ const toAdmin = () => { router.get(route('admin.index')) }
             behavior="desktop"
             bordered
         >
-            <!-- drawer content -->
+            <q-scroll-area class="fit">
+                <q-list class="q-pa-sm">
+                    <q-item
+                        clickable
+                        v-close-popup
+                        @click="toDashboard"
+                        :active="route().current('dashboard')"
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="dashboard"
+                            />
+                        </q-item-section>
+                        <q-item-section>Табло</q-item-section>
+                    </q-item>
+
+                    <q-separator />
+
+                    <q-expansion-item
+                        group="module1"
+                        icon="store"
+                        label="Майки"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
+                        <q-card>
+                            <q-card-section>
+                            </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
+
+                    <q-separator />
+
+                    <q-expansion-item
+                        group="module2"
+                        icon="add_business"
+                        label="Угояване"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
+                        <q-card>
+                            <q-card-section>
+                            </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
+
+                    <q-separator />
+
+                    <q-expansion-item
+                        group="nomenclature"
+                        icon="settings"
+                        label="Настройки"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
+                        <q-card>
+                            <q-card-section>
+                            </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
+
+                    <q-separator />
+                </q-list>
+
+            </q-scroll-area>
         </q-drawer>
 
         <q-page-container>
@@ -98,9 +167,6 @@ const toAdmin = () => { router.get(route('admin.index')) }
         >
             <q-toolbar>
                 <q-toolbar-title>
-                    <q-avatar>
-                        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
-                    </q-avatar>
                     <div>Title</div>
                 </q-toolbar-title>
             </q-toolbar>
