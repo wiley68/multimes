@@ -8,9 +8,9 @@ const toggleLeftDrawer = () => {
     leftDrawerOpen.value = !leftDrawerOpen.value
 }
 
-const logout = () => {
-    router.post(route('logout'))
-}
+const logout = () => { router.post(route('logout')) }
+
+const toAdmin = () => { router.get(route('admin.index')) }
 </script>
 
 <template>
@@ -48,6 +48,7 @@ const logout = () => {
                             <q-item
                                 clickable
                                 v-close-popup
+                                @click="toAdmin"
                             >
                                 <q-item-section avatar>
                                     <q-icon
