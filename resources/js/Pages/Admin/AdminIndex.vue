@@ -1,22 +1,21 @@
 <script setup>
-import DefaultLayout from '@/Layouts/DefaultLayout.vue'
+import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 
 <template>
-  <Head title="Настройки Администратор"></Head>
 
-  <DefaultLayout>
+  <Head title="Потребители"></Head>
+
+  <AdminLayout>
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div
-          class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
-        >
+        <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
           <div class="p-6 text-gray-900 dark:text-gray-100">
-            Настройки Администратор
+            Потребители
           </div>
         </div>
       </div>
     </div>
-  </DefaultLayout>
+  </AdminLayout>
 </template>
