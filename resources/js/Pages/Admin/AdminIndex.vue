@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/vue3'
 
 <template>
 
-  <Head title="Потребители"></Head>
+  <Head title="Административен панел"></Head>
 
   <AdminLayout>
     <q-page class="flex flex-center">

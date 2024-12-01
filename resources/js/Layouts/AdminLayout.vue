@@ -11,10 +11,11 @@ const toggleLeftDrawer = () => {
 }
 
 const logout = () => { router.post(route('logout')) }
-
 const toAdmin = () => { router.get(route('admin.index')) }
-
 const toDashboard = () => { router.get(route('dashboard')) }
+const toUsers = () => { router.get(route('users.index')) }
+const toRoles = () => { router.get(route('roles.index')) }
+const toPermissins = () => { router.get(route('permissions.index')) }
 
 </script>
 
@@ -87,148 +88,170 @@ const toDashboard = () => { router.get(route('dashboard')) }
             behavior="desktop"
             bordered
         >
-            <q-scroll-area class="fit">
-                <q-list class="q-pa-sm">
-                    <template v-if="hasRole('admin')">
-                        <q-item
-                            clickable
-                            v-close-popup
-                            @click="toAdmin"
-                            :active="route().current('admin.index')"
-                            class="text-primary"
-                            active-class="bg-blue-1"
-                        >
-                            <q-item-section avatar>
-                                <q-icon
-                                    color="primary"
-                                    name="dashboard"
-                                />
-                            </q-item-section>
-                            <q-item-section>Табло</q-item-section>
-                        </q-item>
-                    </template>
-                    <template v-else>
-                        <q-item
-                            clickable
-                            v-close-popup
-                            @click="toDashboard"
-                            :active="route().current('dashboard')"
-                            class="text-primary"
-                            active-class="bg-blue-1"
-                        >
-                            <q-item-section avatar>
-                                <q-icon
-                                    color="primary"
-                                    name="dashboard"
-                                />
-                            </q-item-section>
-                            <q-item-section>Табло</q-item-section>
-                        </q-item>
-                    </template>
+            <q-list class="full-height flex column">
+                <template v-if="hasRole('admin')">
+                    <q-item
+                        clickable
+                        v-close-popup
+                        @click="toAdmin"
+                        :active="route().current('admin.index')"
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="dashboard"
+                            />
+                        </q-item-section>
+                        <q-item-section>Табло</q-item-section>
+                    </q-item>
+                </template>
+                <template v-else>
+                    <q-item
+                        clickable
+                        v-close-popup
+                        @click="toDashboard"
+                        :active="route().current('dashboard')"
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="dashboard"
+                            />
+                        </q-item-section>
+                        <q-item-section>Табло</q-item-section>
+                    </q-item>
+                </template>
+
+                <q-separator />
+
+                <template v-if="hasRole('admin')">
+                    <q-item
+                        clickable
+                        v-close-popup
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                        @click="toUsers"
+                        :active="route().current('users.index')"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="person"
+                            />
+                        </q-item-section>
+                        <q-item-section>Потребители</q-item-section>
+                    </q-item>
 
                     <q-separator />
 
-                    <template v-if="hasRole('admin')">
-                        <q-item
-                            clickable
-                            v-close-popup
-                            class="text-primary"
-                            active-class="bg-blue-1"
-                        >
-                            <q-item-section avatar>
-                                <q-icon
-                                    color="primary"
-                                    name="person"
-                                />
-                            </q-item-section>
-                            <q-item-section>Потребители</q-item-section>
-                        </q-item>
+                    <q-item
+                        clickable
+                        v-close-popup
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                        @click="toRoles"
+                        :active="route().current('roles.index')"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="groups"
+                            />
+                        </q-item-section>
+                        <q-item-section>Роли</q-item-section>
+                    </q-item>
 
-                        <q-separator />
+                    <q-separator />
 
-                        <q-item
-                            clickable
-                            v-close-popup
-                            class="text-primary"
-                            active-class="bg-blue-1"
-                        >
-                            <q-item-section avatar>
-                                <q-icon
-                                    color="primary"
-                                    name="groups"
-                                />
-                            </q-item-section>
-                            <q-item-section>Роли</q-item-section>
-                        </q-item>
+                    <q-item
+                        clickable
+                        v-close-popup
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                        @click="toPermissins"
+                        :active="route().current('permissions.index')"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="verified_user"
+                            />
+                        </q-item-section>
+                        <q-item-section>Права</q-item-section>
+                    </q-item>
 
-                        <q-separator />
+                    <q-separator />
+                </template>
+                <template v-else>
+                    <q-expansion-item
+                        group="module1"
+                        icon="store"
+                        label="Майки"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
+                        <q-card>
+                            <q-card-section>
+                            </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
 
-                        <q-item
-                            clickable
-                            v-close-popup
-                            class="text-primary"
-                            active-class="bg-blue-1"
-                        >
-                            <q-item-section avatar>
-                                <q-icon
-                                    color="primary"
-                                    name="verified_user"
-                                />
-                            </q-item-section>
-                            <q-item-section>Права</q-item-section>
-                        </q-item>
+                    <q-separator />
 
-                        <q-separator />
-                    </template>
-                    <template v-else>
-                        <q-expansion-item
-                            group="module1"
-                            icon="store"
-                            label="Майки"
-                            expand-icon-class="text-primary"
-                            header-class="text-primary"
-                        >
-                            <q-card>
-                                <q-card-section>
-                                </q-card-section>
-                            </q-card>
-                        </q-expansion-item>
+                    <q-expansion-item
+                        group="module2"
+                        icon="add_business"
+                        label="Угояване"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
+                        <q-card>
+                            <q-card-section>
+                            </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
 
-                        <q-separator />
+                    <q-separator />
 
-                        <q-expansion-item
-                            group="module2"
-                            icon="add_business"
-                            label="Угояване"
-                            expand-icon-class="text-primary"
-                            header-class="text-primary"
-                        >
-                            <q-card>
-                                <q-card-section>
-                                </q-card-section>
-                            </q-card>
-                        </q-expansion-item>
+                    <q-expansion-item
+                        group="nomenclature"
+                        icon="settings"
+                        label="Настройки"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
+                        <q-card>
+                            <q-card-section>
+                            </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
 
-                        <q-separator />
+                    <q-separator />
+                </template>
 
-                        <q-expansion-item
-                            group="nomenclature"
-                            icon="settings"
-                            label="Настройки"
-                            expand-icon-class="text-primary"
-                            header-class="text-primary"
-                        >
-                            <q-card>
-                                <q-card-section>
-                                </q-card-section>
-                            </q-card>
-                        </q-expansion-item>
+                <q-space />
 
-                        <q-separator />
-                    </template>
-                </q-list>
+                <q-separator />
 
-            </q-scroll-area>
+                <q-item
+                    clickable
+                    v-close-popup
+                    class="text-negative"
+                    @click="logout"
+                >
+                    <q-item-section avatar>
+                        <q-icon
+                            color="negative"
+                            name="close"
+                        />
+                    </q-item-section>
+                    <q-item-section>Изход</q-item-section>
+                </q-item>
+            </q-list>
         </q-drawer>
 
         <q-page-container>

@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PermissinController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -22,6 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::resource('/users', UserController::class);
+Route::resource('/roles', RoleController::class);
+Route::resource('/permissions', PermissinController::class);
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
