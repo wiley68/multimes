@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 
 defineProps(['roles'])
 
@@ -22,6 +22,8 @@ const columns = [
         field: "actions",
     }
 ]
+
+const rolesCreate = () => { router.get(route('roles.create')) }
 </script>
 
 <template>
@@ -30,6 +32,14 @@ const columns = [
 
     <AdminLayout>
         <q-page class="q-pa-md">
+            <div class="flex justify-between mb-2">
+                <h5>Управление на роли</h5>
+                <q-btn
+                    color="primary"
+                    label="Нова роля"
+                    @click="rolesCreate"
+                />
+            </div>
             <q-table
                 class="my-sticky-header-table"
                 flat
