@@ -21,11 +21,25 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => 'Administrator',
+            'name' => 'Админ Пиперков',
             'email' => 'home@avalonbg.com',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ])->assignRole('admin');
+        User::create([
+            'name' => 'Модератор Червенков',
+            'email' => 'ilko.iv@avalonbg.com',
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'remember_token' => Str::random(10),
+        ])->assignRole('moderator');
+        User::create([
+            'name' => 'Потребител Ушев',
+            'email' => 'ilko@avalonbg.com',
+            'email_verified_at' => now(),
+            'password' => static::$password ??= Hash::make('password'),
+            'remember_token' => Str::random(10),
+        ])->assignRole('user');
     }
 }
