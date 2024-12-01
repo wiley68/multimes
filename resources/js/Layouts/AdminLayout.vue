@@ -14,6 +14,8 @@ const logout = () => { router.post(route('logout')) }
 
 const toAdmin = () => { router.get(route('admin.index')) }
 
+const toDashboard = () => { router.get(route('dashboard')) }
+
 </script>
 
 <template>
@@ -87,22 +89,42 @@ const toAdmin = () => { router.get(route('admin.index')) }
         >
             <q-scroll-area class="fit">
                 <q-list class="q-pa-sm">
-                    <q-item
-                        clickable
-                        v-close-popup
-                        @click="toAdmin"
-                        :active="route().current('admin.index')"
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                    >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="dashboard"
-                            />
-                        </q-item-section>
-                        <q-item-section>Табло</q-item-section>
-                    </q-item>
+                    <template v-if="hasRole('admin')">
+                        <q-item
+                            clickable
+                            v-close-popup
+                            @click="toAdmin"
+                            :active="route().current('admin.index')"
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="dashboard"
+                                />
+                            </q-item-section>
+                            <q-item-section>Табло</q-item-section>
+                        </q-item>
+                    </template>
+                    <template v-else>
+                        <q-item
+                            clickable
+                            v-close-popup
+                            @click="toDashboard"
+                            :active="route().current('dashboard')"
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="dashboard"
+                                />
+                            </q-item-section>
+                            <q-item-section>Табло</q-item-section>
+                        </q-item>
+                    </template>
 
                     <q-separator />
 
