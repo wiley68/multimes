@@ -1,5 +1,6 @@
 <script setup>
 import { Head, router } from '@inertiajs/vue3'
+import { usePermission } from '@/composables/permissions';
 
 defineProps({
   version: {
@@ -7,6 +8,8 @@ defineProps({
     required: true,
   },
 })
+
+const { hasUser, hasRole } = usePermission()
 </script>
 
 <template>
@@ -19,10 +22,19 @@ defineProps({
         class="column absolute-full flex flex-center"
         style="user-select: none;"
       >
-        <template v-if="$page.props.auth.user">
+        <template v-if="hasUser()">
           <q-btn
+            v-if="hasRole('admin')"
+            @click="router.get(route('admin.index'))"
+            class="text-primary"
+            icon="dashboard"
+            size="lg"
+            label="Табло"
+          />
+          <q-btn
+            v-else
             @click="router.get(route('dashboard'))"
-            color="primary"
+            class="text-primary"
             icon="dashboard"
             size="lg"
             label="Табло"
@@ -31,13 +43,13 @@ defineProps({
         <template v-else>
           <q-btn
             @click="router.get(route('login'))"
-            color="primary"
+            class="text-primary"
             icon="login"
             size="lg"
             label="Вход"
           />
         </template>
-        <h1 class="text-weight-medium">МУЛТИМЕС</h1>
+        <h1 class="text-weight-medium text-primary">МУЛТИМЕС</h1>
         <p class="text-subtitle1 text-weight-light">Laravel v.{{ version }} - Avalon</p>
       </div>
     </q-page-container>
