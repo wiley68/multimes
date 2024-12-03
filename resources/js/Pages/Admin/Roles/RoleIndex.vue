@@ -1,13 +1,14 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
+import { computed, ref } from 'vue';
 
-defineProps({
+const props = defineProps({
     roles: {
-        type: Array,
-    },
-    pagination: {
         type: Object,
+    },
+    filter: {
+        type: String,
     },
 })
 
@@ -30,10 +31,39 @@ const columns = [
     }
 ]
 
-const onRequest = ({ pagination }) => {
-    const { page, rowsPerPage } = pagination
-    router.get(route('roles.index'), { page, rowsPerPage }, { preserveState: true })
+const pagination = {
+    page: props.roles.meta.current_page,
+    rowsPerPage: props.roles.meta.per_page,
+    rowsNumber: props.roles.meta.total
 }
+const filter = ref(props.filter)
+const navigationActive = ref(false)
+
+const onRequest = (requestProp) => {
+    router.get(
+        route('roles.index'),
+        {
+            page: requestProp.pagination.page,
+            rowsPerPage: requestProp.pagination.rowsPerPage,
+            sortBy: requestProp.pagination.sortBy,
+            sortOrder: requestProp.pagination.descending ? 'desc' : 'asc',
+            filter: filter.value,
+        },
+        {
+            preserveState: false,
+        }
+    );
+}
+
+const activateNavigation = () => {
+    navigationActive.value = true
+}
+
+const deactivateNavigation = () => {
+    navigationActive.value = false
+}
+
+const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
 </script>
 
 <template>
@@ -52,6 +82,7 @@ const onRequest = ({ pagination }) => {
             </div>
             <q-table
                 class="my-sticky-header-table"
+                :class="tableClass"
                 bordered
                 title="Роли"
                 rows-per-page-label="Записи на страница"
@@ -59,20 +90,30 @@ const onRequest = ({ pagination }) => {
                 no-data-label="Липсват данни"
                 no-results-label="Няма съответстващи записи"
                 loading-label="Данните се зареждат..."
-                :rows-per-page-options="[
-                    5,
-                    10,
-                    20,
-                    50,
-                    0
-                ]"
                 table-header-class="bg-grey-3"
-                :rows="roles"
+                :rows="roles.data"
                 :columns="columns"
                 row-key="id"
-                :pagination.sync="pagination"
+                :pagination="pagination"
+                :filter="filter"
                 @request="onRequest"
+                @focusin="activateNavigation"
+                @focusout="deactivateNavigation"
             >
+                <template v-slot:top-right>
+                    <q-input
+                        v-model="filter"
+                        borderless
+                        dense
+                        autofocus
+                        debounce="600"
+                        placeholder="Търси..."
+                    >
+                        <template v-slot:append>
+                            <q-icon name="search" />
+                        </template>
+                    </q-input>
+                </template>
                 <template v-slot:body-cell-actions="props">
                     <q-td align="center">
                         <q-btn

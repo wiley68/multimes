@@ -15,18 +15,25 @@ class RoleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $roles = Role::paginate(5);
+        $rowsPerPage = $request->input('rowsPerPage', 10);
+        $page = $request->input('page', 1);
+        $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
+        $sortOrder = $request->input('sortOrder', 'asc');
+        $filter = $request->input('filter', '');
+
+        $query = Role::query();
+        if (!empty($filter)) {
+            $query->where('name', 'like', '%' . $filter . '%');
+        }
+
+        $roles = RoleResource::collection($query->orderBy($sortBy, $sortOrder)
+            ->paginate($rowsPerPage, ['*'], 'page', $page));
 
         return Inertia::render('Admin/Roles/RoleIndex', [
-            'roles' => $roles->items(),
-            'pagination' => [
-                'current_page' => $roles->currentPage(),
-                'last_page' => $roles->lastPage(),
-                'per_page' => $roles->perPage(),
-                'total' => $roles->total(),
-            ],
+            'roles' => $roles,
+            'filter' => $filter
         ]);
     }
 
