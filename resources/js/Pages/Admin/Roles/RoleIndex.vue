@@ -2,7 +2,14 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 
-defineProps(['roles'])
+defineProps({
+    roles: {
+        type: Array,
+    },
+    pagination: {
+        type: Object,
+    },
+})
 
 const columns = [
     {
@@ -22,6 +29,11 @@ const columns = [
         field: "actions",
     }
 ]
+
+const onRequest = ({ pagination }) => {
+    const { page, rowsPerPage } = pagination
+    router.get(route('roles.index'), { page, rowsPerPage }, { preserveState: true })
+}
 </script>
 
 <template>
@@ -58,6 +70,8 @@ const columns = [
                 :rows="roles"
                 :columns="columns"
                 row-key="id"
+                :pagination.sync="pagination"
+                @request="onRequest"
             >
                 <template v-slot:body-cell-actions="props">
                     <q-td align="center">

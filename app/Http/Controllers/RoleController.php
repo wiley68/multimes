@@ -17,8 +17,16 @@ class RoleController extends Controller
      */
     public function index(): Response
     {
+        $roles = Role::paginate(5);
+
         return Inertia::render('Admin/Roles/RoleIndex', [
-            'roles' => RoleResource::collection(Role::all())
+            'roles' => $roles->items(),
+            'pagination' => [
+                'current_page' => $roles->currentPage(),
+                'last_page' => $roles->lastPage(),
+                'per_page' => $roles->perPage(),
+                'total' => $roles->total(),
+            ],
         ]);
     }
 
