@@ -1,11 +1,6 @@
 <script setup>
-import Checkbox from '@/Components/Checkbox.vue'
 import GuestLayout from '@/Layouts/GuestLayout.vue'
-import InputError from '@/Components/InputError.vue'
-import InputLabel from '@/Components/InputLabel.vue'
-import PrimaryButton from '@/Components/PrimaryButton.vue'
-import TextInput from '@/Components/TextInput.vue'
-import { Head, Link, useForm } from '@inertiajs/vue3'
+import { Head, useForm, router } from '@inertiajs/vue3'
 
 defineProps({
   canResetPassword: {
@@ -22,7 +17,7 @@ const form = useForm({
   remember: false,
 })
 
-const submit = () => {
+const onSubmit = () => {
   form.post(route('login'), {
     onFinish: () => form.reset('password'),
   })
@@ -31,70 +26,62 @@ const submit = () => {
 
 <template>
   <GuestLayout>
+
     <Head title="Вход"></Head>
 
-    <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-      {{ status }}
-    </div>
-
-    <form @submit.prevent="submit">
-      <div>
-        <InputLabel for="email" value="Email" />
-
-        <TextInput
-          id="email"
-          type="email"
-          class="mt-1 block w-full"
-          v-model="form.email"
-          required
-          autofocus
-          autocomplete="username"
-        />
-
-        <InputError class="mt-2" :message="form.errors.email" />
-      </div>
-
-      <div class="mt-4">
-        <InputLabel for="password" value="Парола" />
-
-        <TextInput
-          id="password"
-          type="password"
-          class="mt-1 block w-full"
-          v-model="form.password"
-          required
-          autocomplete="current-password"
-        />
-
-        <InputError class="mt-2" :message="form.errors.password" />
-      </div>
-
-      <div class="mt-4 block">
-        <label class="flex items-center">
-          <Checkbox name="remember" v-model:checked="form.remember" />
-          <span class="ms-2 text-sm text-gray-600 dark:text-gray-400"
-            >Запомни ме</span
-          >
-        </label>
-      </div>
-
-      <div class="mt-4 flex items-center justify-end">
-        <Link
-          v-if="canResetPassword"
-          :href="route('password.request')"
-          class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
-        >
-          Забравена парола?
-        </Link>
-
-        <PrimaryButton
-          class="ms-4"
-          :class="{ 'opacity-25': form.processing }"
-          :disabled="form.processing"
-        >
+    <q-page class="flex flex-center">
+      <q-card
+        class="q-pa-md"
+        style="width: 400px; max-width: 90vw;"
+      >
+        <q-card-section class="text-h5 text-center q-pa-sm q-ma-sm">
           Вход
-        </PrimaryButton>
-      </div>
-    </form>
+        </q-card-section>
+
+        <q-card-section class="q-ma-sm">
+          <q-form
+            @submit="onSubmit"
+            class="q-gutter-md"
+          >
+            <q-input
+              v-model="form.email"
+              label="Имейл *"
+              hint="Имейл за вход в системата"
+              autocomplete="email"
+              :error="form.hasErrors"
+              :error-message="form.errors.name"
+            />
+            <q-input
+              v-model="form.password"
+              label="Парола"
+              type="password"
+              hint="Парола за вход в системата"
+              :error="form.hasErrors"
+              :error-message="form.errors.password"
+            />
+            <div class="q-mt-lg row items-center justify-end">
+              <q-btn
+                v-if="canResetPassword"
+                @click="router.get(route('password.request'))"
+                flat
+                class="rounded text-sm"
+                text-color="grey-6"
+                label="Забравена парола?"
+                style="text-decoration: underline"
+              />
+
+              <q-btn
+                label="Вход"
+                color="primary"
+                type="submit"
+                class="full-width q-mt-md"
+              />
+            </div>
+          </q-form>
+        </q-card-section>
+
+      </q-card>
+    </q-page>
+
   </GuestLayout>
 </template>
