@@ -6,17 +6,15 @@ const form = useForm({
     name: '',
 })
 
-const submit = () => {
+const onSubmit = () => {
     form.post(route('roles.store'), {
         onFinish: () => form.reset('name'),
     })
 };
 
-const reset = () => {
+const onReset = () => {
     form.reset('name')
 }
-
-const rolesIndex = () => { router.get(route('roles.index')) }
 </script>
 
 <template>
@@ -24,23 +22,23 @@ const rolesIndex = () => { router.get(route('roles.index')) }
     <Head title="Създаване на роля"></Head>
 
     <AdminLayout>
-        <q-page class="q-pa-md flex flex-col">
-            <div class="flex justify-between mb-2">
+        <q-page class="q-pa-md column">
+            <div class="row items-center justify-between">
                 <h5>Създаване на роля</h5>
                 <q-btn
                     color="primary"
                     label="Управление на роли"
-                    @click="rolesIndex"
+                    @click="router.get(route('roles.index'))"
                 />
             </div>
-            <div class="flex flex-grow justify-center items-center">
+            <div class="column flex-grow flex-center">
                 <q-card
                     class="q-pa-md"
                     style="width: 400px;"
                 >
                     <q-form
-                        @submit="submit"
-                        @reset="reset"
+                        @submit="onSubmit"
+                        @reset="onReset"
                         class="q-gutter-md"
                     >
                         <q-input

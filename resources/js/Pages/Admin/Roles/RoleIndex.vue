@@ -14,7 +14,7 @@ const columns = [
         format: val => `${val}`,
         sortable: true
     },
-    { name: 'name', align: 'center', label: 'Име', field: 'name', sortable: true },
+    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
         name: "actions",
         label: "Управление",
@@ -22,8 +22,6 @@ const columns = [
         field: "actions",
     }
 ]
-
-const rolesCreate = () => { router.get(route('roles.create')) }
 </script>
 
 <template>
@@ -32,21 +30,31 @@ const rolesCreate = () => { router.get(route('roles.create')) }
 
     <AdminLayout>
         <q-page class="q-pa-md">
-            <div class="flex justify-between mb-2">
+            <div class="row items-center justify-between">
                 <h5>Управление на роли</h5>
                 <q-btn
                     color="primary"
                     label="Нова роля"
-                    @click="rolesCreate"
+                    @click="router.get(route('roles.create'))"
                 />
             </div>
             <q-table
                 class="my-sticky-header-table"
-                flat
                 bordered
                 title="Роли"
-                rows-per-page="10"
                 rows-per-page-label="Записи на страница"
+                separator="cell"
+                no-data-label="Липсват данни"
+                no-results-label="Няма съответстващи записи"
+                loading-label="Данните се зареждат..."
+                :rows-per-page-options="[
+                    5,
+                    10,
+                    20,
+                    50,
+                    0
+                ]"
+                table-header-class="bg-grey-3"
                 :rows="roles"
                 :columns="columns"
                 row-key="id"
