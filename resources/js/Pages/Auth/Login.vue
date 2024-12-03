@@ -29,7 +29,14 @@ const onSubmit = () => {
 
     <Head title="Вход"></Head>
 
-    <q-page class="flex flex-center">
+    <q-page class="column flex-center">
+      <div
+        v-if="status"
+        class="q-mb-md text-body2 text-green"
+      >
+        {{ status }}
+      </div>
+
       <q-card
         class="q-pa-md"
         style="width: 400px; max-width: 90vw;"
@@ -49,7 +56,7 @@ const onSubmit = () => {
               hint="Имейл за вход в системата"
               autocomplete="email"
               :error="form.hasErrors"
-              :error-message="form.errors.name"
+              :error-message="form.errors.email"
             />
             <q-input
               v-model="form.password"

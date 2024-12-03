@@ -1,68 +1,71 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import GuestLayout from '@/Layouts/GuestLayout.vue'
+import { Head, useForm, router } from '@inertiajs/vue3'
 
 defineProps({
     status: {
         type: String,
     },
-});
+})
 
 const form = useForm({
     email: '',
 });
 
-const submit = () => {
+const onSubmit = () => {
     form.post(route('password.email'));
-};
+}
 </script>
 
 <template>
     <GuestLayout>
-        <Head title="Forgot Password" />
 
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Forgot your password? No problem. Just let us know your email
-            address and we will email you a password reset link that will allow
-            you to choose a new one.
-        </div>
+        <Head title="Забравена парола"></Head>
 
-        <div
-            v-if="status"
-            class="mb-4 text-sm font-medium text-green-600 dark:text-green-400"
-        >
-            {{ status }}
-        </div>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
+        <q-page class="column flex-center">
+            <div class="q-mb-md text-body2 text-gray">
+                Забравена парола? няма проблеми Просто ни уведомете имейла си
+                адрес и ние ще ви изпратим имейл с връзка за повторно задаване на парола, която ще позволи
+                вие да изберете нов.
             </div>
 
-            <div class="mt-4 flex items-center justify-end">
-                <PrimaryButton
-                    :class="{ 'opacity-25': form.processing }"
-                    :disabled="form.processing"
-                >
-                    Email Password Reset Link
-                </PrimaryButton>
+            <div
+                v-if="status"
+                class="q-mb-md text-body2 text-green"
+            >
+                {{ status }}
             </div>
-        </form>
+
+            <q-card
+                class="q-pa-md"
+                style="width: 400px; max-width: 90vw;"
+            >
+                <q-card-section class="q-ma-sm">
+                    <q-form
+                        @submit.prevent="onSubmit"
+                        class="q-gutter-md"
+                    >
+                        <q-input
+                            v-model="form.email"
+                            label="Имейл *"
+                            hint="Имейл за вход в системата"
+                            autocomplete="email"
+                            :error="form.hasErrors"
+                            :error-message="form.errors.email"
+                        />
+                        <div class="q-mt-lg row items-center justify-end">
+                            <q-btn
+                                label="Връзка за нулиране на имейл парола"
+                                color="primary"
+                                type="submit"
+                                class="full-width q-mt-md"
+                            />
+                        </div>
+                    </q-form>
+                </q-card-section>
+
+            </q-card>
+        </q-page>
+
     </GuestLayout>
 </template>
