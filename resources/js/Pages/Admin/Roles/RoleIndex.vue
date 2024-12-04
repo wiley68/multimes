@@ -81,6 +81,7 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                 />
             </div>
             <q-table
+                ref="tableRef"
                 class="my-sticky-header-table"
                 :class="tableClass"
                 bordered
