@@ -123,7 +123,7 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                             dense
                             flat
                             rounded
-                            @click="console.log(props.row.id)"
+                            @click="router.get(route('roles.edit', props.row.id))"
                         />
                         <q-btn
                             icon="delete"
