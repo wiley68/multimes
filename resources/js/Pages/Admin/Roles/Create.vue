@@ -24,12 +24,16 @@ const onReset = () => {
     <AdminLayout>
         <q-page class="q-pa-md column">
             <div class="row items-center justify-between">
-                <h5>Създаване на роля</h5>
-                <q-btn
-                    color="primary"
-                    label="Управление на роли"
-                    @click="router.get(route('roles.index'))"
-                />
+                <div class="col row items-center">
+                    <q-btn
+                        color="primary"
+                        label="Роли"
+                        icon="chevron_left"
+                        @click="router.get(route('roles.index'))"
+                    />
+                </div>
+                <h5 class="col row justify-center items-center">Създаване на роля</h5>
+                <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">
                 <q-card

@@ -2,6 +2,7 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue';
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     roles: {
@@ -31,6 +32,7 @@ const columns = [
     }
 ]
 
+const $q = useQuasar()
 const pagination = {
     page: props.roles.meta.current_page,
     rowsPerPage: props.roles.meta.per_page,
@@ -64,6 +66,28 @@ const deactivateNavigation = () => {
 }
 
 const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
+
+const confirm = (role_id) => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Желаеш ли да изтриеш ролята?',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        router.delete(route('roles.destroy', role_id))
+    }).onOk(() => { }).onCancel(() => { }).onDismiss(() => { })
+}
 </script>
 
 <template>
@@ -73,12 +97,23 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
     <AdminLayout>
         <q-page class="q-pa-md">
             <div class="row items-center justify-between">
-                <h5>Управление на роли</h5>
-                <q-btn
-                    color="primary"
-                    label="Нова роля"
-                    @click="router.get(route('roles.create'))"
-                />
+                <div class="col row items-center">
+                    <q-btn
+                        color="primary"
+                        label="Табло"
+                        icon="chevron_left"
+                        @click="router.get(route('admin.index'))"
+                    />
+                </div>
+                <h5 class="col row justify-center items-center">Управление на роли</h5>
+                <div class="col row justify-end items-center">
+                    <q-btn
+                        color="primary"
+                        label="Нова роля"
+                        icon="add"
+                        @click="router.get(route('roles.create'))"
+                    />
+                </div>
             </div>
             <q-table
                 ref="tableRef"
@@ -131,7 +166,7 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                             dense
                             flat
                             rounded
-                            @click="console.log(props.row.id)"
+                            @click="confirm(props.row.id)"
                         />
                     </q-td>
                 </template>
