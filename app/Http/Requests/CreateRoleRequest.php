@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 
 class CreateRoleRequest extends FormRequest
 {
@@ -23,7 +24,12 @@ class CreateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:30', Rule::unique('roles', 'name')->ignore($this->role)],
+            'name' => [
+                'required',
+                'string',
+                'max:30',
+                Rule::unique('roles', 'name')->ignore($this->role)
+            ],
         ];
     }
 }
