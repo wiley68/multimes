@@ -78,8 +78,10 @@ class PermissinController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): RedirectResponse
     {
-        //
+        $permission = Permission::findById($id);
+        $permission->delete();
+        return back();
     }
 }
