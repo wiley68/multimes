@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Spatie\Permission\Models\Permission;
+use Illuminate\Validation\Rule;
 
 class CreatePermissionRequest extends FormRequest
 {
@@ -23,7 +23,7 @@ class CreatePermissionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'max:30', Permission::unique('permissions', 'name')->ignore($this->route('id'))],
+            'name' => ['required', 'string', 'max:100', Rule::unique('permissions', 'name')->ignore($this->permission)],
         ];
     }
 }

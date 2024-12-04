@@ -57,17 +57,22 @@ class PermissinController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $id): Response
     {
-        //
+        $permission = Permission::findById($id);
+        return Inertia::render('Admin/Permissions/Edit', [
+            'permission' => new PermissionResource($permission),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CreatePermissionRequest $request, string $id): RedirectResponse
     {
-        //
+        $permission = Permission::findById($id);
+        $permission->update($request->validated());
+        return to_route('permissions.index');
     }
 
     /**

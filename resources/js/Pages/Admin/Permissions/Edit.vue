@@ -2,12 +2,19 @@
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
+const props = defineProps({
+    permission: {
+        type: Object,
+        required: true
+    }
+})
+
 const form = useForm({
-    name: '',
+    name: props.permission.name,
 })
 
 const onSubmit = () => {
-    form.post(route('permissions.store'), {
+    form.put(route('permissions.update', props.permission.id), {
         onFinish: () => form.reset('name'),
     })
 };
@@ -19,7 +26,7 @@ const onReset = () => {
 
 <template>
 
-    <Head title="Създаване на право"></Head>
+    <Head title="Редакция на право"></Head>
 
     <AdminLayout>
         <q-page class="q-pa-md column">
@@ -32,7 +39,7 @@ const onReset = () => {
                         @click="router.get(route('permissions.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Създаване на права</h5>
+                <h5 class="col row justify-center items-center">Редакция на право</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">
@@ -56,7 +63,7 @@ const onReset = () => {
 
                         <div>
                             <q-btn
-                                label="Създай"
+                                label="Промени"
                                 type="submit"
                                 color="primary"
                             />
