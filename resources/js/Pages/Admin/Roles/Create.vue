@@ -37,7 +37,7 @@ const onReset = () => {
                     style="width: 400px;"
                 >
                     <q-form
-                        @submit="onSubmit"
+                        @submit.prevent="onSubmit"
                         @reset="onReset"
                         class="q-gutter-md"
                     >
