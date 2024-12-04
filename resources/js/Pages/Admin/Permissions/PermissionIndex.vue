@@ -67,7 +67,7 @@ const deactivateNavigation = () => {
 
 const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
 
-const confirm = (role_id) => {
+const confirm = (permission_id) => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да изтриеш правото?',
@@ -85,7 +85,7 @@ const confirm = (role_id) => {
             flat: true
         },
     }).onOk(() => {
-        router.delete(route('permissions.destroy', role_id))
+        router.delete(route('permissions.destroy', permission_id))
     }).onOk(() => { }).onCancel(() => { }).onDismiss(() => { })
 }
 </script>
