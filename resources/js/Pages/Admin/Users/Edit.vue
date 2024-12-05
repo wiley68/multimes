@@ -10,9 +10,9 @@ const props = defineProps({
 })
 
 const form = useForm({
-    name: props.user.name,
-    email: props.user.email,
-    password: props.user.password,
+    name: props.user?.name,
+    email: props.user?.email,
+    password: '',
 })
 
 const onSubmit = () => {

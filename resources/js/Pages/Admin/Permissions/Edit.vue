@@ -10,7 +10,7 @@ const props = defineProps({
 })
 
 const form = useForm({
-    name: props.permission.name,
+    name: props.permission?.name,
 })
 
 const onSubmit = () => {
