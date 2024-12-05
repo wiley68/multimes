@@ -1,18 +1,24 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
+import { onMounted, watch } from 'vue';
+import VueMultiselect from 'vue-multiselect'
 
 const props = defineProps({
     user: {
         type: Object,
         required: true
-    }
+    },
+    roles: Array,
+    permissions: Array
 })
 
 const form = useForm({
     name: props.user?.name,
     email: props.user?.email,
     password: '',
+    roles: [],
+    permissions: []
 })
 
 const onSubmit = () => {
@@ -24,6 +30,19 @@ const onSubmit = () => {
 const onReset = () => {
     form.reset('name', 'email', 'password', 'password_confirmation')
 }
+
+onMounted(() => {
+    form.roles = props.user.roles
+    form.permissions = props.user.permissions
+})
+
+watch(
+    () => props.user,
+    () => {
+        form.roles = props.user.roles
+        form.permissions = props.user.permissions
+    }
+)
 </script>
 
 <template>
@@ -47,7 +66,7 @@ const onReset = () => {
             <div class="column flex-grow flex-center">
                 <q-card
                     class="q-pa-md"
-                    style="width: 400px;"
+                    style="width: 600px;"
                 >
                     <q-form
                         @submit.prevent="onSubmit"
@@ -79,6 +98,30 @@ const onReset = () => {
                             :error-message="form.errors.password"
                         />
 
+                        <div class="q-my-lg">
+                            <VueMultiselect
+                                v-model="form.roles"
+                                :options="roles"
+                                :multiple="true"
+                                :close-on-select="true"
+                                placeholder="Добави роли"
+                                label="name"
+                                track-by="name"
+                            />
+                        </div>
+
+                        <div class="q-my-lg">
+                            <VueMultiselect
+                                v-model="form.permissions"
+                                :options="permissions"
+                                :multiple="true"
+                                :close-on-select="true"
+                                placeholder="Добави права"
+                                label="name"
+                                track-by="name"
+                            />
+                        </div>
+
                         <div>
                             <q-btn
                                 label="Промени"
@@ -99,3 +142,5 @@ const onReset = () => {
         </q-page>
     </AdminLayout>
 </template>
+
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>

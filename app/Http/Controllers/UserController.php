@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUserRequest;
+use App\Http\Resources\PermissionResource;
+use App\Http\Resources\RoleResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -12,6 +14,8 @@ use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -62,8 +66,12 @@ class UserController extends Controller
      */
     public function edit(User $user): Response
     {
+        $user->load(['roles', 'permissions']);
+
         return Inertia::render('Admin/Users/Edit', [
             'user' => new UserResource($user),
+            'roles' => RoleResource::collection(Role::all()),
+            'permissions' => PermissionResource::collection(Permission::all()),
         ]);
     }
 
@@ -96,6 +104,14 @@ class UserController extends Controller
                     ->symbols()
                     ->uncompromised(),
             ],
+            'roles' => [
+                'sometimes',
+                'array'
+            ],
+            'permissions' => [
+                'sometimes',
+                'array'
+            ],
         ]);
 
         $user->name = $request->name;
@@ -104,6 +120,9 @@ class UserController extends Controller
             $user->password = Hash::make($request->password);
         }
         $user->save();
+
+        $user->syncRoles($request->input('roles.*.name'));
+        $user->syncPermissions($request->input('permissions.*.name'));
 
         return to_route('users.index');
     }

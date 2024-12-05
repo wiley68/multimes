@@ -60,7 +60,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                 <q-btn-dropdown
                     stretch
                     flat
-                    :label="$page.props.auth.user.roles.length === 0 ? $page.props.auth.user.name : $page.props.auth.user.name + ' - ' + $page.props.auth.user.roles[0]"
+                    :label="$page.props.auth.user.roles.length === 0 ? $page.props.auth.user.name : $page.props.auth.user.name + ' - ' + $page.props.auth.user.roles[0].name"
                 >
                     <q-list style="min-width: 100px">
                         <q-item
