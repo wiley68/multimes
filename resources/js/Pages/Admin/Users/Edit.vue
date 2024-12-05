@@ -21,8 +21,47 @@ const form = useForm({
     permissions: []
 })
 
+const roleColumns = [
+    {
+        name: 'id',
+        required: true,
+        label: '№',
+        align: 'left',
+        field: row => row.id,
+        format: val => `${val}`,
+        sortable: true
+    },
+    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: "actions",
+        label: "Управление",
+        align: "center",
+        field: "actions",
+    }
+]
+
+const permissionColumns = [
+    {
+        name: 'id',
+        required: true,
+        label: '№',
+        align: 'left',
+        field: row => row.id,
+        format: val => `${val}`,
+        sortable: true
+    },
+    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: "actions",
+        label: "Управление",
+        align: "center",
+        field: "actions",
+    }
+]
+
 const onSubmit = () => {
     form.put(route('users.update', props.user.id), {
+        preserveScroll: true,
         onFinish: () => form.reset('name', 'email', 'password', 'password_confirmation'),
     })
 };
@@ -66,7 +105,7 @@ watch(
             <div class="column flex-grow flex-center">
                 <q-card
                     class="q-pa-md"
-                    style="width: 600px;"
+                    style="width: 800px; max-width: 100%;"
                 >
                     <q-form
                         @submit.prevent="onSubmit"
@@ -138,6 +177,70 @@ watch(
                         </div>
                     </q-form>
                 </q-card>
+
+                <div
+                    class="q-mt-md"
+                    style="width: 800px; max-width: 100%;"
+                >
+                    <q-table
+                        class="my-sticky-header-table"
+                        bordered
+                        title="Роли към този потребител"
+                        rows-per-page-label="Записи на страница"
+                        separator="cell"
+                        no-data-label="Липсват данни"
+                        no-results-label="Няма съответстващи записи"
+                        loading-label="Данните се зареждат..."
+                        table-header-class="bg-grey-3"
+                        :rows="user.roles"
+                        :columns="roleColumns"
+                        row-key="id"
+                        :rows-per-page-options=[3]
+                    >
+                        <template v-slot:body-cell-actions="props">
+                            <q-td align="center">
+                                <q-btn
+                                    label="Отмени"
+                                    flat
+                                    color="negative"
+                                    dense
+                                />
+                            </q-td>
+                        </template>
+                    </q-table>
+                </div>
+
+                <div
+                    class="q-mt-md"
+                    style="width: 800px; max-width: 100%;"
+                >
+                    <q-table
+                        class="my-sticky-header-table"
+                        bordered
+                        title="Права към този потребител"
+                        rows-per-page-label="Записи на страница"
+                        separator="cell"
+                        no-data-label="Липсват данни"
+                        no-results-label="Няма съответстващи записи"
+                        loading-label="Данните се зареждат..."
+                        table-header-class="bg-grey-3"
+                        :rows="user.permissions"
+                        :columns="permissionColumns"
+                        row-key="id"
+                        :rows-per-page-options=[3]
+                    >
+                        <template v-slot:body-cell-actions="props">
+                            <q-td align="center">
+                                <q-btn
+                                    label="Отмени"
+                                    flat
+                                    color="negative"
+                                    dense
+                                />
+                            </q-td>
+                        </template>
+                    </q-table>
+                </div>
             </div>
         </q-page>
     </AdminLayout>

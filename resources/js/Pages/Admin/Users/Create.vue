@@ -1,12 +1,20 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
+import VueMultiselect from 'vue-multiselect'
+
+defineProps({
+    roles: Array,
+    permissions: Array
+})
 
 const form = useForm({
     name: '',
     email: '',
     password: '',
     password_confirmation: '',
+    roles: [],
+    permissions: []
 })
 
 const onSubmit = () => {
@@ -43,7 +51,7 @@ const onReset = () => {
             <div class="column flex-grow flex-center">
                 <q-card
                     class="q-pa-md"
-                    style="width: 400px;"
+                    style="width: 800px; max-width: 100%;"
                 >
                     <q-form
                         @submit.prevent="onSubmit"
@@ -85,6 +93,30 @@ const onReset = () => {
                             :error-message="form.errors.password_confirmation"
                         />
 
+                        <div class="q-my-lg">
+                            <VueMultiselect
+                                v-model="form.roles"
+                                :options="roles"
+                                :multiple="true"
+                                :close-on-select="true"
+                                placeholder="Добави роли"
+                                label="name"
+                                track-by="name"
+                            />
+                        </div>
+
+                        <div class="q-my-lg">
+                            <VueMultiselect
+                                v-model="form.permissions"
+                                :options="permissions"
+                                :multiple="true"
+                                :close-on-select="true"
+                                placeholder="Добави права"
+                                label="name"
+                                track-by="name"
+                            />
+                        </div>
+
                         <div>
                             <q-btn
                                 label="Създай"
@@ -105,3 +137,5 @@ const onReset = () => {
         </q-page>
     </AdminLayout>
 </template>
+
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
