@@ -30,6 +30,10 @@ class CreateRoleRequest extends FormRequest
                 'max:30',
                 Rule::unique('roles', 'name')->ignore($this->role)
             ],
+            'permissions' => [
+                'sometimes',
+                'array'
+            ]
         ];
     }
 }
