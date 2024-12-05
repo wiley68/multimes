@@ -1,9 +1,15 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
+import VueMultiselect from 'vue-multiselect'
+
+defineProps({
+    permissions: Array
+})
 
 const form = useForm({
     name: '',
+    permissions: []
 })
 
 const onSubmit = () => {
@@ -38,7 +44,7 @@ const onReset = () => {
             <div class="column flex-grow flex-center">
                 <q-card
                     class="q-pa-md"
-                    style="width: 400px;"
+                    style="width: 600px;"
                 >
                     <q-form
                         @submit.prevent="onSubmit"
@@ -52,6 +58,18 @@ const onReset = () => {
                             :error="form.hasErrors"
                             :error-message="form.errors.name"
                         />
+
+                        <div class="q-my-lg">
+                            <VueMultiselect
+                                v-model="form.permissions"
+                                :options="permissions"
+                                :multiple="true"
+                                :close-on-select="true"
+                                placeholder="Добави права"
+                                label="name"
+                                track-by="name"
+                            />
+                        </div>
 
                         <div>
                             <q-btn
@@ -73,3 +91,5 @@ const onReset = () => {
         </q-page>
     </AdminLayout>
 </template>
+
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
