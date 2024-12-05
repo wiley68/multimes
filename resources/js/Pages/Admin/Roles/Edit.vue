@@ -1,7 +1,7 @@
 <script setup>
 import AdminLayout from '@/Layouts/AdminLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { onMounted } from 'vue';
+import { onMounted, watch } from 'vue';
 import VueMultiselect from 'vue-multiselect'
 
 const props = defineProps({
@@ -49,6 +49,11 @@ const onReset = () => {
 onMounted(() => {
     form.permissions = props.role.permissions
 })
+
+watch(
+    () => props.role,
+    () => form.permissions = props.role.permissions
+)
 </script>
 
 <template>
@@ -139,6 +144,7 @@ onMounted(() => {
                         <template v-slot:body-cell-actions="props">
                             <q-td align="center">
                                 <q-btn
+                                    @click.prevent="router.delete(route('roles.permissions.destroy', [role.id, props.row.id]))"
                                     label="Отмени"
                                     flat
                                     color="negative"
