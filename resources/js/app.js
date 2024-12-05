@@ -5,7 +5,7 @@ import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 import { createApp, h } from 'vue'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
-import { Quasar, Dialog } from 'quasar'
+import { Quasar, Dialog, LoadingBar } from 'quasar'
 import '@quasar/extras/material-icons/material-icons.css'
 import 'quasar/src/css/index.sass'
 
@@ -24,12 +24,27 @@ createInertiaApp({
       .use(ZiggyVue)
       .use(Quasar, {
         plugins: {
-          Dialog
+          Dialog,
+          LoadingBar
+        },
+        config: {
+          loadingBar: {
+            color: '#ea580c',
+            size: '5px',
+            position: 'top',
+          },
         },
       })
       .mount(el)
   },
-  progress: {
-    color: '#4B5563',
-  },
+})
+
+import { router } from '@inertiajs/vue3'
+
+router.on('start', () => {
+  LoadingBar.start()
+})
+
+router.on('finish', () => {
+  LoadingBar.stop()
 })
