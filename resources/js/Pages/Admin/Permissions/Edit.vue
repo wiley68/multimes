@@ -45,7 +45,7 @@ const onReset = () => {
             <div class="column flex-grow flex-center">
                 <q-card
                     class="q-pa-md"
-                    style="width: 400px;"
+                    style="width: 800px; max-width: 100%;"
                 >
                     <q-form
                         @submit.prevent="onSubmit"

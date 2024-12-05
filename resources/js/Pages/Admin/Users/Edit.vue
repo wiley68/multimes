@@ -200,6 +200,7 @@ watch(
                         <template v-slot:body-cell-actions="props">
                             <q-td align="center">
                                 <q-btn
+                                    @click.prevent="router.delete(route('users.roles.destroy', [user.id, props.row.id]), { preserveScroll: true, })"
                                     label="Отмени"
                                     flat
                                     color="negative"
@@ -232,6 +233,7 @@ watch(
                         <template v-slot:body-cell-actions="props">
                             <q-td align="center">
                                 <q-btn
+                                    @click.prevent="router.delete(route('users.permissions.destroy', [user.id, props.row.id]), { preserveScroll: true, })"
                                     label="Отмени"
                                     flat
                                     color="negative"

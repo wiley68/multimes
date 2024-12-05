@@ -77,7 +77,7 @@ watch(
             <div class="column flex-grow flex-center">
                 <q-card
                     class="q-pa-md"
-                    style="width: 600px;"
+                    style="width: 800px; max-width: 100%;"
                 >
                     <q-form
                         @submit.prevent="onSubmit"
@@ -123,7 +123,7 @@ watch(
 
                 <div
                     class="q-mt-md"
-                    style="width: 600px;"
+                    style="width: 800px; max-width: 100%;"
                 >
                     <q-table
                         ref="tableRef"
@@ -144,7 +144,7 @@ watch(
                         <template v-slot:body-cell-actions="props">
                             <q-td align="center">
                                 <q-btn
-                                    @click.prevent="router.delete(route('roles.permissions.destroy', [role.id, props.row.id]))"
+                                    @click.prevent="router.delete(route('roles.permissions.destroy', [role.id, props.row.id]), { preserveScroll: true, })"
                                     label="Отмени"
                                     flat
                                     color="negative"
