@@ -36,7 +36,7 @@ Route::delete('/users/{user}/roles/{role}', RemoveRoleFromUserController::class)
 Route::delete('/users/{user}/permissions/{permission}', RevokePermissionFromUserController::class)->name('users.permissions.destroy');
 Route::resource('/cities', CityController::class);
 
-Route::middleware(['auth', 'role:moderator|user'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');

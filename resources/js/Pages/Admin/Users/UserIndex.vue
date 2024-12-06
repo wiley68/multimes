@@ -162,6 +162,7 @@ const confirm = (user_id) => {
                             @click="router.get(route('users.edit', props.row.id))"
                         />
                         <q-btn
+                            v-if="$page.props.auth.user.id !== props.row.id"
                             icon="mdi-delete-outline"
                             color="negative"
                             dense

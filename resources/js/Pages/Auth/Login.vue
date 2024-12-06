@@ -54,6 +54,7 @@ const onSubmit = () => {
               v-model="form.email"
               label="Имейл *"
               hint="Имейл за вход в системата"
+              autofocus
               autocomplete="email"
               :error="form.hasErrors"
               :error-message="form.errors.email"

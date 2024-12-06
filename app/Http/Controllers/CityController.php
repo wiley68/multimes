@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CityController extends Controller
 {
@@ -17,6 +18,8 @@ class CityController extends Controller
      */
     public function index(Request $request): Response
     {
+        Gate::authorize('viewAny', City::class);
+
         $rowsPerPage = $request->input('rowsPerPage', 10);
         $page = $request->input('page', 1);
         $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
@@ -42,6 +45,8 @@ class CityController extends Controller
      */
     public function create(): Response
     {
+        Gate::authorize('create', City::class);
+
         return Inertia::render('Nomenklature/Cities/Create');
     }
 
@@ -50,6 +55,8 @@ class CityController extends Controller
      */
     public function store(CreateCityRequest $request): RedirectResponse
     {
+        Gate::authorize('create', City::class);
+
         City::create([
             'name' => $request->name,
         ]);
@@ -60,9 +67,9 @@ class CityController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): Response
+    public function edit(City $city): Response
     {
-        $city = City::findById($id);
+        Gate::authorize('update', $city);
 
         return Inertia::render('Nomenklature/Cities/Edit', [
             'city' => new CityResource($city),
@@ -72,9 +79,10 @@ class CityController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(CreateCityRequest $request, string $id): RedirectResponse
+    public function update(CreateCityRequest $request, City $city): RedirectResponse
     {
-        $city = City::findById($id);
+        Gate::authorize('update', $city);
+
         $city->update([
             'name' => $request->name,
         ]);
@@ -85,9 +93,10 @@ class CityController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(City $city): RedirectResponse
     {
-        $city = City::findById($id);
+        Gate::authorize('delete', $city);
+
         $city->delete();
 
         return back();
