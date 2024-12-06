@@ -110,6 +110,7 @@ class UserController extends Controller
                 Rule::unique('users', 'email')->ignore($user)
             ],
             'password' => [
+                'sometimes',
                 'nullable',
                 'string',
                 Password::min(8)
