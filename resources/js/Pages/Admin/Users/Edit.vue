@@ -62,12 +62,14 @@ const permissionColumns = [
 const onSubmit = () => {
     form.put(route('users.update', props.user.id), {
         preserveScroll: true,
-        onFinish: () => form.reset('name', 'email', 'password', 'password_confirmation'),
+        onFinish: () => {
+            form.password = ''
+        },
     })
 };
 
 const onReset = () => {
-    form.reset('name', 'email', 'password', 'password_confirmation')
+    form.reset('name', 'email', 'password')
 }
 
 onMounted(() => {
