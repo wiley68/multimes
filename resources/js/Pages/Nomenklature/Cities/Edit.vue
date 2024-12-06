@@ -14,7 +14,7 @@ const form = useForm({
 })
 
 const onSubmit = () => {
-    form.put(route('cities.update', props.role.id), {
+    form.put(route('cities.update', props.city.id), {
         onFinish: () => form.reset('name'),
     })
 };

@@ -14,4 +14,9 @@ class City extends Model
     protected $fillable = [
         'name',
     ];
+
+    public static function findById($id)
+    {
+        return self::find($id);
+    }
 }

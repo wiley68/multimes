@@ -204,7 +204,7 @@ onBeforeUnmount(() => {
 
                     <q-separator />
                 </template>
-                <template v-else>
+                <template v-if="hasRole('moderator')">
                     <q-expansion-item
                         group="module1"
                         icon="mdi-home-import-outline"
@@ -295,7 +295,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                }}</q-toolbar-title>
+                    }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical
