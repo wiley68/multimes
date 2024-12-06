@@ -7,6 +7,7 @@ import { createApp, h } from 'vue'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy'
 import { Quasar, Dialog, LoadingBar } from 'quasar'
 import '@quasar/extras/material-icons/material-icons.css'
+import '@quasar/extras/mdi-v7/mdi-v7.css'
 import 'quasar/src/css/index.sass'
 
 const appName = import.meta.env.VITE_APP_NAME || 'Мултимес'

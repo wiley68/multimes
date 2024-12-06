@@ -101,7 +101,7 @@ const confirm = (role_id) => {
                     <q-btn
                         color="primary"
                         label="Табло"
-                        icon="chevron_left"
+                        icon="mdi-menu-left"
                         @click="router.get(route('admin.index'))"
                     />
                 </div>
@@ -110,7 +110,7 @@ const confirm = (role_id) => {
                     <q-btn
                         color="primary"
                         label="Нова роля"
-                        icon="add"
+                        icon="mdi-plus"
                         @click="router.get(route('roles.create'))"
                     />
                 </div>
@@ -146,14 +146,14 @@ const confirm = (role_id) => {
                         placeholder="Търси..."
                     >
                         <template v-slot:append>
-                            <q-icon name="search" />
+                            <q-icon name="mdi-magnify" />
                         </template>
                     </q-input>
                 </template>
                 <template v-slot:body-cell-actions="props">
                     <q-td align="center">
                         <q-btn
-                            icon="edit"
+                            icon="mdi-pencil-outline"
                             color="primary"
                             dense
                             flat
@@ -161,7 +161,7 @@ const confirm = (role_id) => {
                             @click="router.get(route('roles.edit', props.row.id))"
                         />
                         <q-btn
-                            icon="delete"
+                            icon="mdi-delete-outline"
                             color="negative"
                             dense
                             flat

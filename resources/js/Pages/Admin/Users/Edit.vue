@@ -95,7 +95,7 @@ watch(
                     <q-btn
                         color="primary"
                         label="Потребители"
-                        icon="chevron_left"
+                        icon="mdi-menu-left"
                         @click="router.get(route('users.index'))"
                     />
                 </div>

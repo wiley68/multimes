@@ -67,7 +67,7 @@ watch(
                     <q-btn
                         color="primary"
                         label="Роли"
-                        icon="chevron_left"
+                        icon="mdi-menu-left"
                         @click="router.get(route('roles.index'))"
                     />
                 </div>

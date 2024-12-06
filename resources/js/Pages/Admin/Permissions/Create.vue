@@ -28,7 +28,7 @@ const onReset = () => {
                     <q-btn
                         color="primary"
                         label="Права"
-                        icon="chevron_left"
+                        icon="mdi-menu-left"
                         @click="router.get(route('permissions.index'))"
                     />
                 </div>

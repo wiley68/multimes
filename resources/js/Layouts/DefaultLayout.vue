@@ -30,7 +30,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                     dense
                     flat
                     round
-                    icon="menu"
+                    icon="mdi-menu"
                     @click="toggleLeftDrawer"
                     class="q-mr-sm"
                 />
@@ -43,7 +43,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
 
                 <q-toolbar-title>
                     <q-icon
-                        name="savings"
+                        name="mdi-pig-variant-outline"
                         size="md"
                     ></q-icon>
                     Мултимес
@@ -71,7 +71,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                             <q-item-section avatar>
                                 <q-icon
                                     color="negative"
-                                    name="close"
+                                    name="mdi-close"
                                 />
                             </q-item-section>
                             <q-item-section>Изход</q-item-section>
@@ -101,7 +101,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         <q-item-section avatar>
                             <q-icon
                                 color="primary"
-                                name="dashboard"
+                                name="mdi-view-dashboard-outline"
                             />
                         </q-item-section>
                         <q-item-section>Табло</q-item-section>
@@ -119,7 +119,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         <q-item-section avatar>
                             <q-icon
                                 color="primary"
-                                name="dashboard"
+                                name="mdi-view-dashboard-outline"
                             />
                         </q-item-section>
                         <q-item-section>Табло</q-item-section>
@@ -140,7 +140,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         <q-item-section avatar>
                             <q-icon
                                 color="primary"
-                                name="person"
+                                name="mdi-account-multiple-outline"
                             />
                         </q-item-section>
                         <q-item-section>Потребители</q-item-section>
@@ -159,7 +159,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         <q-item-section avatar>
                             <q-icon
                                 color="primary"
-                                name="groups"
+                                name="mdi-account-group-outline"
                             />
                         </q-item-section>
                         <q-item-section>Роли</q-item-section>
@@ -178,7 +178,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         <q-item-section avatar>
                             <q-icon
                                 color="primary"
-                                name="verified_user"
+                                name="mdi-shield-key-outline"
                             />
                         </q-item-section>
                         <q-item-section>Права</q-item-section>
@@ -189,7 +189,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                 <template v-else>
                     <q-expansion-item
                         group="module1"
-                        icon="store"
+                        icon="mdi-home-import-outline"
                         label="Майки"
                         expand-icon-class="text-primary"
                         header-class="text-primary"
@@ -204,7 +204,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
 
                     <q-expansion-item
                         group="module2"
-                        icon="add_business"
+                        icon="mdi-home-export-outline"
                         label="Угояване"
                         expand-icon-class="text-primary"
                         header-class="text-primary"
@@ -219,7 +219,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
 
                     <q-expansion-item
                         group="nomenclature"
-                        icon="settings"
+                        icon="mdi-cog-outline"
                         label="Настройки"
                         expand-icon-class="text-primary"
                         header-class="text-primary"
@@ -232,6 +232,19 @@ const toPermissins = () => { router.get(route('permissions.index')) }
 
                     <q-separator />
                 </template>
+
+                <q-expansion-item
+                    group="nomenklature"
+                    icon="mdi-folder-table-outline"
+                    label="Номенклатури"
+                    expand-icon-class="text-primary"
+                    header-class="text-primary"
+                >
+                    <q-card>
+                        <q-card-section>
+                        </q-card-section>
+                    </q-card>
+                </q-expansion-item>
 
                 <q-space />
 
