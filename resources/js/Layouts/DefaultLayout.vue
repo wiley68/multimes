@@ -210,48 +210,32 @@ const toggleLeftDrawer = () => {
                     <q-separator />
 
                     <q-expansion-item
-                        group="nomenclature"
-                        icon="mdi-cog-outline"
-                        label="Настройки"
+                        group="nomenklature"
+                        icon="mdi-folder-table-outline"
+                        label="Номенклатури"
                         expand-icon-class="text-primary"
                         header-class="text-primary"
                     >
-                        <q-card>
-                            <q-card-section>
-
-                            </q-card-section>
-                        </q-card>
+                        <q-item
+                            clickable
+                            v-close-popup
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('cities.index'))"
+                            :active="route().current('cities.index')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="mdi-home-city-outline"
+                                />
+                            </q-item-section>
+                            <q-item-section>Населени места</q-item-section>
+                        </q-item>
                     </q-expansion-item>
 
                     <q-separator />
                 </template>
-
-                <q-expansion-item
-                    group="nomenklature"
-                    icon="mdi-folder-table-outline"
-                    label="Номенклатури"
-                    expand-icon-class="text-primary"
-                    header-class="text-primary"
-                >
-                    <q-item
-                        clickable
-                        v-close-popup
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                        @click="router.get(route('cities.index'))"
-                        :active="route().current('cities.index')"
-                    >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="mdi-home-city-outline"
-                            />
-                        </q-item-section>
-                        <q-item-section>Права</q-item-section>
-                    </q-item>
-                </q-expansion-item>
-
-                <q-separator />
 
                 <q-space />
 

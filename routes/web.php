@@ -24,12 +24,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:moderator|user'])->group(function () {
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
-});
-
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
     Route::resource('/users', UserController::class);
@@ -40,6 +34,14 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::delete('/users/{user}/permissions/{permission}', RevokePermissionFromUserController::class)->name('users.permissions.destroy');
 });
 
-Route::resource('/cities', CityController::class);
+Route::middleware(['auth', 'role:moderator|user'])->group(function () {
+    Route::get('/dashboard', function () {
+        return Inertia::render('Dashboard');
+    })->name('dashboard');
+});
+
+Route::middleware(['auth', 'role:moderator'])->group(function () {
+    Route::resource('/cities', CityController::class);
+});
 
 require __DIR__ . '/auth.php';
