@@ -9,14 +9,6 @@ const { hasRole } = usePermission()
 const toggleLeftDrawer = () => {
     leftDrawerOpen.value = !leftDrawerOpen.value
 }
-
-const logout = () => { router.post(route('logout')) }
-const toAdmin = () => { router.get(route('admin.index')) }
-const toDashboard = () => { router.get(route('dashboard')) }
-const toUsers = () => { router.get(route('users.index')) }
-const toRoles = () => { router.get(route('roles.index')) }
-const toPermissins = () => { router.get(route('permissions.index')) }
-
 </script>
 
 <template>
@@ -66,7 +58,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         <q-item
                             clickable
                             v-close-popup
-                            @click="logout"
+                            @click="router.post(route('logout'))"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -93,7 +85,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                     <q-item
                         clickable
                         v-close-popup
-                        @click="toAdmin"
+                        @click="router.get(route('admin.index'))"
                         :active="route().current('admin.index')"
                         class="text-primary"
                         active-class="bg-blue-1"
@@ -111,7 +103,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                     <q-item
                         clickable
                         v-close-popup
-                        @click="toDashboard"
+                        @click="router.get(route('dashboard'))"
                         :active="route().current('dashboard')"
                         class="text-primary"
                         active-class="bg-blue-1"
@@ -134,7 +126,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         v-close-popup
                         class="text-primary"
                         active-class="bg-blue-1"
-                        @click="toUsers"
+                        @click="router.get(route('users.index'))"
                         :active="route().current('users.index')"
                     >
                         <q-item-section avatar>
@@ -153,7 +145,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         v-close-popup
                         class="text-primary"
                         active-class="bg-blue-1"
-                        @click="toRoles"
+                        @click="router.get(route('roles.index'))"
                         :active="route().current('roles.index')"
                     >
                         <q-item-section avatar>
@@ -172,7 +164,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                         v-close-popup
                         class="text-primary"
                         active-class="bg-blue-1"
-                        @click="toPermissins"
+                        @click="router.get(route('permissions.index'))"
                         :active="route().current('permissions.index')"
                     >
                         <q-item-section avatar>
@@ -226,6 +218,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                     >
                         <q-card>
                             <q-card-section>
+
                             </q-card-section>
                         </q-card>
                     </q-expansion-item>
@@ -240,11 +233,25 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                     expand-icon-class="text-primary"
                     header-class="text-primary"
                 >
-                    <q-card>
-                        <q-card-section>
-                        </q-card-section>
-                    </q-card>
+                    <q-item
+                        clickable
+                        v-close-popup
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                        @click="router.get(route('cities.index'))"
+                        :active="route().current('cities.index')"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="mdi-home-city-outline"
+                            />
+                        </q-item-section>
+                        <q-item-section>Права</q-item-section>
+                    </q-item>
                 </q-expansion-item>
+
+                <q-separator />
 
                 <q-space />
 
@@ -254,7 +261,7 @@ const toPermissins = () => { router.get(route('permissions.index')) }
                     clickable
                     v-close-popup
                     class="text-negative"
-                    @click="logout"
+                    @click="router.post(route('logout'))"
                 >
                     <q-item-section avatar>
                         <q-icon
