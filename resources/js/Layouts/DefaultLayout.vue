@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { usePermission } from '@/composables/permissions';
 
@@ -9,6 +9,32 @@ const { hasRole } = usePermission()
 const toggleLeftDrawer = () => {
     leftDrawerOpen.value = !leftDrawerOpen.value
 }
+
+const currentDateTime = ref('')
+
+const formatDateTime = () => {
+    const now = new Date()
+    const day = String(now.getDate()).padStart(2, '0')
+    const month = String(now.getMonth() + 1).padStart(2, '0')
+    const year = String(now.getFullYear()).slice(-2)
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0')
+    return `${day}.${month}.${year} ${hours}:${minutes}`
+}
+
+const updateDateTime = () => {
+    currentDateTime.value = formatDateTime()
+}
+
+let intervalId;
+onMounted(() => {
+    updateDateTime()
+    intervalId = setInterval(updateDateTime, 30000)
+})
+
+onBeforeUnmount(() => {
+    clearInterval(intervalId)
+})
 </script>
 
 <template>
@@ -297,7 +323,7 @@ const toggleLeftDrawer = () => {
                     dark
                     vertical
                 />
-                <q-toolbar-title class="text-right text-subtitle1">Avalon</q-toolbar-title>
+                <q-toolbar-title class="text-right text-subtitle1 text-grey-5">{{ currentDateTime }}</q-toolbar-title>
             </q-toolbar>
         </q-footer>
     </q-layout>
