@@ -267,8 +267,36 @@ const toggleLeftDrawer = () => {
             class="bg-grey-8 text-white q-custom-toolbar"
         >
             <q-toolbar class="select-none q-custom-toolbar">
-                <q-toolbar-title class="text-left text-subtitle1">{{ $page.props.app_name }}: v. {{ $page.props.version
+                <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
+                    $page.props.version
+                }}</q-toolbar-title>
+                <q-separator
+                    dark
+                    vertical
+                />
+                <template v-if="$page.props.auth.user.roles.length">
+                    <q-toolbar-title
+                        v-for="role in $page.props.auth.user.roles"
+                        class="text-left text-subtitle1 text-title"
+                        :class="role.name === 'admin' ? 'text-red-8' : role.name === 'moderator' ? 'text-orange-8' : role.name === 'user' ? 'text-green-8' : 'text-gray-10'"
+                    >{{ role.name }}</q-toolbar-title>
+                    <q-separator
+                        dark
+                        vertical
+                    />
+                </template>
+                <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.auth.user.name
                     }}</q-toolbar-title>
+                <q-separator
+                    dark
+                    vertical
+                />
+                <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.auth.user.email
+                    }}</q-toolbar-title>
+                <q-separator
+                    dark
+                    vertical
+                />
                 <q-toolbar-title class="text-right text-subtitle1">Avalon</q-toolbar-title>
             </q-toolbar>
         </q-footer>
@@ -278,5 +306,10 @@ const toggleLeftDrawer = () => {
 <style scoped>
 .q-custom-toolbar {
     min-height: 30px !important;
+}
+
+.text-title {
+    max-width: max-content;
+    white-space: nowrap;
 }
 </style>
