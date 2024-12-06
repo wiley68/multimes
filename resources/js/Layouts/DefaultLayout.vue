@@ -78,7 +78,7 @@ onBeforeUnmount(() => {
                 <q-btn-dropdown
                     stretch
                     flat
-                    :label="$page.props.auth.user.roles.length === 0 ? $page.props.auth.user.name : $page.props.auth.user.name + ' - ' + $page.props.auth.user.roles[0].name"
+                    :label="$page.props.auth.user.name"
                 >
                     <q-list style="min-width: 100px">
                         <q-item
@@ -295,7 +295,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                    }}</q-toolbar-title>
+                }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical
@@ -304,8 +304,8 @@ onBeforeUnmount(() => {
                     <q-toolbar-title
                         v-for="role in $page.props.auth.user.roles"
                         class="text-left text-subtitle1 text-title"
-                        :class="role.name === 'admin' ? 'text-red-8' : role.name === 'moderator' ? 'text-orange-8' : role.name === 'user' ? 'text-green-8' : 'text-gray-10'"
-                    >{{ role.name }}</q-toolbar-title>
+                        :class="role === 'admin' ? 'text-red-8' : role === 'moderator' ? 'text-orange-8' : role === 'user' ? 'text-green-8' : 'text-gray-10'"
+                    >{{ role }}</q-toolbar-title>
                     <q-separator
                         dark
                         vertical
