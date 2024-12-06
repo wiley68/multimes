@@ -1,278 +1,196 @@
 <script setup>
 import { ref } from 'vue'
-import { router } from '@inertiajs/vue3'
-import { usePermission } from '@/composables/permissions';
+import ApplicationLogo from '@/Components/ApplicationLogo.vue'
+import Dropdown from '@/Components/Dropdown.vue'
+import DropdownLink from '@/Components/DropdownLink.vue'
+import NavLink from '@/Components/NavLink.vue'
+import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue'
+import { Link } from '@inertiajs/vue3'
 
-const leftDrawerOpen = ref(false)
-const { hasRole } = usePermission()
-
-const toggleLeftDrawer = () => {
-    leftDrawerOpen.value = !leftDrawerOpen.value
-}
-
-const logout = () => { router.post(route('logout')) }
-const toAdmin = () => { router.get(route('admin.index')) }
-const toDashboard = () => { router.get(route('dashboard')) }
-const toUsers = () => { router.get(route('users.index')) }
-const toRoles = () => { router.get(route('roles.index')) }
-const toPermissins = () => { router.get(route('permissions.index')) }
-
+const showingNavigationDropdown = ref(false)
 </script>
 
 <template>
-    <q-layout view="hHh lpR fFf">
-        <q-header
-            bordered
-            class="bg-primary text-white select-none"
-        >
-            <q-toolbar>
-                <q-btn
-                    dense
-                    flat
-                    round
-                    icon="menu"
-                    @click="toggleLeftDrawer"
-                    class="q-mr-sm"
-                />
+  <div>
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+      <nav
+        class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800"
+      >
+        <!-- Primary Navigation Menu -->
+        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div class="flex h-16 justify-between">
+            <div class="flex">
+              <!-- Logo -->
+              <div class="flex shrink-0 items-center">
+                <Link :href="route('dashboard')">
+                  <ApplicationLogo
+                    class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
+                  />
+                </Link>
+              </div>
 
-                <q-separator
-                    dark
-                    vertical
-                    inset
-                />
-
-                <q-toolbar-title>
-                    <q-icon
-                        name="savings"
-                        size="md"
-                    ></q-icon>
-                    Мултимес
-                </q-toolbar-title>
-
-                <q-space />
-
-                <q-separator
-                    dark
-                    vertical
-                    inset
-                />
-
-                <q-btn-dropdown
-                    stretch
-                    flat
-                    :label="$page.props.auth.user.roles.length === 0 ? $page.props.auth.user.name : $page.props.auth.user.name + ' - ' + $page.props.auth.user.roles[0].name"
+              <!-- Navigation Links -->
+              <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <NavLink
+                  :href="route('dashboard')"
+                  :active="route().current('dashboard')"
                 >
-                    <q-list style="min-width: 100px">
-                        <q-item
-                            clickable
-                            v-close-popup
-                            @click="logout"
+                  Dashboard
+                </NavLink>
+                <NavLink
+                  :href="route('admin.index')"
+                  :active="route().current('admin.index')"
+                >
+                  Admin
+                </NavLink>
+              </div>
+            </div>
+
+            <div class="hidden sm:ms-6 sm:flex sm:items-center">
+              <!-- Settings Dropdown -->
+              <div class="relative ms-3">
+                <Dropdown
+                  align="right"
+                  width="48"
+                >
+                  <template #trigger>
+                    <span class="inline-flex rounded-md">
+                      <button
+                        type="button"
+                        class="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none dark:bg-gray-800 dark:text-gray-400 dark:hover:text-gray-300"
+                      >
+                        {{ $page.props.auth.user.name }}
+
+                        <svg
+                          class="-me-0.5 ms-2 h-4 w-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 20 20"
+                          fill="currentColor"
                         >
-                            <q-item-section avatar>
-                                <q-icon
-                                    color="negative"
-                                    name="close"
-                                />
-                            </q-item-section>
-                            <q-item-section>Изход</q-item-section>
-                        </q-item>
-                    </q-list>
-                </q-btn-dropdown>
-            </q-toolbar>
-        </q-header>
+                          <path
+                            fill-rule="evenodd"
+                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                            clip-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </span>
+                  </template>
 
-        <q-drawer
-            show-if-above
-            v-model="leftDrawerOpen"
-            side="left"
-            behavior="desktop"
-            bordered
-        >
-            <q-list class="full-height flex column">
-                <template v-if="hasRole('admin')">
-                    <q-item
-                        clickable
-                        v-close-popup
-                        @click="toAdmin"
-                        :active="route().current('admin.index')"
-                        class="text-primary"
-                        active-class="bg-blue-1"
+                  <template #content>
+                    <DropdownLink :href="route('profile.edit')">
+                      Profile
+                    </DropdownLink>
+                    <DropdownLink
+                      :href="route('logout')"
+                      method="post"
+                      as="button"
                     >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="dashboard"
-                            />
-                        </q-item-section>
-                        <q-item-section>Табло</q-item-section>
-                    </q-item>
-                </template>
-                <template v-else>
-                    <q-item
-                        clickable
-                        v-close-popup
-                        @click="toDashboard"
-                        :active="route().current('dashboard')"
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                    >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="dashboard"
-                            />
-                        </q-item-section>
-                        <q-item-section>Табло</q-item-section>
-                    </q-item>
-                </template>
+                      Log Out
+                    </DropdownLink>
+                  </template>
+                </Dropdown>
+              </div>
+            </div>
 
-                <q-separator />
-
-                <template v-if="hasRole('admin')">
-                    <q-item
-                        clickable
-                        v-close-popup
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                        @click="toUsers"
-                        :active="route().current('users.index')"
-                    >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="person"
-                            />
-                        </q-item-section>
-                        <q-item-section>Потребители</q-item-section>
-                    </q-item>
-
-                    <q-separator />
-
-                    <q-item
-                        clickable
-                        v-close-popup
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                        @click="toRoles"
-                        :active="route().current('roles.index')"
-                    >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="groups"
-                            />
-                        </q-item-section>
-                        <q-item-section>Роли</q-item-section>
-                    </q-item>
-
-                    <q-separator />
-
-                    <q-item
-                        clickable
-                        v-close-popup
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                        @click="toPermissins"
-                        :active="route().current('permissions.index')"
-                    >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="verified_user"
-                            />
-                        </q-item-section>
-                        <q-item-section>Права</q-item-section>
-                    </q-item>
-
-                    <q-separator />
-                </template>
-                <template v-else>
-                    <q-expansion-item
-                        group="module1"
-                        icon="store"
-                        label="Майки"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
-                    >
-                        <q-card>
-                            <q-card-section>
-                            </q-card-section>
-                        </q-card>
-                    </q-expansion-item>
-
-                    <q-separator />
-
-                    <q-expansion-item
-                        group="module2"
-                        icon="add_business"
-                        label="Угояване"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
-                    >
-                        <q-card>
-                            <q-card-section>
-                            </q-card-section>
-                        </q-card>
-                    </q-expansion-item>
-
-                    <q-separator />
-
-                    <q-expansion-item
-                        group="nomenclature"
-                        icon="settings"
-                        label="Настройки"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
-                    >
-                        <q-card>
-                            <q-card-section>
-                            </q-card-section>
-                        </q-card>
-                    </q-expansion-item>
-
-                    <q-separator />
-                </template>
-
-                <q-space />
-
-                <q-separator />
-
-                <q-item
-                    clickable
-                    v-close-popup
-                    class="text-negative"
-                    @click="logout"
+            <!-- Hamburger -->
+            <div class="-me-2 flex items-center sm:hidden">
+              <button
+                @click="showingNavigationDropdown = !showingNavigationDropdown"
+                class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-400 dark:focus:bg-gray-900 dark:focus:text-gray-400"
+              >
+                <svg
+                  class="h-6 w-6"
+                  stroke="currentColor"
+                  fill="none"
+                  viewBox="0 0 24 24"
                 >
-                    <q-item-section avatar>
-                        <q-icon
-                            color="negative"
-                            name="close"
-                        />
-                    </q-item-section>
-                    <q-item-section>Изход</q-item-section>
-                </q-item>
-            </q-list>
-        </q-drawer>
+                  <path
+                    :class="{
+                      hidden: showingNavigationDropdown,
+                      'inline-flex': !showingNavigationDropdown,
+                    }"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                  <path
+                    :class="{
+                      hidden: !showingNavigationDropdown,
+                      'inline-flex': showingNavigationDropdown,
+                    }"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
 
-        <q-page-container>
-            <slot></slot>
-        </q-page-container>
-
-        <q-footer
-            bordered
-            class="bg-grey-8 text-white q-custom-toolbar"
+        <!-- Responsive Navigation Menu -->
+        <div
+          :class="{
+            block: showingNavigationDropdown,
+            hidden: !showingNavigationDropdown,
+          }"
+          class="sm:hidden"
         >
-            <q-toolbar class="select-none q-custom-toolbar">
-                <q-toolbar-title class="text-left text-subtitle1">{{ $page.props.app_name }}: v. {{ $page.props.version
-                    }}</q-toolbar-title>
-                <q-toolbar-title class="text-right text-subtitle1">Avalon</q-toolbar-title>
-            </q-toolbar>
-        </q-footer>
-    </q-layout>
-</template>
+          <div class="space-y-1 pb-3 pt-2">
+            <ResponsiveNavLink
+              :href="route('dashboard')"
+              :active="route().current('dashboard')"
+            >
+              Dashboard
+            </ResponsiveNavLink>
+          </div>
 
-<style scoped>
-.q-custom-toolbar {
-    min-height: 30px !important;
-}
-</style>
+          <!-- Responsive Settings Options -->
+          <div class="border-t border-gray-200 pb-1 pt-4 dark:border-gray-600">
+            <div class="px-4">
+              <div
+                class="text-base font-medium text-gray-800 dark:text-gray-200"
+              >
+                {{ $page.props.auth.user.name }}
+              </div>
+              <div class="text-sm font-medium text-gray-500">
+                {{ $page.props.auth.user.email }}
+              </div>
+            </div>
+
+            <div class="mt-3 space-y-1">
+              <ResponsiveNavLink :href="route('profile.edit')">
+                Profile
+              </ResponsiveNavLink>
+              <ResponsiveNavLink
+                :href="route('logout')"
+                method="post"
+                as="button"
+              >
+                Log Out
+              </ResponsiveNavLink>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Page Heading -->
+      <header
+        class="bg-white shadow dark:bg-gray-800"
+        v-if="$slots.header"
+      >
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+          <slot name="header" />
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main>
+        <slot />
+      </main>
+    </div>
+  </div>
+</template>

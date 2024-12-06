@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '@/Layouts/AdminLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 
@@ -7,7 +7,7 @@ import { Head } from '@inertiajs/vue3'
 
   <Head title="Административен панел"></Head>
 
-  <AdminLayout>
+  <DefaultLayout>
     <q-page class="flex flex-center">
       <q-card class="q-pa-md">
         <q-card-section>
@@ -15,5 +15,5 @@ import { Head } from '@inertiajs/vue3'
         </q-card-section>
       </q-card>
     </q-page>
-  </AdminLayout>
+  </DefaultLayout>
 </template>

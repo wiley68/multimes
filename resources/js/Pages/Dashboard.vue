@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '@/Layouts/AdminLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head } from '@inertiajs/vue3'
 </script>
 
@@ -7,7 +7,7 @@ import { Head } from '@inertiajs/vue3'
 
   <Head title="Табло"></Head>
 
-  <AdminLayout>
+  <DefaultLayout>
     <div class="py-12">
       <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800">
@@ -17,5 +17,5 @@ import { Head } from '@inertiajs/vue3'
         </div>
       </div>
     </div>
-  </AdminLayout>
+  </DefaultLayout>
 </template>

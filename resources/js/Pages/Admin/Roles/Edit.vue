@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '@/Layouts/AdminLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { onMounted, watch } from 'vue';
 import VueMultiselect from 'vue-multiselect'
@@ -60,7 +60,7 @@ watch(
 
     <Head title="Редакция на роля"></Head>
 
-    <AdminLayout>
+    <DefaultLayout>
         <q-page class="q-pa-md column">
             <div class="row items-center justify-between">
                 <div class="col row items-center">
@@ -156,7 +156,7 @@ watch(
                 </div>
             </div>
         </q-page>
-    </AdminLayout>
+    </DefaultLayout>
 </template>
 
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>

@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '@/Layouts/AdminLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
 const form = useForm({
@@ -21,7 +21,7 @@ const onReset = () => {
 
     <Head title="Създаване на право"></Head>
 
-    <AdminLayout>
+    <DefaultLayout>
         <q-page class="q-pa-md column">
             <div class="row items-center justify-between">
                 <div class="col row items-center">
@@ -72,5 +72,5 @@ const onReset = () => {
                 </q-card>
             </div>
         </q-page>
-    </AdminLayout>
+    </DefaultLayout>
 </template>

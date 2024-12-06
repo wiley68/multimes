@@ -1,5 +1,5 @@
 <script setup>
-import AdminLayout from '@/Layouts/AdminLayout.vue'
+import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue';
 import { useQuasar } from 'quasar'
@@ -95,7 +95,7 @@ const confirm = (user_id) => {
 
     <Head title="Потребители"></Head>
 
-    <AdminLayout>
+    <DefaultLayout>
         <q-page class="q-pa-md">
             <div class="row items-center justify-between">
                 <div class="col row items-center">
@@ -173,5 +173,5 @@ const confirm = (user_id) => {
                 </template>
             </q-table>
         </q-page>
-    </AdminLayout>
+    </DefaultLayout>
 </template>
