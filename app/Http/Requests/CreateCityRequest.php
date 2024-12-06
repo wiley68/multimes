@@ -26,7 +26,7 @@ class CreateCityRequest extends FormRequest
             'name' => [
                 'required',
                 'string',
-                'max:160',
+                'max:255',
                 Rule::unique('cities', 'name')->ignore($this->city)
             ]
         ];
