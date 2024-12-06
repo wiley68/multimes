@@ -29,7 +29,7 @@ class AdminSeeder extends Seeder
         ])->assignRole('admin');
         User::create([
             'name' => 'Модератор Червенков',
-            'email' => 'ilko.iv@avalonbg.com',
+            'email' => 'ilko.iv@gmail.com',
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
