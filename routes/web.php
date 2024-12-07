@@ -28,10 +28,13 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::delete('/users/{user}/permissions/{permission}', RevokePermissionFromUserController::class)->name('users.permissions.destroy');
 });
 
-Route::middleware(['auth', 'permission:create|update|delete|view'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+});
+
+Route::middleware(['auth', 'permission:create|update|delete|view'])->group(function () {
     Route::resource('/cities', CityController::class);
 });
 
