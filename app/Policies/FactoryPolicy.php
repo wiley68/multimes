@@ -13,7 +13,7 @@ class FactoryPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('view') ? true : false;
     }
 
     /**
@@ -21,7 +21,7 @@ class FactoryPolicy
      */
     public function view(User $user, Factory $factory): bool
     {
-        //
+        return false;
     }
 
     /**

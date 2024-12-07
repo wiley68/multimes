@@ -2,17 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FactoryResource;
 use App\Models\Factory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class FactoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): Response
     {
-        //
+        Gate::authorize('viewAny', Factory::class);
+        $rowsPerPage = $request->input('rowsPerPage', 10);
+        $page = $request->input('page', 1);
+        $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
+        $sortOrder = $request->input('sortOrder', 'asc');
+        $filter = $request->input('filter', '');
+
+        $query = Factory::query();
+        if (!empty($filter)) {
+            $query->where('name', 'like', '%' . $filter . '%');
+        }
+
+        $factories = FactoryResource::collection($query->orderBy($sortBy, $sortOrder)
+            ->paginate($rowsPerPage, ['*'], 'page', $page));
+
+        return Inertia::render('Nomenklature/Factories/FactoryIndex', [
+            'factories' => $factories,
+            'filter' => $filter,
+        ]);
     }
 
     /**

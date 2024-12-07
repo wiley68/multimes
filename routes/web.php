@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\FactoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -36,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
 
 Route::middleware(['auth', 'permission:create|update|delete|view'])->group(function () {
     Route::resource('/cities', CityController::class);
+    Route::resource('/factories', FactoryController::class);
 });
 
 require __DIR__ . '/auth.php';

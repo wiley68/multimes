@@ -31,7 +31,10 @@ let intervalId;
 onMounted(() => {
     updateDateTime()
     intervalId = setInterval(updateDateTime, 30000)
-    if (usePage().component === 'Nomenklature/Cities/CityIndex') {
+    if (
+        usePage().component === 'Nomenklature/Cities/CityIndex' ||
+        usePage().component === 'Nomenklature/Factories/FactoryIndex'
+    ) {
         isExpandedNomenklature.value = true
     }
 })
@@ -263,6 +266,24 @@ onBeforeUnmount(() => {
                             </q-item-section>
                             <q-item-section>Населени места</q-item-section>
                         </q-item>
+
+                        <q-separator />
+
+                        <q-item
+                            clickable
+                            class="text-secondary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('factories.index'))"
+                            :active="route().current('factories.index')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="secondary"
+                                    name="mdi-factory"
+                                />
+                            </q-item-section>
+                            <q-item-section>Обекти</q-item-section>
+                        </q-item>
                     </q-expansion-item>
 
                     <q-separator />
@@ -300,7 +321,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                }}</q-toolbar-title>
+                    }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical
