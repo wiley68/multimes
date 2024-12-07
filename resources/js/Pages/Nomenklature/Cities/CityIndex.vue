@@ -3,6 +3,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue';
 import { useQuasar } from 'quasar'
+import { usePermission } from '@/composables/permissions'
 
 const props = defineProps({
     cities: {
@@ -32,6 +33,7 @@ const columns = [
     }
 ]
 
+const { hasPermission } = usePermission()
 const $q = useQuasar()
 const pagination = {
     page: props.cities.meta.current_page,
@@ -108,6 +110,7 @@ const confirm = (city_id) => {
                 <h5 class="col row justify-center items-center">Управление на населени места</h5>
                 <div class="col row justify-end items-center">
                     <q-btn
+                        v-if="hasPermission('create')"
                         color="primary"
                         label="Ново населено място"
                         icon="mdi-plus"
@@ -153,6 +156,7 @@ const confirm = (city_id) => {
                 <template v-slot:body-cell-actions="props">
                     <q-td align="center">
                         <q-btn
+                            v-if="hasPermission('update')"
                             icon="mdi-pencil-outline"
                             color="primary"
                             dense
@@ -161,6 +165,7 @@ const confirm = (city_id) => {
                             @click="router.get(route('cities.edit', props.row.id))"
                         />
                         <q-btn
+                            v-if="hasPermission('delete')"
                             icon="mdi-delete-outline"
                             color="negative"
                             dense

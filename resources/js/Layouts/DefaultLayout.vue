@@ -4,7 +4,7 @@ import { router } from '@inertiajs/vue3'
 import { usePermission } from '@/composables/permissions';
 
 const leftDrawerOpen = ref(false)
-const { hasRole, hasPermission } = usePermission()
+const { hasRole, hasPermissions } = usePermission()
 
 const toggleLeftDrawer = () => {
     leftDrawerOpen.value = !leftDrawerOpen.value
@@ -205,62 +205,64 @@ onBeforeUnmount(() => {
                     <q-separator />
                 </template>
 
-                <q-expansion-item
-                    group="module1"
-                    icon="mdi-home-import-outline"
-                    label="Майки"
-                    expand-icon-class="text-primary"
-                    header-class="text-primary"
-                >
-                    <q-card>
-                        <q-card-section>
-                        </q-card-section>
-                    </q-card>
-                </q-expansion-item>
-
-                <q-separator />
-
-                <q-expansion-item
-                    group="module2"
-                    icon="mdi-home-export-outline"
-                    label="Угояване"
-                    expand-icon-class="text-primary"
-                    header-class="text-primary"
-                >
-                    <q-card>
-                        <q-card-section>
-                        </q-card-section>
-                    </q-card>
-                </q-expansion-item>
-
-                <q-separator />
-
-                <q-expansion-item
-                    group="nomenklature"
-                    icon="mdi-folder-table-outline"
-                    label="Номенклатури"
-                    expand-icon-class="text-primary"
-                    header-class="text-primary"
-                >
-                    <q-item
-                        clickable
-                        v-close-popup
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                        @click="router.get(route('cities.index'))"
-                        :active="route().current('cities.index')"
+                <template v-if="hasPermissions(['create', 'update', 'delete', 'view'])">
+                    <q-expansion-item
+                        group="module1"
+                        icon="mdi-home-import-outline"
+                        label="Майки"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
                     >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="mdi-home-city-outline"
-                            />
-                        </q-item-section>
-                        <q-item-section>Населени места</q-item-section>
-                    </q-item>
-                </q-expansion-item>
+                        <q-card>
+                            <q-card-section>
+                            </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
 
-                <q-separator />
+                    <q-separator />
+
+                    <q-expansion-item
+                        group="module2"
+                        icon="mdi-home-export-outline"
+                        label="Угояване"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
+                        <q-card>
+                            <q-card-section>
+                            </q-card-section>
+                        </q-card>
+                    </q-expansion-item>
+
+                    <q-separator />
+
+                    <q-expansion-item
+                        group="nomenklature"
+                        icon="mdi-folder-table-outline"
+                        label="Номенклатури"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
+                        <q-item
+                            clickable
+                            v-close-popup
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('cities.index'))"
+                            :active="route().current('cities.index')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="mdi-home-city-outline"
+                                />
+                            </q-item-section>
+                            <q-item-section>Населени места</q-item-section>
+                        </q-item>
+                    </q-expansion-item>
+
+                    <q-separator />
+                </template>
 
                 <q-space />
 
