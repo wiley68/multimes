@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateFactoryRequest;
+use App\Http\Resources\CityResource;
 use App\Http\Resources\FactoryResource;
+use App\Models\City;
 use App\Models\Factory;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -40,17 +44,24 @@ class FactoryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('Nomenklature/Factories/Create', [
+            'cities' => CityResource::collection(City::all()),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateFactoryRequest $request): RedirectResponse
     {
-        //
+        Factory::create([
+            'name' => $request->name,
+            'city_id' => $request->city['id']
+        ]);
+
+        return to_route('factories.index');
     }
 
     /**

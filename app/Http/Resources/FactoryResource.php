@@ -17,6 +17,7 @@ class FactoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'city' => new CityResource($this->whenLoaded('city')),
         ];
     }
 }

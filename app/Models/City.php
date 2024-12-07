@@ -18,7 +18,7 @@ class City extends Model
         'name',
     ];
 
-    public function objects()
+    public function factories()
     {
         return $this->hasMany(Factory::class);
     }
