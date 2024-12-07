@@ -55,6 +55,7 @@ const onReset = () => {
                             v-model="form.name"
                             label="Роля *"
                             hint="Име на ролята"
+                            autofocus
                             :error="form.hasErrors"
                             :error-message="form.errors.name"
                         />

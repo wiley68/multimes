@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { onMounted, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import VueMultiselect from 'vue-multiselect'
 
 const props = defineProps({
@@ -12,6 +12,8 @@ const props = defineProps({
     roles: Array,
     permissions: Array
 })
+
+const editOk = ref(false)
 
 const form = useForm({
     name: props.user?.name,
@@ -64,6 +66,7 @@ const onSubmit = () => {
         preserveScroll: true,
         onFinish: () => {
             form.password = ''
+            editOk.value = true
         },
     })
 };
@@ -246,6 +249,37 @@ watch(
                     </q-table>
                 </div>
             </div>
+
+            <q-dialog
+                v-model="editOk"
+                backdrop-filter="brightness(60%)"
+            >
+                <q-card>
+                    <q-toolbar>
+                        <q-avatar>
+                            <q-icon
+                                name="mdi-information-outline"
+                                size="lg"
+                                color="blue-14"
+                            ></q-icon>
+                        </q-avatar>
+
+                        <q-toolbar-title><span class="text-weight-bold">Информация</span></q-toolbar-title>
+
+                        <q-btn
+                            flat
+                            round
+                            dense
+                            icon="close"
+                            v-close-popup
+                        />
+                    </q-toolbar>
+
+                    <q-card-section>
+                        Данните са узпешно променени!
+                    </q-card-section>
+                </q-card>
+            </q-dialog>
         </q-page>
     </DefaultLayout>
 </template>
