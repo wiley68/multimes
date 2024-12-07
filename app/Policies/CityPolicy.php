@@ -20,7 +20,7 @@ class CityPolicy
      */
     public function view(User $user, City $city): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -52,7 +52,7 @@ class CityPolicy
      */
     public function restore(User $user, City $city): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -60,6 +60,6 @@ class CityPolicy
      */
     public function forceDelete(User $user, City $city): bool
     {
-        //
+        return false;
     }
 }
