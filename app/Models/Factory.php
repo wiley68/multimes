@@ -5,21 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class City extends Model
+class Factory extends Model
 {
     use HasFactory;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
+        'city_id',
     ];
 
-    public function objects()
+    public function city()
     {
-        return $this->hasMany(Factory::class);
+        return $this->belongsTo(City::class);
     }
 }
