@@ -30,7 +30,7 @@ class UserController extends Controller
         $sortOrder = $request->input('sortOrder', 'asc');
         $filter = $request->input('filter', '');
 
-        $query = User::query();
+        $query = User::query()->with('roles');
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }

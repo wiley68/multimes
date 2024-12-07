@@ -25,7 +25,7 @@ class RoleController extends Controller
         $sortOrder = $request->input('sortOrder', 'asc');
         $filter = $request->input('filter', '');
 
-        $query = Role::query();
+        $query = Role::query()->with('permissions');
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }

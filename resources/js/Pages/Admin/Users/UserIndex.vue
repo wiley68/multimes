@@ -26,6 +26,14 @@ const columns = [
     { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     { name: 'email', align: 'left', label: 'Имейл', field: 'email', sortable: true },
     {
+        name: 'roles',
+        align: 'left',
+        label: 'Роли',
+        field: row => row.roles.map(obj => obj.name).join(', '),
+        format: val => `${val}`,
+        sortable: false
+    },
+    {
         name: "actions",
         label: "Управление",
         align: "center",
