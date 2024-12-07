@@ -3,30 +3,34 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
 const props = defineProps({
-    city: {
+    factory: {
         type: Object,
         required: true
-    }
+    },
+    cities: Array
 })
 
 const form = useForm({
-    name: props.city?.name
+    name: props.factory?.name,
+    city: props.factory?.city,
 })
 
 const onSubmit = () => {
-    form.put(route('cities.update', props.city.id), {
-        onFinish: () => form.reset('name'),
+    form.put(route('factories.update', props.factory.id), {
+        onFinish: () => {
+            form.reset('name', 'city')
+        },
     })
 };
 
 const onReset = () => {
-    form.reset('name')
+    form.reset('name', 'city')
 }
 </script>
 
 <template>
 
-    <Head title="Редакция на населени места"></Head>
+    <Head title="Редакция на Производствена База"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -34,12 +38,12 @@ const onReset = () => {
                 <div class="col row items-center">
                     <q-btn
                         color="primary"
-                        label="Населени места"
+                        label="Производствени Бази"
                         icon="mdi-menu-left"
-                        @click="router.get(route('cities.index'))"
+                        @click="router.get(route('factories.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Редакция на Населени места</h5>
+                <h5 class="col row justify-center items-center">Редакция на База</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">
@@ -54,11 +58,18 @@ const onReset = () => {
                     >
                         <q-input
                             v-model="form.name"
-                            label="Населено място *"
-                            hint="Име на населеното място"
-                            autofocus
+                            label="Производствена База *"
+                            hint="Име на Производствена База"
                             :error="form.hasErrors"
                             :error-message="form.errors.name"
+                        />
+                        <q-select
+                            v-model="form.city"
+                            :options="cities"
+                            option-label="name"
+                            label="Избери населено място"
+                            :error="form.hasErrors"
+                            :error-message="form.errors.city_id"
                         />
 
                         <div>

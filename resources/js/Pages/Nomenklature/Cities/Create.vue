@@ -32,7 +32,7 @@ const onReset = () => {
                         @click="router.get(route('cities.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Създаване на населено място</h5>
+                <h5 class="col row justify-center items-center">Ново Населено място</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">

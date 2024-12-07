@@ -107,12 +107,12 @@ const confirm = (factory_id) => {
                         @click="router.get(route('dashboard'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Управление на обекти</h5>
+                <h5 class="col row justify-center items-center">Производствени Бази</h5>
                 <div class="col row justify-end items-center">
                     <q-btn
                         v-if="hasPermission('create')"
                         color="primary"
-                        label="Нов обект"
+                        label="Нова база"
                         icon="mdi-plus"
                         @click="router.get(route('factories.create'))"
                     />
@@ -123,7 +123,7 @@ const confirm = (factory_id) => {
                 class="my-sticky-header-table"
                 :class="tableClass"
                 bordered
-                title="Обекти"
+                title="Производствени Бази"
                 rows-per-page-label="Записи на страница"
                 separator="cell"
                 no-data-label="Липсват данни"

@@ -107,7 +107,7 @@ const confirm = (city_id) => {
                         @click="router.get(route('dashboard'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Управление на населени места</h5>
+                <h5 class="col row justify-center items-center">Населени места</h5>
                 <div class="col row justify-end items-center">
                     <q-btn
                         v-if="hasPermission('create')"

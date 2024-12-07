@@ -67,24 +67,36 @@ class FactoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Factory $factory)
+    public function edit(Factory $factory): Response
     {
-        //
+        $factory->load('city');
+
+        return Inertia::render('Nomenklature/Factories/Edit', [
+            'factory' => new FactoryResource($factory),
+            'cities' => CityResource::collection(City::all()),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Factory $factory)
+    public function update(CreateFactoryRequest $request, Factory $factory): RedirectResponse
     {
-        //
+        $factory->update([
+            'name' => $request->name,
+            'city_id' => $request->city['id']
+        ]);
+
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Factory $factory)
+    public function destroy(Factory $factory): RedirectResponse
     {
-        //
+        $factory->delete();
+
+        return back();
     }
 }

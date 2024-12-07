@@ -31,10 +31,8 @@ let intervalId;
 onMounted(() => {
     updateDateTime()
     intervalId = setInterval(updateDateTime, 30000)
-    if (
-        usePage().component === 'Nomenklature/Cities/CityIndex' ||
-        usePage().component === 'Nomenklature/Factories/FactoryIndex'
-    ) {
+    let searchComponents = ['Cities', 'Factories']
+    if (searchComponents.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
     }
 })
@@ -256,7 +254,7 @@ onBeforeUnmount(() => {
                             class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('cities.index'))"
-                            :active="route().current('cities.index')"
+                            :active="usePage().component.includes('Cities')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -274,7 +272,7 @@ onBeforeUnmount(() => {
                             class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('factories.index'))"
-                            :active="route().current('factories.index')"
+                            :active="usePage().component.includes('Factories')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -282,7 +280,7 @@ onBeforeUnmount(() => {
                                     name="mdi-factory"
                                 />
                             </q-item-section>
-                            <q-item-section>Обекти</q-item-section>
+                            <q-item-section>Производствени бази</q-item-section>
                         </q-item>
                     </q-expansion-item>
 
@@ -321,7 +319,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                    }}</q-toolbar-title>
+                }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical

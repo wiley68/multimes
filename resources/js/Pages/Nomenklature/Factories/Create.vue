@@ -32,12 +32,12 @@ const onReset = () => {
                 <div class="col row items-center">
                     <q-btn
                         color="primary"
-                        label="Обекти"
+                        label="Производствени Бази"
                         icon="mdi-menu-left"
                         @click="router.get(route('factories.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Създаване на обект</h5>
+                <h5 class="col row justify-center items-center">Нова База</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">
@@ -52,8 +52,8 @@ const onReset = () => {
                     >
                         <q-input
                             v-model="form.name"
-                            label="Обект *"
-                            hint="Име на обекта"
+                            label="Производствена База *"
+                            hint="Име на Производствената Базата"
                             autofocus
                             :error="form.hasErrors"
                             :error-message="form.errors.name"
