@@ -1,6 +1,6 @@
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { router, usePage } from '@inertiajs/vue3'
 import { usePermission } from '@/composables/permissions';
 
 const leftDrawerOpen = ref(false)
@@ -11,6 +11,7 @@ const toggleLeftDrawer = () => {
 }
 
 const currentDateTime = ref('')
+const isExpandedNomenklature = ref(false)
 
 const formatDateTime = () => {
     const now = new Date()
@@ -30,6 +31,9 @@ let intervalId;
 onMounted(() => {
     updateDateTime()
     intervalId = setInterval(updateDateTime, 30000)
+    if (usePage().component === 'Nomenklature/Cities/CityIndex') {
+        isExpandedNomenklature.value = true
+    }
 })
 
 onBeforeUnmount(() => {
@@ -237,6 +241,7 @@ onBeforeUnmount(() => {
                     <q-separator />
 
                     <q-expansion-item
+                        v-model="isExpandedNomenklature"
                         group="nomenklature"
                         icon="mdi-folder-table-outline"
                         label="Номенклатури"
@@ -245,15 +250,14 @@ onBeforeUnmount(() => {
                     >
                         <q-item
                             clickable
-                            v-close-popup
-                            class="text-primary"
+                            class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('cities.index'))"
                             :active="route().current('cities.index')"
                         >
                             <q-item-section avatar>
                                 <q-icon
-                                    color="primary"
+                                    color="secondary"
                                     name="mdi-home-city-outline"
                                 />
                             </q-item-section>
@@ -296,7 +300,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                    }}</q-toolbar-title>
+                }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical
