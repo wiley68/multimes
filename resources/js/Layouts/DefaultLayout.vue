@@ -13,6 +13,7 @@ const toggleLeftDrawer = () => {
 const currentDateTime = ref('')
 const isExpandedNomenklature = ref(false)
 const isExpandedMothers = ref(false)
+const isExpandedFattenings = ref(false)
 
 const formatDateTime = () => {
     const now = new Date()
@@ -36,9 +37,13 @@ onMounted(() => {
     if (searchNomenklatures.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
     }
-    let searchMothers = ['Mhalls', 'Uhalls']
+    let searchMothers = ['Mhalls']
     if (searchMothers.some(str => usePage().component.includes(str))) {
         isExpandedMothers.value = true
+    }
+    let searchFattenings = ['Uhalls']
+    if (searchFattenings.some(str => usePage().component.includes(str))) {
+        isExpandedFattenings.value = true
     }
 })
 
@@ -241,7 +246,18 @@ onBeforeUnmount(() => {
                         </q-item>
 
                         <q-separator />
+                    </q-expansion-item>
 
+                    <q-separator />
+
+                    <q-expansion-item
+                        v-model="isExpandedFattenings"
+                        group="module2"
+                        icon="mdi-home-export-outline"
+                        label="Угояване"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
+                    >
                         <q-item
                             clickable
                             class="text-secondary"
@@ -259,21 +275,6 @@ onBeforeUnmount(() => {
                         </q-item>
 
                         <q-separator />
-                    </q-expansion-item>
-
-                    <q-separator />
-
-                    <q-expansion-item
-                        group="module2"
-                        icon="mdi-home-export-outline"
-                        label="Угояване"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
-                    >
-                        <q-card>
-                            <q-card-section>
-                            </q-card-section>
-                        </q-card>
                     </q-expansion-item>
 
                     <q-separator />

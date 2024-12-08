@@ -35,7 +35,7 @@ class UhallController extends Controller
         $uhalls = UhallResource::collection($query->orderBy($sortBy, $sortOrder)
             ->paginate($rowsPerPage, ['*'], 'page', $page));
 
-        return Inertia::render('Mothers/Uhalls/UhallIndex', [
+        return Inertia::render('Fattenings/Uhalls/UhallIndex', [
             'uhalls' => $uhalls,
             'filter' => $filter,
         ]);
@@ -46,7 +46,7 @@ class UhallController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Mothers/Uhalls/Create', [
+        return Inertia::render('Fattenings/Uhalls/Create', [
             'factories' => FactoryResource::collection(Factory::all()),
         ]);
     }
@@ -71,7 +71,7 @@ class UhallController extends Controller
     {
         $uhall->load('factory');
 
-        return Inertia::render('Mothers/Uhalls/Edit', [
+        return Inertia::render('Fattenings/Uhalls/Edit', [
             'uhall' => new UhallResource($uhall),
             'factories' => FactoryResource::collection(Factory::all()),
         ]);
