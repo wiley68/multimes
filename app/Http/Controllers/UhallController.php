@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\FactoryResource;
 use App\Http\Resources\UhallResource;
+use App\Models\Factory;
 use App\Models\Uhall;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -40,9 +42,11 @@ class UhallController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('Mothers/Uhalls/Create', [
+            'factories' => FactoryResource::collection(Factory::all()),
+        ]);
     }
 
     /**
@@ -50,7 +54,12 @@ class UhallController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Mhall::create([
+            'name' => $request->name,
+            'factory_id' => $request->factory['id']
+        ]);
+
+        return to_route('mhalls.index');
     }
 
     /**
