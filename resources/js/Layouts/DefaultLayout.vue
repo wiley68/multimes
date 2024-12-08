@@ -12,6 +12,7 @@ const toggleLeftDrawer = () => {
 
 const currentDateTime = ref('')
 const isExpandedNomenklature = ref(false)
+const isExpandedMothers = ref(false)
 
 const formatDateTime = () => {
     const now = new Date()
@@ -31,9 +32,13 @@ let intervalId;
 onMounted(() => {
     updateDateTime()
     intervalId = setInterval(updateDateTime, 30000)
-    let searchComponents = ['Cities', 'Factories']
-    if (searchComponents.some(str => usePage().component.includes(str))) {
+    let searchNomenklatures = ['Cities', 'Factories']
+    if (searchNomenklatures.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
+    }
+    let searchMothers = ['Mhalls']
+    if (searchMothers.some(str => usePage().component.includes(str))) {
+        isExpandedMothers.value = true
     }
 })
 
@@ -212,16 +217,30 @@ onBeforeUnmount(() => {
 
                 <template v-if="hasPermissions(['create', 'update', 'delete', 'view'])">
                     <q-expansion-item
+                        v-model="isExpandedMothers"
                         group="module1"
                         icon="mdi-home-import-outline"
                         label="Майки"
                         expand-icon-class="text-primary"
                         header-class="text-primary"
                     >
-                        <q-card>
-                            <q-card-section>
-                            </q-card-section>
-                        </q-card>
+                        <q-item
+                            clickable
+                            class="text-secondary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('mhalls.index'))"
+                            :active="usePage().component.includes('Mhalls')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="secondary"
+                                    name="mdi-barn"
+                                />
+                            </q-item-section>
+                            <q-item-section>Халета за майки</q-item-section>
+                        </q-item>
+
+                        <q-separator />
                     </q-expansion-item>
 
                     <q-separator />
