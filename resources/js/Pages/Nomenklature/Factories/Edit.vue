@@ -30,7 +30,7 @@ const onReset = () => {
 
 <template>
 
-    <Head title="Редакция на Производствена База"></Head>
+    <Head title="Промяна на База"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -43,7 +43,7 @@ const onReset = () => {
                         @click="router.get(route('factories.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Редакция на База</h5>
+                <h5 class="col row justify-center items-center">Промяна на База</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">

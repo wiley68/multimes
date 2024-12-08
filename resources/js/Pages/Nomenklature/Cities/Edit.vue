@@ -26,7 +26,7 @@ const onReset = () => {
 
 <template>
 
-    <Head title="Редакция на населени места"></Head>
+    <Head title="Промяна на Населени места"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -39,7 +39,7 @@ const onReset = () => {
                         @click="router.get(route('cities.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Редакция на Населени места</h5>
+                <h5 class="col row justify-center items-center">Промяна на Населени места</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">
