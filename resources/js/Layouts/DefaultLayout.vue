@@ -36,7 +36,7 @@ onMounted(() => {
     if (searchNomenklatures.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
     }
-    let searchMothers = ['Mhalls']
+    let searchMothers = ['Mhalls', 'Uhalls']
     if (searchMothers.some(str => usePage().component.includes(str))) {
         isExpandedMothers.value = true
     }
@@ -241,6 +241,24 @@ onBeforeUnmount(() => {
                         </q-item>
 
                         <q-separator />
+
+                        <q-item
+                            clickable
+                            class="text-secondary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('uhalls.index'))"
+                            :active="usePage().component.includes('Uhalls')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="secondary"
+                                    name="mdi-barn"
+                                />
+                            </q-item-section>
+                            <q-item-section>Халета за угояване</q-item-section>
+                        </q-item>
+
+                        <q-separator />
                     </q-expansion-item>
 
                     <q-separator />
@@ -338,7 +356,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                    }}</q-toolbar-title>
+                }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical

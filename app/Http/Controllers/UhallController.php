@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UhallResource;
 use App\Models\Uhall;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Response;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class UhallController extends Controller
 {
@@ -26,11 +28,11 @@ class UhallController extends Controller
             $query->where('name', 'like', '%' . $filter . '%');
         }
 
-        $mhalls = MhallResource::collection($query->orderBy($sortBy, $sortOrder)
+        $uhalls = UhallResource::collection($query->orderBy($sortBy, $sortOrder)
             ->paginate($rowsPerPage, ['*'], 'page', $page));
 
-        return Inertia::render('Mothers/Mhalls/MhallIndex', [
-            'mhalls' => $mhalls,
+        return Inertia::render('Mothers/Uhalls/UhallIndex', [
+            'uhalls' => $uhalls,
             'filter' => $filter,
         ]);
     }
