@@ -21,6 +21,7 @@ class FactoryController extends Controller
     public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Factory::class);
+
         $rowsPerPage = $request->input('rowsPerPage', 10);
         $page = $request->input('page', 1);
         $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
@@ -46,6 +47,8 @@ class FactoryController extends Controller
      */
     public function create(): Response
     {
+        Gate::authorize('create', Factory::class);
+
         return Inertia::render('Nomenklature/Factories/Create', [
             'cities' => CityResource::collection(City::all()),
         ]);
@@ -56,6 +59,8 @@ class FactoryController extends Controller
      */
     public function store(CreateFactoryRequest $request): RedirectResponse
     {
+        Gate::authorize('create', Factory::class);
+
         Factory::create([
             'name' => $request->name,
             'city_id' => $request->city['id']
@@ -69,6 +74,8 @@ class FactoryController extends Controller
      */
     public function edit(Factory $factory): Response
     {
+        Gate::authorize('update', $factory);
+
         $factory->load('city');
 
         return Inertia::render('Nomenklature/Factories/Edit', [
@@ -82,6 +89,8 @@ class FactoryController extends Controller
      */
     public function update(CreateFactoryRequest $request, Factory $factory): RedirectResponse
     {
+        Gate::authorize('update', $factory);
+
         $factory->update([
             'name' => $request->name,
             'city_id' => $request->city['id']
@@ -95,6 +104,20 @@ class FactoryController extends Controller
      */
     public function destroy(Factory $factory): RedirectResponse
     {
+        Gate::authorize('delete', $factory);
+
+        if ($factory->mhalls()->exists()) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие Производствената база, защото има свързани халета за майки.'
+            ]);
+        }
+
+        if ($factory->uhalls()->exists()) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие Производствената база, защото има свързани халета за угояване.'
+            ]);
+        }
+
         $factory->delete();
 
         return back();
