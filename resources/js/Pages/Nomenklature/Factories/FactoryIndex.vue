@@ -33,6 +33,14 @@ const columns = [
     },
     { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
+        name: 'mhalls',
+        align: 'left',
+        label: 'Халета',
+        field: row => row.mhalls.map(obj => obj.name).join(', '),
+        format: val => `${val}`,
+        sortable: false
+    },
+    {
         name: "actions",
         label: "Управление",
         align: "center",

@@ -27,7 +27,7 @@ class FactoryController extends Controller
         $sortOrder = $request->input('sortOrder', 'asc');
         $filter = $request->input('filter', '');
 
-        $query = Factory::query()->with('city');
+        $query = Factory::query()->with(['city', 'mhalls']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
