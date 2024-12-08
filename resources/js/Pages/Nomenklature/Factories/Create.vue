@@ -24,7 +24,7 @@ const onReset = () => {
 
 <template>
 
-    <Head title="Създаване на обект"></Head>
+    <Head title="Нова База"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">

@@ -2,24 +2,29 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
+defineProps({
+    factories: Array
+})
+
 const form = useForm({
-    name: ''
+    name: '',
+    factory: null
 })
 
 const onSubmit = () => {
-    form.post(route('cities.store'), {
-        onFinish: () => form.reset('name'),
+    form.post(route('mhalls.store'), {
+        onFinish: () => form.reset('name', 'factory'),
     })
 };
 
 const onReset = () => {
-    form.reset('name')
+    form.reset('name', 'factory')
 }
 </script>
 
 <template>
 
-    <Head title="Ново Населено място"></Head>
+    <Head title="Ново Хале"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -27,12 +32,12 @@ const onReset = () => {
                 <div class="col row items-center">
                     <q-btn
                         color="primary"
-                        label="Населени места"
+                        label="Халета"
                         icon="mdi-menu-left"
-                        @click="router.get(route('cities.index'))"
+                        @click="router.get(route('mhalls.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Ново Населено място</h5>
+                <h5 class="col row justify-center items-center">Ново Хале</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">
@@ -47,11 +52,20 @@ const onReset = () => {
                     >
                         <q-input
                             v-model="form.name"
-                            label="Населено място *"
-                            hint="Име на населеното място"
+                            label="Хале *"
+                            hint="Име на Халето"
                             autofocus
                             :error="form.hasErrors"
                             :error-message="form.errors.name"
+                        />
+
+                        <q-select
+                            v-model="form.factory"
+                            :options="factories"
+                            option-label="name"
+                            label="Избери База"
+                            :error="form.hasErrors"
+                            :error-message="form.errors.factory_id"
                         />
 
                         <div>

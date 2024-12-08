@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMhallRequest;
+use App\Http\Resources\FactoryResource;
 use App\Http\Resources\MhallResource;
+use App\Models\Factory;
 use App\Models\Mhall;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -23,7 +27,7 @@ class MhallController extends Controller
         $sortOrder = $request->input('sortOrder', 'asc');
         $filter = $request->input('filter', '');
 
-        $query = Mhall::query()->with('factories');
+        $query = Mhall::query()->with('factory');
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
@@ -40,25 +44,24 @@ class MhallController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        return Inertia::render('Mothers/Mhalls/Create', [
+            'factories' => FactoryResource::collection(Factory::all()),
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateMhallRequest $request): RedirectResponse
     {
-        //
-    }
+        Mhall::create([
+            'name' => $request->name,
+            'factory_id' => $request->factory['id']
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Mhall $mhall)
-    {
-        //
+        return to_route('mhalls.index');
     }
 
     /**
