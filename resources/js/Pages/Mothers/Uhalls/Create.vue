@@ -12,7 +12,7 @@ const form = useForm({
 })
 
 const onSubmit = () => {
-    form.post(route('mhalls.store'), {
+    form.post(route('uhalls.store'), {
         onFinish: () => form.reset('name', 'factory'),
     })
 };
@@ -24,7 +24,7 @@ const onReset = () => {
 
 <template>
 
-    <Head title="Ново Хале майки"></Head>
+    <Head title="Ново Хале угояване"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -34,10 +34,10 @@ const onReset = () => {
                         color="primary"
                         label="Халета"
                         icon="mdi-menu-left"
-                        @click="router.get(route('mhalls.index'))"
+                        @click="router.get(route('uhalls.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Ново Хале майки</h5>
+                <h5 class="col row justify-center items-center">Ново Хале угояване</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">

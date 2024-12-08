@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUhallRequest;
 use App\Http\Resources\FactoryResource;
 use App\Http\Resources\UhallResource;
 use App\Models\Factory;
 use App\Models\Uhall;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -52,14 +54,14 @@ class UhallController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUhallRequest $request): RedirectResponse
     {
-        Mhall::create([
+        Uhall::create([
             'name' => $request->name,
             'factory_id' => $request->factory['id']
         ]);
 
-        return to_route('mhalls.index');
+        return to_route('uhalls.index');
     }
 
     /**

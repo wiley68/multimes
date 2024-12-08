@@ -52,7 +52,7 @@ const navigationActive = ref(false)
 
 const onRequest = (requestProp) => {
     router.get(
-        route('mhalls.index'),
+        route('uhalls.index'),
         {
             page: requestProp.pagination.page,
             rowsPerPage: requestProp.pagination.rowsPerPage,
@@ -94,7 +94,7 @@ const confirm = (uhall_id) => {
             flat: true
         },
     }).onOk(() => {
-        router.delete(route('mhalls.destroy', uhall_id), {
+        router.delete(route('uhalls.destroy', uhall_id), {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
                     $q.notify({
@@ -131,7 +131,7 @@ const confirm = (uhall_id) => {
                         color="primary"
                         label="Ново хале"
                         icon="mdi-plus"
-                        @click="router.get(route('mhalls.create'))"
+                        @click="router.get(route('uhalls.create'))"
                     />
                 </div>
             </div>
