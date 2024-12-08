@@ -26,7 +26,7 @@ class CityController extends Controller
         $sortOrder = $request->input('sortOrder', 'asc');
         $filter = $request->input('filter', '');
 
-        $query = City::query();
+        $query = City::query()->with('factories');
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
