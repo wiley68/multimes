@@ -69,22 +69,34 @@ class MhallController extends Controller
      */
     public function edit(Mhall $mhall)
     {
-        //
+        $mhall->load('factory');
+
+        return Inertia::render('Mothers/Mhalls/Edit', [
+            'mhall' => new MhallResource($mhall),
+            'factories' => FactoryResource::collection(Factory::all()),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mhall $mhall)
+    public function update(CreateMhallRequest $request, Mhall $mhall): RedirectResponse
     {
-        //
+        $mhall->update([
+            'name' => $request->name,
+            'factory_id' => $request->factory['id']
+        ]);
+
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mhall $mhall)
+    public function destroy(Mhall $mhall): RedirectResponse
     {
-        //
+        $mhall->delete();
+
+        return back();
     }
 }
