@@ -18,4 +18,9 @@ class Factory extends Model
     {
         return $this->belongsTo(City::class);
     }
+
+    public function mhalls()
+    {
+        return $this->hasMany(Mhall::class);
+    }
 }
