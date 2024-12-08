@@ -11,6 +11,7 @@ use App\Http\Controllers\PermissinController;
 use App\Http\Controllers\RemoveRoleFromUserController;
 use App\Http\Controllers\RevokePermissionFromRoleController;
 use App\Http\Controllers\RevokePermissionFromUserController;
+use App\Http\Controllers\UhallController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -40,6 +41,7 @@ Route::middleware(['auth', 'permission:create|update|delete|view'])->group(funct
     Route::resource('/cities', CityController::class);
     Route::resource('/factories', FactoryController::class);
     Route::resource('/mhalls', MhallController::class);
+    Route::resource('/uhalls', UhallController::class);
 });
 
 require __DIR__ . '/auth.php';
