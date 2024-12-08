@@ -65,34 +65,38 @@ class UhallController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Uhall $uhall)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Uhall $uhall)
+    public function edit(Uhall $uhall): Response
     {
-        //
+        $uhall->load('factory');
+
+        return Inertia::render('Mothers/Uhalls/Edit', [
+            'uhall' => new UhallResource($uhall),
+            'factories' => FactoryResource::collection(Factory::all()),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Uhall $uhall)
+    public function update(CreateUhallRequest $request, Uhall $uhall): RedirectResponse
     {
-        //
+        $uhall->update([
+            'name' => $request->name,
+            'factory_id' => $request->factory['id']
+        ]);
+
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Uhall $uhall)
+    public function destroy(Uhall $uhall): RedirectResponse
     {
-        //
+        $uhall->delete();
+
+        return back();
     }
 }

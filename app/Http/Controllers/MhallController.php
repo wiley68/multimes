@@ -67,7 +67,7 @@ class MhallController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Mhall $mhall)
+    public function edit(Mhall $mhall): Response
     {
         $mhall->load('factory');
 

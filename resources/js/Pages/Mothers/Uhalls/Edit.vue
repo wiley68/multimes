@@ -3,7 +3,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
 const props = defineProps({
-    mhall: {
+    uhall: {
         type: Object,
         required: true
     },
@@ -11,12 +11,12 @@ const props = defineProps({
 })
 
 const form = useForm({
-    name: props.mhall?.name,
-    factory: props.mhall?.factory,
+    name: props.uhall?.name,
+    factory: props.uhall?.factory,
 })
 
 const onSubmit = () => {
-    form.put(route('mhalls.update', props.mhall.id), {
+    form.put(route('uhalls.update', props.uhall.id), {
         onFinish: () => {
             form.reset('name', 'factory')
         },
@@ -30,7 +30,7 @@ const onReset = () => {
 
 <template>
 
-    <Head title="Промяна на Хале майки"></Head>
+    <Head title="Промяна на Хале угояване"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -40,10 +40,10 @@ const onReset = () => {
                         color="primary"
                         label="Халета"
                         icon="mdi-menu-left"
-                        @click="router.get(route('mhalls.index'))"
+                        @click="router.get(route('uhalls.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Промяна на Хале майки</h5>
+                <h5 class="col row justify-center items-center">Промяна на Хале угояване</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">
