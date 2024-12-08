@@ -35,7 +35,7 @@ class MhallController extends Controller
         $mhalls = MhallResource::collection($query->orderBy($sortBy, $sortOrder)
             ->paginate($rowsPerPage, ['*'], 'page', $page));
 
-        return Inertia::render('Mothers/Mhalls/MhallIndex', [
+        return Inertia::render('Nomenklature/Mhalls/MhallIndex', [
             'mhalls' => $mhalls,
             'filter' => $filter,
         ]);
@@ -46,7 +46,7 @@ class MhallController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Mothers/Mhalls/Create', [
+        return Inertia::render('Nomenklature/Mhalls/Create', [
             'factories' => FactoryResource::collection(Factory::all()),
         ]);
     }
@@ -71,7 +71,7 @@ class MhallController extends Controller
     {
         $mhall->load('factory');
 
-        return Inertia::render('Mothers/Mhalls/Edit', [
+        return Inertia::render('Nomenklature/Mhalls/Edit', [
             'mhall' => new MhallResource($mhall),
             'factories' => FactoryResource::collection(Factory::all()),
         ]);
