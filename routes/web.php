@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\FactoryController;
 use App\Http\Controllers\MhallController;
+use App\Http\Controllers\MproductionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'permission:create|update|delete|view'])->group(funct
     Route::resource('/factories', FactoryController::class);
     Route::resource('/mhalls', MhallController::class);
     Route::resource('/uhalls', UhallController::class);
+    Route::resource('/mproductions', MproductionController::class);
 });
 
 require __DIR__ . '/auth.php';

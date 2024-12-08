@@ -211,25 +211,39 @@ onBeforeUnmount(() => {
                 </template>
 
                 <template v-if="hasPermissions(['create', 'update', 'delete', 'view'])">
-                    <q-expansion-item
-                        group="module1"
-                        icon="mdi-home-import-outline"
-                        label="Майки"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
+                    <q-item
+                        clickable
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                        @click="router.get(route('mproductions.index'))"
+                        :active="usePage().component.includes('Mproductions')"
                     >
-                    </q-expansion-item>
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="mdi-home-import-outline"
+                            />
+                        </q-item-section>
+                        <q-item-section>Майки</q-item-section>
+                    </q-item>
 
                     <q-separator />
 
-                    <q-expansion-item
-                        group="module2"
-                        icon="mdi-home-export-outline"
-                        label="Угояване"
-                        expand-icon-class="text-primary"
-                        header-class="text-primary"
+                    <q-item
+                        clickable
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                        @click="router.get(route('uproductions.index'))"
+                        :active="usePage().component.includes('Uproductions')"
                     >
-                    </q-expansion-item>
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="mdi-home-export-outline"
+                            />
+                        </q-item-section>
+                        <q-item-section>Угояване</q-item-section>
+                    </q-item>
 
                     <q-separator />
 
