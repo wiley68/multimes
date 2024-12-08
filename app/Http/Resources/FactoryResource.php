@@ -18,6 +18,7 @@ class FactoryResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'city' => new CityResource($this->whenLoaded('city')),
+            'mhalls' => MhallResource::collection($this->whenLoaded('mhalls')),
         ];
     }
 }
