@@ -87,8 +87,18 @@ const confirm = (city_id) => {
             flat: true
         },
     }).onOk(() => {
-        router.delete(route('cities.destroy', city_id))
-    }).onOk(() => { }).onCancel(() => { }).onDismiss(() => { })
+        router.delete(route('cities.destroy', city_id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
 }
 </script>
 

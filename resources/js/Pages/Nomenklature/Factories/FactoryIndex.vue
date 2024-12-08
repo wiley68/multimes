@@ -26,6 +26,13 @@ const columns = [
     },
     { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
+        name: 'city',
+        align: 'left',
+        label: 'Населено място',
+        field: row => row.city.name,
+        sortable: true
+    },
+    {
         name: "actions",
         label: "Управление",
         align: "center",

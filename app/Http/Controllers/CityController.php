@@ -97,6 +97,12 @@ class CityController extends Controller
     {
         Gate::authorize('delete', $city);
 
+        if ($city->factories()->exists()) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие Населеното място, защото има свързани Бази.'
+            ]);
+        }
+
         $city->delete();
 
         return back();
