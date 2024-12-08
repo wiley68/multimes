@@ -24,7 +24,6 @@ const columns = [
         format: val => `${val}`,
         sortable: true
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
         name: 'city',
         align: 'left',
@@ -32,6 +31,7 @@ const columns = [
         field: row => row.city.name,
         sortable: true
     },
+    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
         name: "actions",
         label: "Управление",
