@@ -94,8 +94,18 @@ const confirm = (user_id) => {
             flat: true
         },
     }).onOk(() => {
-        router.delete(route('users.destroy', user_id))
-    }).onOk(() => { }).onCancel(() => { }).onDismiss(() => { })
+        router.delete(route('users.destroy', user_id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
 }
 </script>
 

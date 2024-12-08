@@ -93,8 +93,18 @@ const confirm = (role_id) => {
             flat: true
         },
     }).onOk(() => {
-        router.delete(route('roles.destroy', role_id))
-    }).onOk(() => { }).onCancel(() => { }).onDismiss(() => { })
+        router.delete(route('roles.destroy', role_id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
 }
 </script>
 
