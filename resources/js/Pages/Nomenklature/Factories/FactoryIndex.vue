@@ -36,7 +36,15 @@ const columns = [
         name: 'mhalls',
         align: 'left',
         label: 'Халета',
-        field: row => row.mhalls.map(obj => obj.name).join(', '),
+        field: row => {
+            var hallbetween = ''
+            const mhalls = row.mhalls.map(obj => obj.name).join(', ')
+            if (mhalls.length > 0) {
+                hallbetween = ', '
+            }
+            const uhalls = row.uhalls.map(obj => obj.name).join(', ')
+            return mhalls + hallbetween + uhalls
+        },
         format: val => `${val}`,
         sortable: false
     },
