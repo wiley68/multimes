@@ -23,4 +23,9 @@ class Factory extends Model
     {
         return $this->hasMany(Mhall::class);
     }
+
+    public function uhalls()
+    {
+        return $this->hasMany(Uhall::class);
+    }
 }
