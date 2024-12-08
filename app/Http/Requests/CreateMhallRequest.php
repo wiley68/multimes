@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class CreateMhallRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class CreateMhallRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +23,16 @@ class CreateMhallRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('mhalls', 'name')->ignore($this->mhall)
+            ],
+            'factory' => [
+                'required',
+                'array'
+            ]
         ];
     }
 }
