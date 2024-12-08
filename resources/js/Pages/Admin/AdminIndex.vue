@@ -5,13 +5,13 @@ import { Head } from '@inertiajs/vue3'
 
 <template>
 
-  <Head title="Административен панел"></Head>
+  <Head title="Табло Администрация"></Head>
 
   <DefaultLayout>
     <q-page class="flex flex-center">
       <q-card class="q-pa-md">
         <q-card-section>
-          <div class="text-h6">Административен панел</div>
+          <div class="text-h6">Табло Администрация</div>
         </q-card-section>
       </q-card>
     </q-page>

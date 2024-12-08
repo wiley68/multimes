@@ -19,7 +19,7 @@ const onReset = () => {
 
 <template>
 
-    <Head title="Създаване на право"></Head>
+    <Head title="Ново Право"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -32,7 +32,7 @@ const onReset = () => {
                         @click="router.get(route('permissions.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Създаване на права</h5>
+                <h5 class="col row justify-center items-center">Ново Право</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">

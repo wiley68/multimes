@@ -60,7 +60,7 @@ watch(
 
 <template>
 
-    <Head title="Редакция на роля"></Head>
+    <Head title="Промяна на Роля"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -73,7 +73,7 @@ watch(
                         @click="router.get(route('roles.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Редакция на роля</h5>
+                <h5 class="col row justify-center items-center">Промяна на Роля</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">

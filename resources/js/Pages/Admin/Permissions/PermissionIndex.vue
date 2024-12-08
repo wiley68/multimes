@@ -105,7 +105,7 @@ const confirm = (permission_id) => {
                         @click="router.get(route('admin.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Управление на права</h5>
+                <h5 class="col row justify-center items-center">Права</h5>
                 <div class="col row justify-end items-center">
                     <q-btn
                         color="primary"

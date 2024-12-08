@@ -88,7 +88,7 @@ watch(
 
 <template>
 
-    <Head title="Редакция на потребител"></Head>
+    <Head title="Промяна на Потребител"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -101,7 +101,7 @@ watch(
                         @click="router.get(route('users.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Редакция на потребител</h5>
+                <h5 class="col row justify-center items-center">Промяна на Потребител</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <div class="column flex-grow flex-center">
