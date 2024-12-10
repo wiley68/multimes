@@ -1,6 +1,6 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 import { ref } from 'vue';
 
 const slide = ref('process1')
@@ -178,7 +178,10 @@ const slide = ref('process1')
               style="height: 60px;"
             >
               <q-btn flat>Покажи халета Майки</q-btn>
-              <q-btn flat>Покажи процеси Майки</q-btn>
+              <q-btn
+                @click="router.get(route('mproductions.index'))"
+                flat
+              >Покажи процеси Майки</q-btn>
             </q-card-actions>
           </q-card>
         </div>
@@ -371,7 +374,7 @@ const slide = ref('process1')
               size="56px"
             />
             <div class="q-mt-md text-center">
-              Производствен процес 1 - Информация
+              Продукционен процес 1 - Информация
             </div>
           </q-carousel-slide>
           <q-carousel-slide
@@ -383,7 +386,7 @@ const slide = ref('process1')
               size="56px"
             />
             <div class="q-mt-md text-center">
-              Производствен процес 2 - Информация
+              Продукционен процес 2 - Информация
             </div>
           </q-carousel-slide>
           <q-carousel-slide
@@ -395,7 +398,7 @@ const slide = ref('process1')
               size="56px"
             />
             <div class="q-mt-md text-center">
-              Производствен процес 3 - Информация
+              Продукционен процес 3 - Информация
             </div>
           </q-carousel-slide>
           <q-carousel-slide
@@ -407,7 +410,7 @@ const slide = ref('process1')
               size="56px"
             />
             <div class="q-mt-md text-center">
-              Производствен процес 4 - Информация
+              Продукционен процес 4 - Информация
             </div>
           </q-carousel-slide>
         </q-carousel>

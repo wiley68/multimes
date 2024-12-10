@@ -12,6 +12,7 @@ const toggleLeftDrawer = () => {
 
 const currentDateTime = ref('')
 const isExpandedNomenklature = ref(false)
+const isExpandedMothers = ref(false)
 
 const formatDateTime = () => {
     const now = new Date()
@@ -34,6 +35,10 @@ onMounted(() => {
     let searchNomenklatures = ['Cities', 'Factories', 'Mhalls', 'Uhalls']
     if (searchNomenklatures.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
+    }
+    let searchMothers = ['Mproductions']
+    if (searchMothers.some(str => usePage().component.includes(str))) {
+        isExpandedMothers.value = true
     }
 })
 
@@ -211,21 +216,48 @@ onBeforeUnmount(() => {
                 </template>
 
                 <template v-if="hasPermissions(['create', 'update', 'delete', 'view'])">
-                    <q-item
-                        clickable
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                        @click="router.get(route('mproductions.index'))"
-                        :active="usePage().component.includes('Mproductions')"
+                    <q-expansion-item
+                        v-model="isExpandedMothers"
+                        group="mothers"
+                        icon="mdi-home-import-outline"
+                        label="Майки"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
                     >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="mdi-home-import-outline"
-                            />
-                        </q-item-section>
-                        <q-item-section>Майки</q-item-section>
-                    </q-item>
+                        <q-item
+                            clickable
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('mproductions.index'))"
+                            :active="usePage().component.includes('Mproductions')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="mdi-barn"
+                                />
+                            </q-item-section>
+                            <q-item-section>Халета Майки</q-item-section>
+                        </q-item>
+
+                        <q-separator />
+
+                        <q-item
+                            clickable
+                            class="text-primary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('mproductions.index'))"
+                            :active="usePage().component.includes('Mproductions')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="primary"
+                                    name="mdi-timer-play-outline"
+                                />
+                            </q-item-section>
+                            <q-item-section>Процеси Майки</q-item-section>
+                        </q-item>
+                    </q-expansion-item>
 
                     <q-separator />
 
