@@ -177,7 +177,10 @@ const slide = ref('process1')
               align="around"
               style="height: 60px;"
             >
-              <q-btn flat>Покажи халета Майки</q-btn>
+              <q-btn
+                @click="router.get(route('mhalls.show'))"
+                flat
+              >Покажи халета Майки</q-btn>
               <q-btn
                 @click="router.get(route('mproductions.index'))"
                 flat

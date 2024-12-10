@@ -32,11 +32,16 @@ let intervalId;
 onMounted(() => {
     updateDateTime()
     intervalId = setInterval(updateDateTime, 30000)
-    let searchNomenklatures = ['Cities', 'Factories', 'Mhalls', 'Uhalls']
+    let searchNomenklatures = [
+        'Nomenklature/Cities',
+        'Nomenklature/Factories',
+        'Nomenklature/Mhalls',
+        'Nomenklature/Uhalls'
+    ]
     if (searchNomenklatures.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
     }
-    let searchMothers = ['Mproductions']
+    let searchMothers = ['Mproductions/MproductionIndex', 'Mproductions/Mhalls']
     if (searchMothers.some(str => usePage().component.includes(str))) {
         isExpandedMothers.value = true
     }
@@ -228,8 +233,8 @@ onBeforeUnmount(() => {
                             clickable
                             class="text-primary"
                             active-class="bg-blue-1"
-                            @click="router.get(route('mproductions.index'))"
-                            :active="usePage().component.includes('Mproductions')"
+                            @click="router.get(route('mhalls.show'))"
+                            :active="usePage().component.includes('Mproductions/Mhalls')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -247,7 +252,7 @@ onBeforeUnmount(() => {
                             class="text-primary"
                             active-class="bg-blue-1"
                             @click="router.get(route('mproductions.index'))"
-                            :active="usePage().component.includes('Mproductions')"
+                            :active="usePage().component.includes('Mproductions/MproductionIndex')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -393,7 +398,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                }}</q-toolbar-title>
+                    }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical

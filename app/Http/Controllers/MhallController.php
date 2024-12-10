@@ -42,6 +42,14 @@ class MhallController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function show(Request $request): Response
+    {
+        return Inertia::render('Mproductions/Mhalls/Show');
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create(): Response
