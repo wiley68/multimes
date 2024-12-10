@@ -21,6 +21,7 @@ class MhallController extends Controller
     public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Mhall::class);
+
         $rowsPerPage = $request->input('rowsPerPage', 10);
         $page = $request->input('page', 1);
         $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
@@ -46,6 +47,8 @@ class MhallController extends Controller
      */
     public function show(Request $request): Response
     {
+        Gate::authorize('viewAny', Mhall::class);
+
         return Inertia::render('Mproductions/Mhalls/Show');
     }
 

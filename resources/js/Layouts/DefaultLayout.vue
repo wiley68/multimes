@@ -231,14 +231,14 @@ onBeforeUnmount(() => {
                     >
                         <q-item
                             clickable
-                            class="text-primary"
+                            class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('mhalls.show'))"
                             :active="usePage().component.includes('Mproductions/Mhalls')"
                         >
                             <q-item-section avatar>
                                 <q-icon
-                                    color="primary"
+                                    color="secondary"
                                     name="mdi-barn"
                                 />
                             </q-item-section>
@@ -249,14 +249,14 @@ onBeforeUnmount(() => {
 
                         <q-item
                             clickable
-                            class="text-primary"
+                            class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('mproductions.index'))"
                             :active="usePage().component.includes('Mproductions/MproductionIndex')"
                         >
                             <q-item-section avatar>
                                 <q-icon
-                                    color="primary"
+                                    color="secondary"
                                     name="mdi-timer-play-outline"
                                 />
                             </q-item-section>
@@ -297,7 +297,7 @@ onBeforeUnmount(() => {
                             class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('cities.index'))"
-                            :active="usePage().component.includes('Cities')"
+                            :active="usePage().component.includes('Nomenklature/Cities')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -315,7 +315,7 @@ onBeforeUnmount(() => {
                             class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('factories.index'))"
-                            :active="usePage().component.includes('Factories')"
+                            :active="usePage().component.includes('Nomenklature/Factories')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -333,7 +333,7 @@ onBeforeUnmount(() => {
                             class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('mhalls.index'))"
-                            :active="usePage().component.includes('Mhalls')"
+                            :active="usePage().component.includes('Nomenklature/Mhalls')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -351,7 +351,7 @@ onBeforeUnmount(() => {
                             class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('uhalls.index'))"
-                            :active="usePage().component.includes('Uhalls')"
+                            :active="usePage().component.includes('Nomenklature/Uhalls')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -398,7 +398,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                    }}</q-toolbar-title>
+                }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical
