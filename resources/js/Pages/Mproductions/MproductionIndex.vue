@@ -94,22 +94,14 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                     />
                 </div>
                 <h5 class="col row justify-center items-center">Майки</h5>
-                <div class="col row justify-end items-center">
-                    <q-btn
-                        v-if="hasPermission('create')"
-                        color="primary"
-                        label="Стартирай нов процес"
-                        icon="mdi-plus"
-                        @click="router.get(route('mproctions.create'))"
-                    />
-                </div>
+                <div class="col row justify-end items-center"></div>
             </div>
             <q-table
                 ref="tableRef"
                 class="my-sticky-header-table"
                 :class="tableClass"
                 bordered
-                title="АКТИВНИ Продукционни процеси"
+                title="МАЙКИ - Продукционни процеси"
                 rows-per-page-label="Записи на страница"
                 separator="cell"
                 no-data-label="Липсват данни"
