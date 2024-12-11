@@ -136,7 +136,6 @@ const confirm = (mhall_id) => {
                 </div>
             </div>
             <q-table
-                ref="tableRef"
                 class="my-sticky-header-table"
                 :class="tableClass"
                 bordered
