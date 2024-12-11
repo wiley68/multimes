@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMhallRequest;
 use App\Http\Resources\FactoryResource;
 use App\Http\Resources\MhallResource;
+use App\Http\Resources\MhallSharedResource;
 use App\Models\Factory;
 use App\Models\Mhall;
 use Illuminate\Http\RedirectResponse;
@@ -49,7 +50,24 @@ class MhallController extends Controller
     {
         Gate::authorize('viewAny', Mhall::class);
 
-        return Inertia::render('Mproductions/Mhalls/Show');
+        $rowsPerPage = $request->input('rowsPerPage', 10);
+        $page = $request->input('page', 1);
+        $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
+        $sortOrder = $request->input('sortOrder', 'asc');
+        $filter = $request->input('filter', '');
+
+        $query = Mhall::query()->with(['factory', 'mproductions']);
+        if (!empty($filter)) {
+            $query->where('name', 'like', '%' . $filter . '%');
+        }
+
+        $mhalls = MhallSharedResource::collection($query->orderBy($sortBy, $sortOrder)
+            ->paginate($rowsPerPage, ['*'], 'page', $page));
+
+        return Inertia::render('Mproductions/Mhalls/Show', [
+            'mhalls' => $mhalls,
+            'filter' => $filter,
+        ]);
     }
 
     /**
