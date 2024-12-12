@@ -25,7 +25,7 @@ const columns = [
         sortable: true
     },
     {
-        name: 'factory',
+        name: 'factory_id',
         align: 'left',
         label: 'База',
         field: row => row.factory.name,
