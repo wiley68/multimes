@@ -17,6 +17,7 @@ class MproductionsResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
+            'created_at' => $this->created_at,
             'mhall' => new MhallResource($this->whenLoaded('mhall')),
         ];
     }

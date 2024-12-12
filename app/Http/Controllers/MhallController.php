@@ -50,7 +50,7 @@ class MhallController extends Controller
     {
         Gate::authorize('viewAny', Mhall::class);
 
-        $rowsPerPage = $request->input('rowsPerPage', 10);
+        $rowsPerPage = $request->input('rowsPerPage', 6);
         $page = $request->input('page', 1);
         $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
         $sortOrder = $request->input('sortOrder', 'asc');

@@ -25,7 +25,7 @@ const columns = [
         sortable: true
     },
     {
-        name: 'city',
+        name: 'city_id',
         align: 'left',
         label: 'Населено място',
         field: row => row.city.name,
@@ -36,16 +36,6 @@ const columns = [
         name: 'mhalls',
         align: 'left',
         label: 'Халета',
-        field: row => {
-            var hallbetween = ''
-            const mhalls = row.mhalls.map(obj => obj.name).join(', ')
-            if (mhalls.length > 0) {
-                hallbetween = ', '
-            }
-            const uhalls = row.uhalls.map(obj => obj.name).join(', ')
-            return mhalls + hallbetween + uhalls
-        },
-        format: val => `${val}`,
         sortable: false
     },
     {
@@ -55,6 +45,16 @@ const columns = [
         field: "actions",
     }
 ]
+
+const fieldMhall = (row) => {
+    var hallbetween = ''
+    const mhalls = row.mhalls.map(obj => obj.name).join(', ')
+    if (mhalls.length > 0) {
+        hallbetween = ', '
+    }
+    const uhalls = row.uhalls.map(obj => obj.name).join(', ')
+    return mhalls + hallbetween + uhalls
+}
 
 const { hasPermission } = usePermission()
 const $q = useQuasar()
@@ -153,7 +153,7 @@ const confirm = (factory_id) => {
             </div>
             <q-table
                 ref="tableRef"
-                class="my-sticky-header-table"
+                class="my-sticky-header-table text-wrap-table"
                 :class="tableClass"
                 bordered
                 title="Производствени Бази"
@@ -208,7 +208,22 @@ const confirm = (factory_id) => {
                         />
                     </q-td>
                 </template>
+                <template v-slot:body-cell-mhalls="props">
+                    <q-td
+                        :props="props"
+                        class="text-wrap"
+                    >
+                        {{ fieldMhall(props.row) }}
+                    </q-td>
+                </template>
             </q-table>
         </q-page>
     </DefaultLayout>
 </template>
+
+<style scoped>
+.text-wrap {
+    white-space: normal;
+    word-wrap: break-word;
+}
+</style>

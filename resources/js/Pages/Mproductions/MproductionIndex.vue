@@ -4,6 +4,7 @@ import { Head, router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue';
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
+import moment from 'moment'
 
 const props = defineProps({
     mproductions: {
@@ -25,14 +26,26 @@ const columns = [
         sortable: true
     },
     {
-        name: 'mhall',
+        name: 'mhall_id',
         align: 'left',
         label: 'Хале',
         field: row => row.mhall.name,
         sortable: true
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
-    { name: 'status', align: 'left', label: 'Състояние', field: 'status', sortable: true },
+    {
+        name: 'status',
+        align: 'left',
+        label: 'Състояние',
+        field: row => row.status === 1 ? 'Активен' : 'Приключен',
+        sortable: true
+    },
+    {
+        name: 'created_at',
+        align: 'left',
+        label: 'Стариран на',
+        field: row => moment(row.created_at).format('DD.MM.YY HH:mm'),
+        sortable: true
+    },
     {
         name: "actions",
         label: "Управление",

@@ -125,11 +125,16 @@ const confirm = (mhall) => {
                 flat
                 bordered
                 title="Халета Майки"
+                rows-per-page-label="Записи на страница"
+                no-data-label="Липсват данни"
+                no-results-label="Няма съответстващи записи"
+                loading-label="Данните се зареждат..."
                 :class="tableClass"
                 :rows="mhalls.data"
                 :columns="columns"
                 row-key="name"
                 :pagination="pagination"
+                :rows-per-page-options="[6, 9, 12, 15, 18, 0]"
                 :filter="filter"
                 hide-header
                 @request="onRequest"
@@ -185,11 +190,14 @@ const confirm = (mhall) => {
                                 </template>
                                 <template v-else>
                                     <q-btn
-                                        @click.prevent="confirm(props.row)"
+                                        @click="confirm(props.row)"
                                         flat
                                     >Стартирай процес</q-btn>
                                 </template>
-                                <q-btn flat>Всички процеси</q-btn>
+                                <q-btn
+                                    flat
+                                    @click="router.get(route('mproductions.index'))"
+                                >Всички процеси</q-btn>
                             </q-card-actions>
                         </q-card>
                     </div>

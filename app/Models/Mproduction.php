@@ -12,6 +12,7 @@ class Mproduction extends Model
     protected $fillable = [
         'status',
         'mhall_id',
+        'created_at',
     ];
 
     public function mhall()
