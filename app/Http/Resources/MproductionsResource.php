@@ -16,7 +16,6 @@ class MproductionsResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
             'status' => $this->status,
             'mhall' => new MhallResource($this->whenLoaded('mhall')),
         ];

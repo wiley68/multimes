@@ -10,7 +10,6 @@ class Mproduction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
         'status',
         'mhall_id',
     ];

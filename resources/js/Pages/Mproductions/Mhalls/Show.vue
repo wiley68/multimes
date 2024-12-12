@@ -32,25 +32,6 @@ const columns = [
     },
     { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
-        name: 'status',
-        align: 'left',
-        label: 'Състояние процес',
-        field: row => row.mproductions,
-        format: val => {
-            if (Array.isArray(val) && val.length > 0) {
-                const foundMproject = val.find(item => item.status === true)
-                if (foundMproject) {
-                    return foundMproject.name
-                } else {
-                    return false
-                }
-            } else {
-                return false
-            }
-        },
-        sortable: false
-    },
-    {
         name: "actions",
         label: "Управление",
         align: "center",
@@ -91,6 +72,19 @@ const deactivateNavigation = () => {
 }
 
 const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
+
+const checkStatus = (val) => {
+    if (Array.isArray(val) && val.length > 0) {
+        const foundMproject = val.find(item => item.status === 1)
+        if (foundMproject === undefined) {
+            return false
+        } else {
+            return foundMproject.id
+        }
+    } else {
+        return false
+    }
+}
 </script>
 
 <template>
@@ -139,11 +133,13 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                         >
                             <q-card-section
                                 class="text-center text-white"
-                                :class="props.row.status ? 'bg-accent' : 'bg-grey'"
+                                :class="checkStatus(props.row.mproductions) ? 'bg-accent' : 'bg-grey'"
                             >
                                 <div class="text-h6">{{ props.row.name }}</div>
-                                <template v-if="props.row.status">
-                                    <div class="text-subtitle2">Активен процес: {{ props.row.status }}</div>
+                                <template v-if="checkStatus(props.row.mproductions)">
+                                    <div class="text-subtitle2">Активен процес: №{{ checkStatus(props.row.mproductions)
+                                        }}
+                                    </div>
                                 </template>
                                 <template v-else>
                                     <div class="text-subtitle2">Няма активен процес</div>
@@ -155,11 +151,20 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                             </q-card-section>
                             <q-separator />
                             <q-card-actions align="around">
-                                <template v-if="props.row.status">
-                                    <q-btn flat>Управлявай процеса</q-btn>
+                                <template v-if="checkStatus(props.row.mproductions)">
+                                    <q-btn
+                                        flat
+                                        :class="checkStatus(props.row.mproductions) ? 'text-accent' : ''"
+                                    >Управлявай процеса</q-btn>
                                 </template>
                                 <template v-else>
-                                    <q-btn flat>Стартирай процес</q-btn>
+                                    <q-btn
+                                        @click.prevent="router.post(route('mproductions.store'), {
+                                            status: 1,
+                                            mhall: props.row,
+                                        })"
+                                        flat
+                                    >Стартирай процес</q-btn>
                                 </template>
                                 <q-btn flat>Всички процеси</q-btn>
                             </q-card-actions>

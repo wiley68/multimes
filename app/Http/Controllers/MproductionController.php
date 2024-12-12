@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMproductionRequest;
 use App\Http\Resources\MproductionsResource;
 use App\Models\Mproduction;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -41,17 +43,16 @@ class MproductionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateMproductionRequest $request): RedirectResponse
     {
-        //
-    }
+        Gate::authorize('create', Mproduction::class);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Mproduction $mproduction)
-    {
-        //
+        Mproduction::create([
+            'status' => $request->status,
+            'mhall_id' => $request->mhall['id']
+        ]);
+
+        return back();
     }
 
     /**

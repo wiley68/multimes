@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('mproductions', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->unsignedTinyInteger('status')->default(1);
             $table->foreignId('mhall_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
