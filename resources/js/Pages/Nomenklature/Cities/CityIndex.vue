@@ -29,8 +29,6 @@ const columns = [
         name: 'factories',
         align: 'left',
         label: 'Бази',
-        field: row => row.factories.map(obj => obj.name).join(', '),
-        format: val => `${val}`,
         sortable: false
     },
     {
@@ -40,6 +38,8 @@ const columns = [
         field: "actions",
     }
 ]
+
+const fieldFactories = (row) => { return row.factories.map(obj => obj.name).join(', ') }
 
 const { hasPermission } = usePermission()
 const $q = useQuasar()
@@ -191,6 +191,14 @@ const confirm = (city_id) => {
                             rounded
                             @click="confirm(props.row.id)"
                         />
+                    </q-td>
+                </template>
+                <template v-slot:body-cell-factories="props">
+                    <q-td
+                        :props="props"
+                        class="text-wrap"
+                    >
+                        {{ fieldFactories(props.row) }}
                     </q-td>
                 </template>
             </q-table>
