@@ -1,7 +1,8 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     mhalls: {
@@ -46,6 +47,7 @@ const pagination = {
 }
 const filter = ref(props.filter)
 const navigationActive = ref(false)
+const $q = useQuasar()
 
 const onRequest = (requestProp) => {
     router.get(
@@ -84,6 +86,30 @@ const checkStatus = (val) => {
     } else {
         return false
     }
+}
+
+const confirm = (mhall) => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        router.post(route('mproductions.store'), {
+            status: 1,
+            mhall: mhall,
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
 }
 </script>
 
@@ -159,10 +185,7 @@ const checkStatus = (val) => {
                                 </template>
                                 <template v-else>
                                     <q-btn
-                                        @click.prevent="router.post(route('mproductions.store'), {
-                                            status: 1,
-                                            mhall: props.row,
-                                        })"
+                                        @click.prevent="confirm(props.row)"
                                         flat
                                     >Стартирай процес</q-btn>
                                 </template>
