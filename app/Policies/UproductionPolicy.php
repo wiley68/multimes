@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\Mproduction;
+use App\Models\Uproduction;
 use App\Models\User;
 
-class MproductionPolicy
+class UproductionPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -18,7 +18,7 @@ class MproductionPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Mproduction $mproduction): bool
+    public function view(User $user, Uproduction $uproduction): bool
     {
         return $user->hasPermissionTo('view') ? true : false;
     }
@@ -34,7 +34,7 @@ class MproductionPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Mproduction $mproduction): bool
+    public function update(User $user, Uproduction $uproduction): bool
     {
         return $user->hasPermissionTo('update') ? true : false;
     }
@@ -42,7 +42,7 @@ class MproductionPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Mproduction $mproduction): bool
+    public function delete(User $user, Uproduction $uproduction): bool
     {
         return $user->hasPermissionTo('delete') ? true : false;
     }
@@ -50,7 +50,7 @@ class MproductionPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Mproduction $mproduction): bool
+    public function restore(User $user, Uproduction $uproduction): bool
     {
         return false;
     }
@@ -58,7 +58,7 @@ class MproductionPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Mproduction $mproduction): bool
+    public function forceDelete(User $user, Uproduction $uproduction): bool
     {
         return false;
     }

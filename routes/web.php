@@ -13,6 +13,7 @@ use App\Http\Controllers\RemoveRoleFromUserController;
 use App\Http\Controllers\RevokePermissionFromRoleController;
 use App\Http\Controllers\RevokePermissionFromUserController;
 use App\Http\Controllers\UhallController;
+use App\Http\Controllers\UproductionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -51,6 +52,12 @@ Route::middleware(['auth', 'permission:create|update|delete|view'])->group(funct
     Route::get('/mproductions/{mproduction}', [MproductionController::class, 'show'])->name('mproductions.show');
     Route::put('/mproductions/{mproduction}', [MproductionController::class, 'update'])->name('mproductions.update');
     Route::delete('/mproductions/{mproduction}', [MproductionController::class, 'destroy'])->name('mproductions.destroy');
+    Route::get('/uproductions', [UproductionController::class, 'index'])->name('uproductions.index');
+    Route::get('/uproductions/create', [UproductionController::class, 'create'])->name('uproductions.create');
+    Route::post('/uproductions', [UproductionController::class, 'store'])->name('uproductions.store');
+    Route::get('/uproductions/{uproduction}', [UproductionController::class, 'show'])->name('uproductions.show');
+    Route::put('/uproductions/{uproduction}', [UproductionController::class, 'update'])->name('uproductions.update');
+    Route::delete('/uproductions/{uproduction}', [UproductionController::class, 'destroy'])->name('uproductions.destroy');
 });
 
 require __DIR__ . '/auth.php';
