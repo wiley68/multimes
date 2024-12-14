@@ -2,8 +2,57 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { ref } from 'vue';
+import { useQuasar } from 'quasar'
 
+const props = defineProps({
+  mhalls: {
+    type: Object,
+  },
+})
+
+const $q = useQuasar()
 const slide = ref('process1')
+
+const checkStatus = (val) => {
+  if (Array.isArray(val) && val.length > 0) {
+    const foundMproject = val.find(item => item.status === 1)
+    if (foundMproject === undefined) {
+      return false
+    } else {
+      return foundMproject.id
+    }
+  } else {
+    return false
+  }
+}
+
+const mhallBtnClick = (mhall) => {
+  if (checkStatus(mhall.mproductions) !== false) {
+    router.get(route('mproductions.show', { mproduction: checkStatus(mhall.mproductions) }))
+  } else {
+    $q.dialog({
+      title: 'Потвърди',
+      message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
+      cancel: true,
+      persistent: true,
+      ok: {
+        label: 'Да',
+        color: 'primary',
+      },
+      cancel: {
+        label: 'Откажи',
+        color: 'grey-1',
+        textColor: 'grey-10',
+        flat: true
+      },
+    }).onOk(() => {
+      router.post(route('mproductions.store'), {
+        status: 1,
+        mhall: mhall,
+      })
+    }).onCancel(() => { }).onDismiss(() => { })
+  }
+}
 </script>
 
 <template>
@@ -29,73 +78,22 @@ const slide = ref('process1')
             <q-card-section
               style="max-height: 240px; display: flex;flex-direction: column;overflow-x: hidden;overflow-y: auto;"
             >
-              <div class="row q-gutter-x-sm q-my-sm">
+              <div
+                class="row q-gutter-x-sm q-my-sm"
+                v-for="mhall in mhalls"
+                :key="mhall.id"
+              >
                 <q-linear-progress
                   class="col"
                   rounded
                   size="40px"
-                  :value="0.7"
-                  color="teal-2"
-                >
-                  <div
-                    class="absolute-full flex flex-center"
-                    style="border:1px solid #4DB6AC;border-radius: 0.25rem;"
-                  >
-                    <q-badge
-                      class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
-                      color="white"
-                      rounded
-                      text-color="teal-10"
-                      label="Хале 1 - 70%"
-                    />
-                  </div>
-                </q-linear-progress>
-                <q-btn
-                  flat
-                  style="min-width: 160px;"
-                >Покажи процеса</q-btn>
-              </div>
-
-              <div class="row q-gutter-x-sm q-my-sm">
-                <q-linear-progress
-                  class="col"
-                  rounded
-                  size="40px"
-                  :value="0.3"
-                  color="teal-2"
-                >
-                  <div
-                    class="absolute-full flex flex-center"
-                    style="border:1px solid #4DB6AC;border-radius: 0.25rem;"
-                  >
-                    <q-badge
-                      class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
-                      color="white"
-                      rounded
-                      text-color="teal-10"
-                      label="Хале 2 - 30%"
-                    />
-                  </div>
-                </q-linear-progress>
-                <q-btn
-                  flat
-                  style="min-width: 160px;"
-                >Покажи процеса</q-btn>
-              </div>
-
-              <div class="row q-gutter-x-sm q-my-sm">
-                <q-linear-progress
-                  class="col"
-                  rounded
-                  size="40px"
-                  :value="0.0"
+                  :value="checkStatus(mhall.mproductions) !== false ? 0.70 : 0.00"
                   color="teal-2"
                 >
                   <div
                     class="absolute-full flex flex-center"
                     style="border-radius: 0.25rem;"
+                    :style="checkStatus(mhall.mproductions) !== false ? 'border:1px solid #4DB6AC;' : ''"
                   >
                     <q-badge
                       class="q-px-sm q-py-xs text-caption text-weight-medium"
@@ -103,72 +101,18 @@ const slide = ref('process1')
                       color="white"
                       rounded
                       text-color="teal-10"
-                      label="Хале 3"
+                      :label="checkStatus(mhall.mproductions) !== false ? mhall.name + ' - 70%' : mhall.name"
                     />
                   </div>
                 </q-linear-progress>
                 <q-btn
-                  outline
-                  style="min-width: 160px;"
-                >Стартирай процес</q-btn>
+                  :flat="checkStatus(mhall.mproductions) !== false"
+                  :outline="checkStatus(mhall.mproductions) === false"
+                  style="min-width: 190px;"
+                  :class="checkStatus(mhall.mproductions) !== false ? 'text-accent' : ''"
+                  @click="mhallBtnClick(mhall)"
+                >{{ checkStatus(mhall.mproductions) !== false ? 'Управлявай процеса' : 'Стартирай процес' }}</q-btn>
               </div>
-
-              <div class="row q-gutter-x-sm q-my-sm">
-                <q-linear-progress
-                  class="col"
-                  rounded
-                  size="40px"
-                  :value="0.0"
-                  color="teal-2"
-                >
-                  <div
-                    class="absolute-full flex flex-center"
-                    style="border-radius: 0.25rem;"
-                  >
-                    <q-badge
-                      class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
-                      color="white"
-                      rounded
-                      text-color="teal-10"
-                      label="Хале 4 - 0%"
-                    />
-                  </div>
-                </q-linear-progress>
-                <q-btn
-                  outline
-                  style="min-width: 160px;"
-                >Стартирай процес</q-btn>
-              </div>
-
-              <div class="row q-gutter-x-sm q-my-sm">
-                <q-linear-progress
-                  class="col"
-                  rounded
-                  size="40px"
-                  :value="0.43"
-                  color="teal-2"
-                >
-                  <div
-                    class="absolute-full flex flex-center"
-                    style="border:1px solid #4DB6AC;border-radius: 0.25rem;"
-                  >
-                    <q-badge
-                      class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
-                      color="white"
-                      rounded
-                      text-color="teal-10"
-                      label="Хале 5 - 43%"
-                    />
-                  </div>
-                </q-linear-progress>
-                <q-btn
-                  flat
-                  style="min-width: 160px;"
-                >Покажи процеса</q-btn>
-              </div>
-
             </q-card-section>
 
             <q-separator />
