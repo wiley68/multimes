@@ -23,11 +23,19 @@ class UhallController extends Controller
     {
         Gate::authorize('viewAny', Uhall::class);
 
-        $rowsPerPage = $request->input('rowsPerPage', 10);
-        $page = $request->input('page', 1);
-        $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
-        $sortOrder = $request->input('sortOrder', 'asc');
-        $filter = $request->input('filter', '');
+        $validated = $request->validate([
+            'rowsPerPage' => 'integer|min:1|max:100',
+            'page' => 'integer|min:1',
+            'sortBy' => 'nullable|string|in:id,factory_id,name',
+            'sortOrder' => 'in:asc,desc',
+            'filter' => 'nullable|string|max:255',
+        ]);
+
+        $rowsPerPage = $validated['rowsPerPage'] ?? 10;
+        $page = $validated['page'] ?? 1;
+        $sortBy = $validated['sortBy'] ?? 'id';
+        $sortOrder = $validated['sortOrder'] ?? 'asc';
+        $filter = $validated['filter'] ?? '';
 
         $query = Uhall::query()->with('factory');
         if (!empty($filter)) {
@@ -50,11 +58,19 @@ class UhallController extends Controller
     {
         Gate::authorize('viewAny', Uhall::class);
 
-        $rowsPerPage = $request->input('rowsPerPage', 6);
-        $page = $request->input('page', 1);
-        $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
-        $sortOrder = $request->input('sortOrder', 'asc');
-        $filter = $request->input('filter', '');
+        $validated = $request->validate([
+            'rowsPerPage' => 'integer|min:1|max:100',
+            'page' => 'integer|min:1',
+            'sortBy' => 'nullable|string|in:id,factory_id,name',
+            'sortOrder' => 'in:asc,desc',
+            'filter' => 'nullable|string|max:255',
+        ]);
+
+        $rowsPerPage = $validated['rowsPerPage'] ?? 10;
+        $page = $validated['page'] ?? 1;
+        $sortBy = $validated['sortBy'] ?? 'id';
+        $sortOrder = $validated['sortOrder'] ?? 'asc';
+        $filter = $validated['filter'] ?? '';
 
         $query = Uhall::query()->with(['factory', 'uproductions']);
         if (!empty($filter)) {
