@@ -141,6 +141,16 @@ const confirm = (mhall) => {
                 @focusin="activateNavigation"
                 @focusout="deactivateNavigation"
             >
+                <template v-slot:top-left>
+                    <div class="q-pr-md text-h5">Халета Майки</div>
+                    <q-btn
+                        label="Всички процеси"
+                        icon="mdi-timer-play-outline"
+                        color="primary"
+                        @click="router.get(route('mproductions.index'))"
+                    />
+                </template>
+
                 <template v-slot:top-right>
                     <q-input
                         borderless
@@ -196,7 +206,7 @@ const confirm = (mhall) => {
                                 </template>
                                 <q-btn
                                     flat
-                                    @click="router.get(route('mproductions.index'))"
+                                    @click="router.get(route('mproductions.index', { mhall: props.row.id }))"
                                 >Всички процеси</q-btn>
                             </q-card-actions>
                         </q-card>

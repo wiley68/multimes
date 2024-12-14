@@ -13,6 +13,9 @@ const props = defineProps({
     filter: {
         type: String,
     },
+    mhall: {
+        type: String,
+    },
 })
 
 const columns = [
@@ -73,6 +76,7 @@ const onRequest = (requestProp) => {
             sortBy: requestProp.pagination.sortBy,
             sortOrder: requestProp.pagination.descending ? 'desc' : 'asc',
             filter: filter.value,
+            mhall: props.mhall,
         },
         {
             preserveState: false,

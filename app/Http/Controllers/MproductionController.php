@@ -25,10 +25,14 @@ class MproductionController extends Controller
         $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
         $sortOrder = $request->input('sortOrder', 'asc');
         $filter = $request->input('filter', '');
+        $mhall = $request->input('mhall', '');
 
         $query = Mproduction::query()->with('mhall');
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
+        }
+        if (!empty($mhall)) {
+            $query->where('mhall_id', '=', (int)$mhall);
         }
 
         $mproductions = MproductionsResource::collection($query->orderBy($sortBy, $sortOrder)
@@ -37,6 +41,7 @@ class MproductionController extends Controller
         return Inertia::render('Mproductions/MproductionIndex', [
             'mproductions' => $mproductions,
             'filter' => $filter,
+            'mhall' => $mhall,
         ]);
     }
 

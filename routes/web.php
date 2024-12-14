@@ -44,7 +44,12 @@ Route::middleware(['auth', 'permission:create|update|delete|view'])->group(funct
     Route::resource('/mhalls', MhallController::class);
     Route::get('/mhalls/show', [MhallController::class, 'show'])->name('mhalls.show');
     Route::resource('/uhalls', UhallController::class);
-    Route::resource('/mproductions', MproductionController::class);
+    Route::get('/mproductions', [MproductionController::class, 'index'])->name('mproductions.index');
+    Route::get('/mproductions/create', [MproductionController::class, 'create'])->name('mproductions.create');
+    Route::post('/mproductions', [MproductionController::class, 'store'])->name('mproductions.store');
+    Route::get('/mproductions/{mproduction}', [MproductionController::class, 'show'])->name('mproductions.show');
+    Route::put('/mproductions/{mproduction}', [MproductionController::class, 'update'])->name('mproductions.update');
+    Route::delete('/mproductions/{mproduction}', [MproductionController::class, 'destroy'])->name('mproductions.destroy');
 });
 
 require __DIR__ . '/auth.php';
