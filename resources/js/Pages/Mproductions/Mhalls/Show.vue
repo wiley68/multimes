@@ -118,7 +118,27 @@ const confirm = (mhall) => {
     <Head title="Всички Халета Майки"></Head>
 
     <DefaultLayout>
-        <div class="q-pa-md">
+        <q-page class="q-pa-md">
+            <div class="row items-center justify-between">
+                <div class="col row items-center">
+                    <q-btn
+                        color="primary"
+                        label="Табло"
+                        icon="mdi-menu-left"
+                        @click="router.get(route('dashboard'))"
+                    />
+                </div>
+                <h5 class="col row justify-center items-center">Халета Майки</h5>
+                <div class="col row justify-end items-center">
+                    <q-btn
+                        label="Всички процеси"
+                        icon="mdi-timer-play-outline"
+                        color="primary"
+                        @click="router.get(route('mproductions.index'))"
+                    />
+                </div>
+            </div>
+
             <q-table
                 grid
                 grid-header
@@ -141,16 +161,6 @@ const confirm = (mhall) => {
                 @focusin="activateNavigation"
                 @focusout="deactivateNavigation"
             >
-                <template v-slot:top-left>
-                    <div class="q-pr-md text-h5">Халета Майки</div>
-                    <q-btn
-                        label="Всички процеси"
-                        icon="mdi-timer-play-outline"
-                        color="primary"
-                        @click="router.get(route('mproductions.index'))"
-                    />
-                </template>
-
                 <template v-slot:top-right>
                     <q-input
                         borderless
@@ -207,12 +217,12 @@ const confirm = (mhall) => {
                                 <q-btn
                                     flat
                                     @click="router.get(route('mproductions.index', { mhall: props.row.id }))"
-                                >Всички процеси</q-btn>
+                                >Виж процеси</q-btn>
                             </q-card-actions>
                         </q-card>
                     </div>
                 </template>
             </q-table>
-        </div>
+        </q-page>
     </DefaultLayout>
 </template>
