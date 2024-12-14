@@ -26,7 +26,8 @@ const columns = [
         align: 'left',
         field: row => row.id,
         format: val => `${val}`,
-        sortable: true
+        sortable: true,
+        sortMethod: (a, b) => (a < b ? -1 : a > b ? 1 : 0),
     },
     {
         name: 'mhall_id',
@@ -62,7 +63,9 @@ const $q = useQuasar()
 const pagination = {
     page: props.mproductions.meta.current_page,
     rowsPerPage: props.mproductions.meta.per_page,
-    rowsNumber: props.mproductions.meta.total
+    rowsNumber: props.mproductions.meta.total,
+    sortBy: 'id',
+    descending: false,
 }
 const filter = ref(props.filter)
 const navigationActive = ref(false)
@@ -73,13 +76,13 @@ const onRequest = (requestProp) => {
         {
             page: requestProp.pagination.page,
             rowsPerPage: requestProp.pagination.rowsPerPage,
-            sortBy: requestProp.pagination.sortBy,
+            sortBy: requestProp.pagination.sortBy || 'id',
             sortOrder: requestProp.pagination.descending ? 'desc' : 'asc',
             filter: filter.value,
             mhall: props.mhall,
         },
         {
-            preserveState: false,
+            preserveState: true,
         }
     );
 }
@@ -114,7 +117,6 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                 <div class="col row justify-end items-center"></div>
             </div>
             <q-table
-                ref="tableRef"
                 class="my-sticky-header-table"
                 :class="tableClass"
                 bordered
