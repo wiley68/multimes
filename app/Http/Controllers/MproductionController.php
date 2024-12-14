@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMproductionRequest;
 use App\Http\Resources\MproductionsResource;
+use App\Models\Mhall;
 use App\Models\Mproduction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,8 +41,10 @@ class MproductionController extends Controller
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
+        $mhall_name = null;
         if (!empty($mhall)) {
             $query->where('mhall_id', '=', (int)$mhall);
+            $mhall_name = Mhall::findOrFail((int)$mhall)->name;
         }
 
         $mproductions = MproductionsResource::collection($query->orderBy($sortBy, $sortOrder)
@@ -51,6 +54,7 @@ class MproductionController extends Controller
             'mproductions' => $mproductions,
             'filter' => $filter,
             'mhall' => $mhall,
+            'mhall_name' => $mhall_name,
         ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUproductionRequest;
 use App\Http\Resources\UproductionsResource;
+use App\Models\Uhall;
 use App\Models\Uproduction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,8 +41,10 @@ class UproductionController extends Controller
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
+        $uhall_name = null;
         if (!empty($uhall)) {
             $query->where('uhall_id', '=', (int)$uhall);
+            $uhall_name = Uhall::findOrFail((int)$uhall)->name;
         }
 
         $uproductions = UproductionsResource::collection($query->orderBy($sortBy, $sortOrder)
@@ -51,6 +54,7 @@ class UproductionController extends Controller
             'uproductions' => $uproductions,
             'filter' => $filter,
             'uhall' => $uhall,
+            'uhall_name' => $uhall_name,
         ]);
     }
 

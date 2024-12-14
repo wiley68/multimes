@@ -16,6 +16,9 @@ const props = defineProps({
     mhall: {
         type: String,
     },
+    mhall_name: {
+        type: String,
+    },
 })
 
 const columns = [
@@ -113,14 +116,18 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                         @click="router.get(route('dashboard'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Продукционни процеси Майки</h5>
+                <h5 class="col row justify-center items-center">{{ mhall_name ? `Процеси Майки в Хале: ${mhall_name}`
+                    :
+                    'Всички Процеси Майки' }}</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <q-table
                 class="my-sticky-header-table"
                 :class="tableClass"
                 bordered
-                title="Продукционни процеси Майки"
+                :title="mhall_name ? `Процеси Майки в Хале: ${mhall_name}`
+                    :
+                    'Всички Процеси Майки'"
                 rows-per-page-label="Записи на страница"
                 separator="cell"
                 no-data-label="Липсват данни"
