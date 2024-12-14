@@ -3,7 +3,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 
 const props = defineProps({
-    mproduction: {
+    uproduction: {
         type: Object,
         required: true
     }
@@ -12,7 +12,7 @@ const props = defineProps({
 
 <template>
 
-    <Head :title="`Производствен процес Майки №${mproduction.id}`"></Head>
+    <Head :title="`Производствен процес Угояване №${uproduction.id}`"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md column">
@@ -25,7 +25,7 @@ const props = defineProps({
                         @click="router.get(route('dashboard'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">{{ `Производствен процес Майки №${mproduction.id}` }}
+                <h5 class="col row justify-center items-center">{{ `Производствен процес Угояване №${uproduction.id}` }}
                 </h5>
                 <div class="col row justify-end items-center"></div>
             </div>
