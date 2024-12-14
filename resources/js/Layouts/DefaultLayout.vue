@@ -13,6 +13,7 @@ const toggleLeftDrawer = () => {
 const currentDateTime = ref('')
 const isExpandedNomenklature = ref(false)
 const isExpandedMothers = ref(false)
+const isExpandedUgoiavane = ref(false)
 
 const formatDateTime = () => {
     const now = new Date()
@@ -44,6 +45,10 @@ onMounted(() => {
     let searchMothers = ['Mproductions/MproductionIndex', 'Mproductions/Mhalls']
     if (searchMothers.some(str => usePage().component.includes(str))) {
         isExpandedMothers.value = true
+    }
+    let searchUgoiavane = ['Uproductions/UproductionIndex', 'Uproductions/Uhalls']
+    if (searchUgoiavane.some(str => usePage().component.includes(str))) {
+        isExpandedUgoiavane.value = true
     }
 })
 
@@ -266,21 +271,48 @@ onBeforeUnmount(() => {
 
                     <q-separator />
 
-                    <q-item
-                        clickable
-                        class="text-primary"
-                        active-class="bg-blue-1"
-                        @click="router.get(route('uproductions.index'))"
-                        :active="usePage().component.includes('Uproductions')"
+                    <q-expansion-item
+                        v-model="isExpandedUgoiavane"
+                        group="ugoiavane"
+                        icon="mdi-home-export-outline"
+                        label="Угояване"
+                        expand-icon-class="text-primary"
+                        header-class="text-primary"
                     >
-                        <q-item-section avatar>
-                            <q-icon
-                                color="primary"
-                                name="mdi-home-export-outline"
-                            />
-                        </q-item-section>
-                        <q-item-section>Угояване</q-item-section>
-                    </q-item>
+                        <q-item
+                            clickable
+                            class="text-secondary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('uhalls.show'))"
+                            :active="usePage().component.includes('Uproductions/Uhalls')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="secondary"
+                                    name="mdi-barn"
+                                />
+                            </q-item-section>
+                            <q-item-section>Халета Угояване</q-item-section>
+                        </q-item>
+
+                        <q-separator />
+
+                        <q-item
+                            clickable
+                            class="text-secondary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('uproductions.index'))"
+                            :active="usePage().component.includes('Uproductions/UproductionIndex')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="secondary"
+                                    name="mdi-timer-play-outline"
+                                />
+                            </q-item-section>
+                            <q-item-section>Процеси Угояване</q-item-section>
+                        </q-item>
+                    </q-expansion-item>
 
                     <q-separator />
 
