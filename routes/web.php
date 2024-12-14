@@ -44,6 +44,7 @@ Route::middleware(['auth', 'permission:create|update|delete|view'])->group(funct
     Route::resource('/mhalls', MhallController::class);
     Route::get('/mhalls/show', [MhallController::class, 'show'])->name('mhalls.show');
     Route::resource('/uhalls', UhallController::class);
+    Route::get('/uhalls/show', [UhallController::class, 'show'])->name('uhalls.show');
     Route::get('/mproductions', [MproductionController::class, 'index'])->name('mproductions.index');
     Route::get('/mproductions/create', [MproductionController::class, 'create'])->name('mproductions.create');
     Route::post('/mproductions', [MproductionController::class, 'store'])->name('mproductions.store');

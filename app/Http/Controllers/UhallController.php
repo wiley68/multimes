@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateUhallRequest;
 use App\Http\Resources\FactoryResource;
 use App\Http\Resources\UhallResource;
+use App\Http\Resources\UhallSharedResource;
 use App\Models\Factory;
 use App\Models\Uhall;
 use Illuminate\Http\RedirectResponse;
@@ -21,6 +22,7 @@ class UhallController extends Controller
     public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Uhall::class);
+
         $rowsPerPage = $request->input('rowsPerPage', 10);
         $page = $request->input('page', 1);
         $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
@@ -42,10 +44,39 @@ class UhallController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function show(Request $request): Response
+    {
+        Gate::authorize('viewAny', Uhall::class);
+
+        $rowsPerPage = $request->input('rowsPerPage', 6);
+        $page = $request->input('page', 1);
+        $sortBy = $request->input('sortBy', 'id') === null ? 'id' : $request->input('sortBy', 'id');
+        $sortOrder = $request->input('sortOrder', 'asc');
+        $filter = $request->input('filter', '');
+
+        $query = Uhall::query()->with(['factory', 'uproductions']);
+        if (!empty($filter)) {
+            $query->where('name', 'like', '%' . $filter . '%');
+        }
+
+        $uhalls = UhallSharedResource::collection($query->orderBy($sortBy, $sortOrder)
+            ->paginate($rowsPerPage, ['*'], 'page', $page));
+
+        return Inertia::render('Uproductions/Uhalls/Show', [
+            'uhalls' => $uhalls,
+            'filter' => $filter,
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create(): Response
     {
+        Gate::authorize('create', Uhall::class);
+
         return Inertia::render('Nomenklature/Uhalls/Create', [
             'factories' => FactoryResource::collection(Factory::all()),
         ]);
@@ -56,6 +87,8 @@ class UhallController extends Controller
      */
     public function store(CreateUhallRequest $request): RedirectResponse
     {
+        Gate::authorize('create', Uhall::class);
+
         Uhall::create([
             'name' => $request->name,
             'factory_id' => $request->factory['id']
@@ -69,6 +102,8 @@ class UhallController extends Controller
      */
     public function edit(Uhall $uhall): Response
     {
+        Gate::authorize('update', $uhall);
+
         $uhall->load('factory');
 
         return Inertia::render('Nomenklature/Uhalls/Edit', [
@@ -82,6 +117,8 @@ class UhallController extends Controller
      */
     public function update(CreateUhallRequest $request, Uhall $uhall): RedirectResponse
     {
+        Gate::authorize('update', $uhall);
+
         $uhall->update([
             'name' => $request->name,
             'factory_id' => $request->factory['id']
@@ -95,6 +132,8 @@ class UhallController extends Controller
      */
     public function destroy(Uhall $uhall): RedirectResponse
     {
+        Gate::authorize('delete', $uhall);
+
         $uhall->delete();
 
         return back();

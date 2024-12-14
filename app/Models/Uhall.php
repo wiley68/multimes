@@ -18,4 +18,9 @@ class Uhall extends Model
     {
         return $this->belongsTo(Factory::class);
     }
+
+    public function uproductions()
+    {
+        return $this->hasMany(Uproduction::class);
+    }
 }
