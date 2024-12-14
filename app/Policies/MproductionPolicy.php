@@ -22,7 +22,7 @@ class MproductionPolicy
      */
     public function view(User $user, Mproduction $mproduction): bool
     {
-        return false;
+        return $user->hasPermissionTo('view') ? true : false;
     }
 
     /**

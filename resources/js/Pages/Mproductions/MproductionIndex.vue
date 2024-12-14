@@ -113,14 +113,14 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                         @click="router.get(route('dashboard'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Майки</h5>
+                <h5 class="col row justify-center items-center">Продукционни процеси Майки</h5>
                 <div class="col row justify-end items-center"></div>
             </div>
             <q-table
                 class="my-sticky-header-table"
                 :class="tableClass"
                 bordered
-                title="МАЙКИ - Продукционни процеси"
+                title="Продукционни процеси Майки"
                 rows-per-page-label="Записи на страница"
                 separator="cell"
                 no-data-label="Липсват данни"
@@ -153,16 +153,18 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                 <template v-slot:body-cell-actions="props">
                     <q-td align="center">
                         <q-btn
-                            v-if="hasPermission('update')"
-                            icon="mdi-pencil-outline"
+                            v-if="hasPermission('view')"
+                            title="Управлявай процеса"
+                            icon="mdi-file-tree"
                             color="primary"
                             dense
                             flat
                             rounded
-                            @click="router.get(route('mproductions.edit', props.row.id))"
+                            @click="router.get(route('mproductions.show', props.row.id))"
                         />
                         <q-btn
-                            v-if="hasPermission('delete')"
+                            v-if="hasPermission('delete') && props.row.status === 0"
+                            title="Изтрий процеса"
                             icon="mdi-delete-outline"
                             color="negative"
                             dense

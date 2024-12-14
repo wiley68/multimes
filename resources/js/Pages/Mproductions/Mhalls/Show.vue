@@ -206,6 +206,7 @@ const confirm = (mhall) => {
                                     <q-btn
                                         flat
                                         :class="checkStatus(props.row.mproductions) ? 'text-accent' : ''"
+                                        @click="router.get(route('mproductions.show', { mproduction: checkStatus(props.row.mproductions) }))"
                                     >Управлявай процеса</q-btn>
                                 </template>
                                 <template v-else>

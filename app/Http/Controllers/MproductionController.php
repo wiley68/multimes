@@ -70,6 +70,18 @@ class MproductionController extends Controller
     }
 
     /**
+     * Display a resource.
+     */
+    public function show(Mproduction $mproduction): Response
+    {
+        Gate::authorize('view', $mproduction);
+
+        return Inertia::render('Mproductions/Show', [
+            'mproduction' => new MproductionsResource($mproduction),
+        ]);
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Mproduction $mproduction)
