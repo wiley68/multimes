@@ -75,6 +75,8 @@ class MhallController extends Controller
      */
     public function create(): Response
     {
+        Gate::authorize('create', Mhall::class);
+
         return Inertia::render('Nomenklature/Mhalls/Create', [
             'factories' => FactoryResource::collection(Factory::all()),
         ]);
@@ -85,6 +87,8 @@ class MhallController extends Controller
      */
     public function store(CreateMhallRequest $request): RedirectResponse
     {
+        Gate::authorize('create', Mhall::class);
+
         Mhall::create([
             'name' => $request->name,
             'factory_id' => $request->factory['id']
@@ -98,6 +102,8 @@ class MhallController extends Controller
      */
     public function edit(Mhall $mhall): Response
     {
+        Gate::authorize('update', $mhall);
+
         $mhall->load('factory');
 
         return Inertia::render('Nomenklature/Mhalls/Edit', [
@@ -111,6 +117,8 @@ class MhallController extends Controller
      */
     public function update(CreateMhallRequest $request, Mhall $mhall): RedirectResponse
     {
+        Gate::authorize('update', $mhall);
+
         $mhall->update([
             'name' => $request->name,
             'factory_id' => $request->factory['id']
@@ -124,6 +132,14 @@ class MhallController extends Controller
      */
     public function destroy(Mhall $mhall): RedirectResponse
     {
+        Gate::authorize('delete', $mhall);
+
+        if ($mhall->mproductions()->exists()) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие Халето, защото има свързани производствени процеси.'
+            ]);
+        }
+
         $mhall->delete();
 
         return back();
