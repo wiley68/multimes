@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUproductionRequest;
 use App\Http\Resources\UproductionsResource;
 use App\Models\Uproduction;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -53,19 +55,18 @@ class UproductionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUproductionRequest $request): RedirectResponse
     {
-        //
+        Gate::authorize('create', Uproduction::class);
+
+        Uproduction::create([
+            'status' => $request->status,
+            'uhall_id' => $request->uhall['id']
+        ]);
+
+        return back();
     }
 
     /**
@@ -73,15 +74,11 @@ class UproductionController extends Controller
      */
     public function show(Uproduction $uproduction)
     {
-        //
-    }
+        Gate::authorize('view', $uproduction);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Uproduction $uproduction)
-    {
-        //
+        return Inertia::render('Uproductions/Show', [
+            'uproduction' => new UproductionsResource($uproduction),
+        ]);
     }
 
     /**
