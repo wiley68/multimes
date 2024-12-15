@@ -100,7 +100,8 @@ class SiloController extends Controller
         Gate::authorize('update', $silo);
 
         $silo->update([
-            'name' => $request->name
+            'name' => $request->name,
+            'factory_id' => $request->factory['id']
         ]);
 
         return back();
