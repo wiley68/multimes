@@ -8,12 +8,15 @@ const props = defineProps({
   mhalls: {
     type: Object,
   },
+  uhalls: {
+    type: Object,
+  },
 })
 
 const $q = useQuasar()
 const slide = ref('process1')
 
-const checkStatus = (val) => {
+const checkStatusMhall = (val) => {
   if (Array.isArray(val) && val.length > 0) {
     const foundMproject = val.find(item => item.status === 1)
     if (foundMproject === undefined) {
@@ -26,9 +29,22 @@ const checkStatus = (val) => {
   }
 }
 
+const checkStatusUhall = (val) => {
+  if (Array.isArray(val) && val.length > 0) {
+    const foundUproject = val.find(item => item.status === 1)
+    if (foundUproject === undefined) {
+      return false
+    } else {
+      return foundUproject.id
+    }
+  } else {
+    return false
+  }
+}
+
 const mhallBtnClick = (mhall) => {
-  if (checkStatus(mhall.mproductions) !== false) {
-    router.get(route('mproductions.show', { mproduction: checkStatus(mhall.mproductions) }))
+  if (checkStatusMhall(mhall.mproductions) !== false) {
+    router.get(route('mproductions.show', { mproduction: checkStatusMhall(mhall.mproductions) }))
   } else {
     $q.dialog({
       title: 'Потвърди',
@@ -49,6 +65,34 @@ const mhallBtnClick = (mhall) => {
       router.post(route('mproductions.store'), {
         status: 1,
         mhall: mhall,
+      })
+    }).onCancel(() => { }).onDismiss(() => { })
+  }
+}
+
+const uhallBtnClick = (uhall) => {
+  if (checkStatusUhall(uhall.uproductions) !== false) {
+    router.get(route('uproductions.show', { uproduction: checkStatusUhall(uhall.uproductions) }))
+  } else {
+    $q.dialog({
+      title: 'Потвърди',
+      message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
+      cancel: true,
+      persistent: true,
+      ok: {
+        label: 'Да',
+        color: 'primary',
+      },
+      cancel: {
+        label: 'Откажи',
+        color: 'grey-1',
+        textColor: 'grey-10',
+        flat: true
+      },
+    }).onOk(() => {
+      router.post(route('uproductions.store'), {
+        status: 1,
+        uhall: uhall,
       })
     }).onCancel(() => { }).onDismiss(() => { })
   }
@@ -87,13 +131,13 @@ const mhallBtnClick = (mhall) => {
                   class="col"
                   rounded
                   size="40px"
-                  :value="checkStatus(mhall.mproductions) !== false ? 0.70 : 0.00"
+                  :value="checkStatusMhall(mhall.mproductions) !== false ? 0.70 : 0.00"
                   color="teal-2"
                 >
                   <div
                     class="absolute-full flex flex-center"
                     style="border-radius: 0.25rem;"
-                    :style="checkStatus(mhall.mproductions) !== false ? 'border:1px solid #4DB6AC;' : ''"
+                    :style="checkStatusMhall(mhall.mproductions) !== false ? 'border:1px solid #4DB6AC;' : ''"
                   >
                     <q-badge
                       class="q-px-sm q-py-xs text-caption text-weight-medium"
@@ -101,17 +145,18 @@ const mhallBtnClick = (mhall) => {
                       color="white"
                       rounded
                       text-color="teal-10"
-                      :label="checkStatus(mhall.mproductions) !== false ? mhall.name + ' - 70%' : mhall.name"
+                      :label="checkStatusMhall(mhall.mproductions) !== false ? mhall.name + ' - 70%' : mhall.name"
                     />
                   </div>
                 </q-linear-progress>
                 <q-btn
-                  :flat="checkStatus(mhall.mproductions) !== false"
-                  :outline="checkStatus(mhall.mproductions) === false"
+                  :flat="checkStatusMhall(mhall.mproductions) !== false"
+                  :outline="checkStatusMhall(mhall.mproductions) === false"
                   style="min-width: 190px;"
-                  :class="checkStatus(mhall.mproductions) !== false ? 'text-accent' : ''"
+                  :class="checkStatusMhall(mhall.mproductions) !== false ? 'text-accent' : ''"
                   @click="mhallBtnClick(mhall)"
-                >{{ checkStatus(mhall.mproductions) !== false ? 'Управлявай процеса' : 'Стартирай процес' }}</q-btn>
+                >{{ checkStatusMhall(mhall.mproductions) !== false ? 'Управлявай процеса' : 'Стартирай процес'
+                  }}</q-btn>
               </div>
             </q-card-section>
 
@@ -145,45 +190,22 @@ const mhallBtnClick = (mhall) => {
             <q-card-section
               style="max-height: 240px; display: flex;flex-direction: column;overflow-x: hidden;overflow-y: auto;"
             >
-              <div class="row q-gutter-x-sm q-my-sm">
+              <div
+                class="row q-gutter-x-sm q-my-sm"
+                v-for="uhall in uhalls"
+                :key="uhall.id"
+              >
                 <q-linear-progress
                   class="col"
                   rounded
                   size="40px"
-                  :value="0.92"
-                  color="indigo-2"
-                >
-                  <div
-                    class="absolute-full flex flex-center"
-                    style="border:1px solid #1A237E;border-radius: 0.25rem;"
-                  >
-                    <q-badge
-                      class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
-                      color="white"
-                      rounded
-                      text-color="indigo-10"
-                      label="Хале 11 - 92%"
-                    />
-                  </div>
-                </q-linear-progress>
-                <q-btn
-                  flat
-                  style="min-width: 160px;"
-                >Покажи процеса</q-btn>
-              </div>
-
-              <div class="row q-gutter-x-sm q-my-sm">
-                <q-linear-progress
-                  class="col"
-                  rounded
-                  size="40px"
-                  :value="0.0"
+                  :value="checkStatusUhall(uhall.uproductions) !== false ? 0.45 : 0.00"
                   color="indigo-2"
                 >
                   <div
                     class="absolute-full flex flex-center"
                     style="border-radius: 0.25rem;"
+                    :style="checkStatusUhall(uhall.uproductions) !== false ? 'border:1px solid #1A237E;' : ''"
                   >
                     <q-badge
                       class="q-px-sm q-py-xs text-caption text-weight-medium"
@@ -191,100 +213,19 @@ const mhallBtnClick = (mhall) => {
                       color="white"
                       rounded
                       text-color="indigo-10"
-                      label="Хале 12"
+                      :label="checkStatusUhall(uhall.uproductions) !== false ? uhall.name + ' - 45%' : uhall.name"
                     />
                   </div>
                 </q-linear-progress>
                 <q-btn
-                  outline
-                  style="min-width: 160px;"
-                >Стартирай процес</q-btn>
+                  :flat="checkStatusUhall(uhall.uproductions) !== false"
+                  :outline="checkStatusUhall(uhall.uproductions) === false"
+                  style="min-width: 190px;"
+                  :class="checkStatusUhall(uhall.uproductions) !== false ? 'text-accent' : ''"
+                  @click="uhallBtnClick(uhall)"
+                >{{ checkStatusUhall(uhall.uproductions) !== false ? 'Управлявай процеса' : 'Стартирай процес'
+                  }}</q-btn>
               </div>
-
-              <div class="row q-gutter-x-sm q-my-sm">
-                <q-linear-progress
-                  class="col"
-                  rounded
-                  size="40px"
-                  :value="0.0"
-                  color="indigo-2"
-                >
-                  <div
-                    class="absolute-full flex flex-center"
-                    style="border-radius: 0.25rem;"
-                  >
-                    <q-badge
-                      class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
-                      color="white"
-                      rounded
-                      text-color="indigo-10"
-                      label="Хале 13"
-                    />
-                  </div>
-                </q-linear-progress>
-                <q-btn
-                  outline
-                  style="min-width: 160px;"
-                >Стартирай процес</q-btn>
-              </div>
-
-              <div class="row q-gutter-x-sm q-my-sm">
-                <q-linear-progress
-                  class="col"
-                  rounded
-                  size="40px"
-                  :value="0.12"
-                  color="indigo-2"
-                >
-                  <div
-                    class="absolute-full flex flex-center"
-                    style="border:1px solid #1A237E;border-radius: 0.25rem;"
-                  >
-                    <q-badge
-                      class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
-                      color="white"
-                      rounded
-                      text-color="indigo-10"
-                      label="Хале 14 - 12%"
-                    />
-                  </div>
-                </q-linear-progress>
-                <q-btn
-                  flat
-                  style="min-width: 160px;"
-                >Покажи процеса</q-btn>
-              </div>
-
-              <div class="row q-gutter-x-sm q-my-sm">
-                <q-linear-progress
-                  class="col"
-                  rounded
-                  size="40px"
-                  :value="0.23"
-                  color="indigo-2"
-                >
-                  <div
-                    class="absolute-full flex flex-center"
-                    style="border:1px solid #1A237E;border-radius: 0.25rem;"
-                  >
-                    <q-badge
-                      class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
-                      color="white"
-                      rounded
-                      text-color="indigo-10"
-                      label="Хале 15 - 23%"
-                    />
-                  </div>
-                </q-linear-progress>
-                <q-btn
-                  flat
-                  style="min-width: 160px;"
-                >Покажи процеса</q-btn>
-              </div>
-
             </q-card-section>
 
             <q-separator />
