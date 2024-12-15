@@ -19,6 +19,11 @@ class Mhall extends Model
         return $this->belongsTo(Factory::class);
     }
 
+    public function silo()
+    {
+        return $this->belongsTo(Silo::class);
+    }
+
     public function mproductions()
     {
         return $this->hasMany(Mproduction::class);
