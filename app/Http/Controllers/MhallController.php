@@ -68,7 +68,7 @@ class MhallController extends Controller
             'filter' => 'nullable|string|max:255',
         ]);
 
-        $rowsPerPage = $validated['rowsPerPage'] ?? 10;
+        $rowsPerPage = $validated['rowsPerPage'] ?? 6;
         $page = $validated['page'] ?? 1;
         $sortBy = $validated['sortBy'] ?? 'id';
         $sortOrder = $validated['sortOrder'] ?? 'asc';

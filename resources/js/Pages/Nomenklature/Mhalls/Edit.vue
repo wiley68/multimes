@@ -34,8 +34,6 @@ const onReset = () => {
 watch(
     () => form.factory,
     (newValue, oldValue) => {
-        console.log(newValue)
-        console.log(oldValue)
         if (newValue && newValue.id !== oldValue.id) {
             form.silo = null
             silosFactory.value = props.silos.filter(silo => silo.factory.id === newValue.id)

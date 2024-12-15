@@ -32,13 +32,15 @@ const columns = [
         format: val => `${val}`,
         sortable: true
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
-        name: "actions",
-        label: "Управление",
-        align: "center",
-        field: "actions",
-    }
+        name: 'silo_id',
+        align: 'left',
+        label: 'Силоз',
+        field: row => row.silo.name,
+        format: val => `${val}`,
+        sortable: true
+    },
+    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true }
 ]
 
 const pagination = {
@@ -188,19 +190,21 @@ const confirm = (mhall) => {
                                 class="text-center text-white"
                                 :class="checkStatus(props.row.mproductions) ? 'bg-accent' : 'bg-grey'"
                             >
-                                <div class="text-h6">{{ props.row.name }}</div>
+                                <div class="text-h6">Хале: {{ props.row.name }}</div>
                                 <template v-if="checkStatus(props.row.mproductions)">
-                                    <div class="text-subtitle2">Активен процес: №{{ checkStatus(props.row.mproductions)
-                                        }}
+                                    <div class="text-subtitle2">Активен производствен процес: №{{
+                                        checkStatus(props.row.mproductions)
+                                    }}
                                     </div>
                                 </template>
                                 <template v-else>
-                                    <div class="text-subtitle2">Няма активен процес</div>
+                                    <div class="text-subtitle2">Няма активен производствен процес</div>
                                 </template>
                             </q-card-section>
                             <q-separator />
-                            <q-card-section class="flex flex-center">
-                                <div>{{ props.row.factory.name }}</div>
+                            <q-card-section class="columns flex-center">
+                                <div>База: {{ props.row.factory.name }}</div>
+                                <div>Силоз: {{ props.row.silo.name }}</div>
                             </q-card-section>
                             <q-separator />
                             <q-card-actions align="around">
