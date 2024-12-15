@@ -73,27 +73,29 @@ class SiloController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Silo $silo)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Silo $silo)
+    public function edit(Silo $silo): Response
     {
-        //
+        Gate::authorize('update', $silo);
+
+        return Inertia::render('Nomenklature/Silos/Edit', [
+            'silo' => new SiloResource($silo),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Silo $silo)
+    public function update(CreateSiloRequest $request, Silo $silo): RedirectResponse
     {
-        //
+        Gate::authorize('update', $silo);
+
+        $silo->update([
+            'name' => $request->name
+        ]);
+
+        return back();
     }
 
     /**
