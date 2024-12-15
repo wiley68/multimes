@@ -34,11 +34,11 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::delete('/users/{user}/permissions/{permission}', RevokePermissionFromUserController::class)->name('users.permissions.destroy');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'exclude.admin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-Route::middleware(['auth', 'permission:create|update|delete|view'])->group(function () {
+Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|view'])->group(function () {
     Route::resource('/cities', CityController::class);
     Route::resource('/factories', FactoryController::class);
     Route::resource('/mhalls', MhallController::class);

@@ -14,7 +14,7 @@ const props = defineProps({
 })
 
 const $q = useQuasar()
-const { hasPermission } = usePermission()
+const { hasPermission, hasPermissions } = usePermission()
 
 const checkStatusMhall = (val) => {
   if (Array.isArray(val) && val.length > 0) {
@@ -104,7 +104,10 @@ const uhallBtnClick = (uhall) => {
       class="column q-px-sm q-gutter-y-sm"
       style="height: calc(100vh - 82px);"
     >
-      <div class="row wrap q-gutter-sm full-height">
+      <div
+        v-if="hasPermissions(['create', 'update', 'view', 'delete'])"
+        class="row wrap q-gutter-sm full-height"
+      >
         <div
           class="col"
           style="min-width: 300px;"
