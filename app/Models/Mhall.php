@@ -12,6 +12,7 @@ class Mhall extends Model
     protected $fillable = [
         'name',
         'factory_id',
+        'silo_id',
     ];
 
     public function factory()

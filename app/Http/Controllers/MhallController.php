@@ -26,7 +26,7 @@ class MhallController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,factory_id,name',
+            'sortBy' => 'nullable|string|in:id,factory_id,silo_id,name',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
@@ -37,7 +37,7 @@ class MhallController extends Controller
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
-        $query = Mhall::query()->with('factory');
+        $query = Mhall::query()->with('factory', 'silo');
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
