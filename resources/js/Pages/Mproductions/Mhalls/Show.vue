@@ -3,6 +3,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import { useQuasar } from 'quasar'
+import { usePermission } from '@/composables/permissions'
 
 const props = defineProps({
     mhalls: {
@@ -48,6 +49,7 @@ const pagination = {
 const filter = ref(props.filter)
 const navigationActive = ref(false)
 const $q = useQuasar()
+const { hasPermission } = usePermission()
 
 const onRequest = (requestProp) => {
     router.get(
@@ -211,6 +213,7 @@ const confirm = (mhall) => {
                                 </template>
                                 <template v-else>
                                     <q-btn
+                                        v-if="hasPermission('create')"
                                         @click="confirm(props.row)"
                                         flat
                                     >Стартирай процес</q-btn>
