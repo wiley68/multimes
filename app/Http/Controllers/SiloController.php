@@ -49,9 +49,11 @@ class SiloController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        Gate::authorize('create', Silo::class);
+
+        return Inertia::render('Nomenklature/Silos/Create');
     }
 
     /**
