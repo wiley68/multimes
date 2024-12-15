@@ -124,11 +124,12 @@ class MhallController extends Controller
     {
         Gate::authorize('update', $mhall);
 
-        $mhall->load('factory');
+        $mhall->load(['factory', 'silo']);
 
         return Inertia::render('Nomenklature/Mhalls/Edit', [
             'mhall' => new MhallResource($mhall),
             'factories' => FactoryResource::collection(Factory::all()),
+            'silos' => SiloResource::collection(Silo::with(['factory'])->get()),
         ]);
     }
 
@@ -141,7 +142,8 @@ class MhallController extends Controller
 
         $mhall->update([
             'name' => $request->name,
-            'factory_id' => $request->factory['id']
+            'factory_id' => $request->factory['id'],
+            'silo_id' => $request->silo['id']
         ]);
 
         return back();

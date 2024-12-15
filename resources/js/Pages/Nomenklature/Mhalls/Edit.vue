@@ -1,31 +1,47 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
+import { ref, watch } from 'vue';
 
 const props = defineProps({
     mhall: {
         type: Object,
         required: true
     },
-    factories: Array
+    factories: Array,
+    silos: Array
 })
 
 const form = useForm({
     name: props.mhall?.name,
     factory: props.mhall?.factory,
+    silo: props.mhall?.silo,
 })
+const silosFactory = ref(props.silos.filter(silo => silo.factory.id === props.mhall?.factory.id))
 
 const onSubmit = () => {
     form.put(route('mhalls.update', props.mhall.id), {
         onFinish: () => {
-            form.reset('name', 'factory')
+            form.reset('name', 'factory', 'silo')
         },
     })
 };
 
 const onReset = () => {
-    form.reset('name', 'factory')
+    form.reset('name', 'factory', 'silo')
 }
+
+watch(
+    () => form.factory,
+    (newValue, oldValue) => {
+        console.log(newValue)
+        console.log(oldValue)
+        if (newValue && newValue.id !== oldValue.id) {
+            form.silo = null
+            silosFactory.value = props.silos.filter(silo => silo.factory.id === newValue.id)
+        }
+    }
+)
 </script>
 
 <template>
@@ -63,6 +79,7 @@ const onReset = () => {
                             :error="form.hasErrors"
                             :error-message="form.errors.name"
                         />
+
                         <q-select
                             v-model="form.factory"
                             :options="factories"
@@ -70,6 +87,15 @@ const onReset = () => {
                             label="Избери база"
                             :error="form.hasErrors"
                             :error-message="form.errors.factory_id"
+                        />
+
+                        <q-select
+                            v-model="form.silo"
+                            :options="silosFactory"
+                            option-label="name"
+                            label="Избери Силоз"
+                            :error="form.hasErrors"
+                            :error-message="form.errors.silo"
                         />
 
                         <div>
