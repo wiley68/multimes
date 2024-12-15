@@ -1,8 +1,8 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
-import { ref } from 'vue';
 import { useQuasar } from 'quasar'
+import { usePermission } from '@/composables/permissions'
 
 const props = defineProps({
   mhalls: {
@@ -14,7 +14,7 @@ const props = defineProps({
 })
 
 const $q = useQuasar()
-const slide = ref('process1')
+const { hasPermission } = usePermission()
 
 const checkStatusMhall = (val) => {
   if (Array.isArray(val) && val.length > 0) {
@@ -42,32 +42,28 @@ const checkStatusUhall = (val) => {
   }
 }
 
-const mhallBtnClick = (mhall) => {
-  if (checkStatusMhall(mhall.mproductions) !== false) {
-    router.get(route('mproductions.show', { mproduction: checkStatusMhall(mhall.mproductions) }))
-  } else {
-    $q.dialog({
-      title: 'Потвърди',
-      message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
-      cancel: true,
-      persistent: true,
-      ok: {
-        label: 'Да',
-        color: 'primary',
-      },
-      cancel: {
-        label: 'Откажи',
-        color: 'grey-1',
-        textColor: 'grey-10',
-        flat: true
-      },
-    }).onOk(() => {
-      router.post(route('mproductions.store'), {
-        status: 1,
-        mhall: mhall,
-      })
-    }).onCancel(() => { }).onDismiss(() => { })
-  }
+const confirm = (mhall) => {
+  $q.dialog({
+    title: 'Потвърди',
+    message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
+    cancel: true,
+    persistent: true,
+    ok: {
+      label: 'Да',
+      color: 'primary',
+    },
+    cancel: {
+      label: 'Откажи',
+      color: 'grey-1',
+      textColor: 'grey-10',
+      flat: true
+    },
+  }).onOk(() => {
+    router.post(route('mproductions.store'), {
+      status: 1,
+      mhall: mhall,
+    })
+  }).onCancel(() => { }).onDismiss(() => { })
 }
 
 const uhallBtnClick = (uhall) => {
@@ -146,18 +142,30 @@ const uhallBtnClick = (uhall) => {
                       color="white"
                       rounded
                       text-color="teal-10"
-                      :label="checkStatusMhall(mhall.mproductions) !== false ? mhall.name + ' - 70%' : mhall.name"
+                      :label="checkStatusMhall(mhall.mproductions) !== false ? `Хале: ${mhall.name} [Процес №${checkStatusMhall(mhall.mproductions)}: 70%]` : `Хале: ${mhall.name}`"
                     />
                   </div>
                 </q-linear-progress>
-                <q-btn
-                  :flat="checkStatusMhall(mhall.mproductions) !== false"
-                  :outline="checkStatusMhall(mhall.mproductions) === false"
-                  style="min-width: 190px;"
-                  :class="checkStatusMhall(mhall.mproductions) !== false ? 'text-accent' : ''"
-                  @click="mhallBtnClick(mhall)"
-                >{{ checkStatusMhall(mhall.mproductions) !== false ? 'Управлявай процеса' : 'Стартирай процес'
-                  }}</q-btn>
+                <template v-if="checkStatusMhall(mhall.mproductions) !== false">
+                  <q-btn
+                    flat
+                    style="min-width: 190px;"
+                    class="text-accent"
+                    @click="router.get(route('mproductions.show', { mproduction: checkStatusMhall(mhall.mproductions) }))"
+                  >Управлявай процеса</q-btn>
+                </template>
+                <template v-else>
+                  <template v-if="hasPermission('create')">
+                    <q-btn
+                      outline
+                      style="min-width: 190px;"
+                      @click="confirm(mhall)"
+                    >Стартирай процес</q-btn>
+                  </template>
+                  <template v-else>
+                    <div style="min-width: 190px;"></div>
+                  </template>
+                </template>
               </div>
             </q-card-section>
 
@@ -215,18 +223,30 @@ const uhallBtnClick = (uhall) => {
                       color="white"
                       rounded
                       text-color="indigo-10"
-                      :label="checkStatusUhall(uhall.uproductions) !== false ? uhall.name + ' - 45%' : uhall.name"
+                      :label="checkStatusUhall(uhall.uproductions) !== false ? `Хале: ${uhall.name} [Процес №${checkStatusUhall(uhall.uproductions)}: 45%]` : `Хале: ${uhall.name}`"
                     />
                   </div>
                 </q-linear-progress>
-                <q-btn
-                  :flat="checkStatusUhall(uhall.uproductions) !== false"
-                  :outline="checkStatusUhall(uhall.uproductions) === false"
-                  style="min-width: 190px;"
-                  :class="checkStatusUhall(uhall.uproductions) !== false ? 'text-accent' : ''"
-                  @click="uhallBtnClick(uhall)"
-                >{{ checkStatusUhall(uhall.uproductions) !== false ? 'Управлявай процеса' : 'Стартирай процес'
-                  }}</q-btn>
+                <template v-if="checkStatusUhall(uhall.uproductions) !== false">
+                  <q-btn
+                    flat
+                    style="min-width: 190px;"
+                    class="text-accent"
+                    @click="router.get(route('uproductions.show', { uproduction: checkStatusUhall(uhall.uproductions) }))"
+                  >Управлявай процеса</q-btn>
+                </template>
+                <template v-else>
+                  <template v-if="hasPermission('create')">
+                    <q-btn
+                      outline
+                      style="min-width: 190px;"
+                      @click="confirm(uhall)"
+                    >Стартирай процес</q-btn>
+                  </template>
+                  <template v-else>
+                    <div style="min-width: 190px;"></div>
+                  </template>
+                </template>
               </div>
             </q-card-section>
 
