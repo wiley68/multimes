@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\Silo;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class SiloPolicy
 {
@@ -13,7 +12,7 @@ class SiloPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('view') ? true : false;
     }
 
     /**
@@ -21,7 +20,7 @@ class SiloPolicy
      */
     public function view(User $user, Silo $silo): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -29,7 +28,7 @@ class SiloPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('create') ? true : false;
     }
 
     /**
@@ -37,7 +36,7 @@ class SiloPolicy
      */
     public function update(User $user, Silo $silo): bool
     {
-        //
+        return $user->hasPermissionTo('update') ? true : false;
     }
 
     /**
@@ -45,7 +44,7 @@ class SiloPolicy
      */
     public function delete(User $user, Silo $silo): bool
     {
-        //
+        return $user->hasPermissionTo('delete') ? true : false;
     }
 
     /**
@@ -53,7 +52,7 @@ class SiloPolicy
      */
     public function restore(User $user, Silo $silo): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +60,6 @@ class SiloPolicy
      */
     public function forceDelete(User $user, Silo $silo): bool
     {
-        //
+        return false;
     }
 }
