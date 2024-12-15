@@ -84,8 +84,11 @@ class SiloController extends Controller
     {
         Gate::authorize('update', $silo);
 
+        $silo->load('factory');
+
         return Inertia::render('Nomenklature/Silos/Edit', [
             'silo' => new SiloResource($silo),
+            'factories' => FactoryResource::collection(Factory::all()),
         ]);
     }
 

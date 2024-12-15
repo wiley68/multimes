@@ -6,23 +6,25 @@ const props = defineProps({
     silo: {
         type: Object,
         required: true
-    }
+    },
+    factories: Array
 })
 
 const form = useForm({
     name: props.silo?.name,
+    factory: props.silo?.factory,
 })
 
 const onSubmit = () => {
     form.put(route('silos.update', props.silo.id), {
         onFinish: () => {
-            form.reset('name')
+            form.reset('name', 'factory')
         },
     })
 };
 
 const onReset = () => {
-    form.reset('name')
+    form.reset('name', 'factory')
 }
 </script>
 
@@ -60,6 +62,15 @@ const onReset = () => {
                             hint="Име на Силоза"
                             :error="form.hasErrors"
                             :error-message="form.errors.name"
+                        />
+
+                        <q-select
+                            v-model="form.factory"
+                            :options="factories"
+                            option-label="name"
+                            label="Избери база"
+                            :error="form.hasErrors"
+                            :error-message="form.errors.factory"
                         />
 
                         <div>
