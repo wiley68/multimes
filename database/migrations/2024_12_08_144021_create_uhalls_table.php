@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('factory_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
+            $table->foreignId('silo_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
         });
     }

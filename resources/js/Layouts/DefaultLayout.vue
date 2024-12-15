@@ -364,6 +364,24 @@ onBeforeUnmount(() => {
                             clickable
                             class="text-secondary"
                             active-class="bg-blue-1"
+                            @click="router.get(route('factories.index'))"
+                            :active="usePage().component.includes('Nomenklature/Factories')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="secondary"
+                                    name="mdi-silo-outline"
+                                />
+                            </q-item-section>
+                            <q-item-section>Силози</q-item-section>
+                        </q-item>
+
+                        <q-separator />
+
+                        <q-item
+                            clickable
+                            class="text-secondary"
+                            active-class="bg-blue-1"
                             @click="router.get(route('mhalls.index'))"
                             :active="usePage().component.includes('Nomenklature/Mhalls')"
                         >
