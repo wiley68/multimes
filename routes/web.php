@@ -13,6 +13,7 @@ use App\Http\Controllers\PermissinController;
 use App\Http\Controllers\RemoveRoleFromUserController;
 use App\Http\Controllers\RevokePermissionFromRoleController;
 use App\Http\Controllers\RevokePermissionFromUserController;
+use App\Http\Controllers\SiloController;
 use App\Http\Controllers\UhallController;
 use App\Http\Controllers\UproductionController;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,7 @@ Route::middleware(['auth', 'exclude.admin'])->group(function () {
 Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|view'])->group(function () {
     Route::resource('/cities', CityController::class);
     Route::resource('/factories', FactoryController::class);
+    Route::resource('/silos', SiloController::class);
     Route::resource('/mhalls', MhallController::class);
     Route::get('/mhalls/show', [MhallController::class, 'show'])->name('mhalls.show');
     Route::resource('/uhalls', UhallController::class);

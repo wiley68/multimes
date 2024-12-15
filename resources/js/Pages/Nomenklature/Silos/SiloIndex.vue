@@ -6,7 +6,7 @@ import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 
 const props = defineProps({
-    factories: {
+    silos: {
         type: Object,
     },
     filter: {
@@ -22,13 +22,6 @@ const columns = [
         align: 'left',
         field: row => row.id,
         format: val => `${val}`,
-        sortable: true
-    },
-    {
-        name: 'city_id',
-        align: 'left',
-        label: 'Населено място',
-        field: row => row.city.name,
         sortable: true
     },
     { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
@@ -59,16 +52,16 @@ const fieldMhall = (row) => {
 const { hasPermission } = usePermission()
 const $q = useQuasar()
 const pagination = {
-    page: props.factories.meta.current_page,
-    rowsPerPage: props.factories.meta.per_page,
-    rowsNumber: props.factories.meta.total
+    page: props.silos.meta.current_page,
+    rowsPerPage: props.silos.meta.per_page,
+    rowsNumber: props.silos.meta.total
 }
 const filter = ref(props.filter)
 const navigationActive = ref(false)
 
 const onRequest = (requestProp) => {
     router.get(
-        route('factories.index'),
+        route('silos.index'),
         {
             page: requestProp.pagination.page,
             rowsPerPage: requestProp.pagination.rowsPerPage,
@@ -92,10 +85,10 @@ const deactivateNavigation = () => {
 
 const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
 
-const confirm = (factory_id) => {
+const confirm = (silo_id) => {
     $q.dialog({
         title: 'Потвърди',
-        message: 'Желаеш ли да изтриеш обекта?',
+        message: 'Желаеш ли да изтриеш силоза?',
         cancel: true,
         persistent: true,
         ok: {
@@ -110,7 +103,7 @@ const confirm = (factory_id) => {
             flat: true
         },
     }).onOk(() => {
-        router.delete(route('factories.destroy', factory_id), {
+        router.delete(route('silos.destroy', silo_id), {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
                     $q.notify({
@@ -127,7 +120,7 @@ const confirm = (factory_id) => {
 
 <template>
 
-    <Head title="Обекти"></Head>
+    <Head title="Силози"></Head>
 
     <DefaultLayout>
         <q-page class="q-pa-md">
@@ -140,14 +133,14 @@ const confirm = (factory_id) => {
                         @click="router.get(route('dashboard'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Производствени Бази</h5>
+                <h5 class="col row justify-center items-center">Силози</h5>
                 <div class="col row justify-end items-center">
                     <q-btn
                         v-if="hasPermission('create')"
                         color="primary"
-                        label="Нова база"
+                        label="Нов силоз"
                         icon="mdi-plus"
-                        @click="router.get(route('factories.create'))"
+                        @click="router.get(route('silos.create'))"
                     />
                 </div>
             </div>
@@ -155,14 +148,14 @@ const confirm = (factory_id) => {
                 class="my-sticky-header-table text-wrap-table"
                 :class="tableClass"
                 bordered
-                title="Производствени Бази"
+                title="Силози"
                 rows-per-page-label="Записи на страница"
                 separator="cell"
                 no-data-label="Липсват данни"
                 no-results-label="Няма съответстващи записи"
                 loading-label="Данните се зареждат..."
                 table-header-class="bg-grey-3"
-                :rows="factories.data"
+                :rows="silos.data"
                 :columns="columns"
                 row-key="id"
                 :pagination="pagination"
@@ -194,7 +187,7 @@ const confirm = (factory_id) => {
                             dense
                             flat
                             rounded
-                            @click="router.get(route('factories.edit', props.row.id))"
+                            @click="router.get(route('silos.edit', props.row.id))"
                         />
                         <q-btn
                             v-if="hasPermission('delete')"

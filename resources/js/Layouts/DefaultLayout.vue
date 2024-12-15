@@ -37,7 +37,8 @@ onMounted(() => {
         'Nomenklature/Cities',
         'Nomenklature/Factories',
         'Nomenklature/Mhalls',
-        'Nomenklature/Uhalls'
+        'Nomenklature/Uhalls',
+        'Nomenklature/Silos'
     ]
     if (searchNomenklatures.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
@@ -364,8 +365,8 @@ onBeforeUnmount(() => {
                             clickable
                             class="text-secondary"
                             active-class="bg-blue-1"
-                            @click="router.get(route('factories.index'))"
-                            :active="usePage().component.includes('Nomenklature/Factories')"
+                            @click="router.get(route('silos.index'))"
+                            :active="usePage().component.includes('Nomenklature/Silos')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -448,7 +449,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                }}</q-toolbar-title>
+                    }}</q-toolbar-title>
                 <q-separator
                     dark
                     vertical
