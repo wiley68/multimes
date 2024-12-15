@@ -6,8 +6,10 @@ use App\Http\Requests\CreateMhallRequest;
 use App\Http\Resources\FactoryResource;
 use App\Http\Resources\MhallResource;
 use App\Http\Resources\MhallSharedResource;
+use App\Http\Resources\SiloResource;
 use App\Models\Factory;
 use App\Models\Mhall;
+use App\Models\Silo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -61,7 +63,7 @@ class MhallController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,factory_id,name',
+            'sortBy' => 'nullable|string|in:id,factory_id,silo_id,name',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
@@ -72,7 +74,7 @@ class MhallController extends Controller
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
-        $query = Mhall::query()->with(['factory', 'mproductions']);
+        $query = Mhall::query()->with(['factory', 'silo', 'mproductions']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
@@ -95,6 +97,7 @@ class MhallController extends Controller
 
         return Inertia::render('Nomenklature/Mhalls/Create', [
             'factories' => FactoryResource::collection(Factory::all()),
+            'silos' => SiloResource::collection(Silo::with(['factory'])->get()),
         ]);
     }
 
@@ -107,7 +110,8 @@ class MhallController extends Controller
 
         Mhall::create([
             'name' => $request->name,
-            'factory_id' => $request->factory['id']
+            'factory_id' => $request->factory['id'],
+            'silo_id' => $request->silo['id']
         ]);
 
         return to_route('mhalls.index');
