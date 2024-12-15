@@ -24,6 +24,13 @@ const columns = [
         format: val => `${val}`,
         sortable: true
     },
+    {
+        name: 'factory_id',
+        align: 'left',
+        label: 'База',
+        field: row => row.factory.name,
+        sortable: true
+    },
     { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
         name: 'mhalls',

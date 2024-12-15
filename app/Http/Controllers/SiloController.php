@@ -23,7 +23,7 @@ class SiloController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,name',
+            'sortBy' => 'nullable|string|in:id,factory_id,name',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
@@ -34,7 +34,7 @@ class SiloController extends Controller
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
-        $query = Silo::query()->with(['mhalls', 'uhalls']);
+        $query = Silo::query()->with(['factory', 'mhalls', 'uhalls']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }

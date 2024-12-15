@@ -17,6 +17,7 @@ class SiloResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'factory' => new FactoryResource($this->whenLoaded('factory')),
             'mhalls' => MhallResource::collection($this->whenLoaded('mhalls')),
             'uhalls' => UhallResource::collection($this->whenLoaded('uhalls')),
         ];

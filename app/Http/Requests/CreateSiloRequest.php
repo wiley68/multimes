@@ -28,6 +28,10 @@ class CreateSiloRequest extends FormRequest
                 'string',
                 'max:255',
                 Rule::unique('silos', 'name')->ignore($this->silo)
+            ],
+            'factory' => [
+                'required',
+                'array'
             ]
         ];
     }
