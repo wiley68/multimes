@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateSiloRequest;
 use App\Http\Resources\SiloResource;
 use App\Models\Silo;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -59,9 +61,15 @@ class SiloController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateSiloRequest $request): RedirectResponse
     {
-        //
+        Gate::authorize('create', Silo::class);
+
+        Silo::create([
+            'name' => $request->name
+        ]);
+
+        return to_route('silos.index');
     }
 
     /**
