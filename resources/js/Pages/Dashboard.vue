@@ -108,7 +108,7 @@ const uhallBtnClick = (uhall) => {
       class="column q-px-sm q-gutter-y-sm"
       style="height: calc(100vh - 82px);"
     >
-      <div class="row wrap q-gutter-sm">
+      <div class="row wrap q-gutter-sm full-height">
         <div
           class="col"
           style="min-width: 300px;"
@@ -120,7 +120,8 @@ const uhallBtnClick = (uhall) => {
             </q-card-section>
 
             <q-card-section
-              style="max-height: 240px; display: flex;flex-direction: column;overflow-x: hidden;overflow-y: auto;"
+              class="column"
+              style="flex-grow: 1; overflow-x: hidden;overflow-y: auto;"
             >
               <div
                 class="row q-gutter-x-sm q-my-sm"
@@ -188,7 +189,8 @@ const uhallBtnClick = (uhall) => {
             </q-card-section>
 
             <q-card-section
-              style="max-height: 240px; display: flex;flex-direction: column;overflow-x: hidden;overflow-y: auto;"
+              class="column"
+              style="flex-grow: 1; overflow-x: hidden;overflow-y: auto;"
             >
               <div
                 class="row q-gutter-x-sm q-my-sm"
@@ -234,74 +236,17 @@ const uhallBtnClick = (uhall) => {
               align="around"
               style="height: 60px;"
             >
-              <q-btn flat>Покажи халета Угояване</q-btn>
-              <q-btn flat>Покажи процеси Угояване</q-btn>
+              <q-btn
+                flat
+                @click="router.get(route('uhalls.show'))"
+              >Покажи халета Угояване</q-btn>
+              <q-btn
+                flat
+                @click="router.get(route('uproductions.index'))"
+              >Покажи процеси Угояване</q-btn>
             </q-card-actions>
           </q-card>
         </div>
-      </div>
-      <div class="col row">
-        <q-carousel
-          v-model="slide"
-          swipeable
-          animated
-          control-type="regular"
-          control-color="primary"
-          navigation
-          padding
-          arrows
-          height="max-height"
-          class="text-primary rounded-borders full-width"
-        >
-          <q-carousel-slide
-            name="process1"
-            class="column no-wrap flex-center"
-          >
-            <q-icon
-              name="mdi-timer-play-outline"
-              size="56px"
-            />
-            <div class="q-mt-md text-center">
-              Продукционен процес 1 - Информация
-            </div>
-          </q-carousel-slide>
-          <q-carousel-slide
-            name="tv"
-            class="column no-wrap flex-center"
-          >
-            <q-icon
-              name="mdi-timer-play-outline"
-              size="56px"
-            />
-            <div class="q-mt-md text-center">
-              Продукционен процес 2 - Информация
-            </div>
-          </q-carousel-slide>
-          <q-carousel-slide
-            name="layers"
-            class="column no-wrap flex-center"
-          >
-            <q-icon
-              name="mdi-timer-play-outline"
-              size="56px"
-            />
-            <div class="q-mt-md text-center">
-              Продукционен процес 3 - Информация
-            </div>
-          </q-carousel-slide>
-          <q-carousel-slide
-            name="map"
-            class="column no-wrap flex-center"
-          >
-            <q-icon
-              name="mdi-timer-play-outline"
-              size="56px"
-            />
-            <div class="q-mt-md text-center">
-              Продукционен процес 4 - Информация
-            </div>
-          </q-carousel-slide>
-        </q-carousel>
       </div>
     </div>
   </DefaultLayout>
