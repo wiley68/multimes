@@ -101,8 +101,24 @@ class SiloController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Silo $silo)
+    public function destroy(Silo $silo): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $silo);
+
+        if ($silo->mhalls()->exists()) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие Силоза, защото има свързани халета за майки.'
+            ]);
+        }
+
+        if ($silo->uhalls()->exists()) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие Силоза, защото има свързани халета за угояване.'
+            ]);
+        }
+
+        $silo->delete();
+
+        return back();
     }
 }
