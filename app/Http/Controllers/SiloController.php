@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSiloRequest;
+use App\Http\Resources\FactoryResource;
 use App\Http\Resources\SiloResource;
+use App\Models\Factory;
 use App\Models\Silo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -55,7 +57,9 @@ class SiloController extends Controller
     {
         Gate::authorize('create', Silo::class);
 
-        return Inertia::render('Nomenklature/Silos/Create');
+        return Inertia::render('Nomenklature/Silos/Create', [
+            'factories' => FactoryResource::collection(Factory::all()),
+        ]);
     }
 
     /**
@@ -66,7 +70,8 @@ class SiloController extends Controller
         Gate::authorize('create', Silo::class);
 
         Silo::create([
-            'name' => $request->name
+            'name' => $request->name,
+            'factory_id' => $request->factory['id']
         ]);
 
         return to_route('silos.index');

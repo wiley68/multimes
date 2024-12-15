@@ -2,18 +2,23 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
+defineProps({
+    factories: Array
+})
+
 const form = useForm({
-    name: ''
+    name: '',
+    factory: null
 })
 
 const onSubmit = () => {
     form.post(route('silos.store'), {
-        onFinish: () => form.reset('name'),
+        onFinish: () => form.reset('name', 'factory'),
     })
 };
 
 const onReset = () => {
-    form.reset('name')
+    form.reset('name', 'factory')
 }
 </script>
 
@@ -52,6 +57,15 @@ const onReset = () => {
                             autofocus
                             :error="form.hasErrors"
                             :error-message="form.errors.name"
+                        />
+
+                        <q-select
+                            v-model="form.factory"
+                            :options="factories"
+                            option-label="name"
+                            label="Избери База"
+                            :error="form.hasErrors"
+                            :error-message="form.errors.factory"
                         />
 
                         <div>
