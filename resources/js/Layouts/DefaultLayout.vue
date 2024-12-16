@@ -485,7 +485,7 @@ onBeforeUnmount(() => {
     </q-layout>
 </template>
 
-<style scoped>
+<style>
 .q-custom-toolbar {
     min-height: 30px !important;
 }
@@ -493,5 +493,32 @@ onBeforeUnmount(() => {
 .text-title {
     max-width: max-content;
     white-space: nowrap;
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 82px);
+}
+
+.body-panel {
+    flex: 1;
+    overflow-y: auto;
+    border-bottom: 1px solid #E0E0E0;
+}
+
+.footer-panel {
+    height: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: #f5f5f5;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+.scrollable-content {
+    padding: 16px;
 }
 </style>

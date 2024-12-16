@@ -163,7 +163,7 @@ const confirm = (mhall) => {
                                             <template v-if="checkStatus(props.row.mproductions)">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
                                                     checkStatus(props.row.mproductions)
-                                                    }}
+                                                }}
                                                 </div>
                                             </template>
                                             <template v-else>
@@ -221,32 +221,3 @@ const confirm = (mhall) => {
         </q-page>
     </DefaultLayout>
 </template>
-
-<style scoped>
-.page-container {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 82px);
-}
-
-.body-panel {
-    flex: 1;
-    overflow-y: auto;
-    border-bottom: 1px solid #E0E0E0;
-}
-
-.footer-panel {
-    height: 48px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    background-color: #f5f5f5;
-    padding-left: 4px;
-    padding-right: 4px;
-}
-
-.scrollable-content {
-    padding: 16px;
-}
-</style>
