@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUhallRequest;
 use App\Http\Resources\FactoryResource;
+use App\Http\Resources\SiloResource;
 use App\Http\Resources\UhallResource;
 use App\Http\Resources\UhallSharedResource;
 use App\Models\Factory;
+use App\Models\Silo;
 use App\Models\Uhall;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -26,7 +28,7 @@ class UhallController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,factory_id,name',
+            'sortBy' => 'nullable|string|in:id,factory_id,silo_id,name',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
@@ -37,7 +39,7 @@ class UhallController extends Controller
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
-        $query = Uhall::query()->with('factory');
+        $query = Uhall::query()->with('factory', 'silo');
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
@@ -61,7 +63,7 @@ class UhallController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,factory_id,name',
+            'sortBy' => 'nullable|string|in:id,factory_id,silo_id,name',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
@@ -72,7 +74,7 @@ class UhallController extends Controller
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
-        $query = Uhall::query()->with(['factory', 'uproductions']);
+        $query = Uhall::query()->with(['factory', 'silo', 'uproductions']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
@@ -95,6 +97,7 @@ class UhallController extends Controller
 
         return Inertia::render('Nomenklature/Uhalls/Create', [
             'factories' => FactoryResource::collection(Factory::all()),
+            'silos' => SiloResource::collection(Silo::with(['factory'])->get()),
         ]);
     }
 
@@ -107,7 +110,8 @@ class UhallController extends Controller
 
         Uhall::create([
             'name' => $request->name,
-            'factory_id' => $request->factory['id']
+            'factory_id' => $request->factory['id'],
+            'silo_id' => $request->silo['id'],
         ]);
 
         return to_route('uhalls.index');
@@ -120,11 +124,12 @@ class UhallController extends Controller
     {
         Gate::authorize('update', $uhall);
 
-        $uhall->load('factory');
+        $uhall->load(['factory', 'silo']);
 
         return Inertia::render('Nomenklature/Uhalls/Edit', [
             'uhall' => new UhallResource($uhall),
             'factories' => FactoryResource::collection(Factory::all()),
+            'silos' => SiloResource::collection(Silo::with(['factory'])->get()),
         ]);
     }
 
@@ -137,7 +142,8 @@ class UhallController extends Controller
 
         $uhall->update([
             'name' => $request->name,
-            'factory_id' => $request->factory['id']
+            'factory_id' => $request->factory['id'],
+            'silo_id' => $request->silo['id'],
         ]);
 
         return back();
@@ -149,6 +155,12 @@ class UhallController extends Controller
     public function destroy(Uhall $uhall): RedirectResponse
     {
         Gate::authorize('delete', $uhall);
+
+        if ($uhall->mproductions()->exists()) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие Халето, защото има свързани производствени процеси.'
+            ]);
+        }
 
         $uhall->delete();
 

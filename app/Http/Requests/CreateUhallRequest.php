@@ -32,6 +32,10 @@ class CreateUhallRequest extends FormRequest
             'factory' => [
                 'required',
                 'array'
+            ],
+            'silo' => [
+                'required',
+                'array'
             ]
         ];
     }

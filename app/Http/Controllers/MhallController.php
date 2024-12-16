@@ -111,7 +111,7 @@ class MhallController extends Controller
         Mhall::create([
             'name' => $request->name,
             'factory_id' => $request->factory['id'],
-            'silo_id' => $request->silo['id']
+            'silo_id' => $request->silo['id'],
         ]);
 
         return to_route('mhalls.index');
@@ -143,7 +143,7 @@ class MhallController extends Controller
         $mhall->update([
             'name' => $request->name,
             'factory_id' => $request->factory['id'],
-            'silo_id' => $request->silo['id']
+            'silo_id' => $request->silo['id'],
         ]);
 
         return back();

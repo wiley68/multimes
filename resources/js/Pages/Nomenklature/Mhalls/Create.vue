@@ -5,30 +5,31 @@ import { ref, watch } from 'vue';
 
 const props = defineProps({
     factories: Array,
-    silos: Array
+    silos: Array,
 })
 
 const form = useForm({
     name: '',
     factory: null,
-    silo: null
+    silo: null,
 })
 const silosFactory = ref([])
 
 const onSubmit = () => {
     form.post(route('mhalls.store'), {
-        onFinish: () => form.reset('name', 'factory'),
+        onFinish: () => form.reset('name', 'factory', 'silo'),
     })
 };
 
 const onReset = () => {
-    form.reset('name', 'factory')
+    form.reset('name', 'factory', 'silo')
 }
 
 watch(
     () => form.factory,
     (newValue, oldValue) => {
-        if (newValue) {
+        if (newValue && newValue.id !== oldValue?.id) {
+            form.silo = null
             silosFactory.value = props.silos.filter(silo => silo.factory.id === newValue.id)
         }
     }

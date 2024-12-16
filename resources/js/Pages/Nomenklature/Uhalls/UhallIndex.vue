@@ -31,6 +31,13 @@ const columns = [
         field: row => row.factory.name,
         sortable: true
     },
+    {
+        name: 'silo_id',
+        align: 'left',
+        label: 'Силоз',
+        field: row => row.silo.name,
+        sortable: true
+    },
     { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
         name: "actions",

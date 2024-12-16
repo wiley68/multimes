@@ -1,25 +1,39 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
+import { ref, watch } from 'vue';
 
-defineProps({
-    factories: Array
+const props = defineProps({
+    factories: Array,
+    silos: Array,
 })
 
 const form = useForm({
     name: '',
-    factory: null
+    factory: null,
+    silo: null,
 })
+const silosFactory = ref([])
 
 const onSubmit = () => {
     form.post(route('uhalls.store'), {
-        onFinish: () => form.reset('name', 'factory'),
+        onFinish: () => form.reset('name', 'factory', 'silo'),
     })
 };
 
 const onReset = () => {
-    form.reset('name', 'factory')
+    form.reset('name', 'factory', 'silo')
 }
+
+watch(
+    () => form.factory,
+    (newValue, oldValue) => {
+        if (newValue && newValue.id !== oldValue?.id) {
+            form.silo = null
+            silosFactory.value = props.silos.filter(silo => silo.factory.id === newValue.id)
+        }
+    }
+)
 </script>
 
 <template>
@@ -66,6 +80,15 @@ const onReset = () => {
                             label="Избери База"
                             :error="form.hasErrors"
                             :error-message="form.errors.factory_id"
+                        />
+
+                        <q-select
+                            v-model="form.silo"
+                            :options="silosFactory"
+                            option-label="name"
+                            label="Избери Силоз"
+                            :error="form.hasErrors"
+                            :error-message="form.errors.silo"
                         />
 
                         <div>

@@ -9,7 +9,7 @@ const props = defineProps({
         required: true
     },
     factories: Array,
-    silos: Array
+    silos: Array,
 })
 
 const form = useForm({
@@ -34,7 +34,7 @@ const onReset = () => {
 watch(
     () => form.factory,
     (newValue, oldValue) => {
-        if (newValue && newValue.id !== oldValue.id) {
+        if (newValue && newValue.id !== oldValue?.id) {
             form.silo = null
             silosFactory.value = props.silos.filter(silo => silo.factory.id === newValue.id)
         }
