@@ -40,7 +40,7 @@ const columns = [
         format: val => `${val}`,
         sortable: true
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true }
+    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
 ]
 
 const pagination = {
@@ -194,7 +194,7 @@ const confirm = (mhall) => {
                                 <template v-if="checkStatus(props.row.mproductions)">
                                     <div class="text-subtitle2">Активен производствен процес: №{{
                                         checkStatus(props.row.mproductions)
-                                    }}
+                                        }}
                                     </div>
                                 </template>
                                 <template v-else>
