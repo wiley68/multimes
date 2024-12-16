@@ -49,9 +49,66 @@ const title = 'Промяна на Хале майки'
     <Head :title="title"></Head>
 
     <DefaultLayout :title="title">
-        <q-page class="q-pa-md column">
-            <div class="row items-center justify-between">
-                <div class="col row items-center">
+        <q-page class="q-pa-none">
+            <div class="page-container">
+                <div class="body-panel">
+                    <div class="scrollable-content">
+                        <div class="column flex-grow flex-center">
+                            <q-card
+                                class="q-pa-md"
+                                style="width: 800px; max-width: 100%;"
+                            >
+                                <q-form
+                                    @submit.prevent="onSubmit"
+                                    @reset="onReset"
+                                    class="q-gutter-md"
+                                >
+                                    <q-input
+                                        v-model="form.name"
+                                        label="Хале *"
+                                        hint="Име на Халето"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.name"
+                                    />
+
+                                    <q-select
+                                        v-model="form.factory"
+                                        :options="factories"
+                                        option-label="name"
+                                        label="Избери база"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.factory_id"
+                                    />
+
+                                    <q-select
+                                        v-model="form.silo"
+                                        :options="silosFactory"
+                                        option-label="name"
+                                        label="Избери Силоз"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.silo"
+                                    />
+
+                                    <div>
+                                        <q-btn
+                                            label="Промени"
+                                            type="submit"
+                                            color="primary"
+                                        />
+                                        <q-btn
+                                            label="Откажи"
+                                            type="reset"
+                                            color="primary"
+                                            flat
+                                            class="q-ml-sm"
+                                        />
+                                    </div>
+                                </q-form>
+                            </q-card>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-panel">
                     <q-btn
                         color="primary"
                         label="Халета"
@@ -59,62 +116,6 @@ const title = 'Промяна на Хале майки'
                         @click="router.get(route('mhalls.index'))"
                     />
                 </div>
-                <h5 class="col row justify-center items-center">Промяна на Хале майки</h5>
-                <div class="col row justify-end items-center"></div>
-            </div>
-            <div class="column flex-grow flex-center">
-                <q-card
-                    class="q-pa-md"
-                    style="width: 800px; max-width: 100%;"
-                >
-                    <q-form
-                        @submit.prevent="onSubmit"
-                        @reset="onReset"
-                        class="q-gutter-md"
-                    >
-                        <q-input
-                            v-model="form.name"
-                            label="Хале *"
-                            hint="Име на Халето"
-                            :error="form.hasErrors"
-                            :error-message="form.errors.name"
-                        />
-
-                        <q-select
-                            v-model="form.factory"
-                            :options="factories"
-                            option-label="name"
-                            label="Избери база"
-                            :error="form.hasErrors"
-                            :error-message="form.errors.factory_id"
-                        />
-
-                        <q-select
-                            v-model="form.silo"
-                            :options="silosFactory"
-                            option-label="name"
-                            label="Избери Силоз"
-                            :error="form.hasErrors"
-                            :error-message="form.errors.silo"
-                        />
-
-                        <div>
-                            <q-btn
-                                label="Промени"
-                                type="submit"
-                                color="primary"
-                            />
-                            <q-btn
-                                label="Откажи"
-                                type="reset"
-                                color="primary"
-                                flat
-                                class="q-ml-sm"
-                            />
-                        </div>
-                    </q-form>
-                </q-card>
-
             </div>
         </q-page>
     </DefaultLayout>
