@@ -68,16 +68,6 @@ const onRequest = (requestProp) => {
     );
 }
 
-const activateNavigation = () => {
-    navigationActive.value = true
-}
-
-const deactivateNavigation = () => {
-    navigationActive.value = false
-}
-
-const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
-
 const confirm = (city_id) => {
     $q.dialog({
         title: 'Потвърди',
@@ -116,18 +106,83 @@ const confirm = (city_id) => {
     <Head :title="title"></Head>
 
     <DefaultLayout :title="title">
-        <q-page class="q-pa-md">
-            <div class="row items-center justify-between">
-                <div class="col row items-center">
+        <q-page class="q-pa-none">
+            <div class="page-container">
+                <div class="body-panel">
+                    <div class="scrollable-content">
+                        <q-table
+                            ref="tableRef"
+                            class="my-sticky-header-table"
+                            bordered
+                            title="Населени места"
+                            rows-per-page-label="Записи на страница"
+                            separator="cell"
+                            no-data-label="Липсват данни"
+                            no-results-label="Няма съответстващи записи"
+                            loading-label="Данните се зареждат..."
+                            table-header-class="bg-grey-3"
+                            :rows="cities.data"
+                            :columns="columns"
+                            row-key="id"
+                            :pagination="pagination"
+                            :filter="filter"
+                            @request="onRequest"
+                        >
+                            <template v-slot:top-right>
+                                <q-input
+                                    v-model="filter"
+                                    borderless
+                                    dense
+                                    autofocus
+                                    debounce="600"
+                                    placeholder="Търси..."
+                                >
+                                    <template v-slot:append>
+                                        <q-icon name="mdi-magnify" />
+                                    </template>
+                                </q-input>
+                            </template>
+                            <template v-slot:body-cell-actions="props">
+                                <q-td align="center">
+                                    <q-btn
+                                        v-if="hasPermission('update')"
+                                        icon="mdi-pencil-outline"
+                                        color="primary"
+                                        dense
+                                        flat
+                                        rounded
+                                        @click="router.get(route('cities.edit', props.row.id))"
+                                    />
+                                    <q-btn
+                                        v-if="hasPermission('delete')"
+                                        icon="mdi-delete-outline"
+                                        color="negative"
+                                        dense
+                                        flat
+                                        rounded
+                                        @click="confirm(props.row.id)"
+                                    />
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-factories="props">
+                                <q-td
+                                    :props="props"
+                                    class="text-wrap"
+                                >
+                                    {{ fieldFactories(props.row) }}
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                </div>
+                <div class="footer-panel">
                     <q-btn
                         color="primary"
                         label="Табло"
                         icon="mdi-menu-left"
                         @click="router.get(route('dashboard'))"
                     />
-                </div>
-                <h5 class="col row justify-center items-center">Населени места</h5>
-                <div class="col row justify-end items-center">
+
                     <q-btn
                         v-if="hasPermission('create')"
                         color="primary"
@@ -137,72 +192,6 @@ const confirm = (city_id) => {
                     />
                 </div>
             </div>
-            <q-table
-                ref="tableRef"
-                class="my-sticky-header-table"
-                :class="tableClass"
-                bordered
-                title="Населени места"
-                rows-per-page-label="Записи на страница"
-                separator="cell"
-                no-data-label="Липсват данни"
-                no-results-label="Няма съответстващи записи"
-                loading-label="Данните се зареждат..."
-                table-header-class="bg-grey-3"
-                :rows="cities.data"
-                :columns="columns"
-                row-key="id"
-                :pagination="pagination"
-                :filter="filter"
-                @request="onRequest"
-                @focusin="activateNavigation"
-                @focusout="deactivateNavigation"
-            >
-                <template v-slot:top-right>
-                    <q-input
-                        v-model="filter"
-                        borderless
-                        dense
-                        autofocus
-                        debounce="600"
-                        placeholder="Търси..."
-                    >
-                        <template v-slot:append>
-                            <q-icon name="mdi-magnify" />
-                        </template>
-                    </q-input>
-                </template>
-                <template v-slot:body-cell-actions="props">
-                    <q-td align="center">
-                        <q-btn
-                            v-if="hasPermission('update')"
-                            icon="mdi-pencil-outline"
-                            color="primary"
-                            dense
-                            flat
-                            rounded
-                            @click="router.get(route('cities.edit', props.row.id))"
-                        />
-                        <q-btn
-                            v-if="hasPermission('delete')"
-                            icon="mdi-delete-outline"
-                            color="negative"
-                            dense
-                            flat
-                            rounded
-                            @click="confirm(props.row.id)"
-                        />
-                    </q-td>
-                </template>
-                <template v-slot:body-cell-factories="props">
-                    <q-td
-                        :props="props"
-                        class="text-wrap"
-                    >
-                        {{ fieldFactories(props.row) }}
-                    </q-td>
-                </template>
-            </q-table>
         </q-page>
     </DefaultLayout>
 </template>
