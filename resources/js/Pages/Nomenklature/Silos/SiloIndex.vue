@@ -56,6 +56,7 @@ const fieldMhall = (row) => {
     return mhalls + hallbetween + uhalls
 }
 
+const title = 'Силози'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
 const pagination = {
@@ -127,9 +128,9 @@ const confirm = (silo_id) => {
 
 <template>
 
-    <Head title="Силози"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
+    <DefaultLayout :title="title">
         <q-page class="q-pa-md">
             <div class="row items-center justify-between">
                 <div class="col row items-center">

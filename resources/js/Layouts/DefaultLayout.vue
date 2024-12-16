@@ -3,6 +3,10 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { router, usePage } from '@inertiajs/vue3'
 import { usePermission } from '@/composables/permissions';
 
+defineProps({
+    title: String,
+})
+
 const leftDrawerOpen = ref(false)
 const { hasRole, hasPermissions } = usePermission()
 
@@ -80,12 +84,22 @@ onBeforeUnmount(() => {
                     inset
                 />
 
-                <q-toolbar-title>
+                <q-toolbar-title style="flex: none;">
                     <q-icon
                         name="mdi-pig-variant-outline"
                         size="md"
                     ></q-icon>
                     Мултимес
+                </q-toolbar-title>
+
+                <q-separator
+                    dark
+                    vertical
+                    inset
+                />
+
+                <q-toolbar-title>
+                    {{ title }}
                 </q-toolbar-title>
 
                 <q-space />

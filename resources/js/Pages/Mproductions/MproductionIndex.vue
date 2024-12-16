@@ -70,6 +70,7 @@ const pagination = {
     sortBy: 'id',
     descending: false,
 }
+const title = 'Продукционни процеси Майки'
 const filter = ref(props.filter)
 const navigationActive = ref(false)
 
@@ -103,9 +104,9 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
 
 <template>
 
-    <Head title="Продукционни процеси Майки"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
+    <DefaultLayout :title="title">
         <q-page class="q-pa-md">
             <div class="row items-center justify-between">
                 <div class="col row items-center">

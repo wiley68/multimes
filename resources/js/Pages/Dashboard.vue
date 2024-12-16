@@ -13,6 +13,7 @@ const props = defineProps({
   },
 })
 
+const title = 'Табло'
 const $q = useQuasar()
 const { hasPermission, hasPermissions } = usePermission()
 
@@ -65,41 +66,13 @@ const confirm = (mhall) => {
     })
   }).onCancel(() => { }).onDismiss(() => { })
 }
-
-const uhallBtnClick = (uhall) => {
-  if (checkStatusUhall(uhall.uproductions) !== false) {
-    router.get(route('uproductions.show', { uproduction: checkStatusUhall(uhall.uproductions) }))
-  } else {
-    $q.dialog({
-      title: 'Потвърди',
-      message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
-      cancel: true,
-      persistent: true,
-      ok: {
-        label: 'Да',
-        color: 'primary',
-      },
-      cancel: {
-        label: 'Откажи',
-        color: 'grey-1',
-        textColor: 'grey-10',
-        flat: true
-      },
-    }).onOk(() => {
-      router.post(route('uproductions.store'), {
-        status: 1,
-        uhall: uhall,
-      })
-    }).onCancel(() => { }).onDismiss(() => { })
-  }
-}
 </script>
 
 <template>
 
-  <Head title="Табло"></Head>
+  <Head :title="title"></Head>
 
-  <DefaultLayout>
+  <DefaultLayout :title="title">
     <div
       class="column q-px-sm q-gutter-y-sm"
       style="height: calc(100vh - 82px);"

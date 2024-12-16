@@ -47,6 +47,7 @@ const columns = [
     }
 ]
 
+const title = 'Халета за майки'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
 const pagination = {
@@ -118,9 +119,9 @@ const confirm = (mhall_id) => {
 
 <template>
 
-    <Head title="Халета за майки"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
+    <DefaultLayout :title="title">
         <q-page class="q-pa-md">
             <div class="row items-center justify-between">
                 <div class="col row items-center">

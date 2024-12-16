@@ -48,6 +48,7 @@ const pagination = {
     rowsPerPage: props.mhalls.meta.per_page,
     rowsNumber: props.mhalls.meta.total
 }
+const title = 'Всички Халета Майки'
 const filter = ref(props.filter)
 const navigationActive = ref(false)
 const $q = useQuasar()
@@ -119,9 +120,9 @@ const confirm = (mhall) => {
 
 <template>
 
-    <Head title="Всички Халета Майки"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
+    <DefaultLayout :title="title">
         <q-page class="q-pa-md">
             <div class="row items-center justify-between">
                 <div class="col row items-center">
@@ -194,7 +195,7 @@ const confirm = (mhall) => {
                                 <template v-if="checkStatus(props.row.mproductions)">
                                     <div class="text-subtitle2">Активен производствен процес: №{{
                                         checkStatus(props.row.mproductions)
-                                        }}
+                                    }}
                                     </div>
                                 </template>
                                 <template v-else>

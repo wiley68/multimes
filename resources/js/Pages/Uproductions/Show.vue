@@ -8,13 +8,15 @@ const props = defineProps({
         required: true
     }
 })
+
+const title = `Производствен процес Угояване №${props.uproduction.id}`
 </script>
 
 <template>
 
-    <Head :title="`Производствен процес Угояване №${uproduction.id}`"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
+    <DefaultLayout :title="title">
         <q-page class="q-pa-md column">
             <div class="row items-center justify-between">
                 <div class="col row items-center">

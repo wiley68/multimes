@@ -41,6 +41,7 @@ const columns = [
 
 const fieldFactories = (row) => { return row.factories.map(obj => obj.name).join(', ') }
 
+const title = 'Населени места'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
 const pagination = {
@@ -112,9 +113,9 @@ const confirm = (city_id) => {
 
 <template>
 
-    <Head title="Населени места"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
+    <DefaultLayout :title="title">
         <q-page class="q-pa-md">
             <div class="row items-center justify-between">
                 <div class="col row items-center">

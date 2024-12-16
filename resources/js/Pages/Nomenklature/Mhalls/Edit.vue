@@ -40,13 +40,15 @@ watch(
         }
     }
 )
+
+const title = 'Промяна на Хале майки'
 </script>
 
 <template>
 
-    <Head title="Промяна на Хале майки"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
+    <DefaultLayout :title="title">
         <q-page class="q-pa-md column">
             <div class="row items-center justify-between">
                 <div class="col row items-center">

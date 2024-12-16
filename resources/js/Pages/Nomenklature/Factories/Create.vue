@@ -20,13 +20,15 @@ const onSubmit = () => {
 const onReset = () => {
     form.reset('name', 'city')
 }
+
+const title = 'Нова База'
 </script>
 
 <template>
 
-    <Head title="Нова База"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
+    <DefaultLayout :title="title">
         <q-page class="q-pa-md column">
             <div class="row items-center justify-between">
                 <div class="col row items-center">
