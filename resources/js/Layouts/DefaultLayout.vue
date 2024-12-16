@@ -458,40 +458,28 @@ onBeforeUnmount(() => {
 
         <q-footer
             bordered
-            class="bg-grey-8 text-white q-custom-toolbar"
+            class="bg-grey-2 text-grey-10 q-custom-toolbar"
         >
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
                     }}</q-toolbar-title>
-                <q-separator
-                    dark
-                    vertical
-                />
+                <q-separator vertical />
                 <template v-if="$page.props.auth.user.roles.length">
                     <q-toolbar-title
                         v-for="role in $page.props.auth.user.roles"
                         class="text-left text-subtitle1 text-title"
                         :class="role === 'admin' ? 'text-red-8' : role === 'moderator' ? 'text-orange-8' : role === 'user' ? 'text-green-8' : 'text-gray-10'"
                     >{{ role }}</q-toolbar-title>
-                    <q-separator
-                        dark
-                        vertical
-                    />
+                    <q-separator vertical />
                 </template>
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.auth.user.name
                     }}</q-toolbar-title>
-                <q-separator
-                    dark
-                    vertical
-                />
+                <q-separator vertical />
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.auth.user.email
                     }}</q-toolbar-title>
-                <q-separator
-                    dark
-                    vertical
-                />
-                <q-toolbar-title class="text-right text-subtitle1 text-grey-5">{{ currentDateTime }}</q-toolbar-title>
+                <q-separator vertical />
+                <q-toolbar-title class="text-right text-subtitle1 text-grey-8">{{ currentDateTime }}</q-toolbar-title>
             </q-toolbar>
         </q-footer>
     </q-layout>
