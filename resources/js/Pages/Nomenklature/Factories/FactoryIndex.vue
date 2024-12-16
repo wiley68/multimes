@@ -56,7 +56,7 @@ const fieldMhall = (row) => {
     return mhalls + hallbetween + uhalls
 }
 
-const title = 'Обекти'
+const title = 'Производствени Бази'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
 const pagination = {
@@ -130,7 +130,10 @@ const confirm = (factory_id) => {
 
     <Head :title="title"></Head>
 
-    <DefaultLayout :title="title">
+    <DefaultLayout
+        :title="title"
+        icon="mdi-file-document-outline"
+    >
         <q-page class="q-pa-none">
             <div class="page-container">
                 <div class="body-panel">

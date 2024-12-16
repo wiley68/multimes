@@ -72,7 +72,10 @@ const confirm = (mhall) => {
 
   <Head :title="title"></Head>
 
-  <DefaultLayout :title="title">
+  <DefaultLayout
+    :title="title"
+    icon="mdi-file-document-outline"
+  >
     <div
       class="column q-px-sm q-gutter-y-sm"
       style="height: calc(100vh - 82px);"

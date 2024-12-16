@@ -106,7 +106,10 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
 
     <Head :title="title"></Head>
 
-    <DefaultLayout :title="title">
+    <DefaultLayout
+        :title="title"
+        icon="mdi-file-document-outline"
+    >
         <q-page class="q-pa-none">
             <div class="page-container">
                 <div class="body-panel">

@@ -80,6 +80,8 @@ class MproductionController extends Controller
     {
         Gate::authorize('view', $mproduction);
 
+        $mproduction->load('mhall');
+
         return Inertia::render('Mproductions/Show', [
             'mproduction' => new MproductionsResource($mproduction),
         ]);

@@ -80,6 +80,8 @@ class UproductionController extends Controller
     {
         Gate::authorize('view', $uproduction);
 
+        $uproduction->load('uhall');
+
         return Inertia::render('Uproductions/Show', [
             'uproduction' => new UproductionsResource($uproduction),
         ]);

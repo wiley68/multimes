@@ -5,6 +5,7 @@ import { usePermission } from '@/composables/permissions';
 
 defineProps({
     title: String,
+    icon: String,
 })
 
 const leftDrawerOpen = ref(false)
@@ -99,10 +100,15 @@ onBeforeUnmount(() => {
                 />
 
                 <q-toolbar-title>
-                    {{ title }}
+                    <div class="row items-center">
+                        <q-icon
+                            :name="icon"
+                            size="md"
+                            class="q-mr-sm"
+                        ></q-icon>
+                        {{ title }}
+                    </div>
                 </q-toolbar-title>
-
-                <q-space />
 
                 <q-separator
                     dark
@@ -463,7 +469,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                    }}</q-toolbar-title>
+                }}</q-toolbar-title>
                 <q-separator vertical />
                 <template v-if="$page.props.auth.user.roles.length">
                     <q-toolbar-title
@@ -513,7 +519,7 @@ onBeforeUnmount(() => {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     padding-left: 4px;
     padding-right: 4px;
 }
