@@ -74,7 +74,7 @@ const confirm = (mhall) => {
 
   <DefaultLayout
     :title="title"
-    icon="mdi-file-document-outline"
+    icon="mdi-file-chart-outline"
   >
     <div
       class="column q-px-sm q-gutter-y-sm"

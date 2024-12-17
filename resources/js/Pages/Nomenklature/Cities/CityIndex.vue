@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 
@@ -50,7 +50,6 @@ const pagination = {
     rowsNumber: props.cities.meta.total
 }
 const filter = ref(props.filter)
-const navigationActive = ref(false)
 
 const onRequest = (requestProp) => {
     router.get(
