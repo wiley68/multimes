@@ -10,8 +10,7 @@ const props = defineProps({
     }
 })
 
-const tab = ref('mails')
-const splitterModel = ref(10)
+const tab = ref('info')
 
 const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${props.mproduction.id}`
 </script>
@@ -27,79 +26,118 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
         <q-page class="q-pa-none">
             <div class="page-container">
                 <div class="body-panel">
-                    <div class="scrollable-content-tab">
-                        <q-splitter
-                            v-model="splitterModel"
-                            class="splitter-content"
-                        >
-                            <template v-slot:before>
-                                <q-tabs
-                                    v-model="tab"
-                                    vertical
-                                    class="text-teal"
-                                >
-                                    <q-tab
-                                        name="mails"
-                                        icon="mail"
-                                        label="Mails"
-                                    />
-                                    <q-tab
-                                        name="alarms"
-                                        icon="alarm"
-                                        label="Alarms"
-                                    />
-                                    <q-tab
-                                        name="movies"
-                                        icon="movie"
-                                        label="Movies"
-                                    />
-                                </q-tabs>
-                            </template>
+                    <div class="row full-height full-width">
+                        <div style="width: 100px;border-right: 1px dotted #E0E0E0;">
+                            <q-tabs
+                                v-model="tab"
+                                vertical
+                                no-caps
+                                class="text-primary"
+                            >
+                                <q-tab
+                                    name="info"
+                                    icon="mail"
+                                    label="Информация"
+                                    :alert="false"
+                                    alert-icon="alarm_on"
+                                />
+                                <q-tab
+                                    name="data"
+                                    icon="alarm"
+                                    label="Данни"
+                                    :alert="false"
+                                    alert-icon="alarm_on"
+                                />
+                                <q-tab
+                                    name="expenses"
+                                    icon="movie"
+                                    label="Разходи"
+                                    :alert="false"
+                                    alert-icon="alarm_on"
+                                />
+                                <q-tab
+                                    name="revenue"
+                                    icon="movie"
+                                    label="Приходи"
+                                    :alert="false"
+                                    alert-icon="alarm_on"
+                                />
+                                <q-tab
+                                    name="statistics"
+                                    icon="movie"
+                                    label="Статистика"
+                                    :alert="false"
+                                    alert-icon="alarm_on"
+                                />
+                            </q-tabs>
+                        </div>
+                        <div class="col">
+                            <q-tab-panels
+                                v-model="tab"
+                                animated
+                                transition-prev="slide-down"
+                                transition-next="slide-up"
+                            >
+                                <q-tab-panel name="info">
+                                    <div class="text-h4 q-mb-md">Mails</div>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                </q-tab-panel>
 
-                            <template v-slot:after>
-                                <q-tab-panels
-                                    v-model="tab"
-                                    animated
-                                    swipeable
-                                    vertical
-                                    transition-prev="jump-up"
-                                    transition-next="jump-up"
-                                >
-                                    <q-tab-panel name="mails">
-                                        <div class="text-h4 q-mb-md">Mails</div>
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium
-                                            cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-                                            commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium
-                                            cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-                                            commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    </q-tab-panel>
+                                <q-tab-panel name="data">
+                                    <div class="text-h4 q-mb-md">Alarms</div>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                </q-tab-panel>
 
-                                    <q-tab-panel name="alarms">
-                                        <div class="text-h4 q-mb-md">Alarms</div>
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium
-                                            cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-                                            commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium
-                                            cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-                                            commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    </q-tab-panel>
+                                <q-tab-panel name="expenses">
+                                    <div class="text-h4 q-mb-md">Movies</div>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                </q-tab-panel>
 
-                                    <q-tab-panel name="movies">
-                                        <div class="text-h4 q-mb-md">Movies</div>
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium
-                                            cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-                                            commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium
-                                            cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-                                            commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium
-                                            cumque magnam odio iure quidem, quod illum numquam possimus obcaecati
-                                            commodi minima assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    </q-tab-panel>
-                                </q-tab-panels>
-                            </template>
-                        </q-splitter>
+                                <q-tab-panel name="revenue">
+                                    <div class="text-h4 q-mb-md">Movies</div>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                </q-tab-panel>
+
+                                <q-tab-panel name="statistics">
+                                    <div class="text-h4 q-mb-md">Movies</div>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
+                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
+                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                </q-tab-panel>
+                            </q-tab-panels>
+                        </div>
                     </div>
                 </div>
                 <div class="footer-panel">
@@ -114,14 +152,3 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
         </q-page>
     </DefaultLayout>
 </template>
-
-<style scoped>
-.scrollable-content-tab {
-    padding: 0px;
-    height: 100%;
-}
-
-.splitter-content {
-    height: 100%;
-}
-</style>
