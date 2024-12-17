@@ -114,7 +114,7 @@ const confirm = (user_id) => {
                         <q-table
                             class="my-sticky-header-table"
                             bordered
-                            title="Потребители"
+                            :title="title"
                             rows-per-page-label="Записи на страница"
                             separator="cell"
                             no-data-label="Липсват данни"

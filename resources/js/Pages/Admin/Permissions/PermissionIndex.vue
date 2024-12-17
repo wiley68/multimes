@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { useQuasar } from 'quasar'
 
 const props = defineProps({
@@ -32,6 +32,7 @@ const columns = [
     }
 ]
 
+const title = 'Права'
 const $q = useQuasar()
 const pagination = {
     page: props.permissions.meta.current_page,
@@ -39,7 +40,6 @@ const pagination = {
     rowsNumber: props.permissions.meta.total
 }
 const filter = ref(props.filter)
-const navigationActive = ref(false)
 
 const onRequest = (requestProp) => {
     router.get(
@@ -56,16 +56,6 @@ const onRequest = (requestProp) => {
         }
     );
 }
-
-const activateNavigation = () => {
-    navigationActive.value = true
-}
-
-const deactivateNavigation = () => {
-    navigationActive.value = false
-}
-
-const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
 
 const confirm = (permission_id) => {
     $q.dialog({
@@ -102,21 +92,78 @@ const confirm = (permission_id) => {
 
 <template>
 
-    <Head title="Права"></Head>
+    <Head :title="title"></Head>
 
-    <DefaultLayout>
-        <q-page class="q-pa-md">
-            <div class="row items-center justify-between">
-                <div class="col row items-center">
+    <DefaultLayout
+        :title="title"
+        icon="mdi-file-document-outline"
+    >
+        <q-page class="q-pa-none">
+            <div class="page-container">
+                <div class="body-panel">
+                    <div class="scrollable-content">
+                        <q-table
+                            class="my-sticky-header-table"
+                            bordered
+                            title="Права"
+                            rows-per-page-label="Записи на страница"
+                            separator="cell"
+                            no-data-label="Липсват данни"
+                            no-results-label="Няма съответстващи записи"
+                            loading-label="Данните се зареждат..."
+                            table-header-class="bg-grey-3"
+                            :rows="permissions.data"
+                            :columns="columns"
+                            row-key="id"
+                            :pagination="pagination"
+                            :filter="filter"
+                            @request="onRequest"
+                        >
+                            <template v-slot:top-right>
+                                <q-input
+                                    v-model="filter"
+                                    borderless
+                                    dense
+                                    autofocus
+                                    debounce="600"
+                                    placeholder="Търси..."
+                                >
+                                    <template v-slot:append>
+                                        <q-icon name="mdi-magnify" />
+                                    </template>
+                                </q-input>
+                            </template>
+                            <template v-slot:body-cell-actions="props">
+                                <q-td align="center">
+                                    <q-btn
+                                        icon="mdi-pencil-outline"
+                                        color="primary"
+                                        dense
+                                        flat
+                                        rounded
+                                        @click="router.get(route('permissions.edit', props.row.id))"
+                                    />
+                                    <q-btn
+                                        icon="mdi-delete-outline"
+                                        color="negative"
+                                        dense
+                                        flat
+                                        rounded
+                                        @click="confirm(props.row.id)"
+                                    />
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                </div>
+                <div class="footer-panel">
                     <q-btn
                         color="primary"
                         label="Табло"
                         icon="mdi-menu-left"
                         @click="router.get(route('admin.index'))"
                     />
-                </div>
-                <h5 class="col row justify-center items-center">Права</h5>
-                <div class="col row justify-end items-center">
+
                     <q-btn
                         color="primary"
                         label="Ново право"
@@ -125,62 +172,6 @@ const confirm = (permission_id) => {
                     />
                 </div>
             </div>
-            <q-table
-                ref="tableRef"
-                class="my-sticky-header-table"
-                :class="tableClass"
-                bordered
-                title="Права"
-                rows-per-page-label="Записи на страница"
-                separator="cell"
-                no-data-label="Липсват данни"
-                no-results-label="Няма съответстващи записи"
-                loading-label="Данните се зареждат..."
-                table-header-class="bg-grey-3"
-                :rows="permissions.data"
-                :columns="columns"
-                row-key="id"
-                :pagination="pagination"
-                :filter="filter"
-                @request="onRequest"
-                @focusin="activateNavigation"
-                @focusout="deactivateNavigation"
-            >
-                <template v-slot:top-right>
-                    <q-input
-                        v-model="filter"
-                        borderless
-                        dense
-                        autofocus
-                        debounce="600"
-                        placeholder="Търси..."
-                    >
-                        <template v-slot:append>
-                            <q-icon name="mdi-magnify" />
-                        </template>
-                    </q-input>
-                </template>
-                <template v-slot:body-cell-actions="props">
-                    <q-td align="center">
-                        <q-btn
-                            icon="mdi-pencil-outline"
-                            color="primary"
-                            dense
-                            flat
-                            rounded
-                            @click="router.get(route('permissions.edit', props.row.id))"
-                        />
-                        <q-btn
-                            icon="mdi-delete-outline"
-                            color="negative"
-                            dense
-                            flat
-                            rounded
-                            @click="confirm(props.row.id)"
-                        />
-                    </q-td>
-                </template>
-            </q-table>
         </q-page>
     </DefaultLayout>
 </template>
