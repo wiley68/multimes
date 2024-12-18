@@ -43,7 +43,8 @@ onMounted(() => {
         'Nomenklature/Factories',
         'Nomenklature/Mhalls',
         'Nomenklature/Uhalls',
-        'Nomenklature/Silos'
+        'Nomenklature/Silos',
+        'Nomenklature/Products'
     ]
     if (searchNomenklatures.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
@@ -431,6 +432,24 @@ onBeforeUnmount(() => {
                                 />
                             </q-item-section>
                             <q-item-section>Халета за угояване</q-item-section>
+                        </q-item>
+
+                        <q-separator />
+
+                        <q-item
+                            clickable
+                            class="text-secondary"
+                            active-class="bg-blue-1"
+                            @click="router.get(route('products.index'))"
+                            :active="usePage().component.includes('Nomenklature/Products')"
+                        >
+                            <q-item-section avatar>
+                                <q-icon
+                                    color="secondary"
+                                    name="mdi-package-variant-closed"
+                                />
+                            </q-item-section>
+                            <q-item-section>Продукти</q-item-section>
                         </q-item>
                     </q-expansion-item>
 

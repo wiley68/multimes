@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PermissinController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RemoveRoleFromUserController;
 use App\Http\Controllers\RevokePermissionFromRoleController;
 use App\Http\Controllers\RevokePermissionFromUserController;
@@ -59,6 +60,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::get('/uproductions/{uproduction}', [UproductionController::class, 'show'])->name('uproductions.show');
     Route::put('/uproductions/{uproduction}', [UproductionController::class, 'update'])->name('uproductions.update');
     Route::delete('/uproductions/{uproduction}', [UproductionController::class, 'destroy'])->name('uproductions.destroy');
+    Route::resource('/products', ProductController::class);
 });
 
 require __DIR__ . '/auth.php';
