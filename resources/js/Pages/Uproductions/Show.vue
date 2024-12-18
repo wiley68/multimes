@@ -7,7 +7,8 @@ const props = defineProps({
     uproduction: {
         type: Object,
         required: true
-    }
+    },
+    silo: Object
 })
 
 const tab = ref('info')
@@ -88,7 +89,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                         >
                             <div class="col text-h4 q-mr-md">
                                 <q-card class="my-card full-height column">
-                                    <q-card-section class="bg-primary text-white">
+                                    <q-card-section class="bg-secondary text-white">
                                         <div class="text-h6 text-center">Производствен Процес №{{ uproduction.id }}
                                         </div>
                                     </q-card-section>
@@ -105,8 +106,8 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                 style="width: 300px;"
                             >
                                 <q-card class="my-card full-height column">
-                                    <q-card-section class="bg-secondary text-white">
-                                        <div class="text-h6 text-center">Our Changing Planet</div>
+                                    <q-card-section class="bg-deep-orange text-white">
+                                        <div class="text-h6 text-center">{{ silo.name }}</div>
                                     </q-card-section>
 
                                     <q-separator />

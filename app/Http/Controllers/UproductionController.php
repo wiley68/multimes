@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUproductionRequest;
+use App\Http\Resources\SiloResource;
+use App\Http\Resources\UhallResource;
 use App\Http\Resources\UproductionsResource;
+use App\Models\Silo;
 use App\Models\Uhall;
 use App\Models\Uproduction;
 use Illuminate\Http\RedirectResponse;
@@ -81,9 +84,12 @@ class UproductionController extends Controller
         Gate::authorize('view', $uproduction);
 
         $uproduction->load('uhall');
+        $uhall = Uhall::findOrFail($uproduction->uhall_id);
+        $silo = Silo::findOrFail($uhall->silo_id);
 
         return Inertia::render('Uproductions/Show', [
             'uproduction' => new UproductionsResource($uproduction),
+            'silo' => new SiloResource($silo)
         ]);
     }
 
