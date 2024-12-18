@@ -75,36 +75,65 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                     class="col"
                     style="overflow-y: auto;"
                 >
-                    <div class="row full-height full-width">
-                        <div class="col">
-                            <q-tab-panels
-                                v-model="tab"
-                                animated
-                                transition-prev="slide-down"
-                                transition-next="slide-up"
+                    <q-tab-panels
+                        class="col full-height"
+                        v-model="tab"
+                        animated
+                        transition-prev="slide-down"
+                        transition-next="slide-up"
+                    >
+                        <q-tab-panel
+                            name="info"
+                            class="row"
+                        >
+                            <div class="col text-h4 q-mr-md">
+                                <q-card class="my-card full-height column">
+                                    <q-card-section class="bg-primary text-white">
+                                        <div class="text-h6 text-center">Производствен Процес №{{ uproduction.id }}
+                                        </div>
+                                    </q-card-section>
+
+                                    <q-separator />
+
+                                    <q-card-section class="col">
+                                        qqq
+                                    </q-card-section>
+                                </q-card>
+                            </div>
+                            <div
+                                class="text-h4"
+                                style="width: 300px;"
                             >
-                                <q-tab-panel name="info">
-                                    <div class="text-h4 q-mb-md">Информация</div>
-                                </q-tab-panel>
+                                <q-card class="my-card full-height column">
+                                    <q-card-section class="bg-secondary text-white">
+                                        <div class="text-h6 text-center">Our Changing Planet</div>
+                                    </q-card-section>
 
-                                <q-tab-panel name="data">
-                                    <div class="text-h4 q-mb-md">Данни</div>
-                                </q-tab-panel>
+                                    <q-separator />
 
-                                <q-tab-panel name="expenses">
-                                    <div class="text-h4 q-mb-md">Разходи</div>
-                                </q-tab-panel>
+                                    <q-card-section class="col">
+                                        qqq
+                                    </q-card-section>
+                                </q-card>
+                            </div>
+                        </q-tab-panel>
 
-                                <q-tab-panel name="revenue">
-                                    <div class="text-h4 q-mb-md">Приходи</div>
-                                </q-tab-panel>
+                        <q-tab-panel name="data">
+                            <div class="text-h4">Данни</div>
+                        </q-tab-panel>
 
-                                <q-tab-panel name="statistics">
-                                    <div class="text-h4 q-mb-md">Статистика</div>
-                                </q-tab-panel>
-                            </q-tab-panels>
-                        </div>
-                    </div>
+                        <q-tab-panel name="expenses">
+                            <div class="text-h4">Разходи</div>
+                        </q-tab-panel>
+
+                        <q-tab-panel name="revenue">
+                            <div class="text-h4">Приходи</div>
+                        </q-tab-panel>
+
+                        <q-tab-panel name="statistics">
+                            <div class="text-h4">Статистика</div>
+                        </q-tab-panel>
+                    </q-tab-panels>
                 </div>
             </div>
         </q-page>
