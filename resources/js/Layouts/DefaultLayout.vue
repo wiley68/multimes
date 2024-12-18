@@ -513,6 +513,14 @@ onBeforeUnmount(() => {
     border-bottom: 1px solid #E0E0E0;
 }
 
+.header-panel {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #ffffff;
+    border-bottom: 1px solid #E0E0E0;
+}
+
 .footer-panel {
     height: 48px;
     display: flex;

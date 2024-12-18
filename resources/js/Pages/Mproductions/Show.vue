@@ -25,52 +25,57 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
     >
         <q-page class="q-pa-none">
             <div class="page-container">
-                <div class="body-panel">
+                <div class="header-panel">
+                    <q-tabs
+                        v-model="tab"
+                        no-caps
+                        inline-label
+                        class="bg-grey-1 full-width text-primary"
+                        active-color="accent"
+                    >
+                        <q-tab
+                            name="info"
+                            icon="mail"
+                            label="Информация"
+                            :alert="false"
+                            alert-icon="alarm_on"
+                        />
+                        <q-tab
+                            name="data"
+                            icon="alarm"
+                            label="Данни"
+                            :alert="false"
+                            alert-icon="alarm_on"
+                        />
+                        <q-tab
+                            name="expenses"
+                            icon="movie"
+                            label="Разходи"
+                            :alert="false"
+                            alert-icon="alarm_on"
+                        />
+                        <q-tab
+                            name="revenue"
+                            icon="movie"
+                            label="Приходи"
+                            :alert="false"
+                            alert-icon="alarm_on"
+                        />
+                        <q-tab
+                            name="statistics"
+                            icon="movie"
+                            label="Статистика"
+                            :alert="false"
+                            alert-icon="alarm_on"
+                        />
+                    </q-tabs>
+                </div>
+
+                <div
+                    class="col"
+                    style="overflow-y: auto;"
+                >
                     <div class="row full-height full-width">
-                        <div style="width: 100px;border-right: 1px dotted #E0E0E0;">
-                            <q-tabs
-                                v-model="tab"
-                                vertical
-                                no-caps
-                                class="text-primary"
-                            >
-                                <q-tab
-                                    name="info"
-                                    icon="mail"
-                                    label="Информация"
-                                    :alert="false"
-                                    alert-icon="alarm_on"
-                                />
-                                <q-tab
-                                    name="data"
-                                    icon="alarm"
-                                    label="Данни"
-                                    :alert="false"
-                                    alert-icon="alarm_on"
-                                />
-                                <q-tab
-                                    name="expenses"
-                                    icon="movie"
-                                    label="Разходи"
-                                    :alert="false"
-                                    alert-icon="alarm_on"
-                                />
-                                <q-tab
-                                    name="revenue"
-                                    icon="movie"
-                                    label="Приходи"
-                                    :alert="false"
-                                    alert-icon="alarm_on"
-                                />
-                                <q-tab
-                                    name="statistics"
-                                    icon="movie"
-                                    label="Статистика"
-                                    :alert="false"
-                                    alert-icon="alarm_on"
-                                />
-                            </q-tabs>
-                        </div>
                         <div class="col">
                             <q-tab-panels
                                 v-model="tab"
@@ -139,14 +144,6 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                             </q-tab-panels>
                         </div>
                     </div>
-                </div>
-                <div class="footer-panel">
-                    <q-btn
-                        color="primary"
-                        label="Табло"
-                        icon="mdi-menu-left"
-                        @click="router.get(route('dashboard'))"
-                    />
                 </div>
             </div>
         </q-page>
