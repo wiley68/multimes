@@ -35,35 +35,35 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                     >
                         <q-tab
                             name="info"
-                            icon="mail"
+                            icon="mdi-information-outline"
                             label="Информация"
                             :alert="false"
                             alert-icon="alarm_on"
                         />
                         <q-tab
                             name="data"
-                            icon="alarm"
+                            icon="mdi-database-edit-outline"
                             label="Данни"
                             :alert="false"
                             alert-icon="alarm_on"
                         />
                         <q-tab
                             name="expenses"
-                            icon="movie"
+                            icon="mdi-minus-circle-outline"
                             label="Разходи"
                             :alert="false"
                             alert-icon="alarm_on"
                         />
                         <q-tab
                             name="revenue"
-                            icon="movie"
+                            icon="mdi-plus-circle-outline"
                             label="Приходи"
                             :alert="false"
                             alert-icon="alarm_on"
                         />
                         <q-tab
                             name="statistics"
-                            icon="movie"
+                            icon="mdi-chart-box-outline"
                             label="Статистика"
                             :alert="false"
                             alert-icon="alarm_on"
@@ -84,62 +84,23 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                                 transition-next="slide-up"
                             >
                                 <q-tab-panel name="info">
-                                    <div class="text-h4 q-mb-md">Mails</div>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <div class="text-h4 q-mb-md">Информация</div>
                                 </q-tab-panel>
 
                                 <q-tab-panel name="data">
-                                    <div class="text-h4 q-mb-md">Alarms</div>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <div class="text-h4 q-mb-md">Данни</div>
                                 </q-tab-panel>
 
                                 <q-tab-panel name="expenses">
-                                    <div class="text-h4 q-mb-md">Movies</div>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <div class="text-h4 q-mb-md">Разходи</div>
                                 </q-tab-panel>
 
                                 <q-tab-panel name="revenue">
-                                    <div class="text-h4 q-mb-md">Movies</div>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <div class="text-h4 q-mb-md">Приходи</div>
                                 </q-tab-panel>
 
                                 <q-tab-panel name="statistics">
-                                    <div class="text-h4 q-mb-md">Movies</div>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
-                                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis praesentium cumque
-                                        magnam odio iure quidem, quod illum numquam possimus obcaecati commodi minima
-                                        assumenda consectetur culpa fuga nulla ullam. In, libero.</p>
+                                    <div class="text-h4 q-mb-md">Статистика</div>
                                 </q-tab-panel>
                             </q-tab-panels>
                         </div>
