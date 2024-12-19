@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -59,9 +61,20 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateProductRequest $request): RedirectResponse
     {
-        //
+        Gate::authorize('create', Product::class);
+
+        Product::create([
+            'name' => $request->name,
+            'nomenklature' => $request->nomenklature,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'me' => $request->me,
+        ]);
+
+        return to_route('products.index');
     }
 
     /**
