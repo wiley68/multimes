@@ -78,34 +78,51 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Product $product): Response
     {
-        //
+        Gate::authorize('update', $product);
+
+        return Inertia::render('Nomenklature/Products/Edit', [
+            'product' => new ProductResource($product),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(CreateProductRequest $request, Product $product): RedirectResponse
     {
-        //
+        Gate::authorize('update', $product);
+
+        $product->update([
+            'name' => $request->name,
+            'nomenklature' => $request->nomenklature,
+            'description' => $request->description,
+            'price' => $request->price,
+            'stock' => $request->stock,
+            'me' => $request->me,
+        ]);
+
+        return back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $product);
+
+        // if ($product->factories()->exists()) {
+        //     return back()->withErrors([
+        //         'delete' => 'Не може да се изтрие Населеното място, защото има свързани Бази.'
+        //     ]);
+        // }
+
+        $product->delete();
+
+        return back();
     }
 }

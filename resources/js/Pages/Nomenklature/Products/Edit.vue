@@ -2,36 +2,39 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
+const props = defineProps({
+    product: {
+        type: Object,
+        required: true
+    }
+})
+
 const form = useForm({
-    name: '',
-    nomenklature: '',
-    description: '',
-    price: '',
-    stock: 0.00,
-    me: 'бр'
+    name: props.product?.name,
+    nomenklature: props.product?.nomenklature,
+    description: props.product?.description,
+    price: props.product?.price,
+    stock: props.product?.stock,
+    me: props.product?.me,
 })
 
 const onSubmit = () => {
-    form.post(route('products.store'), {
+    form.put(route('products.update', props.product.id), {
         onFinish: () => {
-            form.reset('name', 'nomenklature', 'description', 'price')
-            form.me = 'бр'
-            form.stock = 0
+            form.reset('name', 'nomenklature', 'description', 'price', 'me', 'stock')
         },
     })
 };
 
 const onReset = () => {
-    form.reset('name', 'nomenklature', 'description', 'price')
-    form.me = 'бр'
-    form.stock = 0
+    form.reset('name', 'nomenklature', 'description', 'price', 'me', 'stock')
 }
 
 const meOptions = [
     'бр', 'кг', 'л', 'м',
 ]
 
-const title = 'Продукт'
+const title = 'Промяна на Продукт'
 </script>
 
 <template>
@@ -40,7 +43,7 @@ const title = 'Продукт'
 
     <DefaultLayout
         :title="title"
-        icon="mdi-file-document-plus-outline"
+        icon="mdi-file-document-edit-outline"
     >
         <q-page class="q-pa-none">
             <div class="page-container">
@@ -109,7 +112,7 @@ const title = 'Продукт'
 
                                     <div>
                                         <q-btn
-                                            label="Създай"
+                                            label="Промени"
                                             type="submit"
                                             color="primary"
                                         />
