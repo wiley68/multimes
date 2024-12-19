@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->decimal('price', 8, 2);
             $table->double('stock', 15, 2)->default(0);
+            $table->enum('me', ['бр', 'кг', 'л', 'м']);
             $table->timestamps();
         });
     }
