@@ -89,9 +89,17 @@ class DeliveryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Delivery $delivery)
+    public function update(CreateDeliveryRequest $request, Delivery $delivery): RedirectResponse
     {
-        //
+        Gate::authorize('update', $delivery);
+
+        $delivery->update([
+            'document' => $request->document,
+            'supplier' => $request->supplier,
+            'status' => $request->status['value'],
+        ]);
+
+        return back();
     }
 
     /**
