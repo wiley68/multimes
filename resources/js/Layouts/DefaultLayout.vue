@@ -454,6 +454,22 @@ onBeforeUnmount(() => {
                     </q-expansion-item>
 
                     <q-separator />
+
+                    <q-item
+                        clickable
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                        @click="router.get(route('deliveries.index'))"
+                        :active="usePage().component.includes('Deliveries')"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="mdi-truck-delivery-outline"
+                            />
+                        </q-item-section>
+                        <q-item-section>Доставки</q-item-section>
+                    </q-item>
                 </template>
 
                 <q-space />

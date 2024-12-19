@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\FactoryController;
 use App\Http\Controllers\MhallController;
 use App\Http\Controllers\MproductionController;
@@ -61,6 +62,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::put('/uproductions/{uproduction}', [UproductionController::class, 'update'])->name('uproductions.update');
     Route::delete('/uproductions/{uproduction}', [UproductionController::class, 'destroy'])->name('uproductions.destroy');
     Route::resource('/products', ProductController::class);
+    Route::resource('/deliveries', DeliveryController::class);
 });
 
 require __DIR__ . '/auth.php';
