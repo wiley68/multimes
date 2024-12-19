@@ -77,9 +77,15 @@ class DeliveryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Delivery $delivery): Response
+    public function edit(Delivery $delivery): Response|RedirectResponse
     {
         Gate::authorize('update', $delivery);
+
+        if ($delivery->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да редактирате приключена доставка.'
+            ]);
+        }
 
         return Inertia::render('Deliveries/Edit', [
             'delivery' => new DeliveryResource($delivery),

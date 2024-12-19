@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Head, router } from '@inertiajs/vue3'
-import { ref } from 'vue';
+import { Head, router, usePage } from '@inertiajs/vue3'
+import { onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 import moment from 'moment'
@@ -94,6 +94,16 @@ const confirm = (delivery_id) => {
         })
     }).onCancel(() => { }).onDismiss(() => { })
 }
+
+onMounted(() => {
+    Object.values(usePage().props.errors).flat().forEach((error) => {
+        $q.notify({
+            message: error,
+            icon: 'mdi-alert-circle-outline',
+            type: 'negative',
+        });
+    });
+})
 </script>
 
 <template>
@@ -137,7 +147,7 @@ const confirm = (delivery_id) => {
                                     >
                                         <div v-if="col.name === 'actions'">
                                             <q-btn
-                                                v-if="hasPermission('update')"
+                                                v-if="hasPermission('update') && props.row.status === 0"
                                                 icon="mdi-pencil-outline"
                                                 color="primary"
                                                 dense
@@ -146,7 +156,7 @@ const confirm = (delivery_id) => {
                                                 @click="router.get(route('deliveries.edit', props.row.id))"
                                             />
                                             <q-btn
-                                                v-if="hasPermission('delete')"
+                                                v-if="hasPermission('delete') && props.row.status === 0"
                                                 icon="mdi-delete-outline"
                                                 color="negative"
                                                 dense
