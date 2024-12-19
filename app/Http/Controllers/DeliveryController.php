@@ -67,6 +67,7 @@ class DeliveryController extends Controller
 
         Delivery::create([
             'document' => $request->document,
+            'supplier' => $request->supplier,
             'status' => $request->status['value'],
         ]);
 

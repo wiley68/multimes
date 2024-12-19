@@ -4,20 +4,21 @@ import { Head, router, useForm } from '@inertiajs/vue3'
 
 const form = useForm({
     document: '',
+    supplier: '',
     status: { label: 'Типов документ', value: 0 },
 })
 
 const onSubmit = () => {
     form.post(route('deliveries.store'), {
         onFinish: () => {
-            form.reset('document')
+            form.reset('document', 'supplier')
             form.status = { label: 'Типов документ', value: 0 }
         },
     })
 };
 
 const onReset = () => {
-    form.reset('document')
+    form.reset('document', 'supplier')
     form.status = { label: 'Типов документ', value: 0 }
 }
 
@@ -56,6 +57,12 @@ const title = 'Доставка'
                                         label="Документ номер"
                                         hint="Номер на насрещния документ за доставка"
                                         autofocus
+                                    />
+
+                                    <q-input
+                                        v-model="form.supplier"
+                                        label="Доставчик"
+                                        hint="Доставчик на продуктите"
                                     />
 
                                     <q-select
