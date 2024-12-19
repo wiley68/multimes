@@ -105,8 +105,18 @@ class DeliveryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Delivery $delivery)
+    public function destroy(Delivery $delivery): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $delivery);
+
+        if ($delivery->status === 1) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие доставката, защото е приключена.'
+            ]);
+        }
+
+        $delivery->delete();
+
+        return back();
     }
 }
