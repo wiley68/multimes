@@ -22,11 +22,6 @@ const onReset = () => {
     form.status = { label: 'Типов документ', value: 0 }
 }
 
-const statusOptions = [
-    { label: 'Типов документ', value: 0 },
-    { label: 'Приключен документ', value: 1 },
-]
-
 const title = 'Доставка'
 </script>
 
@@ -63,15 +58,6 @@ const title = 'Доставка'
                                         v-model="form.supplier"
                                         label="Доставчик"
                                         hint="Доставчик на продуктите"
-                                    />
-
-                                    <q-select
-                                        v-model="form.status"
-                                        :options="statusOptions"
-                                        label="Тип документ *"
-                                        hint="Тип на документа Типов/Приключен"
-                                        :error="form.hasErrors"
-                                        :error-message="form.errors.status"
                                     />
 
                                     <div>

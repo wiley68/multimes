@@ -65,13 +65,15 @@ class DeliveryController extends Controller
     {
         Gate::authorize('create', Delivery::class);
 
-        Delivery::create([
+        $delivery = Delivery::create([
             'document' => $request->document,
             'supplier' => $request->supplier,
             'status' => $request->status['value'],
         ]);
 
-        return to_route('deliveries.index');
+        return to_route('deliveries.edit', [
+            'delivery' => new DeliveryResource($delivery),
+        ]);
     }
 
     /**
