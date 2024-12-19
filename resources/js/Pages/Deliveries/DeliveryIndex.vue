@@ -122,6 +122,45 @@ const confirm = (delivery_id) => {
                             :filter="filter"
                             @request="onRequest"
                         >
+                            <template v-slot:body="props">
+                                <q-tr
+                                    :props="props"
+                                    :class="props.row.status === 1 ? 'bg-red-3' : ''"
+                                >
+                                    <q-td
+                                        v-for="col in props.cols"
+                                        :key="col.name"
+                                        :props="props"
+                                    >
+                                        <div v-if="col.name === 'actions'">
+                                            <q-btn
+                                                v-if="hasPermission('update')"
+                                                icon="mdi-pencil-outline"
+                                                color="primary"
+                                                dense
+                                                flat
+                                                rounded
+                                                @click="router.get(route('deliveries.edit', props.row.id))"
+                                            />
+                                            <q-btn
+                                                v-if="hasPermission('delete')"
+                                                icon="mdi-delete-outline"
+                                                color="negative"
+                                                dense
+                                                flat
+                                                rounded
+                                                @click="confirm(props.row.id)"
+                                            />
+                                        </div>
+                                        <div v-if="col.name === 'status'">
+                                            {{ props.row['status'] === 0 ? 'Типов' : 'Приключен' }}
+                                        </div>
+                                        <div v-else>
+                                            {{ props.row[col.name] }}
+                                        </div>
+                                    </q-td>
+                                </q-tr>
+                            </template>
                             <template v-slot:top-right>
                                 <q-input
                                     v-model="filter"
@@ -135,28 +174,6 @@ const confirm = (delivery_id) => {
                                         <q-icon name="mdi-magnify" />
                                     </template>
                                 </q-input>
-                            </template>
-                            <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
-                                    <q-btn
-                                        v-if="hasPermission('update')"
-                                        icon="mdi-pencil-outline"
-                                        color="primary"
-                                        dense
-                                        flat
-                                        rounded
-                                        @click="router.get(route('deliveries.edit', props.row.id))"
-                                    />
-                                    <q-btn
-                                        v-if="hasPermission('delete')"
-                                        icon="mdi-delete-outline"
-                                        color="negative"
-                                        dense
-                                        flat
-                                        rounded
-                                        @click="confirm(props.row.id)"
-                                    />
-                                </q-td>
                             </template>
                         </q-table>
                     </div>
