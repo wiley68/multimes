@@ -49,9 +49,11 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
-        //
+        Gate::authorize('create', Product::class);
+
+        return Inertia::render('Nomenklature/Products/Create');
     }
 
     /**
