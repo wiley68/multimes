@@ -28,6 +28,11 @@ class CreateDeliveryRequest extends FormRequest
                 'string',
                 'max:32',
             ],
+            'supplier' => [
+                'nullable',
+                'string',
+                'max:128',
+            ],
             'status' => [
                 'required',
                 'array',

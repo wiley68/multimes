@@ -4,6 +4,7 @@ import { Head, router } from '@inertiajs/vue3'
 import { ref } from 'vue';
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
+import moment from 'moment'
 
 const props = defineProps({
     deliveries: {
@@ -25,6 +26,8 @@ const columns = [
         sortable: true
     },
     { name: 'document', align: 'left', label: 'Документ номер', field: 'document', sortable: true },
+    { name: 'supplier', align: 'left', label: 'Доставчик', field: 'supplier', sortable: true },
+    { name: 'created_at', align: 'left', label: 'Създаден на', field: 'created_at', sortable: true },
     { name: 'status', align: 'left', label: 'Тип', field: 'status', sortable: true },
     {
         name: "actions",
@@ -152,8 +155,11 @@ const confirm = (delivery_id) => {
                                                 @click="confirm(props.row.id)"
                                             />
                                         </div>
-                                        <div v-if="col.name === 'status'">
+                                        <div v-else-if="col.name === 'status'">
                                             {{ props.row['status'] === 0 ? 'Типов' : 'Приключен' }}
+                                        </div>
+                                        <div v-else-if="col.name === 'created_at'">
+                                            {{ moment(props.row['created_at']).format('DD.MM.YY HH:mm') }}
                                         </div>
                                         <div v-else>
                                             {{ props.row[col.name] }}

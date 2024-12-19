@@ -23,7 +23,7 @@ class DeliveryController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,status',
+            'sortBy' => 'nullable|string|in:id,document,supplier,created_at,status',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
