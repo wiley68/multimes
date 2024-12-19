@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateDeliveryRequest;
 use App\Http\Resources\DeliveryResource;
 use App\Models\Delivery;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -59,9 +61,16 @@ class DeliveryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateDeliveryRequest $request): RedirectResponse
     {
-        //
+        Gate::authorize('create', Delivery::class);
+
+        Delivery::create([
+            'document' => $request->document,
+            'status' => $request->status['value'],
+        ]);
+
+        return to_route('deliveries.index');
     }
 
     /**

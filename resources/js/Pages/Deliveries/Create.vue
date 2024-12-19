@@ -11,14 +11,14 @@ const onSubmit = () => {
     form.post(route('deliveries.store'), {
         onFinish: () => {
             form.reset('document')
-            form.status = 0
+            form.status = { label: 'Типов документ', value: 0 }
         },
     })
 };
 
 const onReset = () => {
     form.reset('document')
-    form.status = 0
+    form.status = { label: 'Типов документ', value: 0 }
 }
 
 const statusOptions = [
