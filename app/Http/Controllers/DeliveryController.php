@@ -77,9 +77,13 @@ class DeliveryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Delivery $delivery)
+    public function edit(Delivery $delivery): Response
     {
-        //
+        Gate::authorize('update', $delivery);
+
+        return Inertia::render('Deliveries/Edit', [
+            'delivery' => new DeliveryResource($delivery),
+        ]);
     }
 
     /**
