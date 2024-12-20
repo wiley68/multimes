@@ -24,7 +24,7 @@ class CreateDeliveryRequest extends FormRequest
     {
         return [
             'document' => [
-                'nullable',
+                'required',
                 'string',
                 'max:32',
             ],

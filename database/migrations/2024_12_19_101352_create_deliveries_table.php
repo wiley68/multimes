@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('deliveries', function (Blueprint $table) {
             $table->id();
-            $table->string('document', 32)->nullable();
+            $table->string('document', 32);
             $table->string('supplier', 128)->nullable();
             $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();

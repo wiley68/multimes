@@ -17,11 +17,6 @@ const onSubmit = () => {
     })
 };
 
-const onReset = () => {
-    form.reset('document', 'supplier')
-    form.status = { label: 'Типов документ', value: 0 }
-}
-
 const title = 'Доставка'
 </script>
 
@@ -40,40 +35,28 @@ const title = 'Доставка'
                         <div class="column flex-grow flex-center">
                             <q-card
                                 class="q-pa-md"
-                                style="width: 800px; max-width: 100%;"
+                                style="width: 100%;"
                             >
                                 <q-form
-                                    @submit.prevent="onSubmit"
-                                    @reset="onReset"
-                                    class="q-gutter-md"
+                                    class="row q-gutter-md"
+                                    autofocus
                                 >
                                     <q-input
                                         v-model="form.document"
+                                        class="col"
                                         label="Документ номер"
                                         hint="Номер на насрещния документ за доставка"
                                         autofocus
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.document"
                                     />
 
                                     <q-input
                                         v-model="form.supplier"
+                                        class="col"
                                         label="Доставчик"
                                         hint="Доставчик на продуктите"
                                     />
-
-                                    <div>
-                                        <q-btn
-                                            label="Създай"
-                                            type="submit"
-                                            color="primary"
-                                        />
-                                        <q-btn
-                                            label="Откажи"
-                                            type="reset"
-                                            color="primary"
-                                            flat
-                                            class="q-ml-sm"
-                                        />
-                                    </div>
                                 </q-form>
                             </q-card>
                         </div>
@@ -82,10 +65,19 @@ const title = 'Доставка'
                 <div class="footer-panel">
                     <q-btn
                         color="primary"
-                        label="Продукти"
-                        icon="mdi-menu-left"
-                        @click="router.get(route('deliveries.index'))"
+                        label="Откажи"
+                        flat
+                        icon="mdi-cancel"
+                        @click.prevent="router.get(route('deliveries.index'))"
                     />
+                    <q-btn
+                        @click.prevent="onSubmit"
+                        label="Създай"
+                        icon="mdi-file-document-plus-outline"
+                        type="submit"
+                        color="primary"
+                    />
+
                 </div>
             </div>
         </q-page>

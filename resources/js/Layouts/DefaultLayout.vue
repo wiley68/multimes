@@ -559,7 +559,7 @@ onBeforeUnmount(() => {
 .footer-panel {
     height: 48px;
     display: flex;
-    justify-content: space-between;
+    gap: 5px;
     align-items: center;
     width: 100%;
     background-color: #ffffff;
