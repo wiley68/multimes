@@ -89,6 +89,8 @@ class DeliveryController extends Controller
             ]);
         }
 
+        $delivery->load('subdeliveries');
+
         return Inertia::render('Deliveries/Edit', [
             'delivery' => new DeliveryResource($delivery),
         ]);

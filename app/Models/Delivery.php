@@ -15,7 +15,7 @@ class Delivery extends Model
         'status',
     ];
 
-    public function subdelivery()
+    public function subdeliveries()
     {
         return $this->hasMany(Subdelivery::class);
     }

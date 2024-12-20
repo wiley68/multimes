@@ -38,7 +38,7 @@ const title = 'Доставка'
                                 style="width: 100%;"
                             >
                                 <q-form
-                                    class="row q-gutter-md"
+                                    class="row q-gutter-xl"
                                     autofocus
                                 >
                                     <q-input

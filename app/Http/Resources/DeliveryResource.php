@@ -20,6 +20,7 @@ class DeliveryResource extends JsonResource
             'supplier' => $this->supplier,
             'status' => $this->status,
             'created_at' => $this->created_at,
+            'subdeliveries' => SubdeliveryResource::collection($this->whenLoaded('subdeliveries')),
         ];
     }
 }
