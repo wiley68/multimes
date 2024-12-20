@@ -23,16 +23,12 @@ const onSubmit = () => {
     })
 };
 
-const onReset = () => {
-    form.reset('document', 'supplier', 'status')
-}
-
 const statusOptions = [
     { label: 'Типов документ', value: 0 },
     { label: 'Приключен документ', value: 1 },
 ]
 
-const title = 'Промяна на Доставка'
+const title = 'Доставка'
 </script>
 
 <template>
@@ -50,49 +46,28 @@ const title = 'Промяна на Доставка'
                         <div class="column flex-grow flex-center">
                             <q-card
                                 class="q-pa-md"
-                                style="width: 800px; max-width: 100%;"
+                                style="width: 100%;"
                             >
                                 <q-form
-                                    @submit.prevent="onSubmit"
-                                    @reset="onReset"
-                                    class="q-gutter-md"
+                                    class="row q-gutter-md"
+                                    autofocus
                                 >
                                     <q-input
                                         v-model="form.document"
+                                        class="col"
                                         label="Документ номер"
                                         hint="Номер на насрещния документ за доставка"
                                         autofocus
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.document"
                                     />
 
                                     <q-input
                                         v-model="form.supplier"
+                                        class="col"
                                         label="Доставчик"
                                         hint="Доставчик на продуктите"
                                     />
-
-                                    <q-select
-                                        v-model="form.status"
-                                        :options="statusOptions"
-                                        label="Тип документ *"
-                                        hint="Тип на документа Типов/Приключен"
-                                        :error="form.hasErrors"
-                                        :error-message="form.errors.status"
-                                    />
-
-                                    <div>
-                                        <q-btn
-                                            label="Промени"
-                                            type="submit"
-                                            color="primary"
-                                        />
-                                        <q-btn
-                                            label="Откажи"
-                                            type="reset"
-                                            color="primary"
-                                            flat
-                                            class="q-ml-sm"
-                                        />
-                                    </div>
                                 </q-form>
                             </q-card>
                         </div>
@@ -102,8 +77,28 @@ const title = 'Промяна на Доставка'
                     <q-btn
                         color="primary"
                         label="Доставки"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('deliveries.index'))"
+                    />
+
+                    <q-btn
+                        @click.prevent="onSubmit"
+                        label="Запиши"
+                        icon="mdi-content-save-outline"
+                        color="primary"
+                    />
+
+                    <q-btn
+                        label="Добави продукт"
+                        icon="mdi-table-row-plus-after"
+                        color="secondary"
+                    />
+
+                    <q-btn
+                        label="Приключи документа"
+                        icon="mdi-file-document-check-outline"
+                        color="negative"
                     />
                 </div>
             </div>

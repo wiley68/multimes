@@ -198,6 +198,7 @@ onMounted(() => {
                     <q-btn
                         color="primary"
                         label="Табло"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('dashboard'))"
                     />
@@ -206,7 +207,7 @@ onMounted(() => {
                         v-if="hasPermission('create')"
                         color="primary"
                         label="Нова доставка"
-                        icon="mdi-plus"
+                        icon="mdi-file-document-plus-outline"
                         @click="router.get(route('deliveries.create'))"
                     />
                 </div>

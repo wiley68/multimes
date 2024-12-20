@@ -65,16 +65,15 @@ const title = 'Доставка'
                 <div class="footer-panel">
                     <q-btn
                         color="primary"
-                        label="Откажи"
+                        label="Доставки"
                         flat
-                        icon="mdi-cancel"
+                        icon="mdi-menu-left"
                         @click.prevent="router.get(route('deliveries.index'))"
                     />
                     <q-btn
                         @click.prevent="onSubmit"
-                        label="Създай"
-                        icon="mdi-file-document-plus-outline"
-                        type="submit"
+                        label="Запиши"
+                        icon="mdi-content-save-outline"
                         color="primary"
                     />
 
