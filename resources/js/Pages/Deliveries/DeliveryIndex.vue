@@ -25,10 +25,46 @@ const columns = [
         format: val => `${val}`,
         sortable: true
     },
-    { name: 'document', align: 'left', label: 'Документ номер', field: 'document', sortable: true },
-    { name: 'supplier', align: 'left', label: 'Доставчик', field: 'supplier', sortable: true },
-    { name: 'created_at', align: 'left', label: 'Създаден на', field: 'created_at', sortable: true },
-    { name: 'status', align: 'left', label: 'Тип', field: 'status', sortable: true },
+    {
+        name: 'document',
+        align: 'left',
+        label: 'Документ номер',
+        field: 'document',
+        sortable: true
+    },
+    {
+        name: 'supplier',
+        align: 'left',
+        label: 'Доставчик',
+        field: 'supplier',
+        sortable: true
+    },
+    {
+        name: 'created_at',
+        align: 'left',
+        label: 'Създаден на',
+        field: 'created_at',
+        sortable: true
+    },
+    {
+        name: 'status',
+        align: 'left',
+        label: 'Тип',
+        field: 'status',
+        sortable: true
+    },
+    {
+        name: 'total',
+        align: 'left',
+        label: 'Общо',
+        field: row =>
+            row.subdeliveries.reduce((sum, item) => {
+                return sum + parseFloat(item.quantity) * parseFloat(item.price)
+            }, 0)
+        ,
+        format: val => `${val}`,
+        sortable: true
+    },
     {
         name: "actions",
         label: "Управление",
@@ -66,7 +102,7 @@ const onRequest = (requestProp) => {
 const confirm = (delivery_id) => {
     $q.dialog({
         title: 'Потвърди',
-        message: 'Желаеш ли да изтриеш доставката?',
+        message: 'Желаеш ли да изтриеш тази доставка?',
         cancel: true,
         persistent: true,
         ok: {
@@ -150,6 +186,7 @@ onMounted(() => {
                                                 v-if="hasPermission('update') && props.row.status === 0"
                                                 icon="mdi-pencil-outline"
                                                 color="primary"
+                                                title="Промяна на доставката"
                                                 dense
                                                 flat
                                                 rounded
@@ -159,6 +196,7 @@ onMounted(() => {
                                                 v-if="hasPermission('delete') && props.row.status === 0"
                                                 icon="mdi-delete-outline"
                                                 color="negative"
+                                                title="Изтриване на доставката"
                                                 dense
                                                 flat
                                                 rounded

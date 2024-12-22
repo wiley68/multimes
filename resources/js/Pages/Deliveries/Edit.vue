@@ -8,7 +8,7 @@ import { usePermission } from '@/composables/permissions'
 const props = defineProps({
     delivery: {
         type: Object,
-        required: true
+        required: true,
     }
 })
 
@@ -138,6 +138,38 @@ const confirm = (subdelivery_id) => {
     }).onCancel(() => { }).onDismiss(() => { })
 }
 
+const confirmDelivery = (delivery_id) => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Желаеш ли да изтриеш тази доставка?',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        router.delete(route('deliveries.destroy', props.delivery.id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
+}
+
 const title = `Доставка №${props.delivery.id}`
 </script>
 
@@ -198,7 +230,7 @@ const title = `Доставка №${props.delivery.id}`
                                 :rows="delivery.subdeliveries"
                                 :columns="subdeliveryColumns"
                                 row-key="id"
-                                :rows-per-page-options=[3]
+                                :rows-per-page-options=[7]
                             >
                                 <template v-slot:body-cell-actions="props">
                                     <q-td
@@ -209,6 +241,7 @@ const title = `Доставка №${props.delivery.id}`
                                             v-if="hasPermission('update')"
                                             icon="mdi-pencil-outline"
                                             color="primary"
+                                            title="Промяна на реда"
                                             dense
                                             flat
                                             rounded
@@ -219,6 +252,7 @@ const title = `Доставка №${props.delivery.id}`
                                             v-if="hasPermission('delete')"
                                             icon="mdi-delete-outline"
                                             color="negative"
+                                            title="Изтриване на реда"
                                             dense
                                             flat
                                             rounded
@@ -272,14 +306,15 @@ const title = `Доставка №${props.delivery.id}`
 
                     <q-btn
                         label="Приключи"
-                        title="Приключва документа. Вписва всички количества продукти. Обновява цените на продуктите."
+                        title="Приключва доставката. Вписва всички количества продукти. Обновява цените на продуктите."
                         icon="mdi-file-document-check-outline"
                         color="secondary"
                     />
 
                     <q-btn
+                        @click.prevent="confirmDelivery(delivery.id)"
                         label="Изтрий"
-                        title="Изтрива документа. Операцията е необратима."
+                        title="Изтрива доставката. Операцията е необратима."
                         icon="mdi-delete-outline"
                         color="negative"
                     />

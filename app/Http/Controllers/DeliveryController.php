@@ -34,7 +34,7 @@ class DeliveryController extends Controller
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
-        $query = Delivery::query();
+        $query = Delivery::query()->with('subdeliveries');
         if (!empty($filter)) {
             $query->where('document', 'like', '%' . $filter . '%');
         }
@@ -85,7 +85,7 @@ class DeliveryController extends Controller
 
         if ($delivery->status === 1) {
             return back()->withErrors([
-                'update' => 'Не можете да редактирате приключена доставка.'
+                'update' => 'Не можете да променяте приключена доставка.'
             ]);
         }
 
@@ -121,12 +121,12 @@ class DeliveryController extends Controller
 
         if ($delivery->status === 1) {
             return back()->withErrors([
-                'delete' => 'Не може да се изтрие доставката, защото е приключена.'
+                'delete' => 'Не можете да изтривате приключена доставка.'
             ]);
         }
 
         $delivery->delete();
 
-        return back();
+        return to_route('deliveries.index');
     }
 }
