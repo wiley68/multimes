@@ -38,7 +38,7 @@ watch(
     }
 )
 
-const title = 'Добавяне на продукт'
+const title = `Добавяне на продукт към доставка №${props.delivery_id}`
 </script>
 
 <template>

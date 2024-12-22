@@ -1,8 +1,9 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm, usePage } from '@inertiajs/vue3'
-import { onMounted } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useQuasar } from 'quasar'
+import { usePermission } from '@/composables/permissions'
 
 const props = defineProps({
     delivery: {
@@ -16,6 +17,8 @@ const form = useForm({
     supplier: props.delivery?.supplier,
     status: props.delivery?.status === 0 ? { label: 'Типов документ', value: 0 } : { label: 'Приключен документ', value: 1 },
 })
+
+const { hasPermission } = usePermission()
 
 const onSubmit = () => {
     form.put(route('deliveries.update', props.delivery.id), {
@@ -33,11 +36,51 @@ const subdeliveryColumns = [
         align: 'left',
         field: row => row.id,
         format: val => `${val}`,
+        sortable: true,
+        style: "width: 40px;",
+    },
+    {
+        name: 'product',
+        align: 'left',
+        label: 'Продукт',
+        field: row => row.product,
+        format: val => `${val.name}`,
         sortable: true
     },
-    { name: 'product_id', align: 'left', label: 'Продукт', field: 'product_id', sortable: true },
-    { name: 'quantity', align: 'left', label: 'Количество', field: 'quantity', sortable: true },
-    { name: 'price', align: 'left', label: 'Цена', field: 'price', sortable: true },
+    {
+        name: 'quantity',
+        align: 'left',
+        label: 'Количество',
+        field: 'quantity',
+        sortable: true,
+        style: "width: 80px;",
+    },
+    {
+        name: 'me',
+        align: 'left',
+        label: 'м.е.',
+        field: row => row.product,
+        format: val => `${val.me}`,
+        sortable: false,
+        style: "width: 80px;",
+    },
+    {
+        name: 'price',
+        align: 'left',
+        label: 'Цена',
+        field: 'price',
+        sortable: true,
+        style: "width: 100px;",
+    },
+    {
+        name: 'allprice',
+        align: 'left',
+        label: 'Общо',
+        field: row => row,
+        format: val => `${parseFloat(val.price * val.quantity).toFixed(2)}`,
+        sortable: true,
+        style: "width: 120px;",
+    },
     {
         name: "actions",
         label: "Управление",
@@ -57,7 +100,45 @@ onMounted(() => {
     });
 })
 
-const title = 'Доставка'
+const totalPrice = computed(() => {
+    return props.delivery.subdeliveries
+        .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2);
+});
+
+const confirm = (subdelivery_id) => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Желаеш ли да изтриеш реда в доставката?',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        router.delete(route('subdeliveries.destroy', subdelivery_id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
+}
+
+const title = `Доставка №${props.delivery.id}`
 </script>
 
 <template>
@@ -78,6 +159,14 @@ const title = 'Доставка'
                                     class="row q-gutter-xl"
                                     autofocus
                                 >
+                                    <q-input
+                                        :model-value="delivery.id"
+                                        class="col"
+                                        label="Доставка №"
+                                        hint="Пореден номер на доставката"
+                                        readonly
+                                    />
+
                                     <q-input
                                         v-model="form.document"
                                         class="col"
@@ -100,7 +189,6 @@ const title = 'Доставка'
                             <q-table
                                 class="my-sticky-header-table full-width"
                                 bordered
-                                hide-header
                                 rows-per-page-label="Записи на страница"
                                 separator="cell"
                                 no-data-label="Липсват данни"
@@ -113,15 +201,42 @@ const title = 'Доставка'
                                 :rows-per-page-options=[3]
                             >
                                 <template v-slot:body-cell-actions="props">
-                                    <q-td align="center">
+                                    <q-td
+                                        align="center"
+                                        style="width: 120px;"
+                                    >
                                         <q-btn
-                                            @click.prevent="router.delete(route('users.permissions.destroy', [user.id, props.row.id]), { preserveScroll: true, })"
-                                            label="Отмени"
+                                            v-if="hasPermission('update')"
+                                            icon="mdi-pencil-outline"
+                                            color="primary"
+                                            dense
                                             flat
+                                            rounded
+                                            @click="router.get(route('subdeliveries.edit', props.row.id))"
+                                        />
+
+                                        <q-btn
+                                            v-if="hasPermission('delete')"
+                                            icon="mdi-delete-outline"
                                             color="negative"
                                             dense
+                                            flat
+                                            rounded
+                                            @click="confirm(props.row.id)"
                                         />
                                     </q-td>
+                                </template>
+                                <template v-slot:bottom-row>
+                                    <q-tr>
+                                        <q-td
+                                            colspan="5"
+                                            class="text-weight-bold"
+                                        >Общо:</q-td>
+                                        <q-td class="text-weight-bold">
+                                            {{ totalPrice }}
+                                        </q-td>
+                                        <q-td></q-td>
+                                    </q-tr>
                                 </template>
                             </q-table>
                         </div>

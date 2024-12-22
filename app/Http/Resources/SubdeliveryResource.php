@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class SubdeliveryResource extends JsonResource
         return [
             'id' => $this->id,
             'delivery_id' => $this->delivery_id,
-            'product_id' => $this->product_id,
+            'product' => new ProductResource(Product::findOrFail($this->product_id)),
             'quantity' => $this->quantity,
             'price' => $this->price,
         ];
