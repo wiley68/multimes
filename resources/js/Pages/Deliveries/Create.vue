@@ -33,10 +33,7 @@ const title = 'Доставка'
                 <div class="body-panel">
                     <div class="scrollable-content">
                         <div class="column flex-grow flex-center">
-                            <q-card
-                                class="q-pa-md"
-                                style="width: 100%;"
-                            >
+                            <q-card class="q-pa-md full-width">
                                 <q-form
                                     class="row q-gutter-xl"
                                     autofocus

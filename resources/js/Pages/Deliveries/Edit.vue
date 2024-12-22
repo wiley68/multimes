@@ -1,6 +1,8 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Head, router, useForm } from '@inertiajs/vue3'
+import { Head, router, useForm, usePage } from '@inertiajs/vue3'
+import { onMounted } from 'vue';
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     delivery: {
@@ -43,6 +45,17 @@ const subdeliveryColumns = [
         field: "actions",
     }
 ]
+
+const $q = useQuasar()
+onMounted(() => {
+    Object.values(usePage().props.errors).flat().forEach((error) => {
+        $q.notify({
+            message: error,
+            icon: 'mdi-alert-circle-outline',
+            type: 'negative',
+        });
+    });
+})
 
 const title = 'Доставка'
 </script>
@@ -127,14 +140,17 @@ const title = 'Доставка'
                     <q-btn
                         @click.prevent="onSubmit"
                         label="Запиши"
-                        title="Записва направените промени в документа."
+                        title="Записва направените промени в доставката."
                         icon="mdi-content-save-outline"
                         color="primary"
                     />
 
                     <q-btn
+                        @click.prevent="router.get(route('subdeliveries.create'), {
+                            delivery_id: delivery.id,
+                        })"
                         label="Добави продукт"
-                        title="Добавя нов продукт към документа."
+                        title="Добавя нов продукт към доставката."
                         icon="mdi-table-row-plus-after"
                         color="secondary"
                     />

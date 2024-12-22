@@ -16,6 +16,7 @@ use App\Http\Controllers\RemoveRoleFromUserController;
 use App\Http\Controllers\RevokePermissionFromRoleController;
 use App\Http\Controllers\RevokePermissionFromUserController;
 use App\Http\Controllers\SiloController;
+use App\Http\Controllers\SubdeliveryController;
 use App\Http\Controllers\UhallController;
 use App\Http\Controllers\UproductionController;
 use Illuminate\Support\Facades\Route;
@@ -63,6 +64,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::delete('/uproductions/{uproduction}', [UproductionController::class, 'destroy'])->name('uproductions.destroy');
     Route::resource('/products', ProductController::class);
     Route::resource('/deliveries', DeliveryController::class);
+    Route::resource('/subdeliveries', SubdeliveryController::class);
 });
 
 require __DIR__ . '/auth.php';

@@ -22,9 +22,9 @@ class CreateSubdeliveryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'delivery' => [
+            'delivery_id' => [
                 'required',
-                'array',
+                'integer',
             ],
             'product' => [
                 'required',

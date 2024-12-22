@@ -17,4 +17,9 @@ class Product extends Model
         'stock',
         'me'
     ];
+
+    public function subdeliveries()
+    {
+        return $this->hasMany(Subdelivery::class);
+    }
 }
