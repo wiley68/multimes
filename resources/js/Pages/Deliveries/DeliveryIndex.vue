@@ -57,12 +57,7 @@ const columns = [
         name: 'total',
         align: 'left',
         label: 'Общо',
-        field: row =>
-            row.subdeliveries.reduce((sum, item) => {
-                return sum + parseFloat(item.quantity) * parseFloat(item.price)
-            }, 0)
-        ,
-        format: val => `${val}`,
+        field: 'total',
         sortable: true
     },
     {
@@ -208,6 +203,11 @@ onMounted(() => {
                                         </div>
                                         <div v-else-if="col.name === 'created_at'">
                                             {{ moment(props.row['created_at']).format('DD.MM.YY HH:mm') }}
+                                        </div>
+                                        <div v-else-if="col.name === 'total'">
+                                            {{ props.row.subdeliveries.reduce((sum, item) => {
+                                                return sum + parseFloat(item.quantity) * parseFloat(item.price)
+                                            }, 0).toFixed(2) }}
                                         </div>
                                         <div v-else>
                                             {{ props.row[col.name] }}
