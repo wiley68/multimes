@@ -150,6 +150,7 @@ const confirm = (city_id) => {
                                         v-if="hasPermission('update')"
                                         icon="mdi-pencil-outline"
                                         color="primary"
+                                        title="Промяна на населеното място"
                                         dense
                                         flat
                                         rounded
@@ -159,6 +160,7 @@ const confirm = (city_id) => {
                                         v-if="hasPermission('delete')"
                                         icon="mdi-delete-outline"
                                         color="negative"
+                                        title="Изтриване на населеното място"
                                         dense
                                         flat
                                         rounded
@@ -180,6 +182,7 @@ const confirm = (city_id) => {
                 <div class="footer-panel">
                     <q-btn
                         color="primary"
+                        flat
                         label="Табло"
                         icon="mdi-menu-left"
                         @click="router.get(route('dashboard'))"
@@ -189,7 +192,7 @@ const confirm = (city_id) => {
                         v-if="hasPermission('create')"
                         color="primary"
                         label="Ново населено място"
-                        icon="mdi-plus"
+                        icon="mdi-file-document-plus-outline"
                         @click="router.get(route('cities.create'))"
                     />
                 </div>
