@@ -48,7 +48,7 @@ const pagination = {
     rowsPerPage: props.mhalls.meta.per_page,
     rowsNumber: props.mhalls.meta.total
 }
-const title = 'Всички Халета Майки'
+const title = 'Халета Майки'
 const filter = ref(props.filter)
 const navigationActive = ref(false)
 const $q = useQuasar()
@@ -209,6 +209,7 @@ const confirm = (mhall) => {
                     <q-btn
                         color="primary"
                         label="Табло"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('dashboard'))"
                     />

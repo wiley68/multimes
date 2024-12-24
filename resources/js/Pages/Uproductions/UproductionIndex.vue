@@ -120,7 +120,7 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                             bordered
                             :title="uhall_name ? `Процеси Угояване в Хале: ${uhall_name}`
                                 :
-                                'Всички Процеси Угояване'"
+                                title"
                             rows-per-page-label="Записи на страница"
                             separator="cell"
                             no-data-label="Липсват данни"

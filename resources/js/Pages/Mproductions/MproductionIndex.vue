@@ -36,21 +36,21 @@ const columns = [
         name: 'mhall_id',
         align: 'left',
         label: 'Хале',
-        field: row => row.mhall.name,
+        field: 'mhall_id',
         sortable: true
     },
     {
         name: 'status',
         align: 'left',
         label: 'Състояние',
-        field: row => row.status === 1 ? 'Активен' : 'Приключен',
+        field: 'status',
         sortable: true
     },
     {
         name: 'created_at',
         align: 'left',
         label: 'Стариран на',
-        field: row => moment(row.created_at).format('DD.MM.YY HH:mm'),
+        field: 'created_at',
         sortable: true
     },
     {
@@ -70,7 +70,7 @@ const pagination = {
     sortBy: 'id',
     descending: false,
 }
-const title = 'Продукционни процеси Майки'
+const title = 'Процеси Майки'
 const filter = ref(props.filter)
 const navigationActive = ref(false)
 
@@ -120,7 +120,7 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                             bordered
                             :title="mhall_name ? `Процеси Майки в Хале: ${mhall_name}`
                                 :
-                                'Всички Процеси Майки'"
+                                title"
                             rows-per-page-label="Записи на страница"
                             separator="cell"
                             no-data-label="Липсват данни"
@@ -150,29 +150,52 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                                     </template>
                                 </q-input>
                             </template>
-                            <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
-                                    <q-btn
-                                        v-if="hasPermission('view')"
-                                        title="Управлявай процеса"
-                                        icon="mdi-file-tree"
-                                        color="primary"
-                                        dense
-                                        flat
-                                        rounded
-                                        @click="router.get(route('mproductions.show', props.row.id))"
-                                    />
-                                    <q-btn
-                                        v-if="hasPermission('delete') && props.row.status === 0"
-                                        title="Изтрий процеса"
-                                        icon="mdi-delete-outline"
-                                        color="negative"
-                                        dense
-                                        flat
-                                        rounded
-                                        @click="confirm(props.row.id)"
-                                    />
-                                </q-td>
+                            <template v-slot:body="props">
+                                <q-tr
+                                    :props="props"
+                                    :class="props.row.status === 1 ? 'bg-red-3' : ''"
+                                >
+                                    <q-td
+                                        v-for="col in props.cols"
+                                        :key="col.name"
+                                        :props="props"
+                                    >
+                                        <div v-if="col.name === 'actions'">
+                                            <q-btn
+                                                v-if="hasPermission('view')"
+                                                title="Управлявай процеса"
+                                                icon="mdi-file-tree"
+                                                color="primary"
+                                                dense
+                                                flat
+                                                rounded
+                                                @click="router.get(route('mproductions.show', props.row.id))"
+                                            />
+                                            <q-btn
+                                                v-if="hasPermission('delete') && props.row.status === 0"
+                                                title="Изтрий процеса"
+                                                icon="mdi-delete-outline"
+                                                color="negative"
+                                                dense
+                                                flat
+                                                rounded
+                                                @click="confirm(props.row.id)"
+                                            />
+                                        </div>
+                                        <div v-else-if="col.name === 'status'">
+                                            {{ props.row['status'] === 1 ? 'Активен' : 'Приключен' }}
+                                        </div>
+                                        <div v-else-if="col.name === 'mhall_id'">
+                                            {{ props.row.mhall.name }}
+                                        </div>
+                                        <div v-else-if="col.name === 'created_at'">
+                                            {{ moment(props.row['created_at']).format('DD.MM.YY HH:mm') }}
+                                        </div>
+                                        <div v-else>
+                                            {{ props.row[col.name] }}
+                                        </div>
+                                    </q-td>
+                                </q-tr>
                             </template>
                         </q-table>
                     </div>
@@ -181,6 +204,7 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                     <q-btn
                         color="primary"
                         label="Табло"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('dashboard'))"
                     />
