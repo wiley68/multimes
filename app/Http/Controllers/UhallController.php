@@ -156,7 +156,7 @@ class UhallController extends Controller
     {
         Gate::authorize('delete', $uhall);
 
-        if ($uhall->mproductions()->exists()) {
+        if ($uhall->uproductions()->exists()) {
             return back()->withErrors([
                 'delete' => 'Не може да се изтрие Халето, защото има свързани производствени процеси.'
             ]);
