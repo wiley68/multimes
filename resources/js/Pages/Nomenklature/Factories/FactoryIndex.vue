@@ -178,6 +178,7 @@ const confirm = (factory_id) => {
                                         v-if="hasPermission('update')"
                                         icon="mdi-pencil-outline"
                                         color="primary"
+                                        title="Промяна на база"
                                         dense
                                         flat
                                         rounded
@@ -187,6 +188,7 @@ const confirm = (factory_id) => {
                                         v-if="hasPermission('delete')"
                                         icon="mdi-delete-outline"
                                         color="negative"
+                                        title="Изтриване на база"
                                         dense
                                         flat
                                         rounded
@@ -209,6 +211,7 @@ const confirm = (factory_id) => {
                     <q-btn
                         color="primary"
                         label="Табло"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('dashboard'))"
                     />
@@ -217,7 +220,7 @@ const confirm = (factory_id) => {
                         v-if="hasPermission('create')"
                         color="primary"
                         label="Нова база"
-                        icon="mdi-plus"
+                        icon="mdi-file-document-plus-outline"
                         @click="router.get(route('factories.create'))"
                     />
                 </div>
