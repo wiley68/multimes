@@ -21,12 +21,6 @@ const onSubmit = () => {
     })
 };
 
-const onReset = () => {
-    form.reset('name', 'nomenklature', 'description', 'price')
-    form.me = 'бр'
-    form.stock = 0
-}
-
 const meOptions = [
     'бр', 'кг', 'л', 'м',
 ]
@@ -47,15 +41,8 @@ const title = 'Продукт'
                 <div class="body-panel">
                     <div class="scrollable-content">
                         <div class="column flex-grow flex-center">
-                            <q-card
-                                class="q-pa-md"
-                                style="width: 800px; max-width: 100%;"
-                            >
-                                <q-form
-                                    @submit.prevent="onSubmit"
-                                    @reset="onReset"
-                                    class="q-gutter-md"
-                                >
+                            <q-card class="q-pa-md full-width">
+                                <q-form class="q-gutter-md">
                                     <q-input
                                         v-model="form.name"
                                         label="Продукт *"
@@ -106,21 +93,6 @@ const title = 'Продукт'
                                         :error="form.hasErrors"
                                         :error-message="form.errors.me"
                                     />
-
-                                    <div>
-                                        <q-btn
-                                            label="Създай"
-                                            type="submit"
-                                            color="primary"
-                                        />
-                                        <q-btn
-                                            label="Откажи"
-                                            type="reset"
-                                            color="primary"
-                                            flat
-                                            class="q-ml-sm"
-                                        />
-                                    </div>
                                 </q-form>
                             </q-card>
                         </div>
@@ -130,8 +102,16 @@ const title = 'Продукт'
                     <q-btn
                         color="primary"
                         label="Продукти"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('products.index'))"
+                    />
+
+                    <q-btn
+                        @click.prevent="onSubmit"
+                        label="Запиши"
+                        color="primary"
+                        icon="mdi-content-save-outline"
                     />
                 </div>
             </div>

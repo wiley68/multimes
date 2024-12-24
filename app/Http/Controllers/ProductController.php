@@ -115,11 +115,11 @@ class ProductController extends Controller
     {
         Gate::authorize('delete', $product);
 
-        // if ($product->factories()->exists()) {
-        //     return back()->withErrors([
-        //         'delete' => 'Не може да се изтрие Населеното място, защото има свързани Бази.'
-        //     ]);
-        // }
+        if ($product->subdeliveries()->exists()) {
+            return back()->withErrors([
+                'delete' => 'Не може да се изтрие продукта, защото има свързани доставки.'
+            ]);
+        }
 
         $product->delete();
 
