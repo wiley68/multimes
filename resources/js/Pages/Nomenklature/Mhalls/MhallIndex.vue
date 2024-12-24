@@ -169,6 +169,7 @@ const confirm = (mhall_id) => {
                                         v-if="hasPermission('update')"
                                         icon="mdi-pencil-outline"
                                         color="primary"
+                                        title="Промяна на хале за майки"
                                         dense
                                         flat
                                         rounded
@@ -178,6 +179,7 @@ const confirm = (mhall_id) => {
                                         v-if="hasPermission('delete')"
                                         icon="mdi-delete-outline"
                                         color="negative"
+                                        title="Изтриване на хале за майки"
                                         dense
                                         flat
                                         rounded
@@ -192,6 +194,7 @@ const confirm = (mhall_id) => {
                     <q-btn
                         color="primary"
                         label="Табло"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('dashboard'))"
                     />
@@ -200,7 +203,7 @@ const confirm = (mhall_id) => {
                         v-if="hasPermission('create')"
                         color="primary"
                         label="Ново хале"
-                        icon="mdi-plus"
+                        icon="mdi-file-document-plus-outline"
                         @click="router.get(route('mhalls.create'))"
                     />
                 </div>
