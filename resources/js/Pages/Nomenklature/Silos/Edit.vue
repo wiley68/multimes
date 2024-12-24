@@ -23,11 +23,7 @@ const onSubmit = () => {
     })
 };
 
-const onReset = () => {
-    form.reset('name', 'factory')
-}
-
-const title = 'Промяна на Силоз'
+const title = 'Силоз'
 </script>
 
 <template>
@@ -43,15 +39,8 @@ const title = 'Промяна на Силоз'
                 <div class="body-panel">
                     <div class="scrollable-content">
                         <div class="column flex-grow flex-center">
-                            <q-card
-                                class="q-pa-md"
-                                style="width: 800px; max-width: 100%;"
-                            >
-                                <q-form
-                                    @submit.prevent="onSubmit"
-                                    @reset="onReset"
-                                    class="q-gutter-md"
-                                >
+                            <q-card class="q-pa-md full-width">
+                                <q-form class="q-gutter-md">
                                     <q-input
                                         v-model="form.name"
                                         label="Силоз *"
@@ -68,21 +57,6 @@ const title = 'Промяна на Силоз'
                                         :error="form.hasErrors"
                                         :error-message="form.errors.factory"
                                     />
-
-                                    <div>
-                                        <q-btn
-                                            label="Промени"
-                                            type="submit"
-                                            color="primary"
-                                        />
-                                        <q-btn
-                                            label="Откажи"
-                                            type="reset"
-                                            color="primary"
-                                            flat
-                                            class="q-ml-sm"
-                                        />
-                                    </div>
                                 </q-form>
                             </q-card>
                         </div>
@@ -92,8 +66,17 @@ const title = 'Промяна на Силоз'
                     <q-btn
                         color="primary"
                         label="Силози"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('silos.index'))"
+                    />
+
+                    <q-btn
+                        @click.prevent="onSubmit"
+                        label="Запиши"
+                        type="submit"
+                        icon="mdi-content-save-outline"
+                        color="primary"
                     />
                 </div>
             </div>
