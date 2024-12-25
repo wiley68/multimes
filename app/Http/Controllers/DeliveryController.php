@@ -113,6 +113,45 @@ class DeliveryController extends Controller
     }
 
     /**
+     * Complete the specified resource in storage.
+     */
+    public function complete(CreateDeliveryRequest $request, Delivery $delivery): RedirectResponse
+    {
+        Gate::authorize('update', $delivery);
+
+        $subdeliveries = $delivery->subdeliveries;
+        if ($subdeliveries instanceof \Illuminate\Database\Eloquent\Collection && $subdeliveries->isNotEmpty()) {
+            foreach ($subdeliveries as $subdelivery) {
+                $product = $subdelivery->product;
+                if (null !== $product) {
+                    $current_price = (float)$product['price'];
+                    $current_quantity = (float)$product['stock'];
+                    $new_price = (float)$subdelivery['price'];
+                    $new_quantity = (float)$subdelivery['quantity'];
+                    $result_quantity = $current_quantity + $new_quantity;
+                    $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
+                    $product->update([
+                        'stock' => $result_quantity,
+                        'price' => $result_price,
+                    ]);
+                }
+            }
+        } else {
+            return to_route('deliveries.index')->withErrors([
+                'complete' => 'Не можете да запишете доставката. Липсват материали.'
+            ]);
+        }
+
+        $delivery->update([
+            'document' => $request->document,
+            'supplier' => $request->supplier,
+            'status' => $request->status['value'],
+        ]);
+
+        return to_route('deliveries.index');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Delivery $delivery): RedirectResponse

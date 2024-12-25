@@ -64,6 +64,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::delete('/uproductions/{uproduction}', [UproductionController::class, 'destroy'])->name('uproductions.destroy');
     Route::resource('/products', ProductController::class);
     Route::resource('/deliveries', DeliveryController::class);
+    Route::put('/deliveries/{delivery}', [DeliveryController::class, 'complete'])->name('deliveries.complete');
     Route::resource('/subdeliveries', SubdeliveryController::class);
 });
 

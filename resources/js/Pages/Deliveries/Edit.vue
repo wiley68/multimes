@@ -138,7 +138,7 @@ const confirm = (subdelivery_id) => {
     }).onCancel(() => { }).onDismiss(() => { })
 }
 
-const confirmDelivery = (delivery_id) => {
+const confirmDelivery = () => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да изтриеш тази доставка?',
@@ -157,6 +157,39 @@ const confirmDelivery = (delivery_id) => {
         },
     }).onOk(() => {
         router.delete(route('deliveries.destroy', props.delivery.id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
+}
+
+const confirmCompletion = () => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Желаеш ли да приключиш тази доставка? Всички продукти в доставката ще бъдат прехвърлени в склада, като ще променят текущите наличности и цени. Процеса е необратим!',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        form.status = { label: 'Приключен документ', value: 1 }
+        form.put(route('deliveries.complete', props.delivery.id), {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
                     $q.notify({
@@ -305,6 +338,7 @@ const title = `Доставка №${props.delivery.id}`
                     />
 
                     <q-btn
+                        @click.prevent="confirmCompletion()"
                         label="Приключи"
                         title="Приключва доставката. Вписва всички количества продукти. Обновява цените на продуктите."
                         icon="mdi-file-document-check-outline"
@@ -312,7 +346,7 @@ const title = `Доставка №${props.delivery.id}`
                     />
 
                     <q-btn
-                        @click.prevent="confirmDelivery(delivery.id)"
+                        @click.prevent="confirmDelivery()"
                         label="Изтрий"
                         title="Изтрива доставката. Операцията е необратима."
                         icon="mdi-delete-outline"
