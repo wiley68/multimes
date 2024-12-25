@@ -21,7 +21,7 @@ class DeliveryPolicy
      */
     public function view(User $user, Delivery $delivery): bool
     {
-        return false;
+        return $user->hasPermissionTo('view') ? true : false;
     }
 
     /**

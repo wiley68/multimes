@@ -178,6 +178,16 @@ onMounted(() => {
                                     >
                                         <div v-if="col.name === 'actions'">
                                             <q-btn
+                                                v-if="hasPermission('view')"
+                                                icon="mdi-archive-eye-outline"
+                                                color="primary"
+                                                title="Преглед на доставката"
+                                                dense
+                                                flat
+                                                rounded
+                                                @click="router.get(route('deliveries.show', props.row.id))"
+                                            />
+                                            <q-btn
                                                 v-if="hasPermission('update') && props.row.status === 0"
                                                 icon="mdi-pencil-outline"
                                                 color="primary"

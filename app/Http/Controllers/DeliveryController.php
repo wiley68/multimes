@@ -79,6 +79,20 @@ class DeliveryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
+    public function show(Delivery $delivery): Response
+    {
+        Gate::authorize('view', $delivery);
+
+        $delivery->load('subdeliveries');
+
+        return Inertia::render('Deliveries/Show', [
+            'delivery' => new DeliveryResource($delivery),
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
     public function edit(Delivery $delivery): Response|RedirectResponse
     {
         Gate::authorize('update', $delivery);
