@@ -61,6 +61,7 @@ const title = `Промяна на продукт към доставка №${p
                                         :error="form.hasErrors"
                                         :error-message="form.errors.quantity"
                                         autofocus
+                                        numeric-keyboard-toggle
                                     >
                                         <template v-slot:append>
                                             <span class="text-subtitle1">{{ me }}</span>
