@@ -170,6 +170,7 @@ const confirm = (user_id) => {
                     <q-btn
                         color="primary"
                         label="Табло"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('admin.index'))"
                     />
@@ -177,7 +178,7 @@ const confirm = (user_id) => {
                     <q-btn
                         color="primary"
                         label="Нов потребител"
-                        icon="mdi-plus"
+                        icon="mdi-account-plus-outline"
                         @click="router.get(route('users.create'))"
                     />
                 </div>

@@ -68,10 +68,6 @@ const onSubmit = () => {
     })
 };
 
-const onReset = () => {
-    form.reset('name', 'email', 'password')
-}
-
 onMounted(() => {
     form.roles = props.user.roles
     form.permissions = props.user.permissions
@@ -85,7 +81,7 @@ watch(
     }
 )
 
-const title = 'Промяна на Потребител'
+const title = 'Потребител'
 </script>
 
 <template>
@@ -101,15 +97,8 @@ const title = 'Промяна на Потребител'
                 <div class="body-panel">
                     <div class="scrollable-content">
                         <div class="column flex-grow flex-center">
-                            <q-card
-                                class="q-pa-md"
-                                style="width: 800px; max-width: 100%;"
-                            >
-                                <q-form
-                                    @submit.prevent="onSubmit"
-                                    @reset="onReset"
-                                    class="q-gutter-md"
-                                >
+                            <q-card class="q-pa-md full-width">
+                                <q-form class="q-gutter-md">
                                     <q-input
                                         v-model="form.name"
                                         label="Потребител *"
@@ -158,28 +147,10 @@ const title = 'Промяна на Потребител'
                                             track-by="name"
                                         />
                                     </div>
-
-                                    <div>
-                                        <q-btn
-                                            label="Промени"
-                                            type="submit"
-                                            color="primary"
-                                        />
-                                        <q-btn
-                                            label="Откажи"
-                                            type="reset"
-                                            color="primary"
-                                            flat
-                                            class="q-ml-sm"
-                                        />
-                                    </div>
                                 </q-form>
                             </q-card>
 
-                            <div
-                                class="q-mt-md"
-                                style="width: 800px; max-width: 100%;"
-                            >
+                            <div class="q-mt-md full-width">
                                 <q-table
                                     class="my-sticky-header-table"
                                     bordered
@@ -209,10 +180,7 @@ const title = 'Промяна на Потребител'
                                 </q-table>
                             </div>
 
-                            <div
-                                class="q-mt-md"
-                                style="width: 800px; max-width: 100%;"
-                            >
+                            <div class="q-mt-md full-width">
                                 <q-table
                                     class="my-sticky-header-table"
                                     bordered
@@ -248,8 +216,16 @@ const title = 'Промяна на Потребител'
                     <q-btn
                         color="primary"
                         label="Потребители"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('users.index'))"
+                    />
+
+                    <q-btn
+                        @click.prevent="onSubmit"
+                        label="Запиши"
+                        icon="mdi-content-save-outline"
+                        color="primary"
                     />
                 </div>
             </div>

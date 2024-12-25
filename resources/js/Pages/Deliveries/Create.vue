@@ -67,13 +67,13 @@ const title = 'Доставка'
                         icon="mdi-menu-left"
                         @click.prevent="router.get(route('deliveries.index'))"
                     />
+
                     <q-btn
                         @click.prevent="onSubmit"
                         label="Запиши"
                         icon="mdi-content-save-outline"
                         color="primary"
                     />
-
                 </div>
             </div>
         </q-page>
