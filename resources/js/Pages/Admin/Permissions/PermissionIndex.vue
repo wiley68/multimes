@@ -138,6 +138,7 @@ const confirm = (permission_id) => {
                                     <q-btn
                                         icon="mdi-pencil-outline"
                                         color="primary"
+                                        title="Промяна на правото"
                                         dense
                                         flat
                                         rounded
@@ -146,6 +147,7 @@ const confirm = (permission_id) => {
                                     <q-btn
                                         icon="mdi-delete-outline"
                                         color="negative"
+                                        title="Изтриване на правото"
                                         dense
                                         flat
                                         rounded
@@ -160,6 +162,7 @@ const confirm = (permission_id) => {
                     <q-btn
                         color="primary"
                         label="Табло"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('admin.index'))"
                     />
@@ -167,7 +170,7 @@ const confirm = (permission_id) => {
                     <q-btn
                         color="primary"
                         label="Ново право"
-                        icon="mdi-plus"
+                        icon="mdi-key-plus"
                         @click="router.get(route('permissions.create'))"
                     />
                 </div>

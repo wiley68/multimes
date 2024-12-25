@@ -146,6 +146,7 @@ const confirm = (role_id) => {
                                     <q-btn
                                         icon="mdi-pencil-outline"
                                         color="primary"
+                                        title="Промяна на ролята"
                                         dense
                                         flat
                                         rounded
@@ -154,6 +155,7 @@ const confirm = (role_id) => {
                                     <q-btn
                                         icon="mdi-delete-outline"
                                         color="negative"
+                                        title="Изтриване на ролята"
                                         dense
                                         flat
                                         rounded
@@ -168,6 +170,7 @@ const confirm = (role_id) => {
                     <q-btn
                         color="primary"
                         label="Табло"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('admin.index'))"
                     />
@@ -175,7 +178,7 @@ const confirm = (role_id) => {
                     <q-btn
                         color="primary"
                         label="Нова роля"
-                        icon="mdi-plus"
+                        icon="mdi-account-multiple-plus-outline"
                         @click="router.get(route('roles.create'))"
                     />
                 </div>

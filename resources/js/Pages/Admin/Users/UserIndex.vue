@@ -147,6 +147,7 @@ const confirm = (user_id) => {
                                     <q-btn
                                         icon="mdi-pencil-outline"
                                         color="primary"
+                                        title="Промяна на потребителя"
                                         dense
                                         flat
                                         rounded
@@ -156,6 +157,7 @@ const confirm = (user_id) => {
                                         v-if="$page.props.auth.user.id !== props.row.id"
                                         icon="mdi-delete-outline"
                                         color="negative"
+                                        title="Изтриване на потребителя"
                                         dense
                                         flat
                                         rounded

@@ -19,11 +19,7 @@ const onSubmit = () => {
     })
 };
 
-const onReset = () => {
-    form.reset('name')
-}
-
-const title = 'Промяна на Право'
+const title = 'Право'
 </script>
 
 <template>
@@ -39,15 +35,8 @@ const title = 'Промяна на Право'
                 <div class="body-panel">
                     <div class="scrollable-content">
                         <div class="column flex-grow flex-center">
-                            <q-card
-                                class="q-pa-md"
-                                style="width: 800px; max-width: 100%;"
-                            >
-                                <q-form
-                                    @submit.prevent="onSubmit"
-                                    @reset="onReset"
-                                    class="q-gutter-md"
-                                >
+                            <q-card class="q-pa-md full-width">
+                                <q-form class="q-gutter-md">
                                     <q-input
                                         v-model="form.name"
                                         label="Право *"
@@ -56,21 +45,6 @@ const title = 'Промяна на Право'
                                         :error="form.hasErrors"
                                         :error-message="form.errors.name"
                                     />
-
-                                    <div>
-                                        <q-btn
-                                            label="Промени"
-                                            type="submit"
-                                            color="primary"
-                                        />
-                                        <q-btn
-                                            label="Откажи"
-                                            type="reset"
-                                            color="primary"
-                                            flat
-                                            class="q-ml-sm"
-                                        />
-                                    </div>
                                 </q-form>
                             </q-card>
                         </div>
@@ -80,8 +54,16 @@ const title = 'Промяна на Право'
                     <q-btn
                         color="primary"
                         label="Права"
+                        flat
                         icon="mdi-menu-left"
                         @click="router.get(route('permissions.index'))"
+                    />
+
+                    <q-btn
+                        @click.prevent="onSubmit"
+                        label="Запиши"
+                        icon="mdi-content-save-outline"
+                        color="primary"
                     />
                 </div>
             </div>
