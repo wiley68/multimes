@@ -24,7 +24,7 @@ const productsOptions = props.products?.map(product => ({
 
 const onSubmit = () => {
     form.post(route('subdeliveries.store'))
-};
+}
 
 const me = ref('')
 

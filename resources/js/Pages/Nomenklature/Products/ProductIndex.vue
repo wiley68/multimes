@@ -26,9 +26,9 @@ const columns = [
     },
     { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     { name: 'nomenklature', align: 'left', label: 'Номенклатура', field: 'nomenklature', sortable: true },
-    { name: 'price', align: 'left', label: 'Цена', field: 'price', sortable: false },
     { name: 'stock', align: 'left', label: 'Наличност', field: 'stock', sortable: false },
     { name: 'me', align: 'left', label: 'м.е.', field: 'me', sortable: false },
+    { name: 'price', align: 'left', label: 'Цена', field: 'price', sortable: false },
     {
         name: "actions",
         label: "Управление",

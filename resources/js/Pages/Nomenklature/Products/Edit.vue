@@ -24,7 +24,7 @@ const onSubmit = () => {
             form.reset('name', 'nomenklature', 'description', 'price', 'me', 'stock')
         },
     })
-};
+}
 
 const meOptions = [
     'бр', 'кг', 'л', 'м',
