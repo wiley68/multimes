@@ -50,7 +50,6 @@ const pagination = {
 }
 const title = 'Халета Майки'
 const filter = ref(props.filter)
-const navigationActive = ref(false)
 const $q = useQuasar()
 const { hasPermission } = usePermission()
 
@@ -166,7 +165,7 @@ const confirm = (mhall) => {
                                             <template v-if="checkStatus(props.row.mproductions)">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
                                                     checkStatus(props.row.mproductions)
-                                                }}
+                                                    }}
                                                 </div>
                                             </template>
                                             <template v-else>
