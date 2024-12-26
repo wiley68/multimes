@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSiloRequest;
 use App\Http\Resources\FactoryResource;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\SiloResource;
 use App\Models\Factory;
+use App\Models\Product;
 use App\Models\Silo;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -113,6 +115,42 @@ class SiloController extends Controller
         ]);
 
         return back();
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function loading(Silo $silo): Response
+    {
+        Gate::authorize('update', $silo);
+
+        $silo->load('factory');
+
+        return Inertia::render('Nomenklature/Silos/Loading', [
+            'silo' => new SiloResource($silo),
+            'products' => ProductResource::collection(Product::all()),
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function load(CreateSiloRequest $request, Silo $silo): RedirectResponse
+    {
+        Gate::authorize('update', $silo);
+
+        if ((float)$silo->maxqt < (float)$request->stock) {
+            return back()->withErrors([
+                'update' => 'Наличноста в силоза е по-голяма от максимално допустимата! Не можете да запишете промяната.'
+            ]);
+        }
+
+        $silo->update([
+            'product_id' => $request->product['id'],
+            'stock' => $request->stock,
+        ]);
+
+        return to_route('silos.index');
     }
 
     /**

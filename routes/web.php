@@ -46,6 +46,8 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::resource('/cities', CityController::class);
     Route::resource('/factories', FactoryController::class);
     Route::resource('/silos', SiloController::class);
+    Route::get('/silos/{silo}', [SiloController::class, 'loading'])->name('silos.loading');
+    Route::put('/silos/{silo}', [SiloController::class, 'load'])->name('silos.load');
     Route::resource('/mhalls', MhallController::class);
     Route::get('/mhalls/show', [MhallController::class, 'show'])->name('mhalls.show');
     Route::resource('/uhalls', UhallController::class);

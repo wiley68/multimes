@@ -196,6 +196,17 @@ const confirm = (silo_id) => {
                                 <q-td align="center">
                                     <q-btn
                                         v-if="hasPermission('update')"
+                                        icon="mdi-upload-multiple-outline"
+                                        color="primary"
+                                        title="Зареждане на силоз"
+                                        dense
+                                        flat
+                                        rounded
+                                        @click="router.get(route('silos.loading', props.row.id))"
+                                    />
+
+                                    <q-btn
+                                        v-if="hasPermission('update')"
                                         icon="mdi-pencil-outline"
                                         color="primary"
                                         title="Промяна на силоз"
@@ -204,6 +215,7 @@ const confirm = (silo_id) => {
                                         rounded
                                         @click="router.get(route('silos.edit', props.row.id))"
                                     />
+
                                     <q-btn
                                         v-if="hasPermission('delete')"
                                         icon="mdi-delete-outline"
