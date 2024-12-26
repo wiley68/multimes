@@ -8,12 +8,15 @@ defineProps({
 
 const form = useForm({
     name: '',
-    factory: null
+    factory: null,
+    maxqt: 100,
+    stock: 0,
+    product: null,
 })
 
 const onSubmit = () => {
     form.post(route('silos.store'), {
-        onFinish: () => form.reset('name', 'factory'),
+        onFinish: () => form.reset('name', 'factory', 'maxqt'),
     })
 };
 
@@ -51,6 +54,15 @@ const title = 'Силоз'
                                         label="Избери База"
                                         :error="form.hasErrors"
                                         :error-message="form.errors.factory"
+                                    />
+
+                                    <q-input
+                                        v-model.number="form.maxqt"
+                                        type="number"
+                                        label="Максимално количество [кг]"
+                                        hint="Максимално допустимо съдържание на силоза в кг."
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.maxqt"
                                     />
                                 </q-form>
                             </q-card>

@@ -35,7 +35,7 @@ class UhallController extends Controller
 
         $rowsPerPage = $validated['rowsPerPage'] ?? 10;
         $page = $validated['page'] ?? 1;
-        $sortBy = $validated['sortBy'] ?? 'id';
+        $sortBy = $validated['sortBy'] ?? 'name';
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
@@ -70,7 +70,7 @@ class UhallController extends Controller
 
         $rowsPerPage = $validated['rowsPerPage'] ?? 6;
         $page = $validated['page'] ?? 1;
-        $sortBy = $validated['sortBy'] ?? 'id';
+        $sortBy = $validated['sortBy'] ?? 'name';
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 

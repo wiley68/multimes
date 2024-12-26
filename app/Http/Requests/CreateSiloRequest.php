@@ -40,11 +40,11 @@ class CreateSiloRequest extends FormRequest
                 'min:0',
             ],
             'product' => [
-                'required',
+                'nullable',
                 'array',
             ],
             'product.id' => [
-                'required',
+                'nullable',
                 'exists:products,id',
             ],
             'factory' => [

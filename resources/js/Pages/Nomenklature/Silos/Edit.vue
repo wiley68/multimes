@@ -13,12 +13,13 @@ const props = defineProps({
 const form = useForm({
     name: props.silo?.name,
     factory: props.silo?.factory,
+    maxqt: props.silo?.maxqt,
 })
 
 const onSubmit = () => {
     form.put(route('silos.update', props.silo.id), {
         onFinish: () => {
-            form.reset('name', 'factory')
+            form.reset('name', 'factory', 'maxqt')
         },
     })
 };
@@ -56,6 +57,15 @@ const title = 'Силоз'
                                         label="Избери база"
                                         :error="form.hasErrors"
                                         :error-message="form.errors.factory"
+                                    />
+
+                                    <q-input
+                                        v-model.number="form.maxqt"
+                                        type="number"
+                                        label="Максимално количество [кг]"
+                                        hint="Максимално допустимо съдържание на силоза в кг."
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.maxqt"
                                     />
                                 </q-form>
                             </q-card>

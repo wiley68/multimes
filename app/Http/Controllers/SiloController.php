@@ -32,7 +32,7 @@ class SiloController extends Controller
 
         $rowsPerPage = $validated['rowsPerPage'] ?? 10;
         $page = $validated['page'] ?? 1;
-        $sortBy = $validated['sortBy'] ?? 'id';
+        $sortBy = $validated['sortBy'] ?? 'name';
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
@@ -71,7 +71,8 @@ class SiloController extends Controller
 
         Silo::create([
             'name' => $request->name,
-            'factory_id' => $request->factory['id']
+            'factory_id' => $request->factory['id'],
+            'maxqt' => $request->maxqt,
         ]);
 
         return to_route('silos.index');
@@ -101,7 +102,8 @@ class SiloController extends Controller
 
         $silo->update([
             'name' => $request->name,
-            'factory_id' => $request->factory['id']
+            'factory_id' => $request->factory['id'],
+            'maxqt' => $request->maxqt,
         ]);
 
         return back();
