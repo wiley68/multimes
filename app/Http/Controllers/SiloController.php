@@ -125,10 +125,15 @@ class SiloController extends Controller
         Gate::authorize('update', $silo);
 
         $silo->load('factory');
+        if ($silo->product_id !== 0) {
+            $products = Product::where('id', '=', $silo->product_id);
+        } else {
+            $products = Product::where('me', '=', 'кг');
+        }
 
         return Inertia::render('Nomenklature/Silos/Loading', [
             'silo' => new SiloResource($silo),
-            'products' => ProductResource::collection(Product::all()),
+            'products' => ProductResource::collection($products->get()),
         ]);
     }
 
@@ -139,7 +144,8 @@ class SiloController extends Controller
     {
         Gate::authorize('update', $silo);
 
-        if ((float)$silo->maxqt < (float)$request->stock) {
+        $new_stock = (float)$silo->stock + (float)$request->stock;
+        if ((float)$silo->maxqt < $new_stock) {
             return back()->withErrors([
                 'update' => 'Наличноста в силоза е по-голяма от максимално допустимата! Не можете да запишете промяната.'
             ]);

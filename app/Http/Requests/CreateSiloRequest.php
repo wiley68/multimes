@@ -39,6 +39,11 @@ class CreateSiloRequest extends FormRequest
                 'numeric',
                 'min:0',
             ],
+            'price' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
             'product' => [
                 'nullable',
                 'array',

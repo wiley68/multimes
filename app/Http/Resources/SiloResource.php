@@ -20,6 +20,7 @@ class SiloResource extends JsonResource
             'name' => $this->name,
             'maxqt' => $this->maxqt,
             'stock' => $this->stock,
+            'price' => $this->price,
             'product' => new ProductResource($this->whenLoaded('product')),
             'factory' => new FactoryResource($this->whenLoaded('factory')),
             'mhalls' => MhallResource::collection($this->whenLoaded('mhalls')),

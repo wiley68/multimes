@@ -59,6 +59,13 @@ const columns = [
         sortable: true
     },
     {
+        name: 'price',
+        align: 'left',
+        label: 'Ед. цена',
+        field: 'price',
+        sortable: false
+    },
+    {
         name: "actions",
         label: "Управление",
         align: "center",

@@ -14,6 +14,7 @@ class Silo extends Model
         'factory_id',
         'maxqt',
         'stock',
+        'price',
         'product_id',
     ];
 
