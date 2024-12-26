@@ -1,6 +1,8 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Head, router, useForm } from '@inertiajs/vue3'
+import { Head, router, useForm, usePage } from '@inertiajs/vue3'
+import { onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     silo: {
@@ -22,7 +24,19 @@ const onSubmit = () => {
             form.reset('name', 'factory', 'maxqt')
         },
     })
-};
+}
+
+const $q = useQuasar()
+onMounted(() => {
+    console.log(usePage().props.errors)
+    Object.values(usePage().props.errors).flat().forEach((error) => {
+        $q.notify({
+            message: error,
+            icon: 'mdi-alert-circle-outline',
+            type: 'negative',
+        });
+    });
+})
 
 const title = 'Силоз'
 </script>

@@ -100,6 +100,12 @@ class SiloController extends Controller
     {
         Gate::authorize('update', $silo);
 
+        if ((float)$silo->stock > (float)$request->maxqt) {
+            return back()->withErrors([
+                'update' => 'Наличноста в силоза е по-голяма от максимално допустимата! Не можете да запишете промяната.'
+            ]);
+        }
+
         $silo->update([
             'name' => $request->name,
             'factory_id' => $request->factory['id'],
