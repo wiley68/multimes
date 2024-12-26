@@ -36,7 +36,7 @@ class SiloController extends Controller
         $sortOrder = $validated['sortOrder'] ?? 'asc';
         $filter = $validated['filter'] ?? '';
 
-        $query = Silo::query()->with(['factory', 'mhalls', 'uhalls']);
+        $query = Silo::query()->with(['product', 'factory', 'mhalls', 'uhalls']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }

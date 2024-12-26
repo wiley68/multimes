@@ -31,12 +31,32 @@ const columns = [
         field: row => row.factory.name,
         sortable: true
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        sortable: true
+    },
     {
         name: 'mhalls',
         align: 'left',
         label: 'Халета',
         sortable: false
+    },
+    {
+        name: 'maxqt',
+        align: 'left',
+        label: 'Макс. [кг.]',
+        field: 'maxqt',
+        sortable: true
+    },
+    {
+        name: 'stock',
+        align: 'left',
+        label: 'Налично [кг.]',
+        field: 'stock',
+        sortable: true
     },
     {
         name: "actions",

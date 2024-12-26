@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('silos', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->double('maxqt', 15, 2);
+            $table->double('stock', 15, 2)->default(0);
+            $table->unsignedBigInteger('product_id')->default(0);
             $table->foreignId('factory_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->timestamps();
         });

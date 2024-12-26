@@ -27,12 +27,34 @@ class CreateSiloRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('silos', 'name')->ignore($this->silo)
+                Rule::unique('silos', 'name')->ignore($this->silo),
+            ],
+            'maxqt' => [
+                'required',
+                'numeric',
+                'min:100',
+            ],
+            'stock' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
+            'product' => [
+                'required',
+                'array',
+            ],
+            'product.id' => [
+                'required',
+                'exists:products,id',
             ],
             'factory' => [
                 'required',
-                'array'
-            ]
+                'array',
+            ],
+            'factory.id' => [
+                'required',
+                'exists:factories,id',
+            ],
         ];
     }
 }

@@ -12,11 +12,19 @@ class Silo extends Model
     protected $fillable = [
         'name',
         'factory_id',
+        'maxqt',
+        'stock',
+        'product_id',
     ];
 
     public function factory()
     {
         return $this->belongsTo(Factory::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 
     public function mhalls()
