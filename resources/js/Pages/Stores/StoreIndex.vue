@@ -153,7 +153,7 @@ const onRequest = (requestProp) => {
                                                 dense
                                                 flat
                                                 rounded
-                                                @click="router.get(route('deliveries.show', props.row.id))"
+                                                @click="router.get(route('stores.show', props.row.id))"
                                             />
                                         </div>
                                         <div v-else-if="col.name === 'stock'">

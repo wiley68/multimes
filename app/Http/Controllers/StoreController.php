@@ -50,6 +50,26 @@ class StoreController extends Controller
      */
     public function show(string $id)
     {
-        //
+        Gate::authorize('view', Product::class);
+
+        $product = Product::findOrFail($id);
+        $silos = $product->silos;
+
+        $stores[0]['nomenklature'] = $product['nomenklature'];
+        $stores[0]['name'] = $product['name'];
+        $stores[0]['quantity'] = $product['stock'];
+        $stores[0]['me'] = $product['me'];
+        $stores[0]['object'] = 'Склад';
+        foreach ($silos as $key => $value) {
+            $stores[$key + 1]['nomenklature'] = $product['nomenklature'];
+            $stores[$key + 1]['name'] = $product['name'];
+            $stores[$key + 1]['quantity'] = $value['stock'];
+            $stores[$key + 1]['me'] = $product['me'];
+            $stores[$key + 1]['object'] = $value['name'];
+        }
+
+        return Inertia::render('Stores/Show', [
+            'stores' => $stores,
+        ]);
     }
 }
