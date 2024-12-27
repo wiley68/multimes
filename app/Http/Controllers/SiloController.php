@@ -124,7 +124,7 @@ class SiloController extends Controller
     {
         Gate::authorize('update', $silo);
 
-        $silo->load('factory');
+        $silo->load(['factory', 'product']);
         if ($silo->product_id !== 0) {
             $products = Product::where('id', '=', $silo->product_id);
         } else {
@@ -144,17 +144,34 @@ class SiloController extends Controller
     {
         Gate::authorize('update', $silo);
 
-        $new_stock = (float)$silo->stock + (float)$request->stock;
-        if ((float)$silo->maxqt < $new_stock) {
+        $product = Product::findOrFail($request->product['id']);
+        $new_quantity = (float)$request->stock;
+        $current_quantity = (float)$silo->stock;
+        $result_quantity = $current_quantity + $new_quantity;
+        $new_price = (float)$product->price;
+        $current_price = (float)$silo->price;
+        $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
+
+        if ((float)$silo->maxqt < $result_quantity) {
             return back()->withErrors([
-                'update' => 'Наличноста в силоза е по-голяма от максимално допустимата! Не можете да запишете промяната.'
+                'update' => 'Наличноста в силоза ще стане по-голяма от максимално допустимата! Не можете да запишете промяната.'
+            ]);
+        }
+
+        if ((float)$product->stock < $new_quantity) {
+            return back()->withErrors([
+                'update' => 'Общата наличност е по-маслка от тази която искате да прехвърлите! Не можете да запишете промяната.'
             ]);
         }
 
         $silo->update([
             'product_id' => $request->product['id'],
-            'stock' => $request->stock,
+            'stock' => $result_quantity,
+            'price' => $result_price,
         ]);
+
+        $product->stock = $product->stock - $new_quantity;
+        $product->save();
 
         return to_route('silos.index');
     }
