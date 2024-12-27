@@ -470,6 +470,22 @@ onBeforeUnmount(() => {
                         </q-item-section>
                         <q-item-section>Доставки</q-item-section>
                     </q-item>
+
+                    <q-item
+                        clickable
+                        class="text-primary"
+                        active-class="bg-blue-1"
+                        @click="router.get(route('stores.index'))"
+                        :active="usePage().component.includes('Stores')"
+                    >
+                        <q-item-section avatar>
+                            <q-icon
+                                color="primary"
+                                name="mdi-store-outline"
+                            />
+                        </q-item-section>
+                        <q-item-section>Наличности</q-item-section>
+                    </q-item>
                 </template>
 
                 <q-space />

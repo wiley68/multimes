@@ -16,6 +16,7 @@ use App\Http\Controllers\RemoveRoleFromUserController;
 use App\Http\Controllers\RevokePermissionFromRoleController;
 use App\Http\Controllers\RevokePermissionFromUserController;
 use App\Http\Controllers\SiloController;
+use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SubdeliveryController;
 use App\Http\Controllers\UhallController;
 use App\Http\Controllers\UproductionController;
@@ -68,6 +69,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::resource('/deliveries', DeliveryController::class);
     Route::put('/deliveries/{delivery}', [DeliveryController::class, 'complete'])->name('deliveries.complete');
     Route::resource('/subdeliveries', SubdeliveryController::class);
+    Route::resource('/stores', StoreController::class);
 });
 
 require __DIR__ . '/auth.php';

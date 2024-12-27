@@ -22,4 +22,9 @@ class Product extends Model
     {
         return $this->hasMany(Subdelivery::class);
     }
+
+    public function silos()
+    {
+        return $this->hasMany(Silo::class);
+    }
 }
