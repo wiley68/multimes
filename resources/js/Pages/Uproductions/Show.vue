@@ -1,7 +1,8 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { computed, ref } from 'vue';
+import { computed, ref } from 'vue'
+import moment from 'moment'
 
 const props = defineProps({
     uproduction: {
@@ -11,12 +12,55 @@ const props = defineProps({
     silo: Object
 })
 
+const getDaysBetweenTodayAndDate = (targetDate) => {
+    const today = moment().startOf('day')
+    const target = moment(targetDate).startOf('day')
+    return today.diff(target, 'days')
+}
+
 const tab = ref('info')
 
+const productionPurcent = computed(() => {
+    const days = getDaysBetweenTodayAndDate(props.uproduction.created_at)
+    return parseFloat((days / parseFloat(props.uproduction.production_days)).toFixed(2))
+})
+const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
 const siloPurcent = computed(() => {
     return parseFloat((parseFloat(props.silo.stock) / parseFloat(props.silo.maxqt)).toFixed(2))
 })
 const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
+
+const columns = [
+    { name: 'name', required: true, label: 'name', align: 'left', field: row => row.name, format: val => `${val}`, },
+    { name: 'value', align: 'center', label: 'value', field: 'value', },
+]
+
+const rows = [
+    {
+        name: 'Състояние',
+        value: props.uproduction.status === 1 ? 'Активен' : 'Приключен',
+    },
+    {
+        name: 'Очакван брой дни за провеждане на процеса',
+        value: props.uproduction.production_days,
+    },
+    {
+        name: 'Стартиран на',
+        value: moment(props.uproduction.created_at).format('DD.MM.YY HH:mm'),
+    },
+    {
+        name: 'Брой дни в процес',
+        value: getDaysBetweenTodayAndDate(props.uproduction.created_at),
+    },
+    {
+        name: 'Оставащи дни до края на процеса',
+        value: props.uproduction.production_days - getDaysBetweenTodayAndDate(props.uproduction.created_at),
+    },
+    {
+        name: 'Процент на завършеност на процеса',
+        value: productionPurcentLabel,
+    },
+]
 
 const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${props.uproduction.id}`
 </script>
@@ -102,7 +146,32 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                     <q-separator />
 
                                     <q-card-section class="col">
-                                        qqq
+                                        <q-table
+                                            hide-header
+                                            hide-bottom
+                                            flat
+                                            bordered
+                                            :rows-per-page-options="[10]"
+                                            :rows="rows"
+                                            :columns="columns"
+                                            row-key="name"
+                                        />
+                                    </q-card-section>
+                                    <q-separator />
+                                    <q-card-section class="q-pa-xs q-ma-none">
+                                        <q-linear-progress
+                                            size="100%"
+                                            :value="productionPurcent"
+                                            color="secondary"
+                                        >
+                                            <div class="absolute-full flex flex-center">
+                                                <q-badge
+                                                    color="white"
+                                                    text-color="accent"
+                                                    :label="productionPurcentLabel"
+                                                />
+                                            </div>
+                                        </q-linear-progress>
                                     </q-card-section>
                                 </q-card>
                             </div>
