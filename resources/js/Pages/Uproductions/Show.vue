@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head } from '@inertiajs/vue3'
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const props = defineProps({
     uproduction: {
@@ -12,6 +12,11 @@ const props = defineProps({
 })
 
 const tab = ref('info')
+
+const siloPurcent = computed(() => {
+    return parseFloat((parseFloat(props.silo.stock) / parseFloat(props.silo.maxqt)).toFixed(2))
+})
+const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
 
 const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${props.uproduction.id}`
 </script>
@@ -109,11 +114,37 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                     <q-card-section class="bg-deep-orange text-white">
                                         <div class="text-h6 text-center">{{ silo.name }}</div>
                                     </q-card-section>
-
                                     <q-separator />
-
+                                    <q-card-section>
+                                        <div class="text-h5">[{{ silo.product.nomenklature }}] {{ silo.product.name
+                                            }}</div>
+                                        <div class="text-caption">{{ silo.product.description }}</div>
+                                    </q-card-section>
+                                    <q-separator />
                                     <q-card-section class="col">
-                                        qqq
+                                        <div class="text-subtitle1">Максимум: {{ parseFloat(silo.maxqt).toFixed(2) }} {{
+                                            silo.product.me }}
+                                        </div>
+                                        <div class="text-subtitle1">Текущо: {{ parseFloat(silo.stock).toFixed(2) }} {{
+                                            silo.product.me }}</div>
+                                        <div class="text-subtitle1 text-accent">Процент запълване: {{ siloPurcentLabel
+                                            }}</div>
+                                    </q-card-section>
+                                    <q-separator />
+                                    <q-card-section class="q-pa-xs q-ma-none">
+                                        <q-linear-progress
+                                            size="100%"
+                                            :value="siloPurcent"
+                                            color="deep-orange"
+                                        >
+                                            <div class="absolute-full flex flex-center">
+                                                <q-badge
+                                                    color="white"
+                                                    text-color="accent"
+                                                    :label="siloPurcentLabel"
+                                                />
+                                            </div>
+                                        </q-linear-progress>
                                     </q-card-section>
                                 </q-card>
                             </div>

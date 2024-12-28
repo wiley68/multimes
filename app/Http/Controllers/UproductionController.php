@@ -85,7 +85,7 @@ class UproductionController extends Controller
 
         $uproduction->load('uhall');
         $uhall = Uhall::findOrFail($uproduction->uhall_id);
-        $silo = Silo::findOrFail($uhall->silo_id);
+        $silo = Silo::findOrFail($uhall->silo_id)->load('product');
 
         return Inertia::render('Uproductions/Show', [
             'uproduction' => new UproductionsResource($uproduction),

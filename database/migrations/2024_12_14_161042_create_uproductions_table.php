@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedTinyInteger('status')->default(1);
             $table->foreignId('uhall_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
+            $table->unsignedInteger('production_days')->default(45);
+            $table->timestamp('finished_at')->nullable();
             $table->timestamps();
         });
     }

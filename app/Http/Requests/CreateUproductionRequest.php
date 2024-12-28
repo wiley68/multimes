@@ -25,12 +25,21 @@ class CreateUproductionRequest extends FormRequest
             'status' => [
                 'required',
                 'integer',
-                'in:0,1'
+                'in:0,1',
             ],
             'uhall' => [
                 'required',
-                'array'
-            ]
+                'array',
+            ],
+            'production_days' => [
+                'required',
+                'integer',
+                'min:0',
+            ],
+            'finished_at' => [
+                'nullable',
+                'timestamp',
+            ],
         ];
     }
 }

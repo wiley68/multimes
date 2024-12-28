@@ -17,6 +17,8 @@ class UproductionsResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
+            'production_days' => $this->production_days,
+            'finished_at' => $this->finished_at,
             'created_at' => $this->created_at,
             'uhall' => new UhallResource($this->whenLoaded('uhall')),
         ];
