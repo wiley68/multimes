@@ -162,6 +162,16 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                                     >
                                         <div v-if="col.name === 'actions'">
                                             <q-btn
+                                                v-if="hasPermission('update')"
+                                                title="Зареждане на процеса с прасета"
+                                                icon="mdi-upload-multiple-outline"
+                                                color="primary"
+                                                dense
+                                                flat
+                                                rounded
+                                                @click="router.get(route('uproductions.loading', props.row.id))"
+                                            />
+                                            <q-btn
                                                 v-if="hasPermission('view')"
                                                 title="Управлявай процеса"
                                                 icon="mdi-file-tree"

@@ -19,6 +19,9 @@ class UproductionsResource extends JsonResource
             'status' => $this->status,
             'production_days' => $this->production_days,
             'finished_at' => $this->finished_at,
+            'stock' => $this->stock,
+            'price' => $this->price,
+            'product' => new ProductResource($this->whenLoaded('product')),
             'created_at' => $this->created_at,
             'uhall' => new UhallResource($this->whenLoaded('uhall')),
         ];

@@ -14,11 +14,19 @@ class Uproduction extends Model
         'uhall_id',
         'production_days',
         'finished_at',
+        'stock',
+        'price',
+        'product_id',
         'created_at',
     ];
 
     public function uhall()
     {
         return $this->belongsTo(Uhall::class);
+    }
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
     }
 }

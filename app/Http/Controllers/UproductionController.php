@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUproductionRequest;
+use App\Http\Requests\LoadUproductionRequest;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\SiloResource;
 use App\Http\Resources\UhallResource;
 use App\Http\Resources\UproductionsResource;
+use App\Models\Product;
 use App\Models\Silo;
 use App\Models\Uhall;
 use App\Models\Uproduction;
@@ -99,6 +102,61 @@ class UproductionController extends Controller
     public function update(Request $request, Uproduction $uproduction)
     {
         //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function loading(Uproduction $uproduction): Response
+    {
+        Gate::authorize('update', $uproduction);
+
+        $uproduction->load(['uhall', 'product']);
+        if ($uproduction->product_id !== 0) {
+            $products = Product::where('id', '=', $uproduction->product_id);
+        } else {
+            $products = Product::where('me', '=', 'бр');
+        }
+
+        return Inertia::render('Uproductions/Loading', [
+            'uproduction' => new UproductionsResource($uproduction),
+            'products' => ProductResource::collection($products->get()),
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function load(LoadUproductionRequest $request, Uproduction $uproduction): RedirectResponse
+    {
+        Gate::authorize('update', $uproduction);
+
+        $product = Product::findOrFail($request->product['id']);
+        $new_quantity = (float)$request->stock;
+        $current_quantity = (float)$uproduction->stock;
+        $result_quantity = $current_quantity + $new_quantity;
+        $new_price = (float)$product->price;
+        $current_price = (float)$uproduction->price;
+        $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
+
+        if ((float)$product->stock < $new_quantity) {
+            return back()->withErrors([
+                'update' => 'Общата наличност е по-малка от тази която искате да прехвърлите! Не можете да запишете промяната.'
+            ]);
+        }
+
+        $uproduction->update([
+            'product_id' => $request->product['id'],
+            'stock' => $result_quantity,
+            'price' => $result_price,
+        ]);
+
+        $product->stock = $product->stock - $new_quantity;
+        $product->save();
+
+        //create razhod za procesa. stoinostta na prasetata
+
+        return to_route('uproductions.index');
     }
 
     /**

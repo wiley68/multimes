@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateUproductionRequest extends FormRequest
+class LoadUproductionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,40 +22,22 @@ class CreateUproductionRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'status' => [
-                'required',
-                'integer',
-                'in:0,1',
-            ],
-            'uhall' => [
-                'required',
-                'array',
-            ],
-            'production_days' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
-            'finished_at' => [
-                'nullable',
-                'timestamp',
-            ],
             'stock' => [
-                'nullable',
+                'required',
                 'numeric',
-                'min:0',
+                'min:1',
             ],
             'price' => [
-                'nullable',
+                'required',
                 'numeric',
                 'min:0',
             ],
             'product' => [
-                'nullable',
+                'required',
                 'array',
             ],
             'product.id' => [
-                'nullable',
+                'required',
                 'exists:products,id',
             ],
         ];

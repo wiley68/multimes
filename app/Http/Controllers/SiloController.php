@@ -160,7 +160,7 @@ class SiloController extends Controller
 
         if ((float)$product->stock < $new_quantity) {
             return back()->withErrors([
-                'update' => 'Общата наличност е по-маслка от тази която искате да прехвърлите! Не можете да запишете промяната.'
+                'update' => 'Общата наличност е по-малка от тази която искате да прехвърлите! Не можете да запишете промяната.'
             ]);
         }
 
