@@ -6,7 +6,6 @@ use App\Http\Requests\CreateUproductionRequest;
 use App\Http\Requests\LoadUproductionRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SiloResource;
-use App\Http\Resources\UhallResource;
 use App\Http\Resources\UproductionsResource;
 use App\Models\Product;
 use App\Models\Silo;
@@ -43,7 +42,7 @@ class UproductionController extends Controller
         $filter = $validated['filter'] ?? '';
         $uhall = $validated['uhall'] ?? null;
 
-        $query = Uproduction::query()->with('uhall');
+        $query = Uproduction::query()->with(['uhall', 'product']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }

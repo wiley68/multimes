@@ -54,6 +54,27 @@ const columns = [
         sortable: true
     },
     {
+        name: 'product',
+        align: 'left',
+        label: 'Продукт',
+        field: 'product',
+        sortable: true
+    },
+    {
+        name: 'stock',
+        align: 'left',
+        label: 'Количество [бр]',
+        field: 'stock',
+        sortable: true
+    },
+    {
+        name: 'price',
+        align: 'left',
+        label: 'Цена',
+        field: 'price',
+        sortable: true
+    },
+    {
         name: "actions",
         label: "Управление",
         align: "center",
@@ -200,6 +221,16 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                                         </div>
                                         <div v-else-if="col.name === 'created_at'">
                                             {{ moment(props.row['created_at']).format('DD.MM.YY HH:mm') }}
+                                        </div>
+                                        <div v-else-if="col.name === 'product'">
+                                            {{ props.row.product ? `[${props.row.product.nomenklature}]
+                                            ${props.row.product.name}` : '' }}
+                                        </div>
+                                        <div v-else-if="col.name === 'stock'">
+                                            {{ parseFloat(props.row.stock) === 0 ? '' : props.row.stock }}
+                                        </div>
+                                        <div v-else-if="col.name === 'price'">
+                                            {{ parseFloat(props.row.price) === 0 ? '' : props.row.price }}
                                         </div>
                                         <div v-else>
                                             {{ props.row[col.name] }}

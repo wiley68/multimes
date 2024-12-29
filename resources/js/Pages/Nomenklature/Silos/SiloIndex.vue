@@ -52,6 +52,13 @@ const columns = [
         sortable: true
     },
     {
+        name: 'product',
+        align: 'left',
+        label: 'Продукт',
+        field: row => `[${row.product.nomenklature}] ${row.product.name}`,
+        sortable: true
+    },
+    {
         name: 'stock',
         align: 'left',
         label: 'Налично [кг.]',
