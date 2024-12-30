@@ -9,6 +9,7 @@ use App\Http\Resources\SiloResource;
 use App\Http\Resources\UproductionsResource;
 use App\Models\Product;
 use App\Models\Silo;
+use App\Models\Udecrement;
 use App\Models\Uhall;
 use App\Models\Uproduction;
 use Illuminate\Http\RedirectResponse;
@@ -154,7 +155,13 @@ class UproductionController extends Controller
         $product->stock = $product->stock - $new_quantity;
         $product->save();
 
-        //create razhod za procesa. stoinostta na prasetata
+        Udecrement::create([
+            'uproduction_id' => $uproduction->id,
+            'product_id' => $request->product['id'],
+            'quantity' => $new_quantity,
+            'price' => $new_price,
+            'status' => 1,
+        ]);
 
         return to_route('uproductions.index');
     }
