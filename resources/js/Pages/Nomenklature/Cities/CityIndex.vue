@@ -20,22 +20,30 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 80px;',
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        style: 'width: 240px;',
+        sortable: true,
+    },
     {
         name: 'factories',
         align: 'left',
         label: 'Бази',
-        sortable: false
+        sortable: false,
     },
     {
         name: "actions",
         label: "Управление",
         align: "center",
         field: "actions",
+        sortable: false,
     }
 ]
 
@@ -145,7 +153,10 @@ const confirm = (city_id) => {
                                 </q-input>
                             </template>
                             <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
+                                <q-td
+                                    align="center"
+                                    style="width: 120px;"
+                                >
                                     <q-btn
                                         v-if="hasPermission('update')"
                                         icon="mdi-pencil-outline"
