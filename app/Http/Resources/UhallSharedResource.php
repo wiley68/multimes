@@ -19,7 +19,7 @@ class UhallSharedResource extends JsonResource
             'name' => $this->name,
             'factory' => new FactoryResource($this->whenLoaded('factory')),
             'silo' => new SiloResource($this->whenLoaded('silo')),
-            'uproductions' => UproductionsResource::collection($this->whenLoaded('uproductions')),
+            'uproduction' => new UproductionsResource($this->whenLoaded('uproductions')->firstWhere('status', 1)),
         ];
     }
 }

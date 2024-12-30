@@ -19,7 +19,7 @@ class MhallSharedResource extends JsonResource
             'name' => $this->name,
             'factory' => new FactoryResource($this->whenLoaded('factory')),
             'silo' => new SiloResource($this->whenLoaded('silo')),
-            'mproductions' => MproductionsResource::collection($this->whenLoaded('mproductions')),
+            'mproduction' => new MproductionsResource($this->whenLoaded('mproductions')->firstWhere('status', 1)),
         ];
     }
 }

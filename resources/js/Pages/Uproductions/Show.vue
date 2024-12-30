@@ -185,17 +185,17 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                     </q-card-section>
                                     <q-separator />
                                     <q-card-section>
-                                        <div class="text-h5">[{{ silo.product.nomenklature }}] {{ silo.product.name
+                                        <div class="text-h5">[{{ silo.product?.nomenklature }}] {{ silo.product?.name
                                             }}</div>
-                                        <div class="text-caption">{{ silo.product.description }}</div>
+                                        <div class="text-caption">{{ silo.product?.description }}</div>
                                     </q-card-section>
                                     <q-separator />
                                     <q-card-section class="col">
                                         <div class="text-subtitle1">Максимум: {{ parseFloat(silo.maxqt).toFixed(2) }} {{
-                                            silo.product.me }}
+                                            silo.product?.me }}
                                         </div>
                                         <div class="text-subtitle1">Текущо: {{ parseFloat(silo.stock).toFixed(2) }} {{
-                                            silo.product.me }}</div>
+                                            silo.product?.me }}</div>
                                         <div class="text-subtitle1 text-accent">Процент запълване: {{ siloPurcentLabel
                                             }}</div>
                                     </q-card-section>

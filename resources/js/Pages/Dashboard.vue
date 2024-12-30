@@ -3,6 +3,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
+import moment from 'moment'
 
 const props = defineProps({
   mhalls: {
@@ -16,32 +17,6 @@ const props = defineProps({
 const title = 'Табло'
 const $q = useQuasar()
 const { hasPermission, hasPermissions } = usePermission()
-
-const checkStatusMhall = (val) => {
-  if (Array.isArray(val) && val.length > 0) {
-    const foundMproject = val.find(item => item.status === 1)
-    if (foundMproject === undefined) {
-      return false
-    } else {
-      return foundMproject.id
-    }
-  } else {
-    return false
-  }
-}
-
-const checkStatusUhall = (val) => {
-  if (Array.isArray(val) && val.length > 0) {
-    const foundUproject = val.find(item => item.status === 1)
-    if (foundUproject === undefined) {
-      return false
-    } else {
-      return foundUproject.id
-    }
-  } else {
-    return false
-  }
-}
 
 const confirmMproduction = (mhall) => {
   $q.dialog({
@@ -91,6 +66,21 @@ const confirmUproduction = (uhall) => {
     })
   }).onCancel(() => { }).onDismiss(() => { })
 }
+
+const getDaysBetweenTodayAndDate = (targetDate) => {
+  const today = moment().startOf('day')
+  const target = moment(targetDate).startOf('day')
+  return today.diff(target, 'days')
+}
+
+const productionPurcent = (production) => {
+  if (production !== null) {
+    const days = getDaysBetweenTodayAndDate(production.created_at)
+    return parseFloat((days / parseFloat(production.production_days)).toFixed(2))
+  } else {
+    return 0
+  }
+}
 </script>
 
 <template>
@@ -132,13 +122,13 @@ const confirmUproduction = (uhall) => {
                   class="col"
                   rounded
                   size="40px"
-                  :value="checkStatusMhall(mhall.mproductions) !== false ? 0.70 : 0.00"
+                  :value="productionPurcent(mhall.mproduction)"
                   color="teal-2"
                 >
                   <div
                     class="absolute-full flex flex-center"
                     style="border-radius: 0.25rem;"
-                    :style="checkStatusMhall(mhall.mproductions) !== false ? 'border:1px solid #4DB6AC;' : ''"
+                    :style="mhall.mproduction !== null ? 'border:1px solid #4DB6AC;' : ''"
                   >
                     <q-badge
                       class="q-px-sm q-py-xs text-caption text-weight-medium"
@@ -146,16 +136,16 @@ const confirmUproduction = (uhall) => {
                       color="white"
                       rounded
                       text-color="teal-10"
-                      :label="checkStatusMhall(mhall.mproductions) !== false ? `Хале: ${mhall.name} [Процес №${checkStatusMhall(mhall.mproductions)}: 70%]` : `Хале: ${mhall.name}`"
+                      :label="mhall.mproduction !== null ? `Хале: ${mhall.name} [Процес №${mhall.mproduction.id}: ${productionPurcent(mhall.mproduction)}%]` : `Хале: ${mhall.name}`"
                     />
                   </div>
                 </q-linear-progress>
-                <template v-if="checkStatusMhall(mhall.mproductions) !== false">
+                <template v-if="mhall.mproduction !== null">
                   <q-btn
                     flat
                     style="min-width: 190px;"
                     class="text-accent"
-                    @click="router.get(route('mproductions.show', { mproduction: checkStatusMhall(mhall.mproductions) }))"
+                    @click="router.get(route('mproductions.show', { mproduction: mhall.mproduction }))"
                   >Управлявай процеса</q-btn>
                 </template>
                 <template v-else>
@@ -213,13 +203,13 @@ const confirmUproduction = (uhall) => {
                   class="col"
                   rounded
                   size="40px"
-                  :value="checkStatusUhall(uhall.uproductions) !== false ? 0.45 : 0.00"
+                  :value="productionPurcent(uhall.uproduction)"
                   color="indigo-2"
                 >
                   <div
                     class="absolute-full flex flex-center"
                     style="border-radius: 0.25rem;"
-                    :style="checkStatusUhall(uhall.uproductions) !== false ? 'border:1px solid #1A237E;' : ''"
+                    :style="uhall.uproduction !== null ? 'border:1px solid #1A237E;' : ''"
                   >
                     <q-badge
                       class="q-px-sm q-py-xs text-caption text-weight-medium"
@@ -227,16 +217,16 @@ const confirmUproduction = (uhall) => {
                       color="white"
                       rounded
                       text-color="indigo-10"
-                      :label="checkStatusUhall(uhall.uproductions) !== false ? `Хале: ${uhall.name} [Процес №${checkStatusUhall(uhall.uproductions)}: 45%]` : `Хале: ${uhall.name}`"
+                      :label="uhall.uproduction !== null ? `Хале: ${uhall.name} [Процес №${uhall.uproduction.id}: ${productionPurcent(uhall.uproduction)}%]` : `Хале: ${uhall.name}`"
                     />
                   </div>
                 </q-linear-progress>
-                <template v-if="checkStatusUhall(uhall.uproductions) !== false">
+                <template v-if="uhall.uproduction !== null">
                   <q-btn
                     flat
                     style="min-width: 190px;"
                     class="text-accent"
-                    @click="router.get(route('uproductions.show', { uproduction: checkStatusUhall(uhall.uproductions) }))"
+                    @click="router.get(route('uproductions.show', { uproduction: uhall.uproduction }))"
                   >Управлявай процеса</q-btn>
                 </template>
                 <template v-else>
