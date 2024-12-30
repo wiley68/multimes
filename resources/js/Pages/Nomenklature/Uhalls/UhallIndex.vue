@@ -20,25 +20,33 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 80px;',
+        sortable: true,
     },
     {
         name: 'factory_id',
         align: 'left',
         label: 'База',
         field: row => row.factory.name,
-        sortable: true
+        style: 'width: 240px;',
+        sortable: true,
     },
     {
         name: 'silo_id',
         align: 'left',
         label: 'Силоз',
         field: row => row.silo.name,
+        style: 'width: 240px;',
+        sortable: true,
+    },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
         sortable: true
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
     {
         name: "actions",
         label: "Управление",
@@ -165,7 +173,10 @@ const confirm = (uhall_id) => {
                                 </q-input>
                             </template>
                             <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
+                                <q-td
+                                    align="center"
+                                    style="width: 120px;"
+                                >
                                     <q-btn
                                         v-if="hasPermission('update')"
                                         icon="mdi-pencil-outline"

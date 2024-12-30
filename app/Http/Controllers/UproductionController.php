@@ -72,7 +72,8 @@ class UproductionController extends Controller
 
         Uproduction::create([
             'status' => $request->status,
-            'uhall_id' => $request->uhall['id']
+            'uhall_id' => $request->uhall['id'],
+            'production_days' => $request->production_days,
         ]);
 
         return back();

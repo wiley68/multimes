@@ -43,7 +43,7 @@ const checkStatusUhall = (val) => {
   }
 }
 
-const confirm = (mhall) => {
+const confirmMproduction = (mhall) => {
   $q.dialog({
     title: 'Потвърди',
     message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
@@ -63,6 +63,31 @@ const confirm = (mhall) => {
     router.post(route('mproductions.store'), {
       status: 1,
       mhall: mhall,
+    })
+  }).onCancel(() => { }).onDismiss(() => { })
+}
+
+const confirmUproduction = (uhall) => {
+  $q.dialog({
+    title: 'Потвърди',
+    message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
+    cancel: true,
+    persistent: true,
+    ok: {
+      label: 'Да',
+      color: 'primary',
+    },
+    cancel: {
+      label: 'Откажи',
+      color: 'grey-1',
+      textColor: 'grey-10',
+      flat: true
+    },
+  }).onOk(() => {
+    router.post(route('uproductions.store'), {
+      status: 1,
+      uhall: uhall,
+      production_days: 45,
     })
   }).onCancel(() => { }).onDismiss(() => { })
 }
@@ -138,7 +163,7 @@ const confirm = (mhall) => {
                     <q-btn
                       outline
                       style="min-width: 190px;"
-                      @click="confirm(mhall)"
+                      @click="confirmMproduction(mhall)"
                     >Стартирай процес</q-btn>
                   </template>
                   <template v-else>
@@ -219,7 +244,7 @@ const confirm = (mhall) => {
                     <q-btn
                       outline
                       style="min-width: 190px;"
-                      @click="confirm(uhall)"
+                      @click="confirmUproduction(uhall)"
                     >Стартирай процес</q-btn>
                   </template>
                   <template v-else>
