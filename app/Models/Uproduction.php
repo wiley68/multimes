@@ -29,4 +29,9 @@ class Uproduction extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function udecrements()
+    {
+        return $this->hasMany(Udecrement::class);
+    }
 }

@@ -86,7 +86,7 @@ class UproductionController extends Controller
     {
         Gate::authorize('view', $uproduction);
 
-        $uproduction->load('uhall');
+        $uproduction->load(['uhall', 'udecrements', 'product']);
         $uhall = Uhall::findOrFail($uproduction->uhall_id);
         $silo = Silo::findOrFail($uhall->silo_id)->load('product');
 
