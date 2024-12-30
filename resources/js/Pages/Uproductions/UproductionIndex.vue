@@ -56,7 +56,7 @@ const columns = [
     {
         name: 'product',
         align: 'left',
-        label: 'Продукт',
+        label: 'Прасета',
         field: 'product',
         sortable: true
     },
