@@ -41,9 +41,10 @@ const columns = [
         sortable: true,
     },
     {
-        name: 'mhalls',
+        name: 'halls',
         align: 'left',
         label: 'Халета',
+        field: 'halls',
         sortable: false,
     },
     {
@@ -85,13 +86,13 @@ const columns = [
     }
 ]
 
-const fieldMhall = (row) => {
+const fieldHalls = (row) => {
     var hallbetween = ''
-    const mhalls = row.mhalls.map(obj => obj.name).join(', ')
+    const mhalls = row.mhalls?.map(obj => obj.name).join(', ')
     if (mhalls.length > 0) {
         hallbetween = ', '
     }
-    const uhalls = row.uhalls.map(obj => obj.name).join(', ')
+    const uhalls = row.uhalls?.map(obj => obj.name).join(', ')
     return mhalls + hallbetween + uhalls
 }
 
@@ -250,18 +251,18 @@ const confirm = (silo_id) => {
                                     />
                                 </q-td>
                             </template>
-                            <template v-slot:body-cell-mhalls="props">
-                                <q-td :props="props">
-                                    {{ props.row.product ? `[${props.row.product.nomenklature}]
-                                    ${props.row.product?.name}` : '' }}
-                                </q-td>
-                            </template>
-                            <template v-slot:body-cell-product="props">
+                            <template v-slot:body-cell-halls="props">
                                 <q-td
                                     :props="props"
                                     class="text-wrap"
                                 >
-                                    {{ fieldMhall(props.row) }}
+                                    {{ fieldHalls(props.row) }}
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-product="props">
+                                <q-td :props="props">
+                                    {{ props.row.product ? `[${props.row.product.nomenklature}]
+                                    ${props.row.product?.name}` : '' }}
                                 </q-td>
                             </template>
                         </q-table>
