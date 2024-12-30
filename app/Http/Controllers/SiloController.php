@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSiloRequest;
+use App\Http\Requests\LoadSiloRequest;
 use App\Http\Resources\FactoryResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SiloResource;
@@ -140,7 +141,7 @@ class SiloController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function load(CreateSiloRequest $request, Silo $silo): RedirectResponse
+    public function load(LoadSiloRequest $request, Silo $silo): RedirectResponse
     {
         Gate::authorize('update', $silo);
 

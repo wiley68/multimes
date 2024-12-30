@@ -20,15 +20,49 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 80px;',
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
-    { name: 'nomenklature', align: 'left', label: 'Номенклатура', field: 'nomenklature', sortable: true },
-    { name: 'stock', align: 'left', label: 'Наличност', field: 'stock', sortable: false },
-    { name: 'me', align: 'left', label: 'м.е.', field: 'me', sortable: false },
-    { name: 'price', align: 'left', label: 'Цена', field: 'price', sortable: false },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        sortable: true,
+    },
+    {
+        name: 'nomenklature',
+        align: 'left',
+        label: 'Номенклатура',
+        field: 'nomenklature',
+        style: 'width: 120px;',
+        sortable: true,
+    },
+    {
+        name: 'stock',
+        align: 'left',
+        label: 'Наличност',
+        field: 'stock',
+        style: 'width: 120px;',
+        sortable: false,
+    },
+    {
+        name: 'me',
+        align: 'left',
+        label: 'м.е.',
+        field: 'me',
+        style: 'width: 80px;',
+        sortable: false,
+    },
+    {
+        name: 'price',
+        align: 'left',
+        label: 'Цена',
+        field: 'price',
+        style: 'width: 120px;',
+        sortable: false,
+    },
     {
         name: "actions",
         label: "Управление",
@@ -140,7 +174,10 @@ const confirm = (product_id) => {
                                 </q-input>
                             </template>
                             <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
+                                <q-td
+                                    align="center"
+                                    style="width: 120px;"
+                                >
                                     <q-btn
                                         v-if="hasPermission('update')"
                                         icon="mdi-pencil-outline"
