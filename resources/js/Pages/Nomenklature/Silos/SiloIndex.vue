@@ -20,57 +20,62 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 80px;',
+        sortable: true,
     },
     {
         name: 'factory_id',
         align: 'left',
         label: 'База',
         field: row => row.factory.name,
-        sortable: true
+        style: 'width: 200px;',
+        sortable: true,
     },
     {
         name: 'name',
         align: 'left',
         label: 'Име',
         field: 'name',
-        sortable: true
+        style: 'width: 140px;',
+        sortable: true,
     },
     {
         name: 'mhalls',
         align: 'left',
         label: 'Халета',
-        sortable: false
+        sortable: false,
     },
     {
         name: 'maxqt',
         align: 'left',
         label: 'Макс. [кг.]',
         field: 'maxqt',
-        sortable: true
+        style: 'width: 80px;',
+        sortable: true,
     },
     {
         name: 'product',
         align: 'left',
         label: 'Продукт',
-        field: row => `[${row.product.nomenklature}] ${row.product.name}`,
-        sortable: true
+        field: 'product',
+        sortable: true,
     },
     {
         name: 'stock',
         align: 'left',
         label: 'Налично [кг.]',
         field: 'stock',
-        sortable: true
+        style: 'width: 80px;',
+        sortable: true,
     },
     {
         name: 'price',
         align: 'left',
         label: 'Ед. цена',
         field: 'price',
-        sortable: false
+        style: 'width: 80px;',
+        sortable: false,
     },
     {
         name: "actions",
@@ -207,7 +212,10 @@ const confirm = (silo_id) => {
                                 </q-input>
                             </template>
                             <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
+                                <q-td
+                                    align="center"
+                                    style="width:120px;"
+                                >
                                     <q-btn
                                         v-if="hasPermission('update')"
                                         icon="mdi-upload-multiple-outline"
@@ -243,6 +251,12 @@ const confirm = (silo_id) => {
                                 </q-td>
                             </template>
                             <template v-slot:body-cell-mhalls="props">
+                                <q-td :props="props">
+                                    {{ props.row.product ? `[${props.row.product.nomenklature}]
+                                    ${props.row.product?.name}` : '' }}
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-product="props">
                                 <q-td
                                     :props="props"
                                     class="text-wrap"
