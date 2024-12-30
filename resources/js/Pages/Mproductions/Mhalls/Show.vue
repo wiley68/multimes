@@ -20,9 +20,8 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        sortable: true,
     },
     {
         name: 'factory_id',
@@ -30,7 +29,7 @@ const columns = [
         label: 'База',
         field: row => row.factory.name,
         format: val => `${val}`,
-        sortable: true
+        sortable: true,
     },
     {
         name: 'silo_id',
@@ -38,9 +37,15 @@ const columns = [
         label: 'Силоз',
         field: row => row.silo.name,
         format: val => `${val}`,
-        sortable: true
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        sortable: true,
+    },
 ]
 
 const pagination = {
@@ -67,19 +72,6 @@ const onRequest = (requestProp) => {
             preserveState: false,
         }
     );
-}
-
-const checkStatus = (val) => {
-    if (Array.isArray(val) && val.length > 0) {
-        const foundMproject = val.find(item => item.status === 1)
-        if (foundMproject === undefined) {
-            return false
-        } else {
-            return foundMproject.id
-        }
-    } else {
-        return false
-    }
 }
 
 const confirm = (mhall) => {
@@ -159,13 +151,13 @@ const confirm = (mhall) => {
                                     >
                                         <q-card-section
                                             class="text-center text-white"
-                                            :class="checkStatus(props.row.mproductions) ? 'bg-accent' : 'bg-grey'"
+                                            :class="props.row.mproduction !== null ? 'bg-accent' : 'bg-grey'"
                                         >
                                             <div class="text-h6">Хале: {{ props.row.name }}</div>
-                                            <template v-if="checkStatus(props.row.mproductions)">
+                                            <template v-if="props.row.mproduction !== null">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
-                                                    checkStatus(props.row.mproductions)
-                                                    }}
+                                                    props.row.mproduction.id
+                                                }}
                                                 </div>
                                             </template>
                                             <template v-else>
@@ -179,11 +171,11 @@ const confirm = (mhall) => {
                                         </q-card-section>
                                         <q-separator />
                                         <q-card-actions align="around">
-                                            <template v-if="checkStatus(props.row.mproductions)">
+                                            <template v-if="props.row.mproduction !== null">
                                                 <q-btn
                                                     flat
-                                                    :class="checkStatus(props.row.mproductions) ? 'text-accent' : ''"
-                                                    @click="router.get(route('mproductions.show', { mproduction: checkStatus(props.row.mproductions) }))"
+                                                    :class="props.row.mproduction !== null ? 'text-accent' : ''"
+                                                    @click="router.get(route('mproductions.show', { mproduction: props.row.mproduction }))"
                                                 >Управлявай процеса</q-btn>
                                             </template>
                                             <template v-else>

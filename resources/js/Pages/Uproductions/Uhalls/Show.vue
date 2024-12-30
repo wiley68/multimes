@@ -20,9 +20,8 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        sortable: true,
     },
     {
         name: 'factory_id',
@@ -30,7 +29,7 @@ const columns = [
         label: 'База',
         field: row => row.factory.name,
         format: val => `${val}`,
-        sortable: true
+        sortable: true,
     },
     {
         name: 'silo_id',
@@ -38,9 +37,15 @@ const columns = [
         label: 'Силоз',
         field: row => row.silo.name,
         format: val => `${val}`,
-        sortable: true
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        sortable: true,
+    },
 ]
 
 const pagination = {
@@ -50,7 +55,6 @@ const pagination = {
 }
 const title = 'Халета Угояване'
 const filter = ref(props.filter)
-const navigationActive = ref(false)
 const $q = useQuasar()
 const { hasPermission } = usePermission()
 
@@ -68,19 +72,6 @@ const onRequest = (requestProp) => {
             preserveState: false,
         }
     );
-}
-
-const checkStatus = (val) => {
-    if (Array.isArray(val) && val.length > 0) {
-        const foundUproject = val.find(item => item.status === 1)
-        if (foundUproject === undefined) {
-            return false
-        } else {
-            return foundUproject.id
-        }
-    } else {
-        return false
-    }
 }
 
 const confirm = (uhall) => {
@@ -160,13 +151,13 @@ const confirm = (uhall) => {
                                     >
                                         <q-card-section
                                             class="text-center text-white"
-                                            :class="checkStatus(props.row.uproductions) ? 'bg-accent' : 'bg-grey'"
+                                            :class="props.row.uproduction !== null ? 'bg-accent' : 'bg-grey'"
                                         >
                                             <div class="text-h6">{{ props.row.name }}</div>
-                                            <template v-if="checkStatus(props.row.uproductions)">
+                                            <template v-if="props.row.uproduction !== null">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
-                                                    checkStatus(props.row.uproductions)
-                                                    }}
+                                                    props.row.uproduction.id
+                                                }}
                                                 </div>
                                             </template>
                                             <template v-else>
@@ -180,11 +171,11 @@ const confirm = (uhall) => {
                                         </q-card-section>
                                         <q-separator />
                                         <q-card-actions align="around">
-                                            <template v-if="checkStatus(props.row.uproductions)">
+                                            <template v-if="props.row.uproduction !== null">
                                                 <q-btn
                                                     flat
-                                                    :class="checkStatus(props.row.uproductions) ? 'text-accent' : ''"
-                                                    @click="router.get(route('uproductions.show', { uproduction: checkStatus(props.row.uproductions) }))"
+                                                    :class="props.row.uproduction !== null ? 'text-accent' : ''"
+                                                    @click="router.get(route('uproductions.show', { uproduction: props.row.uproduction }))"
                                                 >Управлявай процеса</q-btn>
                                             </template>
                                             <template v-else>
