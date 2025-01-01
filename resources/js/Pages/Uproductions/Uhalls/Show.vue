@@ -4,6 +4,7 @@ import { Head, router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
+import moment from 'moment'
 
 const props = defineProps({
     uhalls: {
@@ -53,10 +54,23 @@ const pagination = {
     rowsPerPage: props.uhalls.meta.per_page,
     rowsNumber: props.uhalls.meta.total
 }
+
 const title = 'Халета Угояване'
 const filter = ref(props.filter)
 const $q = useQuasar()
 const { hasPermission } = usePermission()
+
+const getDaysBetweenTodayAndDate = (targetDate) => {
+    const today = moment().startOf('day')
+    const target = moment(targetDate).startOf('day')
+    return today.diff(target, 'days')
+}
+
+const productionPurcent = (uproduction) => {
+    const days = getDaysBetweenTodayAndDate(uproduction.created_at)
+    return parseFloat((days / parseFloat(uproduction.production_days)).toFixed(2))
+}
+const productionPurcentLabel = (uproduction) => { return `${(productionPurcent(uproduction) * 100).toFixed(2)}%` }
 
 const onRequest = (requestProp) => {
     router.get(
@@ -166,8 +180,37 @@ const confirm = (uhall) => {
                                         </q-card-section>
                                         <q-separator />
                                         <q-card-section class="columns flex-center">
-                                            <div>База: {{ props.row.factory.name }}</div>
-                                            <div>Силоз: {{ props.row.silo.name }}</div>
+                                            <div><strong>База</strong>: {{ props.row.factory.name }}</div>
+                                            <div><strong>Силоз</strong>: {{ props.row.silo.name }}</div>
+                                            <div><strong>Прасета</strong>: {{
+                                                props.row.uproduction ? props.row.uproduction.stock : 0 }}</div>
+                                            <template v-if="props.row.uproduction !== null">
+                                                <div
+                                                    class="q-py-sm q-ma-none"
+                                                    style="height: 36px;"
+                                                >
+                                                    <q-linear-progress
+                                                        class="full-height full-width"
+                                                        :value="productionPurcent(props.row.uproduction)"
+                                                        color="accent"
+                                                        rounded
+                                                    >
+                                                        <div class="absolute-full flex flex-center">
+                                                            <q-badge
+                                                                color="white"
+                                                                text-color="accent"
+                                                                :label="productionPurcentLabel(props.row.uproduction)"
+                                                            />
+                                                        </div>
+                                                    </q-linear-progress>
+                                                </div>
+                                            </template>
+                                            <template v-else>
+                                                <div
+                                                    class="q-py-sm q-ma-none"
+                                                    style="height: 36px;"
+                                                ></div>
+                                            </template>
                                         </q-card-section>
                                         <q-separator />
                                         <q-card-actions align="around">
