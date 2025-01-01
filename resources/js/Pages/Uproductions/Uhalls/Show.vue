@@ -108,6 +108,7 @@ const confirm = (uhall) => {
         router.post(route('uproductions.store'), {
             status: 1,
             uhall: uhall,
+            production_days: 45,
         })
     }).onCancel(() => { }).onDismiss(() => { })
 }

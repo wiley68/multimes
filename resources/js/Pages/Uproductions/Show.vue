@@ -214,6 +214,12 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                         <div class="text-subtitle1 text-accent">Процент запълване: {{ siloPurcentLabel
                                             }}</div>
                                     </q-card-section>
+                                    <q-card-actions vertical>
+                                        <q-btn
+                                            flat
+                                            @click.prevent="router.get(route('silos.loading', silo.id))"
+                                        >Зареди фураж</q-btn>
+                                    </q-card-actions>
                                     <q-separator />
                                     <q-card-section class="q-pa-xs q-ma-none">
                                         <q-linear-progress
