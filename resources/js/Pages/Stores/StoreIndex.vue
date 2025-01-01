@@ -160,12 +160,16 @@ const onRequest = (requestProp) => {
                                             {{ props.row.stock.toFixed(2) }}
                                         </div>
                                         <div v-else-if="col.name === 'stock_out'">
-                                            {{ props.row.silos.reduce((sum, item) => {
+                                            {{ (props.row.silos.reduce((sum, item) => {
                                                 return sum + parseFloat(item.stock)
-                                            }, 0).toFixed(2) }}
+                                            }, 0) + props.row.uproductions.reduce((sum, item) => {
+                                                return sum + parseFloat(item.stock)
+                                            }, 0)).toFixed(2) }}
                                         </div>
                                         <div v-else-if="col.name === 'total'">
                                             {{ (props.row.stock + props.row.silos.reduce((sum, item) => {
+                                                return sum + parseFloat(item.stock)
+                                            }, 0) + props.row.uproductions.reduce((sum, item) => {
                                                 return sum + parseFloat(item.stock)
                                             }, 0)).toFixed(2) }}
                                         </div>

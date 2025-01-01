@@ -27,4 +27,9 @@ class Product extends Model
     {
         return $this->hasMany(Silo::class);
     }
+
+    public function uproductions()
+    {
+        return $this->hasMany(Uproduction::class);
+    }
 }

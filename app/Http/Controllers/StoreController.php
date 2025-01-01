@@ -31,7 +31,7 @@ class StoreController extends Controller
         $sortOrder = $validated['sortOrder'] ?? 'desc';
         $filter = $validated['filter'] ?? '';
 
-        $query = Product::query()->with('silos');
+        $query = Product::query()->with(['silos', 'uproductions']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
