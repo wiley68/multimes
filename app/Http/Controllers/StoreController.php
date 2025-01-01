@@ -54,18 +54,29 @@ class StoreController extends Controller
 
         $product = Product::findOrFail($id);
         $silos = $product->silos;
+        $uproductions = $product->uproductions;
 
         $stores[0]['nomenklature'] = $product['nomenklature'];
         $stores[0]['name'] = $product['name'];
         $stores[0]['quantity'] = $product['stock'];
         $stores[0]['me'] = $product['me'];
         $stores[0]['object'] = 'Склад';
-        foreach ($silos as $key => $value) {
-            $stores[$key + 1]['nomenklature'] = $product['nomenklature'];
-            $stores[$key + 1]['name'] = $product['name'];
-            $stores[$key + 1]['quantity'] = $value['stock'];
-            $stores[$key + 1]['me'] = $product['me'];
-            $stores[$key + 1]['object'] = $value['name'];
+        $key = 1;
+        foreach ($silos as $silo) {
+            $stores[$key]['nomenklature'] = $product['nomenklature'];
+            $stores[$key]['name'] = $product['name'];
+            $stores[$key]['quantity'] = $silo['stock'];
+            $stores[$key]['me'] = $product['me'];
+            $stores[$key]['object'] = 'Силоз: ' . $silo['name'];
+            $key++;
+        }
+        foreach ($uproductions as $uproduction) {
+            $stores[$key]['nomenklature'] = $product['nomenklature'];
+            $stores[$key]['name'] = $product['name'];
+            $stores[$key]['quantity'] = $uproduction['stock'];
+            $stores[$key]['me'] = $product['me'];
+            $stores[$key]['object'] = 'Продукционен процес: ' . $uproduction['id'];
+            $key++;
         }
 
         return Inertia::render('Stores/Show', [
