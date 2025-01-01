@@ -1,6 +1,6 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Head } from '@inertiajs/vue3'
+import { Head, router } from '@inertiajs/vue3'
 import { computed, ref } from 'vue'
 import moment from 'moment'
 
@@ -36,6 +36,10 @@ const columns = [
 ]
 
 const rows = [
+    {
+        name: 'Текущ брой прасета [бр]',
+        value: props.uproduction.stock,
+    },
     {
         name: 'Състояние',
         value: props.uproduction.status === 1 ? 'Активен' : 'Приключен',
@@ -142,9 +146,14 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                         <div class="text-h6 text-center">Производствен Процес №{{ uproduction.id }}
                                         </div>
                                     </q-card-section>
-
                                     <q-separator />
-
+                                    <q-card-section>
+                                        <div class="text-h5">[{{ uproduction.product?.nomenklature }}] {{
+                                            uproduction.product?.name }}
+                                        </div>
+                                        <div class="text-caption">{{ uproduction.product?.description }}</div>
+                                    </q-card-section>
+                                    <q-separator />
                                     <q-card-section class="col">
                                         <q-table
                                             hide-header
@@ -157,6 +166,12 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                             row-key="name"
                                         />
                                     </q-card-section>
+                                    <q-card-actions vertical>
+                                        <q-btn
+                                            flat
+                                            @click.prevent="router.get(route('uproductions.loading', uproduction.id))"
+                                        >Зареди прасета</q-btn>
+                                    </q-card-actions>
                                     <q-separator />
                                     <q-card-section class="q-pa-xs q-ma-none">
                                         <q-linear-progress

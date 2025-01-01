@@ -163,7 +163,9 @@ class UproductionController extends Controller
             'status' => 1,
         ]);
 
-        return to_route('uproductions.index');
+        return to_route('uproductions.show', [
+            'uproduction' => $uproduction,
+        ]);
     }
 
     /**

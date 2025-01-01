@@ -79,14 +79,6 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                 </div>
                 <div class="footer-panel">
                     <q-btn
-                        color="primary"
-                        label="Процеси угояване"
-                        flat
-                        icon="mdi-menu-left"
-                        @click="router.get(route('uproductions.index'))"
-                    />
-
-                    <q-btn
                         @click.prevent="onSubmit"
                         label="Зареди"
                         type="submit"
