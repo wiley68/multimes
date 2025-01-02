@@ -190,7 +190,7 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                                                 dense
                                                 flat
                                                 rounded
-                                                @click="router.get(route('uproductions.loading', props.row.id))"
+                                                @click="router.get(route('uproductions.loading', { uproduction: props.row.id, from: 'uproductions' }))"
                                             />
                                             <q-btn
                                                 v-if="hasPermission('view')"

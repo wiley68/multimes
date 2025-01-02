@@ -92,7 +92,9 @@ const rows = [
                 />
             </q-card-section>
             <q-card-actions vertical>
-                <q-btn @click.prevent="router.get(route('uproductions.loading', uproduction.id))">Зареди прасета</q-btn>
+                <q-btn
+                    @click.prevent="router.get(route('uproductions.loading', { uproduction: uproduction.id, from: 'uproduction' }))"
+                >Зареди прасета</q-btn>
             </q-card-actions>
             <q-separator />
             <q-card-section class="q-pa-xs q-ma-none">

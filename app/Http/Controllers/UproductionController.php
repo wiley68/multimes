@@ -108,7 +108,7 @@ class UproductionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function loading(Uproduction $uproduction): Response
+    public function loading(Uproduction $uproduction, String $from): Response
     {
         Gate::authorize('update', $uproduction);
 
@@ -122,6 +122,7 @@ class UproductionController extends Controller
         return Inertia::render('Uproductions/Loading', [
             'uproduction' => new UproductionsResource($uproduction),
             'products' => ProductResource::collection($products->get()),
+            'from' => $from,
         ]);
     }
 

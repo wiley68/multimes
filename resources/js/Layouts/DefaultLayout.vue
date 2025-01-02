@@ -49,11 +49,11 @@ onMounted(() => {
     if (searchNomenklatures.some(str => usePage().component.includes(str))) {
         isExpandedNomenklature.value = true
     }
-    let searchMothers = ['Mproductions/MproductionIndex', 'Mproductions/Mhalls']
+    let searchMothers = ['Mproductions']
     if (searchMothers.some(str => usePage().component.includes(str))) {
         isExpandedMothers.value = true
     }
-    let searchUgoiavane = ['Uproductions/UproductionIndex', 'Uproductions/Uhalls']
+    let searchUgoiavane = ['Uproductions']
     if (searchUgoiavane.some(str => usePage().component.includes(str))) {
         isExpandedUgoiavane.value = true
     }
@@ -324,7 +324,7 @@ onBeforeUnmount(() => {
                             class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('uproductions.index'))"
-                            :active="usePage().component.includes('Uproductions/UproductionIndex')"
+                            :active="usePage().component.includes('Uproductions')"
                         >
                             <q-item-section avatar>
                                 <q-icon
