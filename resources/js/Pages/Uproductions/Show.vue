@@ -168,7 +168,6 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                     </q-card-section>
                                     <q-card-actions vertical>
                                         <q-btn
-                                            flat
                                             @click.prevent="router.get(route('uproductions.loading', uproduction.id))"
                                         >Зареди прасета</q-btn>
                                     </q-card-actions>
@@ -216,7 +215,6 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                     </q-card-section>
                                     <q-card-actions vertical>
                                         <q-btn
-                                            flat
                                             @click.prevent="router.get(route('silos.loading', { silo: silo.id, from: 'uproductions', from_id: uproduction.id }))"
                                         >Зареди фураж</q-btn>
                                     </q-card-actions>
