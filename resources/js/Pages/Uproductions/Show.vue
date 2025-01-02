@@ -3,7 +3,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head } from '@inertiajs/vue3'
 import InfoTab from './Tabs/InfoTab.vue'
 import DataTab from './Tabs/DataTab.vue'
-import ExpensesTab from './Tabs/ExpensesTab.vue'
+import DecrementsTab from './Tabs/DecrementsTab.vue'
 import RevenueTab from './Tabs/RevenueTab.vue'
 import StatisticsTab from './Tabs/StatisticsTab.vue'
 import { ref } from 'vue'
@@ -54,7 +54,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                             alert-icon="alarm_on"
                         />
                         <q-tab
-                            name="expenses"
+                            name="decrements"
                             icon="mdi-minus-circle-outline"
                             label="Разходи"
                             :alert="false"
@@ -102,8 +102,11 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                             <DataTab></DataTab>
                         </q-tab-panel>
 
-                        <q-tab-panel name="expenses">
-                            <ExpensesTab></ExpensesTab>
+                        <q-tab-panel
+                            name="decrements"
+                            class="q-pa-none"
+                        >
+                            <DecrementsTab :uproduction="uproduction"></DecrementsTab>
                         </q-tab-panel>
 
                         <q-tab-panel name="revenue">
