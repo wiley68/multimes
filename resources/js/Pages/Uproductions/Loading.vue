@@ -8,7 +8,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    products: Array
+    products: Array,
 })
 
 const form = useForm({
@@ -78,6 +78,13 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                     </div>
                 </div>
                 <div class="footer-panel">
+                    <q-btn
+                        color="primary"
+                        label="Процес"
+                        flat
+                        icon="mdi-menu-left"
+                        @click="router.get(route('uproductions.show', { uproduction: uproduction.id }))"
+                    />
                     <q-btn
                         @click.prevent="onSubmit"
                         label="Зареди"
