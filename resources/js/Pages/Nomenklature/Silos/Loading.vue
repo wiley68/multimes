@@ -8,7 +8,9 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    products: Array
+    products: Array,
+    from: String,
+    from_id: Number,
 })
 
 const form = useForm({
@@ -23,7 +25,7 @@ const form = useForm({
 const $q = useQuasar()
 
 const onSubmit = () => {
-    form.put(route('silos.load', props.silo.id), {
+    form.put(route('silos.load', { silo: props.silo.id, from: props.from, from_id: props.from_id }), {
         onFinish: () => {
             form.reset('stock')
         },
@@ -81,13 +83,24 @@ const title = `${props.silo.name} - Зареждане`
                     </div>
                 </div>
                 <div class="footer-panel">
-                    <q-btn
-                        color="primary"
-                        label="Силози"
-                        flat
-                        icon="mdi-menu-left"
-                        @click="router.get(route('silos.index'))"
-                    />
+                    <template v-if="from === 'uproductions'">
+                        <q-btn
+                            color="primary"
+                            label="Процес"
+                            flat
+                            icon="mdi-menu-left"
+                            @click="router.get(route('uproductions.show', { uproduction: from_id }))"
+                        />
+                    </template>
+                    <template v-else>
+                        <q-btn
+                            color="primary"
+                            label="Силози"
+                            flat
+                            icon="mdi-menu-left"
+                            @click="router.get(route('silos.index'))"
+                        />
+                    </template>
 
                     <q-btn
                         @click.prevent="onSubmit"

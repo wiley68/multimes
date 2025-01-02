@@ -47,8 +47,8 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::resource('/cities', CityController::class);
     Route::resource('/factories', FactoryController::class);
     Route::resource('/silos', SiloController::class);
-    Route::get('/silos/{silo}/loading', [SiloController::class, 'loading'])->name('silos.loading');
-    Route::put('/silos/{silo}/load', [SiloController::class, 'load'])->name('silos.load');
+    Route::get('/silos/{silo}/loading/{from}/{from_id}', [SiloController::class, 'loading'])->name('silos.loading');
+    Route::put('/silos/{silo}/load/{from}/{from_id}', [SiloController::class, 'load'])->name('silos.load');
     Route::resource('/mhalls', MhallController::class);
     Route::get('/mhalls/show', [MhallController::class, 'show'])->name('mhalls.show');
     Route::resource('/uhalls', UhallController::class);

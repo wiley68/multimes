@@ -225,7 +225,7 @@ const confirm = (silo_id) => {
                                         dense
                                         flat
                                         rounded
-                                        @click="router.get(route('silos.loading', props.row.id))"
+                                        @click="router.get(route('silos.loading', { silo: props.row.id, from: 'silos', from_id: props.row.id }))"
                                     />
 
                                     <q-btn

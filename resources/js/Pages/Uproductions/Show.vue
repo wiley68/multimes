@@ -217,7 +217,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                     <q-card-actions vertical>
                                         <q-btn
                                             flat
-                                            @click.prevent="router.get(route('silos.loading', silo.id))"
+                                            @click.prevent="router.get(route('silos.loading', { silo: silo.id, from: 'uproductions', from_id: uproduction.id }))"
                                         >Зареди фураж</q-btn>
                                     </q-card-actions>
                                     <q-separator />

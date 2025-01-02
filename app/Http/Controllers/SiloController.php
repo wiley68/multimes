@@ -121,7 +121,7 @@ class SiloController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function loading(Silo $silo): Response
+    public function loading(Silo $silo, String $from, int $from_id): Response
     {
         Gate::authorize('update', $silo);
 
@@ -135,13 +135,15 @@ class SiloController extends Controller
         return Inertia::render('Nomenklature/Silos/Loading', [
             'silo' => new SiloResource($silo),
             'products' => ProductResource::collection($products->get()),
+            'from' => $from,
+            'from_id' => $from_id,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function load(LoadSiloRequest $request, Silo $silo): RedirectResponse
+    public function load(LoadSiloRequest $request, Silo $silo, String $from, int $from_id): RedirectResponse
     {
         Gate::authorize('update', $silo);
 
@@ -174,7 +176,11 @@ class SiloController extends Controller
         $product->stock = $product->stock - $new_quantity;
         $product->save();
 
-        return to_route('silos.index');
+        if ($from === 'uproductions') {
+            return to_route('uproductions.show', ['uproduction' => $from_id]);
+        } else {
+            return to_route('silos.index');
+        }
     }
 
     /**
