@@ -1,15 +1,18 @@
 <script setup>
 import { usePage, router } from '@inertiajs/vue3'
-import { useQuasar } from 'quasar';
-import { computed, onMounted } from 'vue';
+import { useQuasar } from 'quasar'
+import { computed, onMounted } from 'vue'
+import { usePermission } from '@/composables/permissions'
 
 
 const props = defineProps({
-    uproduction: {
-        type: Object,
+    udecrements: {
+        type: Array,
         required: true
     },
 })
+
+const { hasPermission } = usePermission()
 
 const decrementsColumns = [
     {
@@ -19,7 +22,7 @@ const decrementsColumns = [
         align: 'left',
         field: 'id',
         sortable: true,
-        style: "width: 40px;",
+        style: "width: 80px;",
     },
     {
         name: 'product',
@@ -27,7 +30,7 @@ const decrementsColumns = [
         label: 'Продукт',
         field: row => row.product,
         format: val => `${val.name}`,
-        sortable: true
+        sortable: true,
     },
     {
         name: 'quantity',
@@ -83,7 +86,7 @@ onMounted(() => {
 })
 
 const totalPrice = computed(() => {
-    return props.uproduction.udecrements
+    return props.udecrements
         .reduce((total, item) => total + item.quantity * item.price, 0)
         .toFixed(2);
 })
@@ -127,6 +130,61 @@ const confirm = (decrements_id) => {
             class="col scrollable-content"
             style="border-bottom: 1px solid #E0E0E0;"
         >
+            <q-table
+                class="my-sticky-header-table full-width"
+                bordered
+                rows-per-page-label="Записи на страница"
+                separator="cell"
+                no-data-label="Липсват данни"
+                no-results-label="Няма съответстващи записи"
+                loading-label="Данните се зареждат..."
+                table-header-class="bg-grey-3"
+                :rows="udecrements"
+                :columns="decrementsColumns"
+                row-key="id"
+                :rows-per-page-options=[7]
+            >
+                <template v-slot:body-cell-actions="props">
+                    <q-td
+                        align="center"
+                        style="width: 120px;"
+                    >
+                        <q-btn
+                            v-if="hasPermission('update')"
+                            icon="mdi-pencil-outline"
+                            color="primary"
+                            title="Промяна на реда"
+                            dense
+                            flat
+                            rounded
+                            @click="router.get(route('subdeliveries.edit', props.row.id))"
+                        />
+
+                        <q-btn
+                            v-if="hasPermission('delete')"
+                            icon="mdi-delete-outline"
+                            color="negative"
+                            title="Изтриване на реда"
+                            dense
+                            flat
+                            rounded
+                            @click="confirm(props.row.id)"
+                        />
+                    </q-td>
+                </template>
+                <template v-slot:bottom-row>
+                    <q-tr>
+                        <q-td
+                            colspan="5"
+                            class="text-weight-bold"
+                        >Общо:</q-td>
+                        <q-td class="text-weight-bold">
+                            {{ totalPrice }}
+                        </q-td>
+                        <q-td></q-td>
+                    </q-tr>
+                </template>
+            </q-table>
         </div>
         <div
             style="height: 48px;"

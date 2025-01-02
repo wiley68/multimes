@@ -6,6 +6,7 @@ use App\Http\Requests\CreateUproductionRequest;
 use App\Http\Requests\LoadUproductionRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SiloResource;
+use App\Http\Resources\UdecrementResource;
 use App\Http\Resources\UproductionsResource;
 use App\Models\Product;
 use App\Models\Silo;
@@ -87,13 +88,16 @@ class UproductionController extends Controller
     {
         Gate::authorize('view', $uproduction);
 
-        $uproduction->load(['uhall', 'udecrements', 'product']);
+        $uproduction->load(['uhall', 'product']);
         $uhall = Uhall::findOrFail($uproduction->uhall_id);
         $silo = Silo::findOrFail($uhall->silo_id)->load('product');
+        $udecrements = $uproduction->udecrements;
+        $udecrements->load(['product', 'uproduction']);
 
         return Inertia::render('Uproductions/Show', [
             'uproduction' => new UproductionsResource($uproduction),
-            'silo' => new SiloResource($silo)
+            'silo' => new SiloResource($silo),
+            'udecrements' => UdecrementResource::collection($udecrements),
         ]);
     }
 

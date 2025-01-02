@@ -14,6 +14,7 @@ const props = defineProps({
         required: true
     },
     silo: Object,
+    udecrements: Array,
 })
 
 const tab = ref('info')
@@ -106,7 +107,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                             name="decrements"
                             class="q-pa-none"
                         >
-                            <DecrementsTab :uproduction="uproduction"></DecrementsTab>
+                            <DecrementsTab :udecrements="udecrements"></DecrementsTab>
                         </q-tab-panel>
 
                         <q-tab-panel name="revenue">
