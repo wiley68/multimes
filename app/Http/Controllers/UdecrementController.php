@@ -96,6 +96,38 @@ class UdecrementController extends Controller
     }
 
     /**
+     * Complete the specified resource in storage.
+     */
+    public function complete(CreateUdecrementRequest $request, Udecrement $udecrement): RedirectResponse
+    {
+        Gate::authorize('update', $udecrement);
+
+        $product = $udecrement->product;
+        dd($product);
+        if (null !== $product) {
+            $silo = $udecrement->uproduction->uhall->silo;
+            dd($silo);
+
+            // $current_price = (float)$product['price'];
+            // $current_quantity = (float)$product['stock'];
+            // $new_price = (float)$udecrement['price'];
+            // $new_quantity = (float)$udecrement['quantity'];
+            // $result_quantity = $current_quantity + $new_quantity;
+            // $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
+            // $product->update([
+            //     'stock' => $result_quantity,
+            //     'price' => $result_price,
+            // ]);
+        }
+
+        // $udecrement->update([
+        //     'status' => $request->status['value'],
+        // ]);
+
+        return back();
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Udecrement $udecrement): RedirectResponse

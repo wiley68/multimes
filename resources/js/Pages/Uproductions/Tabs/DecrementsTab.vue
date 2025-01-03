@@ -1,5 +1,5 @@
 <script setup>
-import { usePage, router } from '@inertiajs/vue3'
+import { usePage, router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
 import { computed, onMounted } from 'vue'
 import { usePermission } from '@/composables/permissions'
@@ -142,7 +142,7 @@ const confirm = (decrements_id) => {
     }).onCancel(() => { }).onDismiss(() => { })
 }
 
-const confirmCompletion = (udecrement_id) => {
+const confirmCompletion = (udecrement) => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да приключиш този разход? количеството от избрания продукт ще бъде намалено в склада, като ще промени текущите наличности. Процеса е необратим!',
@@ -160,7 +160,14 @@ const confirmCompletion = (udecrement_id) => {
             flat: true
         },
     }).onOk(() => {
-        router.put(route('udecrements.complete', udecrement_id), {
+        const form = useForm({
+            uproduction_id: udecrement.uproduction?.id,
+            product: { value: udecrement.product?.id, label: udecrement.product?.name },
+            quantity: udecrement.quantity,
+            price: udecrement.price,
+            status: 1,
+        })
+        form.put(route('udecrements.complete', udecrement.id), {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
                     $q.notify({
@@ -240,7 +247,16 @@ const confirmCompletion = (udecrement_id) => {
                                     dense
                                     flat
                                     rounded
-                                    @click="confirmCompletion(props.row.id)"
+                                    @click="confirmCompletion({
+                                        udecrement: {
+                                            id: props.row.id,
+                                            uproduction_id: props.row.uproduction?.id,
+                                            product: { value: props.row.product?.id, label: props.row.product?.name },
+                                            quantity: props.row.quantity,
+                                            price: props.row.price,
+                                            status: 1,
+                                        }
+                                    })"
                                 />
                                 <q-btn
                                     v-if="hasPermission('update')"

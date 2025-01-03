@@ -74,6 +74,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::resource('/subdeliveries', SubdeliveryController::class);
     Route::resource('/stores', StoreController::class);
     Route::resource('/udecrements', UdecrementController::class);
+    Route::put('/udecrements/{udecrement}', [UdecrementController::class, 'complete'])->name('udecrements.complete');
 });
 
 require __DIR__ . '/auth.php';
