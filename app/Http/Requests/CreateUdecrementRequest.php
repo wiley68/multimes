@@ -23,13 +23,17 @@ class CreateUdecrementRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'uproduction' => [
+            'uproduction_id' => [
                 'required',
-                'array',
+                'exists:uproductions,id',
             ],
             'product' => [
                 'required',
                 'array',
+            ],
+            'product.value' => [
+                'required',
+                'exists:products,id',
             ],
             'quantity' => [
                 'required',
@@ -39,7 +43,7 @@ class CreateUdecrementRequest extends FormRequest
                 'required',
                 'numeric',
             ],
-            'status.value' => [
+            'status' => [
                 'required',
                 Rule::in([0, 1]),
             ],

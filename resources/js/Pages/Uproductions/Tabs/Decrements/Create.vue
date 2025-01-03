@@ -13,6 +13,7 @@ const form = useForm({
     product: null,
     quantity: 1,
     price: 0.00,
+    status: 0,
 })
 
 const productsOptions = props.products?.map(product => ({
@@ -64,7 +65,7 @@ const title = `Добавяне на разход към Производств�
                                         :options="productsOptions"
                                         class="col"
                                         label="Избери продукт *"
-                                        hint="Избери продукт който да добавиш към доставката."
+                                        hint="Избери продукт който да разходваш."
                                         autofocus
                                         :error="form.hasErrors"
                                         :error-message="form.errors.product"
@@ -75,7 +76,7 @@ const title = `Добавяне на разход към Производств�
                                         class="col"
                                         type="number"
                                         label="Количество"
-                                        hint="Количество от избрания продукт за добавяне към доставката."
+                                        hint="Количество от избрания продукт за разходване."
                                         :error="form.hasErrors"
                                         :error-message="form.errors.quantity"
                                     >
@@ -89,7 +90,7 @@ const title = `Добавяне на разход към Производств�
                                         class="col"
                                         type="number"
                                         label="Цена *"
-                                        hint="Единична цена на избрания продукт за добавяне към доставката."
+                                        hint="Единична цена на избрания продукт за разходване."
                                         :error="form.hasErrors"
                                         :error-message="form.errors.price"
                                     />
@@ -100,16 +101,16 @@ const title = `Добавяне на разход към Производств�
                 </div>
                 <div class="footer-panel">
                     <q-btn
-                        @click.prevent="router.get(route('deliveries.edit', { delivery: delivery_id }))"
+                        @click.prevent="router.get(route('uproductions.show', uproduction_id))"
                         color="primary"
                         flat
-                        label="Доставка"
+                        :label="`Продукционен процес №${uproduction_id}`"
                         icon="mdi-menu-left"
                     />
 
                     <q-btn
                         @click.prevent="onSubmit"
-                        label="Добави продукта"
+                        label="Добави разхода"
                         color="primary"
                         icon="mdi-plus"
                     />

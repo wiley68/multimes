@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUdecrementRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use App\Models\Udecrement;
@@ -16,7 +17,7 @@ class UdecrementController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request): Response|RedirectResponse
+    public function create(Request $request): Response
     {
         Gate::authorize('create', Udecrement::class);
 
@@ -33,9 +34,21 @@ class UdecrementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateUdecrementRequest $request): RedirectResponse
     {
-        //
+        Gate::authorize('create', Udecrement::class);
+
+        Udecrement::create([
+            'uproduction_id' => $request->uproduction_id,
+            'product_id' => $request->product['value'],
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+            'status' => $request->status,
+        ]);
+
+        return to_route('uproductions.show', [
+            "uproduction" => $request->uproduction_id,
+        ]);
     }
 
     /**
