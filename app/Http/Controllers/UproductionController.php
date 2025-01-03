@@ -91,7 +91,7 @@ class UproductionController extends Controller
         $uproduction->load(['uhall', 'product']);
         $uhall = Uhall::findOrFail($uproduction->uhall_id);
         $silo = Silo::findOrFail($uhall->silo_id)->load('product');
-        $udecrements = $uproduction->udecrements;
+        $udecrements = $uproduction->udecrements()->orderBy('id', 'desc')->get();
         $udecrements->load(['product', 'uproduction']);
 
         return Inertia::render('Uproductions/Show', [
