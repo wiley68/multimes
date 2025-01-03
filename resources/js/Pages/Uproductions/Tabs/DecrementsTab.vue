@@ -7,6 +7,10 @@ import moment from 'moment'
 
 
 const props = defineProps({
+    uproduction: {
+        type: Object,
+        required: true
+    },
     udecrements: {
         type: Array,
         required: true
@@ -138,7 +142,7 @@ const confirm = (decrements_id) => {
     }).onCancel(() => { }).onDismiss(() => { })
 }
 
-const confirmCompletion = (decrements_id) => {
+const confirmCompletion = (udecrement_id) => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да приключиш този разход? количеството от избрания продукт ще бъде намалено в склада, като ще промени текущите наличности. Процеса е необратим!',
@@ -156,7 +160,7 @@ const confirmCompletion = (decrements_id) => {
             flat: true
         },
     }).onOk(() => {
-        router.put(route('udecrements.complete', decrements_id), {
+        router.put(route('udecrements.complete', udecrement_id), {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
                     $q.notify({
@@ -281,6 +285,7 @@ const confirmCompletion = (decrements_id) => {
             class="row items-center q-gutter-x-sm q-px-sm"
         >
             <q-btn
+                @click="router.get(route('udecrements.create', { uproduction_id: uproduction.id }))"
                 label="Добави разход"
                 title="Добавя нов разход към продукционния процес."
                 icon="mdi-table-row-plus-after"

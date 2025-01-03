@@ -2,25 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
 use App\Models\Udecrement;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class UdecrementController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request): Response|RedirectResponse
     {
-        //
+        Gate::authorize('create', Udecrement::class);
+
+        $validated = $request->validate([
+            'uproduction_id' => 'required|integer',
+        ]);
+
+        return Inertia::render('Uproductions/Tabs/Decrements/Create', [
+            'uproduction_id' => $validated['uproduction_id'],
+            'products' => ProductResource::collection(Product::all()),
+        ]);
     }
 
     /**
