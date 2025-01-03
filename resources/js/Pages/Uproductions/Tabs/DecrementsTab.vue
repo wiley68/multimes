@@ -3,6 +3,7 @@ import { usePage, router } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
 import { computed, onMounted } from 'vue'
 import { usePermission } from '@/composables/permissions'
+import moment from 'moment'
 
 
 const props = defineProps({
@@ -22,15 +23,22 @@ const decrementsColumns = [
         align: 'left',
         field: 'id',
         sortable: true,
-        style: "width: 80px;",
+        style: 'width: 40px;',
     },
     {
         name: 'product',
         align: 'left',
         label: 'Продукт',
-        field: row => row.product,
-        format: val => `${val.name}`,
+        field: 'product',
         sortable: true,
+    },
+    {
+        name: 'created_at',
+        align: 'left',
+        label: 'Създаден на',
+        field: 'created_at',
+        sortable: true,
+        style: 'width: 60px;',
     },
     {
         name: 'quantity',
@@ -38,16 +46,15 @@ const decrementsColumns = [
         label: 'Количество',
         field: 'quantity',
         sortable: true,
-        style: "width: 80px;",
+        style: 'width: 60px;',
     },
     {
         name: 'me',
         align: 'left',
         label: 'м.е.',
-        field: row => row.product,
-        format: val => `${val.me}`,
+        field: 'me',
         sortable: false,
-        style: "width: 80px;",
+        style: 'width: 40px;',
     },
     {
         name: 'price',
@@ -55,22 +62,30 @@ const decrementsColumns = [
         label: 'Цена',
         field: 'price',
         sortable: true,
-        style: "width: 100px;",
+        style: 'width: 80px;',
     },
     {
         name: 'allprice',
         align: 'left',
         label: 'Общо',
-        field: row => row,
-        format: val => `${parseFloat(val.price * val.quantity).toFixed(2)}`,
+        field: 'allprice',
         sortable: true,
-        style: "width: 120px;",
+        style: 'width: 120px;',
+    },
+    {
+        name: 'status',
+        align: 'left',
+        label: 'Състояние',
+        field: 'status',
+        sortable: true,
+        style: 'width: 80px;',
     },
     {
         name: "actions",
         label: "Управление",
         align: "center",
         field: "actions",
+        style: 'width: 80px;',
     }
 ]
 
@@ -122,6 +137,38 @@ const confirm = (decrements_id) => {
         })
     }).onCancel(() => { }).onDismiss(() => { })
 }
+
+const confirmCompletion = (decrements_id) => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Желаеш ли да приключиш този разход? количеството от избрания продукт ще бъде намалено в склада, като ще промени текущите наличности. Процеса е необратим!',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        router.put(route('udecrements.complete', decrements_id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
+}
 </script>
 
 <template>
@@ -144,38 +191,81 @@ const confirm = (decrements_id) => {
                 row-key="id"
                 :rows-per-page-options=[7]
             >
-                <template v-slot:body-cell-actions="props">
-                    <q-td
-                        align="center"
-                        style="width: 120px;"
+                <template v-slot:body="props">
+                    <q-tr
+                        :props="props"
+                        :class="props.row.status === 1 ? 'bg-red-3' : ''"
                     >
-                        <q-btn
-                            v-if="hasPermission('update')"
-                            icon="mdi-pencil-outline"
-                            color="primary"
-                            title="Промяна на реда"
-                            dense
-                            flat
-                            rounded
-                            @click="router.get(route('subdeliveries.edit', props.row.id))"
-                        />
-
-                        <q-btn
-                            v-if="hasPermission('delete')"
-                            icon="mdi-delete-outline"
-                            color="negative"
-                            title="Изтриване на реда"
-                            dense
-                            flat
-                            rounded
-                            @click="confirm(props.row.id)"
-                        />
-                    </q-td>
+                        <q-td
+                            v-for="col in props.cols"
+                            :key="col.name"
+                            :props="props"
+                        >
+                            <div v-if="col.name === 'id'">
+                                {{ props.row.id }}
+                            </div>
+                            <div v-else-if="col.name === 'product'">
+                                {{ props.row.product ? `[${props.row.product.nomenklature}] ${props.row.product.name}` :
+                                    ''
+                                }}
+                            </div>
+                            <div v-else-if="col.name === 'created_at'">
+                                {{ moment(props.row.created_at).format('DD.MM.YY') }}
+                            </div>
+                            <div v-else-if="col.name === 'quantity'">
+                                {{ props.row.quantity }}
+                            </div>
+                            <div v-else-if="col.name === 'me'">
+                                {{ props.row.product.me }}
+                            </div>
+                            <div v-else-if="col.name === 'price'">
+                                {{ parseFloat(props.row.price).toFixed(2) }}
+                            </div>
+                            <div v-else-if="col.name === 'allprice'">
+                                {{ parseFloat(props.row.price * props.row.quantity).toFixed(2) }}
+                            </div>
+                            <div v-else-if="col.name === 'status'">
+                                {{ props.row['status'] === 0 ? 'Типов' : 'Приключен' }}
+                            </div>
+                            <div v-else="col.name === 'actions'">
+                                <q-btn
+                                    v-if="hasPermission('update')"
+                                    icon="mdi-file-document-check-outline"
+                                    color="primary"
+                                    title="Приключване на разхода"
+                                    dense
+                                    flat
+                                    rounded
+                                    @click="confirmCompletion(props.row.id)"
+                                />
+                                <q-btn
+                                    v-if="hasPermission('update')"
+                                    icon="mdi-pencil-outline"
+                                    color="primary"
+                                    title="Промяна на разхода"
+                                    dense
+                                    flat
+                                    rounded
+                                    @click="router.get(route('udecrements.edit', props.row.id))"
+                                />
+                                <q-btn
+                                    v-if="hasPermission('delete')"
+                                    icon="mdi-delete-outline"
+                                    color="negative"
+                                    title="Изтриване на разхода"
+                                    dense
+                                    flat
+                                    rounded
+                                    @click="confirm(props.row.id)"
+                                />
+                            </div>
+                        </q-td>
+                    </q-tr>
                 </template>
                 <template v-slot:bottom-row>
                     <q-tr>
                         <q-td
-                            colspan="5"
+                            colspan="6"
                             class="text-weight-bold"
                         >Общо:</q-td>
                         <q-td class="text-weight-bold">

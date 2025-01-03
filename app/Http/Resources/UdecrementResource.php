@@ -21,6 +21,7 @@ class UdecrementResource extends JsonResource
             'quantity' => $this->quantity,
             'price' => $this->price,
             'status' => $this->status,
+            'created_at' => $this->created_at,
         ];
     }
 }
