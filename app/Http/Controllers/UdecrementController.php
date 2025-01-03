@@ -98,8 +98,18 @@ class UdecrementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Udecrement $udecrement)
+    public function destroy(Udecrement $udecrement): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $udecrement);
+
+        if ($udecrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен разход.'
+            ]);
+        }
+
+        $udecrement->delete();
+
+        return back();
     }
 }
