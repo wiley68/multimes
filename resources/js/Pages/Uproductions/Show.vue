@@ -1,12 +1,13 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Head } from '@inertiajs/vue3'
+import { Head, usePage } from '@inertiajs/vue3'
 import InfoTab from './Tabs/InfoTab.vue'
 import DataTab from './Tabs/DataTab.vue'
 import DecrementsTab from './Tabs/DecrementsTab.vue'
 import RevenueTab from './Tabs/RevenueTab.vue'
 import StatisticsTab from './Tabs/StatisticsTab.vue'
-import { ref } from 'vue'
+import { useQuasar } from 'quasar'
+import { onMounted, ref } from 'vue'
 
 const props = defineProps({
     uproduction: {
@@ -18,6 +19,17 @@ const props = defineProps({
 })
 
 const tab = ref('info')
+
+const $q = useQuasar()
+onMounted(() => {
+    Object.values(usePage().props.errors).flat().forEach((error) => {
+        $q.notify({
+            message: error,
+            icon: 'mdi-alert-circle-outline',
+            type: 'negative',
+        });
+    });
+})
 
 const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${props.uproduction.id}`
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUdecrementRequest;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\UdecrementResource;
 use App\Models\Product;
 use App\Models\Udecrement;
 use Illuminate\Http\RedirectResponse;
@@ -52,27 +53,46 @@ class UdecrementController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Udecrement $udecrement)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Udecrement $udecrement)
+    public function edit(Udecrement $udecrement): Response|RedirectResponse
     {
-        //
+        Gate::authorize('update', $udecrement);
+
+        if ($udecrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен разход.'
+            ]);
+        }
+
+        $udecrement->load(['product', 'uproduction']);
+
+        return Inertia::render('Uproductions/Tabs/Decrements/Edit', [
+            'udecrement' => new UdecrementResource($udecrement),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Udecrement $udecrement)
+    public function update(CreateUdecrementRequest $request, Udecrement $udecrement): RedirectResponse
     {
-        //
+        Gate::authorize('update', $udecrement);
+
+        if ($udecrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен разход.'
+            ]);
+        }
+
+        $udecrement->update([
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
+
+        return to_route('uproductions.show', [
+            "uproduction" => $udecrement->uproduction_id,
+        ]);
     }
 
     /**
