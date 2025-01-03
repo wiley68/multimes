@@ -9,7 +9,7 @@ const props = defineProps({
 })
 
 const form = useForm({
-    delivery_id: props.delivery_id,
+    uproduction_id: props.uproduction_id,
     product: null,
     quantity: 1,
     price: 0.00,
@@ -23,7 +23,7 @@ const productsOptions = props.products?.map(product => ({
 }))
 
 const onSubmit = () => {
-    form.post(route('subdeliveries.store'))
+    form.post(route('udecrements.store'))
 }
 
 const me = ref('')
@@ -38,7 +38,7 @@ watch(
     }
 )
 
-const title = `Добавяне на продукт към доставка №${props.delivery_id}`
+const title = `Добавяне на разход към Производствен Процес №${props.uproduction_id}`
 </script>
 
 <template>
