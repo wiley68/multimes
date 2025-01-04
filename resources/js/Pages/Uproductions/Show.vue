@@ -14,7 +14,6 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    silo: Object,
     udecrements: Array,
 })
 
@@ -105,17 +104,14 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                             name="actions"
                             class="row"
                         >
-                            <ActionsTab
-                                :uproduction="uproduction"
-                                :silo="silo"
-                            ></ActionsTab>
+                            <ActionsTab :uproduction="uproduction"></ActionsTab>
                         </q-tab-panel>
 
                         <q-tab-panel
                             name="info"
                             class="row"
                         >
-                            <InfoTab></InfoTab>
+                            <InfoTab :uproduction="uproduction"></InfoTab>
                         </q-tab-panel>
 
                         <q-tab-panel

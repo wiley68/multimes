@@ -8,7 +8,6 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    silo: Object,
 })
 
 const getDaysBetweenTodayAndDate = (targetDate) => {
@@ -126,7 +125,7 @@ const rows = [
             <q-card-section>
                 <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
                     uproduction.uhall.silo.product?.name
-                }}</div>
+                    }}</div>
                 <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />

@@ -90,13 +90,13 @@ class UproductionController extends Controller
 
         $uproduction->load(['uhall', 'product']);
         $uhall = $uproduction->uhall->load(['silo', 'factory']);
-        $silo = $uhall->silo->load('product');
+        $uhall->silo->load('product');
+        $uhall->factory->load('city');
         $udecrements = $uproduction->udecrements()->orderBy('id', 'desc')->get();
         $udecrements->load(['product', 'uproduction']);
 
         return Inertia::render('Uproductions/Show', [
             'uproduction' => new UproductionsResource($uproduction),
-            // 'silo' => new SiloResource($silo),
             'udecrements' => UdecrementResource::collection($udecrements),
         ]);
     }
