@@ -40,12 +40,28 @@ const subdeliveryColumns = [
         style: "width: 40px;",
     },
     {
+        name: 'nomenklature',
+        align: 'left',
+        label: 'Номенклаура',
+        style: "width: 60px;",
+        field: row => row.product.nomenklature,
+        sortable: true,
+    },
+    {
         name: 'product',
         align: 'left',
         label: 'Продукт',
         field: row => row.product,
         format: val => `${val.name}`,
-        sortable: true
+        sortable: true,
+    },
+    {
+        name: 'type',
+        align: 'left',
+        label: 'Предназначение',
+        style: "width: 60px;",
+        field: row => row.product.type,
+        sortable: true,
     },
     {
         name: 'quantity',
@@ -296,7 +312,7 @@ const title = `Доставка №${props.delivery.id}`
                                 <template v-slot:bottom-row>
                                     <q-tr>
                                         <q-td
-                                            colspan="5"
+                                            colspan="6"
                                             class="text-weight-bold"
                                         >Общо:</q-td>
                                         <q-td class="text-weight-bold">
