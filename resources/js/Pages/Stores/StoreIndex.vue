@@ -41,6 +41,14 @@ const columns = [
         sortable: true,
     },
     {
+        name: 'type',
+        align: 'left',
+        label: 'Предназначение',
+        field: 'type',
+        style: 'width: 80px;',
+        sortable: true,
+    },
+    {
         name: 'stock',
         align: 'left',
         label: 'Наличност склад',
