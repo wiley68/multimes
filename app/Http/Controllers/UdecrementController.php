@@ -102,27 +102,51 @@ class UdecrementController extends Controller
     {
         Gate::authorize('update', $udecrement);
 
-        $product = $udecrement->product;
-        dd($product);
-        if (null !== $product) {
-            $silo = $udecrement->uproduction->uhall->silo;
-            dd($silo);
-
-            // $current_price = (float)$product['price'];
-            // $current_quantity = (float)$product['stock'];
-            // $new_price = (float)$udecrement['price'];
-            // $new_quantity = (float)$udecrement['quantity'];
-            // $result_quantity = $current_quantity + $new_quantity;
-            // $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
-            // $product->update([
-            //     'stock' => $result_quantity,
-            //     'price' => $result_price,
-            // ]);
+        if ($udecrement->status === 1) {
+            return back()->withErrors([
+                'update' => "Не можете да приключвате вече приключен разход!"
+            ]);
         }
 
-        // $udecrement->update([
-        //     'status' => $request->status['value'],
-        // ]);
+        $product = $udecrement->product;
+        if (null !== $product) {
+            $silo = $udecrement->uproduction->uhall->silo;
+            $new_price = (float)$udecrement->price;
+            $new_quantity = (float)$udecrement->quantity;
+            if ($silo?->product_id === $product->id) {
+                $current_quantity = (float)$silo->stock;
+                $current_price = (float)$silo->price;
+                $result_quantity = $current_quantity - $new_quantity;
+                if ($result_quantity < 0) {
+                    return back()->withErrors([
+                        'update' => "Не можете да разходвате количеството $new_quantity. Общото налично количество в силоза е по-малко!"
+                    ]);
+                }
+                $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
+                $silo->update([
+                    'stock' => $result_quantity,
+                    'price' => $result_price,
+                ]);
+            } else {
+                $current_quantity = (float)$product->stock;
+                $current_price = (float)$product->price;
+                $result_quantity = $current_quantity - $new_quantity;
+                if ($result_quantity < 0) {
+                    return back()->withErrors([
+                        'update' => "Не можете да разходвате количеството $new_quantity. Общото налично количество в склада е по-малко!"
+                    ]);
+                }
+                $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
+                $product->update([
+                    'stock' => $result_quantity,
+                    'price' => $result_price,
+                ]);
+            }
+        }
+
+        $udecrement->update([
+            'status' => $request->status,
+        ]);
 
         return back();
     }

@@ -2,6 +2,7 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { ref } from 'vue';
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     udecrement: {
@@ -18,8 +19,19 @@ const form = useForm({
     status: props.udecrement?.status,
 })
 
+const $q = useQuasar()
 const onSubmit = () => {
-    form.put(route('udecrements.update', props.udecrement.id))
+    form.put(route('udecrements.update', props.udecrement.id), {
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
+    })
 }
 
 const me = ref('')

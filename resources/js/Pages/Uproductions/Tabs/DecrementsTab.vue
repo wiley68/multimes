@@ -63,7 +63,7 @@ const decrementsColumns = [
     {
         name: 'price',
         align: 'left',
-        label: 'Цена',
+        label: 'Цена [лв]',
         field: 'price',
         sortable: true,
         style: 'width: 80px;',
@@ -71,7 +71,7 @@ const decrementsColumns = [
     {
         name: 'allprice',
         align: 'left',
-        label: 'Общо',
+        label: 'Общо [лв]',
         field: 'allprice',
         sortable: true,
         style: 'width: 120px;',
@@ -161,11 +161,11 @@ const confirmCompletion = (udecrement) => {
         },
     }).onOk(() => {
         const form = useForm({
-            uproduction_id: udecrement.uproduction?.id,
-            product: { value: udecrement.product?.id, label: udecrement.product?.name },
+            uproduction_id: udecrement.uproduction_id,
+            product: udecrement.product,
             quantity: udecrement.quantity,
             price: udecrement.price,
-            status: 1,
+            status: udecrement.status,
         })
         form.put(route('udecrements.complete', udecrement.id), {
             onError: errors => {
@@ -240,15 +240,15 @@ const confirmCompletion = (udecrement) => {
                             </div>
                             <div v-else="col.name === 'actions'">
                                 <q-btn
-                                    v-if="hasPermission('update')"
+                                    v-if="hasPermission('update') && props.row.status === 0"
                                     icon="mdi-file-document-check-outline"
                                     color="primary"
                                     title="Приключване на разхода"
                                     dense
                                     flat
                                     rounded
-                                    @click="confirmCompletion({
-                                        udecrement: {
+                                    @click="confirmCompletion(
+                                        {
                                             id: props.row.id,
                                             uproduction_id: props.row.uproduction?.id,
                                             product: { value: props.row.product?.id, label: props.row.product?.name },
@@ -256,10 +256,10 @@ const confirmCompletion = (udecrement) => {
                                             price: props.row.price,
                                             status: 1,
                                         }
-                                    })"
+                                    )"
                                 />
                                 <q-btn
-                                    v-if="hasPermission('update')"
+                                    v-if="hasPermission('update') && props.row.status === 0"
                                     icon="mdi-pencil-outline"
                                     color="primary"
                                     title="Промяна на разхода"
@@ -269,7 +269,7 @@ const confirmCompletion = (udecrement) => {
                                     @click="router.get(route('udecrements.edit', props.row.id))"
                                 />
                                 <q-btn
-                                    v-if="hasPermission('delete')"
+                                    v-if="hasPermission('delete') && props.row.status === 0"
                                     icon="mdi-delete-outline"
                                     color="negative"
                                     title="Изтриване на разхода"

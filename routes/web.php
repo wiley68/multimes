@@ -70,11 +70,11 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::put('/uproductions/{uproduction}/load', [UproductionController::class, 'load'])->name('uproductions.load');
     Route::resource('/products', ProductController::class);
     Route::resource('/deliveries', DeliveryController::class);
-    Route::put('/deliveries/{delivery}', [DeliveryController::class, 'complete'])->name('deliveries.complete');
+    Route::put('/deliveries/{delivery}/complete', [DeliveryController::class, 'complete'])->name('deliveries.complete');
     Route::resource('/subdeliveries', SubdeliveryController::class);
     Route::resource('/stores', StoreController::class);
     Route::resource('/udecrements', UdecrementController::class);
-    Route::put('/udecrements/{udecrement}', [UdecrementController::class, 'complete'])->name('udecrements.complete');
+    Route::put('/udecrements/{udecrement}/complete', [UdecrementController::class, 'complete'])->name('udecrements.complete');
 });
 
 require __DIR__ . '/auth.php';

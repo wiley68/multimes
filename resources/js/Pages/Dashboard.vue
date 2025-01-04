@@ -136,7 +136,7 @@ const productionPurcent = (production) => {
                       color="white"
                       rounded
                       text-color="teal-10"
-                      :label="mhall.mproduction !== null ? `Хале: ${mhall.name} [Процес №${mhall.mproduction.id}: ${productionPurcent(mhall.mproduction) * 100}%]` : `Хале: ${mhall.name}`"
+                      :label="mhall.mproduction !== null ? `Хале: ${mhall.name} [Процес №${mhall.mproduction.id}: ${(productionPurcent(mhall.mproduction) * 100).toFixed(2)}%]` : `Хале: ${mhall.name}`"
                     />
                   </div>
                 </q-linear-progress>
@@ -217,7 +217,7 @@ const productionPurcent = (production) => {
                       color="white"
                       rounded
                       text-color="indigo-10"
-                      :label="uhall.uproduction !== null ? `Хале: ${uhall.name} [Процес №${uhall.uproduction.id}: ${productionPurcent(uhall.uproduction) * 100}%]` : `Хале: ${uhall.name}`"
+                      :label="uhall.uproduction !== null ? `Хале: ${uhall.name} [Процес №${uhall.uproduction.id}: ${(productionPurcent(uhall.uproduction) * 100).toFixed(2)}%]` : `Хале: ${uhall.name}`"
                     />
                   </div>
                 </q-linear-progress>
