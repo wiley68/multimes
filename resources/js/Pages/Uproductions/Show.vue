@@ -1,10 +1,10 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, usePage } from '@inertiajs/vue3'
+import ActionsTab from './Tabs/ActionsTab.vue'
 import InfoTab from './Tabs/InfoTab.vue'
-import DataTab from './Tabs/DataTab.vue'
 import DecrementsTab from './Tabs/DecrementsTab.vue'
-import RevenueTab from './Tabs/RevenueTab.vue'
+import IncrementsTab from './Tabs/IncrementsTab.vue'
 import StatisticsTab from './Tabs/StatisticsTab.vue'
 import { useQuasar } from 'quasar'
 import { onMounted, ref } from 'vue'
@@ -18,7 +18,7 @@ const props = defineProps({
     udecrements: Array,
 })
 
-const tab = ref('info')
+const tab = ref('actions')
 
 const $q = useQuasar()
 onMounted(() => {
@@ -53,16 +53,16 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                         active-color="accent"
                     >
                         <q-tab
-                            name="info"
-                            icon="mdi-information-outline"
-                            label="Информация"
+                            name="actions"
+                            icon="mdi-gesture-tap-button"
+                            label="Управление"
                             :alert="false"
                             alert-icon="alarm_on"
                         />
                         <q-tab
-                            name="data"
-                            icon="mdi-database-edit-outline"
-                            label="Данни"
+                            name="info"
+                            icon="mdi-information-outline"
+                            label="Информация"
                             :alert="false"
                             alert-icon="alarm_on"
                         />
@@ -74,7 +74,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                             alert-icon="alarm_on"
                         />
                         <q-tab
-                            name="revenue"
+                            name="increments"
                             icon="mdi-plus-circle-outline"
                             label="Приходи"
                             :alert="false"
@@ -102,17 +102,20 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                         transition-next="slide-up"
                     >
                         <q-tab-panel
+                            name="actions"
+                            class="row"
+                        >
+                            <ActionsTab
+                                :uproduction="uproduction"
+                                :silo="silo"
+                            ></ActionsTab>
+                        </q-tab-panel>
+
+                        <q-tab-panel
                             name="info"
                             class="row"
                         >
-                            <InfoTab
-                                :uproduction="uproduction"
-                                :silo="silo"
-                            ></InfoTab>
-                        </q-tab-panel>
-
-                        <q-tab-panel name="data">
-                            <DataTab></DataTab>
+                            <InfoTab></InfoTab>
                         </q-tab-panel>
 
                         <q-tab-panel
@@ -125,8 +128,8 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                             ></DecrementsTab>
                         </q-tab-panel>
 
-                        <q-tab-panel name="revenue">
-                            <RevenueTab></RevenueTab>
+                        <q-tab-panel name="increments">
+                            <IncrementsTab></IncrementsTab>
                         </q-tab-panel>
 
                         <q-tab-panel name="statistics">
