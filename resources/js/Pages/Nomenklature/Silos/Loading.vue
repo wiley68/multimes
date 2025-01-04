@@ -62,7 +62,7 @@ const title = `${props.silo.name} - Зареждане`
                                     <q-select
                                         v-model="form.product"
                                         :options="products"
-                                        :option-label="element => `[${element.nomenklature}] ${element.name}`"
+                                        :option-label="element => `[${element.nomenklature}] ${element.name} - [${element.type}]`"
                                         label="Избери продукт"
                                         hint="Избери продукт който ще се добави в силоза."
                                         :error="form.hasErrors"
