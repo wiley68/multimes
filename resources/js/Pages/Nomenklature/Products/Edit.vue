@@ -16,18 +16,23 @@ const form = useForm({
     price: props.product?.price,
     stock: props.product?.stock,
     me: props.product?.me,
+    type: props.product?.type,
 })
 
 const onSubmit = () => {
     form.put(route('products.update', props.product.id), {
         onFinish: () => {
-            form.reset('name', 'nomenklature', 'description', 'price', 'me', 'stock')
+            form.reset('name', 'nomenklature', 'description', 'price', 'me', 'stock', 'type')
         },
     })
 }
 
 const meOptions = [
     'бр', 'кг', 'л', 'м',
+]
+
+const typeOptions = [
+    'Обща употреба', 'Процес угояване', 'Силоз угояване',
 ]
 
 const title = 'Продукт'
@@ -63,6 +68,15 @@ const title = 'Продукт'
                                         hint="Номенклатура на продукта"
                                         :error="form.hasErrors"
                                         :error-message="form.errors.nomenklature"
+                                    />
+
+                                    <q-select
+                                        v-model="form.type"
+                                        :options="typeOptions"
+                                        label="Предназначение *"
+                                        hint="Предназначение на продукта"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.type"
                                     />
 
                                     <q-input

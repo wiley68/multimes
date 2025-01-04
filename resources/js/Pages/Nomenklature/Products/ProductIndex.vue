@@ -42,9 +42,9 @@ const columns = [
     {
         name: 'type',
         align: 'left',
-        label: 'Тип',
+        label: 'Предназначение',
         field: 'type',
-        style: 'width: 120px;',
+        style: 'width: 140px;',
         sortable: true,
     },
     {

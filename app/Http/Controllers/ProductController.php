@@ -72,6 +72,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'me' => $request->me,
+            'type' => $request->type,
         ]);
 
         return to_route('products.index');
@@ -103,6 +104,7 @@ class ProductController extends Controller
             'price' => $request->price,
             'stock' => $request->stock,
             'me' => $request->me,
+            'type' => $request->type,
         ]);
 
         return back();

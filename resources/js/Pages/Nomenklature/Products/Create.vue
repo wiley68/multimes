@@ -8,7 +8,8 @@ const form = useForm({
     description: '',
     price: '',
     stock: 0.00,
-    me: 'бр'
+    me: 'бр',
+    type: 'Обща употреба',
 })
 
 const onSubmit = () => {
@@ -17,12 +18,17 @@ const onSubmit = () => {
             form.reset('name', 'nomenklature', 'description', 'price')
             form.me = 'бр'
             form.stock = 0
+            form.type = 'Обща употреба'
         },
     })
 };
 
 const meOptions = [
     'бр', 'кг', 'л', 'м',
+]
+
+const typeOptions = [
+    'Обща употреба', 'Процес угояване', 'Силоз угояване',
 ]
 
 const title = 'Продукт'
@@ -58,6 +64,15 @@ const title = 'Продукт'
                                         hint="Номенклатура на продукта"
                                         :error="form.hasErrors"
                                         :error-message="form.errors.nomenklature"
+                                    />
+
+                                    <q-select
+                                        v-model="form.type"
+                                        :options="typeOptions"
+                                        label="Предназначение *"
+                                        hint="Предназначение на продукта"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.type"
                                     />
 
                                     <q-input
