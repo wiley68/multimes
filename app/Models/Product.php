@@ -15,7 +15,8 @@ class Product extends Model
         'description',
         'price',
         'stock',
-        'me'
+        'me',
+        'type'
     ];
 
     public function subdeliveries()

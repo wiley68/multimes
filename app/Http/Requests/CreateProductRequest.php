@@ -45,7 +45,11 @@ class CreateProductRequest extends FormRequest
             'me' => [
                 'required',
                 'in:бр,кг,л,м',
-            ]
+            ],
+            'type' => [
+                'required',
+                'in:Обща употреба,Процес угояване,Силоз угояване',
+            ],
         ];
     }
 }
