@@ -16,7 +16,7 @@ const form = useForm({
 })
 
 const productsOptions = props.products?.map(product => ({
-    label: product.nomenklature + ' - ' + product.name,
+    label: product.nomenklature + ' - ' + product.name + ' - [' + product.type + ']',
     value: product.id,
     price: product.price,
     me: product.me,
