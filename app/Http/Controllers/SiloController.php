@@ -129,7 +129,11 @@ class SiloController extends Controller
         if ($silo->product_id !== 0) {
             $products = Product::where('id', '=', $silo->product_id);
         } else {
-            $products = Product::where('me', '=', 'кг');
+            if (count($silo->uhalls) > 0) {
+                $products = Product::where('type', '=', 'Силоз угояване');
+            } else {
+                $products = Product::where('type', '=', 'Силоз майки');
+            }
         }
 
         return Inertia::render('Nomenklature/Silos/Loading', [

@@ -48,7 +48,7 @@ class CreateProductRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                'in:Обща употреба,Процес угояване,Силоз угояване',
+                'in:Обща употреба,Процес угояване,Силоз угояване,Силоз майки',
             ],
         ];
     }

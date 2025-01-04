@@ -19,7 +19,7 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->double('stock', 15, 2)->default(0);
             $table->enum('me', ['бр', 'кг', 'л', 'м']);
-            $table->enum('type', ['Обща употреба', 'Процес угояване', 'Силоз угояване'])->default('Обща употреба');
+            $table->enum('type', ['Обща употреба', 'Процес угояване', 'Силоз угояване', 'Силоз майки'])->default('Обща употреба');
             $table->timestamps();
         });
     }
