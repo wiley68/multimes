@@ -26,9 +26,11 @@ class UdecrementController extends Controller
             'uproduction_id' => 'required|integer',
         ]);
 
+        $products = Product::whereIn('type', ['Обща употреба', 'Силоз угояване'])->get();
+
         return Inertia::render('Uproductions/Tabs/Decrements/Create', [
             'uproduction_id' => $validated['uproduction_id'],
-            'products' => ProductResource::collection(Product::all()),
+            'products' => ProductResource::collection($products),
         ]);
     }
 
