@@ -89,14 +89,14 @@ class UproductionController extends Controller
         Gate::authorize('view', $uproduction);
 
         $uproduction->load(['uhall', 'product']);
-        $uhall = Uhall::findOrFail($uproduction->uhall_id);
-        $silo = Silo::findOrFail($uhall->silo_id)->load('product');
+        $uhall = $uproduction->uhall->load(['silo', 'factory']);
+        $silo = $uhall->silo->load('product');
         $udecrements = $uproduction->udecrements()->orderBy('id', 'desc')->get();
         $udecrements->load(['product', 'uproduction']);
 
         return Inertia::render('Uproductions/Show', [
             'uproduction' => new UproductionsResource($uproduction),
-            'silo' => new SiloResource($silo),
+            // 'silo' => new SiloResource($silo),
             'udecrements' => UdecrementResource::collection($udecrements),
         ]);
     }

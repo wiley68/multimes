@@ -23,7 +23,7 @@ const productionPurcent = computed(() => {
 })
 const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
 const siloPurcent = computed(() => {
-    return parseFloat((parseFloat(props.silo.stock) / parseFloat(props.silo.maxqt)).toFixed(2))
+    return parseFloat((parseFloat(props.uproduction.uhall.silo.stock) / parseFloat(props.uproduction.uhall.silo.maxqt)).toFixed(2))
 })
 const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
 
@@ -120,18 +120,19 @@ const rows = [
     >
         <q-card class="my-card full-height column">
             <q-card-section class="bg-deep-orange text-white">
-                <div class="text-h6 text-center">{{ silo.name }}</div>
+                <div class="text-h6 text-center">{{ uproduction.uhall.silo.name }}</div>
             </q-card-section>
             <q-separator />
             <q-card-section>
-                <div class="text-h5">[{{ silo.product?.nomenklature }}] {{ silo.product?.name
-                    }}</div>
-                <div class="text-caption">{{ silo.product?.description }}</div>
+                <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
+                    uproduction.uhall.silo.product?.name
+                }}</div>
+                <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />
             <q-card-section class="col">
-                <div class="text-subtitle1">Максимум: {{ parseFloat(silo.maxqt).toFixed(2) }} {{
-                    silo.product?.me }}
+                <div class="text-subtitle1">Максимум: {{ parseFloat(uproduction.uhall.silo.maxqt).toFixed(2) }} {{
+                    uproduction.uhall.silo.product?.me }}
                 </div>
                 <div class="text-subtitle1">Текущо: {{ parseFloat(silo.stock).toFixed(2) }} {{
                     silo.product?.me }}</div>
