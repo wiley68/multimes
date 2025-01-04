@@ -58,6 +58,7 @@ class StoreController extends Controller
 
         $stores[0]['nomenklature'] = $product['nomenklature'];
         $stores[0]['name'] = $product['name'];
+        $stores[0]['type'] = $product['type'];
         $stores[0]['quantity'] = $product['stock'];
         $stores[0]['me'] = $product['me'];
         $stores[0]['object'] = 'Склад';
@@ -65,6 +66,7 @@ class StoreController extends Controller
         foreach ($silos as $silo) {
             $stores[$key]['nomenklature'] = $product['nomenklature'];
             $stores[$key]['name'] = $product['name'];
+            $stores[$key]['type'] = $product['type'];
             $stores[$key]['quantity'] = $silo['stock'];
             $stores[$key]['me'] = $product['me'];
             $stores[$key]['object'] = 'Силоз: ' . $silo['name'];
@@ -73,6 +75,7 @@ class StoreController extends Controller
         foreach ($uproductions as $uproduction) {
             $stores[$key]['nomenklature'] = $product['nomenklature'];
             $stores[$key]['name'] = $product['name'];
+            $stores[$key]['type'] = $product['type'];
             $stores[$key]['quantity'] = $uproduction['stock'];
             $stores[$key]['me'] = $product['me'];
             $stores[$key]['object'] = 'Продукционен процес: ' . $uproduction['id'];

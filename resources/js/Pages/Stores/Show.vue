@@ -25,10 +25,19 @@ const columns = [
         field: 'name',
     },
     {
+        name: 'type',
+        align: 'left',
+        label: 'Предназначение',
+        field: 'type',
+        style: 'width: 80px;',
+        sortable: true,
+    },
+    {
         name: 'object',
         align: 'left',
         label: 'Обект',
         field: 'object',
+        style: "width: 80px;",
     },
     {
         name: 'quantity',
@@ -85,7 +94,7 @@ const title = `Наличности за продукт: ${props.stores[0]?.name
                                 <template v-slot:bottom-row>
                                     <q-tr>
                                         <q-td
-                                            colspan="3"
+                                            colspan="4"
                                             class="text-weight-bold"
                                         >Общо:</q-td>
                                         <q-td class="text-weight-bold text-accent">
