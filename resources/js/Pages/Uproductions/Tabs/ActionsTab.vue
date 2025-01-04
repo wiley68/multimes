@@ -134,14 +134,14 @@ const rows = [
                 <div class="text-subtitle1">Максимум: {{ parseFloat(uproduction.uhall.silo.maxqt).toFixed(2) }} {{
                     uproduction.uhall.silo.product?.me }}
                 </div>
-                <div class="text-subtitle1">Текущо: {{ parseFloat(silo.stock).toFixed(2) }} {{
-                    silo.product?.me }}</div>
+                <div class="text-subtitle1">Текущо: {{ parseFloat(uproduction.uhall.silo.stock).toFixed(2) }} {{
+                    uproduction.uhall.silo.product?.me }}</div>
                 <div class="text-subtitle1 text-accent">Процент запълване: {{ siloPurcentLabel
                     }}</div>
             </q-card-section>
             <q-card-actions vertical>
                 <q-btn
-                    @click.prevent="router.get(route('silos.loading', { silo: silo.id, from: 'uproductions', from_id: uproduction.id }))"
+                    @click.prevent="router.get(route('silos.loading', { silo: uproduction.uhall.silo.id, from: 'uproductions', from_id: uproduction.id }))"
                 >Зареди фураж</q-btn>
             </q-card-actions>
             <q-separator />
