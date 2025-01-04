@@ -27,11 +27,27 @@ const subdeliveryColumns = [
         style: "width: 40px;",
     },
     {
+        name: 'nomenklature',
+        align: 'left',
+        label: 'Номенклаура',
+        style: "width: 60px;",
+        field: row => row.product.nomenklature,
+        sortable: true,
+    },
+    {
         name: 'product',
         align: 'left',
         label: 'Продукт',
         field: row => row.product.name,
-        sortable: true
+        sortable: true,
+    },
+    {
+        name: 'type',
+        align: 'left',
+        label: 'Предназначение',
+        style: "width: 60px;",
+        field: row => row.product.type,
+        sortable: true,
     },
     {
         name: 'quantity',
