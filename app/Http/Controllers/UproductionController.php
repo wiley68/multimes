@@ -120,7 +120,7 @@ class UproductionController extends Controller
         if ($uproduction->product_id !== 0) {
             $products = Product::where('id', '=', $uproduction->product_id);
         } else {
-            $products = Product::where('me', '=', 'бр');
+            $products = Product::where('type', '=', 'Процес угояване');
         }
 
         return Inertia::render('Uproductions/Loading', [

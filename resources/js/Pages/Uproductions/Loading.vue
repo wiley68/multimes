@@ -58,7 +58,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                     <q-select
                                         v-model="form.product"
                                         :options="products"
-                                        :option-label="option => `[${option.nomenklature}] ${option.name}`"
+                                        :option-label="option => `[${option.nomenklature}] ${option.name} - [${option.type}]`"
                                         label="Избери прасета"
                                         hint="Избери прасета които ще се добавят към процеса."
                                         :error="form.hasErrors"
