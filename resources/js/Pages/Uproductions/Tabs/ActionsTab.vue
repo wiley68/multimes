@@ -26,41 +26,7 @@ const siloPurcent = computed(() => {
 })
 const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
 
-const columns = [
-    { name: 'name', required: true, label: 'name', align: 'left', field: row => row.name, format: val => `${val}`, },
-    { name: 'value', align: 'center', label: 'value', field: 'value', },
-]
-
-const rows = [
-    {
-        name: 'Текущ брой прасета [бр]',
-        value: props.uproduction.stock,
-    },
-    {
-        name: 'Състояние',
-        value: props.uproduction.status === 1 ? 'Активен' : 'Приключен',
-    },
-    {
-        name: 'Очакван брой дни за провеждане на процеса',
-        value: props.uproduction.production_days,
-    },
-    {
-        name: 'Стартиран на',
-        value: moment(props.uproduction.created_at).format('DD.MM.YY HH:mm'),
-    },
-    {
-        name: 'Брой дни в процес',
-        value: getDaysBetweenTodayAndDate(props.uproduction.created_at),
-    },
-    {
-        name: 'Оставащи дни до края на процеса',
-        value: props.uproduction.production_days - getDaysBetweenTodayAndDate(props.uproduction.created_at),
-    },
-    {
-        name: 'Процент на завършеност на процеса',
-        value: productionPurcentLabel,
-    },
-]
+const confirmCompletion = () => { }
 </script>
 
 <template>
@@ -79,26 +45,44 @@ const rows = [
             </q-card-section>
             <q-separator />
             <q-card-section class="col">
-                <q-table
-                    hide-header
-                    hide-bottom
-                    flat
-                    bordered
-                    :rows-per-page-options="[10]"
-                    :rows="rows"
-                    :columns="columns"
-                    row-key="name"
-                />
+                <div class="text-subtitle1">Текущ брой прасета: {{ uproduction.stock }}
+                </div>
+                <div class="text-subtitle1">Състояние: {{ uproduction.status === 1 ? 'Активен' : 'Приключен' }}
+                </div>
+                <div class="text-subtitle1 text-accent">Процент на завършеност на процеса: {{ productionPurcentLabel }}
+                </div>
             </q-card-section>
-            <q-card-actions vertical>
+            <q-card-actions>
                 <q-btn
+                    color="primary"
+                    label="Процеси угояване"
+                    flat
+                    icon="mdi-menu-left"
+                    style="padding: 0px 15px;"
+                    @click="router.get(route('uproductions.index'))"
+                />
+                <q-btn
+                    label="Зареди прасета"
+                    title="Зарежда прасета за угояване в продукционния процес."
+                    color="primary"
+                    icon="mdi-upload-multiple-outline"
+                    style="padding: 0px 15px;"
                     @click.prevent="router.get(route('uproductions.loading', { uproduction: uproduction.id, from: 'uproduction' }))"
-                >Зареди прасета</q-btn>
+                />
+                <q-btn
+                    @click.prevent="confirmCompletion()"
+                    label="Приключи процеса"
+                    title="Приключва процеса. Прекъсва възможността за промяна в данните за този процес."
+                    icon="mdi-file-document-check-outline"
+                    style="padding: 0px 15px;"
+                    color="secondary"
+                />
             </q-card-actions>
             <q-separator />
             <q-card-section class="q-pa-xs q-ma-none">
                 <q-linear-progress
                     size="100%"
+                    style="height: 64px;"
                     :value="productionPurcent"
                     color="secondary"
                 >
@@ -140,13 +124,18 @@ const rows = [
             </q-card-section>
             <q-card-actions vertical>
                 <q-btn
+                    label="Зареди фураж"
+                    title="Зарежда фураж в силоза към този продукционен процес."
+                    color="primary"
+                    icon="mdi-upload-multiple-outline"
                     @click.prevent="router.get(route('silos.loading', { silo: uproduction.uhall.silo.id, from: 'uproductions', from_id: uproduction.id }))"
-                >Зареди фураж</q-btn>
+                />
             </q-card-actions>
             <q-separator />
             <q-card-section class="q-pa-xs q-ma-none">
                 <q-linear-progress
                     size="100%"
+                    style="height: 64px;"
                     :value="siloPurcent"
                     color="deep-orange"
                 >
