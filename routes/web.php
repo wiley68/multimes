@@ -20,6 +20,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\SubdeliveryController;
 use App\Http\Controllers\UdecrementController;
 use App\Http\Controllers\UhallController;
+use App\Http\Controllers\UincementController;
 use App\Http\Controllers\UproductionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -75,6 +76,8 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::resource('/stores', StoreController::class);
     Route::resource('/udecrements', UdecrementController::class);
     Route::put('/udecrements/{udecrement}/complete', [UdecrementController::class, 'complete'])->name('udecrements.complete');
+    Route::resource('/uincrements', UincementController::class);
+    Route::put('/uincrements/{uincrement}/complete', [UincementController::class, 'complete'])->name('uincrements.complete');
 });
 
 require __DIR__ . '/auth.php';
