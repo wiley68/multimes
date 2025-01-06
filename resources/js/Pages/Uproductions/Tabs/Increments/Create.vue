@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { ref, watch } from 'vue';
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     product: {
@@ -22,8 +22,22 @@ const form = useForm({
     status: 0,
 })
 
+const $q = useQuasar()
 const onSubmit = () => {
-    form.post(route('uincrements.store'))
+    form.post(route('uincrements.store'), {
+        onFinish: () => {
+            form.reset('quantity')
+        },
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
+    })
 }
 
 const title = `Добавяне на приход към Производствен Процес №${props.uproduction_id}`
