@@ -68,6 +68,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::delete('/uproductions/{uproduction}', [UproductionController::class, 'destroy'])->name('uproductions.destroy');
     Route::get('/uproductions/{uproduction}/loading/{from}', [UproductionController::class, 'loading'])->name('uproductions.loading');
     Route::put('/uproductions/{uproduction}/load', [UproductionController::class, 'load'])->name('uproductions.load');
+    Route::patch('/uproductions/{uproduction}/complete', [UproductionController::class, 'complete'])->name('uproductions.complete');
     Route::resource('/products', ProductController::class);
     Route::resource('/deliveries', DeliveryController::class);
     Route::put('/deliveries/{delivery}/complete', [DeliveryController::class, 'complete'])->name('deliveries.complete');

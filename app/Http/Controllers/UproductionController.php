@@ -106,11 +106,33 @@ class UproductionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Complete the specified resource in storage.
      */
-    public function update(Request $request, Uproduction $uproduction)
+    public function complete(Request $request, Uproduction $uproduction): RedirectResponse
     {
-        //
+        Gate::authorize('update', $uproduction);
+
+        $validated = $request->validate([
+            'status' => 'required|integer|in:0',
+        ]);
+
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да приключвате вече приключен процес!"
+            ]);
+        }
+
+        if ((float)$uproduction->stock > 0) {
+            return back()->withErrors([
+                'complete' => 'Във Вашия прозиводствен процес все още има налични продукти [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . ']. Не можете да приключите процеса докато все още имате налични продукти в него!',
+            ]);
+        }
+
+        $uproduction->update([
+            'status' => $validated['status'],
+        ]);
+
+        return back();
     }
 
     /**

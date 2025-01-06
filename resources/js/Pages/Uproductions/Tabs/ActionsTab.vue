@@ -1,7 +1,8 @@
 <script setup>
 import moment from 'moment'
 import { computed } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { router, useForm } from '@inertiajs/vue3'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     uproduction: {
@@ -26,7 +27,41 @@ const siloPurcent = computed(() => {
 })
 const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
 
-const confirmCompletion = () => { }
+const $q = useQuasar()
+const confirmCompletion = () => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Желаеш ли да приключиш този Производствен процес? След приключването на процеса няма да могат да бъдат извършвани промени по него. Халето в което се извършва процеса ще бъде освободено за стартиране на нов процес. Процеса е необратим!',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        const form = useForm({
+            status: 0,
+        })
+        form.patch(route('uproductions.complete', props.uproduction.id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
+}
 </script>
 
 <template>

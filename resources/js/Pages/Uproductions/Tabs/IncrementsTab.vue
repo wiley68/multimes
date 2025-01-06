@@ -1,8 +1,8 @@
 <script setup>
 import { usePermission } from '@/composables/permissions'
 import { useQuasar } from 'quasar'
-import { computed, onMounted } from 'vue'
-import { usePage, router, useForm } from '@inertiajs/vue3'
+import { computed } from 'vue'
+import { router, useForm } from '@inertiajs/vue3'
 import moment from 'moment'
 
 const props = defineProps({
@@ -92,22 +92,31 @@ const incrementsColumns = [
     }
 ]
 
-const $q = useQuasar()
-onMounted(() => {
-    Object.values(usePage().props.errors).flat().forEach((error) => {
-        $q.notify({
-            message: error,
-            icon: 'mdi-alert-circle-outline',
-            type: 'negative',
-        });
-    });
-})
-
 const totalPrice = computed(() => {
     return props.uincrements
         .reduce((total, item) => total + item.quantity * item.price, 0)
         .toFixed(2);
 })
+
+const $q = useQuasar()
+
+const createUincrements = () => {
+    router.get(
+        route('uincrements.create'),
+        { uproduction_id: props.uproduction.id },
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
+}
 
 const confirm = (increments_id) => {
     $q.dialog({
@@ -300,7 +309,7 @@ const confirmCompletion = (uincrement) => {
             class="row items-center q-gutter-x-sm q-px-sm"
         >
             <q-btn
-                @click="router.get(route('uincrements.create', { uproduction_id: uproduction.id }))"
+                @click="createUincrements"
                 label="Добави приход"
                 title="Добавя нов приход към продукционния процес."
                 icon="mdi-table-row-plus-after"
