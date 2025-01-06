@@ -121,6 +121,40 @@ class UincrementController extends Controller
     }
 
     /**
+     * Complete the specified resource in storage.
+     */
+    public function complete(CreateUincrementRequest $request, Uincrement $uincrement): RedirectResponse
+    {
+        Gate::authorize('update', $uincrement);
+
+        if ($uincrement->status === 1) {
+            return back()->withErrors([
+                'update' => "Не можете да приключвате вече приключен приход!"
+            ]);
+        }
+
+        $product = $uincrement->product;
+        if (null !== $product) {
+            $uproduction = Uproduction::findOrFail($request->uproduction_id);
+            if ($uproduction !== null && (float)$request->quantity > (float)$uproduction->stock) {
+                return back()->withErrors([
+                    'update' => 'Наличноста на продукта: [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . '] е по-малка от предвидената за изписване в прихода Ви [' . $request->quantity . ']',
+                ]);
+            }
+
+            $uproduction->update([
+                'stock' => $uproduction->stock - $request->quantity,
+            ]);
+        }
+
+        $uincrement->update([
+            'status' => $request->status,
+        ]);
+
+        return back();
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Uincrement $uincrement): RedirectResponse

@@ -250,7 +250,7 @@ const confirmCompletion = (uincrement) => {
                                         {
                                             id: props.row.id,
                                             uproduction_id: props.row.uproduction?.id,
-                                            product: { value: props.row.product?.id, label: props.row.product?.name },
+                                            product: props.row.product,
                                             quantity: props.row.quantity,
                                             price: props.row.price,
                                             status: 1,
