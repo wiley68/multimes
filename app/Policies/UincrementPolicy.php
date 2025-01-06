@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Uincement;
+use App\Models\Uincrement;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-class UincementPolicy
+class UincrementPolicy
 {
     /**
      * Determine whether the user can view any models.
@@ -19,7 +19,7 @@ class UincementPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Uincement $uincement): bool
+    public function view(User $user, Uincrement $uincrement): bool
     {
         return false;
     }
@@ -35,7 +35,7 @@ class UincementPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Uincement $uincement): bool
+    public function update(User $user, Uincrement $uincrement): bool
     {
         return $user->hasPermissionTo('update') ? true : false;
     }
@@ -43,7 +43,7 @@ class UincementPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Uincement $uincement): bool
+    public function delete(User $user, Uincrement $uincrement): bool
     {
         return $user->hasPermissionTo('delete') ? true : false;
     }
@@ -51,7 +51,7 @@ class UincementPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Uincement $uincement): bool
+    public function restore(User $user, Uincrement $uincrement): bool
     {
         return false;
     }
@@ -59,7 +59,7 @@ class UincementPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Uincement $uincement): bool
+    public function forceDelete(User $user, Uincrement $uincrement): bool
     {
         return false;
     }

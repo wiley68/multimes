@@ -37,6 +37,6 @@ class Uproduction extends Model
 
     public function uincrements()
     {
-        return $this->hasMany(Uincement::class);
+        return $this->hasMany(Uincrement::class);
     }
 }

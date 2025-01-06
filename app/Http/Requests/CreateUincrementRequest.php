@@ -31,7 +31,7 @@ class CreateUincrementRequest extends FormRequest
                 'required',
                 'array',
             ],
-            'product.value' => [
+            'product.id' => [
                 'required',
                 'exists:products,id',
             ],
