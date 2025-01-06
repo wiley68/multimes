@@ -123,8 +123,18 @@ class UincrementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Uincrement $uincrement)
+    public function destroy(Uincrement $uincrement): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $uincrement);
+
+        if ($uincrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен приход.'
+            ]);
+        }
+
+        $uincrement->delete();
+
+        return back();
     }
 }
