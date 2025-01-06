@@ -175,7 +175,7 @@ const confirmCompletion = (uincrement) => {
             price: uincrement.price,
             status: uincrement.status,
         })
-        form.put(route('uincrements.complete', uincrement.id), {
+        form.patch(route('uincrements.complete', uincrement.id), {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
                     $q.notify({

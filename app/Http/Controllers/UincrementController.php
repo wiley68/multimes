@@ -142,8 +142,15 @@ class UincrementController extends Controller
                 ]);
             }
 
+            $new_stock = $uproduction->stock - $request->quantity;
+            $new_price = $uproduction->price;
+            if ($new_stock == 0) {
+                $new_price = 0;
+            }
+
             $uproduction->update([
-                'stock' => $uproduction->stock - $request->quantity,
+                'stock' => $new_stock,
+                'price' => $new_price,
             ]);
         }
 
