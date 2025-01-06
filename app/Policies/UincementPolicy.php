@@ -13,7 +13,7 @@ class UincementPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('view') ? true : false;
     }
 
     /**
@@ -21,7 +21,7 @@ class UincementPolicy
      */
     public function view(User $user, Uincement $uincement): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -29,7 +29,7 @@ class UincementPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return $user->hasPermissionTo('create') ? true : false;
     }
 
     /**
@@ -37,7 +37,7 @@ class UincementPolicy
      */
     public function update(User $user, Uincement $uincement): bool
     {
-        //
+        return $user->hasPermissionTo('update') ? true : false;
     }
 
     /**
@@ -45,7 +45,7 @@ class UincementPolicy
      */
     public function delete(User $user, Uincement $uincement): bool
     {
-        //
+        return $user->hasPermissionTo('delete') ? true : false;
     }
 
     /**
@@ -53,7 +53,7 @@ class UincementPolicy
      */
     public function restore(User $user, Uincement $uincement): bool
     {
-        //
+        return false;
     }
 
     /**
@@ -61,6 +61,6 @@ class UincementPolicy
      */
     public function forceDelete(User $user, Uincement $uincement): bool
     {
-        //
+        return false;
     }
 }
