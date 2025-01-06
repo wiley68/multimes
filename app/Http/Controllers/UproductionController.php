@@ -7,6 +7,7 @@ use App\Http\Requests\LoadUproductionRequest;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SiloResource;
 use App\Http\Resources\UdecrementResource;
+use App\Http\Resources\UincrementResource;
 use App\Http\Resources\UproductionsResource;
 use App\Models\Product;
 use App\Models\Silo;
@@ -94,10 +95,13 @@ class UproductionController extends Controller
         $uhall->factory->load('city');
         $udecrements = $uproduction->udecrements()->orderBy('id', 'desc')->get();
         $udecrements->load(['product', 'uproduction']);
+        $uincrements = $uproduction->uincrements()->orderBy('id', 'desc')->get();
+        $uincrements->load(['product', 'uproduction']);
 
         return Inertia::render('Uproductions/Show', [
             'uproduction' => new UproductionsResource($uproduction),
             'udecrements' => UdecrementResource::collection($udecrements),
+            'uincrements' => UincrementResource::collection($uincrements),
         ]);
     }
 

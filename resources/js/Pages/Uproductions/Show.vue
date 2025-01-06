@@ -15,6 +15,7 @@ const props = defineProps({
         required: true
     },
     udecrements: Array,
+    uincrements: Array,
 })
 
 const tab = ref('actions')
@@ -125,7 +126,10 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                         </q-tab-panel>
 
                         <q-tab-panel name="increments">
-                            <IncrementsTab></IncrementsTab>
+                            <IncrementsTab
+                                :uproduction="uproduction"
+                                :uincrements="uincrements"
+                            ></IncrementsTab>
                         </q-tab-panel>
 
                         <q-tab-panel name="statistics">
