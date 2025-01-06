@@ -205,7 +205,7 @@ const confirmCompletion = () => {
         },
     }).onOk(() => {
         form.status = { label: 'Приключен документ', value: 1 }
-        form.put(route('deliveries.complete', props.delivery.id), {
+        form.patch(route('deliveries.complete', props.delivery.id), {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
                     $q.notify({
@@ -354,7 +354,7 @@ const title = `Доставка №${props.delivery.id}`
                     />
 
                     <q-btn
-                        @click.prevent="confirmCompletion()"
+                        @click.prevent="confirmCompletion"
                         label="Приключи"
                         title="Приключва доставката. Вписва всички количества продукти. Обновява цените на продуктите."
                         icon="mdi-file-document-check-outline"
@@ -362,7 +362,7 @@ const title = `Доставка №${props.delivery.id}`
                     />
 
                     <q-btn
-                        @click.prevent="confirmDelivery()"
+                        @click.prevent="confirmDelivery"
                         label="Изтрий"
                         title="Изтрива доставката. Операцията е необратима."
                         icon="mdi-delete-outline"
