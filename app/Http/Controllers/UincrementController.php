@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUincrementRequest;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\UincrementResource;
 use App\Models\Product;
 use App\Models\Uincrement;
 use App\Models\Uproduction;
@@ -70,33 +71,59 @@ class UincrementController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Uincrement $uincrement)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Uincement $uincement)
+    public function edit(Uincrement $uincrement): Response|RedirectResponse
     {
-        //
+        Gate::authorize('update', $uincrement);
+
+        if ($uincrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен приход.'
+            ]);
+        }
+
+        $uincrement->load(['product', 'uproduction']);
+
+        return Inertia::render('Uproductions/Tabs/Increments/Edit', [
+            'uincrement' => new UincrementResource($uincrement),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Uincement $uincement)
+    public function update(CreateUincrementRequest $request, Uincrement $uincrement): RedirectResponse
     {
-        //
+        Gate::authorize('update', $uincrement);
+
+        if ($uincrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен приход.'
+            ]);
+        }
+
+        $uproduction = Uproduction::findOrFail($request->uproduction_id);
+        if ($uproduction !== null && (float)$request->quantity > (float)$uproduction->stock) {
+            return back()->withErrors([
+                'update' => 'Наличноста на продукта: [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . '] е по-малка от предвидената за изписване в прихода Ви [' . $request->quantity . ']',
+            ]);
+        }
+
+        $uincrement->update([
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
+
+        return to_route('uproductions.show', [
+            "uproduction" => $uincrement->uproduction_id,
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Uincement $uincement)
+    public function destroy(Uincrement $uincrement)
     {
         //
     }

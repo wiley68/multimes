@@ -3,6 +3,7 @@ import { usePermission } from '@/composables/permissions'
 import { useQuasar } from 'quasar'
 import { computed, onMounted } from 'vue'
 import { usePage, router, useForm } from '@inertiajs/vue3'
+import moment from 'moment'
 
 const props = defineProps({
     uproduction: {
