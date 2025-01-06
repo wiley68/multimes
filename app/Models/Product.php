@@ -33,4 +33,14 @@ class Product extends Model
     {
         return $this->hasMany(Uproduction::class);
     }
+
+    public function udecrements()
+    {
+        return $this->hasMany(Udecrement::class);
+    }
+
+    public function uincrements()
+    {
+        return $this->hasMany(Uincement::class);
+    }
 }
