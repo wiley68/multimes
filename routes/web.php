@@ -75,7 +75,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::resource('/subdeliveries', SubdeliveryController::class);
     Route::resource('/stores', StoreController::class);
     Route::resource('/udecrements', UdecrementController::class);
-    Route::put('/udecrements/{udecrement}/complete', [UdecrementController::class, 'complete'])->name('udecrements.complete');
+    Route::patch('/udecrements/{udecrement}/complete', [UdecrementController::class, 'complete'])->name('udecrements.complete');
     Route::resource('/uincrements', UincrementController::class);
     Route::patch('/uincrements/{uincrement}/complete', [UincrementController::class, 'complete'])->name('uincrements.complete');
 });
