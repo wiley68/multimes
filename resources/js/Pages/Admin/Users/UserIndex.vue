@@ -100,11 +100,12 @@ const confirm = (user_id) => {
     }).onOk(() => {
         router.delete(route('users.destroy', user_id), {
             onError: errors => {
-                $q.notify({
-                    message: errors?.destroy,
-                    icon: 'mdi-alert-circle-outline',
-                    type: 'negative',
-                    timeout: 5000,
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
                 });
             },
         })
@@ -170,6 +171,7 @@ const confirm = (user_id) => {
                                         @click="router.get(route('users.edit', props.row.id))"
                                     />
                                     <q-btn
+                                        v-if="$page.props.auth.user.id !== props.row.id"
                                         icon="mdi-delete-outline"
                                         color="negative"
                                         title="Изтриване на потребителя"

@@ -159,11 +159,10 @@ class UserController extends Controller
         if (auth()->user()->is($user)) {
             return back()->withErrors([
                 'destroy' => "Не можете да изтриете текущият потребител!",
-                'destroy1' => "Не можете да изтриете текущият потребител1!"
             ]);
         }
 
-        // $user->delete();
+        $user->delete();
         return back();
     }
 }
