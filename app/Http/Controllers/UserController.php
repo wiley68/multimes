@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
@@ -156,7 +157,7 @@ class UserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
-        if (auth()->user()->is($user)) {
+        if (Auth::user()->is($user)) {
             return back()->withErrors([
                 'destroy' => "Не можете да изтриете текущият потребител!",
             ]);
