@@ -23,11 +23,17 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 60px;',
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        sortable: true,
+    },
     {
         name: "actions",
         label: "Управление",
@@ -111,7 +117,10 @@ const title = 'Роля'
                                     :rows-per-page-options=[3]
                                 >
                                     <template v-slot:body-cell-actions="props">
-                                        <q-td align="center">
+                                        <q-td
+                                            align="center"
+                                            style="width: 80px;"
+                                        >
                                             <q-btn
                                                 @click.prevent="router.delete(route('roles.permissions.destroy', [role.id, props.row.id]), { preserveScroll: true, })"
                                                 label="Отмени"

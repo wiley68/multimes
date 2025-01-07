@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
-import { ref } from 'vue';
+import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 
 const props = defineProps({
@@ -19,11 +19,17 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 80px;',
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        sortable: true,
+    },
     {
         name: "actions",
         label: "Управление",
@@ -134,7 +140,10 @@ const confirm = (permission_id) => {
                                 </q-input>
                             </template>
                             <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
+                                <q-td
+                                    align="center"
+                                    style="width: 80px;"
+                                >
                                     <q-btn
                                         icon="mdi-pencil-outline"
                                         color="primary"

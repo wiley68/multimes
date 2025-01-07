@@ -19,18 +19,25 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 60px;',
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        style: 'width: 200px;',
+        sortable: true,
+    },
     {
         name: 'permissions',
         align: 'left',
         label: 'Права',
         field: row => row.permissions.map(obj => obj.name).join(', '),
         format: val => `${val}`,
-        sortable: false
+        sortable: false,
     },
     {
         name: "actions",
@@ -142,7 +149,10 @@ const confirm = (role_id) => {
                                 </q-input>
                             </template>
                             <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
+                                <q-td
+                                    align="center"
+                                    style="width: 80px;"
+                                >
                                     <q-btn
                                         icon="mdi-pencil-outline"
                                         color="primary"
