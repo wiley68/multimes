@@ -27,11 +27,17 @@ const roleColumns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 60px;',
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        sortable: true,
+    },
     {
         name: "actions",
         label: "Управление",
@@ -46,11 +52,17 @@ const permissionColumns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 60px;',
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        sortable: true,
+    },
     {
         name: "actions",
         label: "Управление",
@@ -65,8 +77,53 @@ const onSubmit = () => {
         onFinish: () => {
             form.password = ''
         },
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
     })
-};
+}
+
+const roleDestroy = (roleId) => {
+    router.delete(route('users.roles.destroy', [props.user.id, roleId]), {
+        preserveScroll: true,
+        onFinish: () => {
+            form.password = ''
+        },
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
+    })
+}
+
+const permissionDestroy = (permissionId) => {
+    router.delete(route('users.permissions.destroy', [props.user.id, permissionId]), {
+        preserveScroll: true,
+        onFinish: () => {
+            form.password = ''
+        },
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
+    })
+}
 
 onMounted(() => {
     form.roles = props.user.roles
@@ -166,10 +223,13 @@ const title = 'Потребител'
                                     row-key="id"
                                     :rows-per-page-options=[3]
                                 >
-                                    <template v-slot:body-cell-actions="props">
+                                    <template
+                                        v-slot:body-cell-actions="props"
+                                        style="width: 80px;"
+                                    >
                                         <q-td align="center">
                                             <q-btn
-                                                @click.prevent="router.delete(route('users.roles.destroy', [user.id, props.row.id]), { preserveScroll: true, })"
+                                                @click.prevent="roleDestroy(props.row.id)"
                                                 label="Отмени"
                                                 flat
                                                 color="negative"
@@ -196,10 +256,13 @@ const title = 'Потребител'
                                     row-key="id"
                                     :rows-per-page-options=[3]
                                 >
-                                    <template v-slot:body-cell-actions="props">
+                                    <template
+                                        v-slot:body-cell-actions="props"
+                                        style="width: 80px;"
+                                    >
                                         <q-td align="center">
                                             <q-btn
-                                                @click.prevent="router.delete(route('users.permissions.destroy', [user.id, props.row.id]), { preserveScroll: true, })"
+                                                @click.prevent="permissionDestroy(props.row.id)"
                                                 label="Отмени"
                                                 flat
                                                 color="negative"
