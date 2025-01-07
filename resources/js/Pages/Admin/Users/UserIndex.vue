@@ -19,12 +19,26 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
-        sortable: true
+        field: 'id',
+        style: 'width: 60px;',
+        sortable: true,
     },
-    { name: 'name', align: 'left', label: 'Име', field: 'name', sortable: true },
-    { name: 'email', align: 'left', label: 'Имейл', field: 'email', sortable: true },
+    {
+        name: 'name',
+        align: 'left',
+        label: 'Име',
+        field: 'name',
+        style: 'width: 200px;',
+        sortable: true,
+    },
+    {
+        name: 'email',
+        align: 'left',
+        label: 'Имейл',
+        field: 'email',
+        style: 'width: 200px;',
+        sortable: true,
+    },
     {
         name: 'roles',
         align: 'left',
@@ -86,12 +100,11 @@ const confirm = (user_id) => {
     }).onOk(() => {
         router.delete(route('users.destroy', user_id), {
             onError: errors => {
-                Object.values(errors).flat().forEach((error) => {
-                    $q.notify({
-                        message: error,
-                        icon: 'mdi-alert-circle-outline',
-                        type: 'negative',
-                    });
+                $q.notify({
+                    message: errors?.destroy,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                    timeout: 5000,
                 });
             },
         })
@@ -143,7 +156,10 @@ const confirm = (user_id) => {
                                 </q-input>
                             </template>
                             <template v-slot:body-cell-actions="props">
-                                <q-td align="center">
+                                <q-td
+                                    align="center"
+                                    style="width: 80px;"
+                                >
                                     <q-btn
                                         icon="mdi-pencil-outline"
                                         color="primary"
@@ -154,7 +170,6 @@ const confirm = (user_id) => {
                                         @click="router.get(route('users.edit', props.row.id))"
                                     />
                                     <q-btn
-                                        v-if="$page.props.auth.user.id !== props.row.id"
                                         icon="mdi-delete-outline"
                                         color="negative"
                                         title="Изтриване на потребителя"

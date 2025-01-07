@@ -156,7 +156,14 @@ class UserController extends Controller
      */
     public function destroy(User $user): RedirectResponse
     {
-        $user->delete();
+        if (auth()->user()->is($user)) {
+            return back()->withErrors([
+                'destroy' => "Не можете да изтриете текущият потребител!",
+                'destroy1' => "Не можете да изтриете текущият потребител1!"
+            ]);
+        }
+
+        // $user->delete();
         return back();
     }
 }
