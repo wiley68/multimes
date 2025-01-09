@@ -9,7 +9,6 @@ const props = defineProps({
         required: true
     },
     products: Array,
-    from: String,
 })
 
 const form = useForm({
@@ -20,8 +19,8 @@ const form = useForm({
 
 const $q = useQuasar()
 
-const onSubmit = () => {
-    form.put(route('uproductions.load', props.uproduction.id), {
+const uproductionLoad = () => {
+    form.put(route('uproductions.load', props.uproduction), {
         onFinish: () => {
             form.reset('stock')
         },
@@ -35,6 +34,23 @@ const onSubmit = () => {
             });
         },
     })
+}
+
+const uproductionShow = () => {
+    router.get(
+        route('uproductions.show', props.uproduction),
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
 }
 
 const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${props.uproduction.id} - Зареждане`
@@ -64,7 +80,6 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                         :error="form.hasErrors"
                                         :error-message="form.errors.product"
                                     />
-
                                     <q-input
                                         v-model.number="form.stock"
                                         type="number"
@@ -79,26 +94,15 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                     </div>
                 </div>
                 <div class="footer-panel">
-                    <template v-if="from === 'uproductions'">
-                        <q-btn
-                            color="primary"
-                            label="Процеси"
-                            flat
-                            icon="mdi-menu-left"
-                            @click="router.get(route('uproductions.index'))"
-                        />
-                    </template>
-                    <template v-else>
-                        <q-btn
-                            color="primary"
-                            label="Процес"
-                            flat
-                            icon="mdi-menu-left"
-                            @click="router.get(route('uproductions.show', { uproduction: uproduction.id }))"
-                        />
-                    </template>
                     <q-btn
-                        @click.prevent="onSubmit"
+                        color="primary"
+                        :label="`Процеси №${uproduction.id}`"
+                        flat
+                        icon="mdi-menu-left"
+                        @click="uproductionShow"
+                    />
+                    <q-btn
+                        @click.prevent="uproductionLoad"
                         label="Зареди"
                         type="submit"
                         icon="mdi-upload-multiple-outline"

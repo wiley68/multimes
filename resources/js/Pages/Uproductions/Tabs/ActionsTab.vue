@@ -79,6 +79,40 @@ const siloLoading = () => {
         }
     )
 }
+
+const uproductionIndex = () => {
+    router.get(
+        route('uproductions.index'),
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
+}
+
+const uproductionLoading = () => {
+    router.get(
+        route('uproductions.loading', { uproduction: props.uproduction.id }),
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
+}
 </script>
 
 <template>
@@ -111,7 +145,7 @@ const siloLoading = () => {
                     flat
                     icon="mdi-menu-left"
                     style="padding: 0px 15px;"
-                    @click="router.get(route('uproductions.index'))"
+                    @click="uproductionIndex"
                 />
                 <q-btn
                     label="Зареди прасета"
@@ -119,7 +153,7 @@ const siloLoading = () => {
                     color="primary"
                     icon="mdi-upload-multiple-outline"
                     style="padding: 0px 15px;"
-                    @click.prevent="router.get(route('uproductions.loading', { uproduction: uproduction.id, from: 'uproduction' }))"
+                    @click.prevent="uproductionLoading"
                 />
                 <q-btn
                     @click.prevent="confirmCompletion()"
@@ -161,7 +195,7 @@ const siloLoading = () => {
             <q-card-section>
                 <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
                     uproduction.uhall.silo.product?.name
-                    }}</div>
+                }}</div>
                 <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />

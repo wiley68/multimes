@@ -124,7 +124,7 @@ class UproductionController extends Controller
 
         if ((float)$uproduction->stock > 0) {
             return back()->withErrors([
-                'complete' => 'Във Вашия прозиводствен процес все още има налични продукти [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . ']. Не можете да приключите процеса докато все още имате налични продукти в него!',
+                'complete' => 'Във Вашия прозиводствен процес все още има налични прасета [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . ']. Не можете да приключите процеса докато все още имате налични прасета в него!',
             ]);
         }
 
@@ -138,7 +138,7 @@ class UproductionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function loading(Uproduction $uproduction, String $from): Response
+    public function loading(Uproduction $uproduction): Response
     {
         Gate::authorize('update', $uproduction);
 
@@ -152,7 +152,6 @@ class UproductionController extends Controller
         return Inertia::render('Uproductions/Loading', [
             'uproduction' => new UproductionsResource($uproduction),
             'products' => ProductResource::collection($products->get()),
-            'from' => $from,
         ]);
     }
 

@@ -42,7 +42,7 @@ const onSubmit = () => {
 
 const uproductionShow = () => {
     router.get(
-        route('uproductions.show', { uproduction: props.uproduction },),
+        route('uproductions.show', props.uproduction),
         {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
