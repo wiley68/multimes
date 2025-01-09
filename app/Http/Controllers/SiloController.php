@@ -10,6 +10,7 @@ use App\Http\Resources\SiloResource;
 use App\Models\Factory;
 use App\Models\Product;
 use App\Models\Silo;
+use App\Models\Udecrement;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -121,7 +122,7 @@ class SiloController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function loading(Silo $silo, String $from, int $from_id): Response
+    public function loading(Silo $silo, int $uproduction): Response
     {
         Gate::authorize('update', $silo);
 
@@ -139,27 +140,24 @@ class SiloController extends Controller
         return Inertia::render('Nomenklature/Silos/Loading', [
             'silo' => new SiloResource($silo),
             'products' => ProductResource::collection($products->get()),
-            'from' => $from,
-            'from_id' => $from_id,
+            'uproduction' => $uproduction,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function load(LoadSiloRequest $request, Silo $silo, String $from, int $from_id): RedirectResponse
+    public function load(LoadSiloRequest $request, Silo $silo, int $uproduction): RedirectResponse
     {
         Gate::authorize('update', $silo);
 
         $product = Product::findOrFail($request->product['id']);
         $new_quantity = (float)$request->stock;
         $current_quantity = (float)$silo->stock;
-        $result_quantity = $current_quantity + $new_quantity;
         $new_price = (float)$product->price;
         $current_price = (float)$silo->price;
-        $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
 
-        if ((float)$silo->maxqt < $result_quantity) {
+        if ((float)$silo->maxqt < $new_quantity) {
             return back()->withErrors([
                 'update' => 'Наличноста в силоза ще стане по-голяма от максимално допустимата! Не можете да запишете промяната.'
             ]);
@@ -171,20 +169,24 @@ class SiloController extends Controller
             ]);
         }
 
+        Udecrement::create([
+            'uproduction_id' => $uproduction,
+            'product_id' => $request->product['id'],
+            'quantity' => $current_quantity,
+            'price' => $current_price,
+            'status' => 1,
+        ]);
+
         $silo->update([
             'product_id' => $request->product['id'],
-            'stock' => $result_quantity,
-            'price' => $result_price,
+            'stock' => $new_quantity,
+            'price' => $new_price,
         ]);
 
         $product->stock = $product->stock - $new_quantity;
         $product->save();
 
-        if ($from === 'uproductions') {
-            return to_route('uproductions.show', ['uproduction' => $from_id]);
-        } else {
-            return to_route('silos.index');
-        }
+        return to_route('uproductions.show', ['uproduction' => $uproduction]);
     }
 
     /**

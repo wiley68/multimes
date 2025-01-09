@@ -62,6 +62,23 @@ const confirmCompletion = () => {
         })
     }).onCancel(() => { }).onDismiss(() => { })
 }
+
+const siloLoading = () => {
+    router.get(
+        route('silos.loading', { silo: props.uproduction.uhall.silo.id, uproduction: props.uproduction.id },),
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
+}
 </script>
 
 <template>
@@ -163,7 +180,7 @@ const confirmCompletion = () => {
                     title="Зарежда фураж в силоза към този продукционен процес."
                     color="primary"
                     icon="mdi-upload-multiple-outline"
-                    @click.prevent="router.get(route('silos.loading', { silo: uproduction.uhall.silo.id, from: 'uproductions', from_id: uproduction.id }))"
+                    @click.prevent="siloLoading"
                 />
             </q-card-actions>
             <q-separator />

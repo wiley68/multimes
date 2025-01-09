@@ -9,8 +9,7 @@ const props = defineProps({
         required: true
     },
     products: Array,
-    from: String,
-    from_id: Number,
+    uproduction: Number,
 })
 
 const form = useForm({
@@ -25,7 +24,7 @@ const form = useForm({
 const $q = useQuasar()
 
 const onSubmit = () => {
-    form.put(route('silos.load', { silo: props.silo.id, from: props.from, from_id: props.from_id }), {
+    form.put(route('silos.load', { silo: props.silo.id, uproduction: props.uproduction }), {
         onFinish: () => {
             form.reset('stock')
         },
@@ -39,6 +38,23 @@ const onSubmit = () => {
             });
         },
     })
+}
+
+const uproductionShow = () => {
+    router.get(
+        route('uproductions.show', { uproduction: props.uproduction },),
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
 }
 
 const title = `${props.silo.name} - Зареждане`
@@ -83,25 +99,13 @@ const title = `${props.silo.name} - Зареждане`
                     </div>
                 </div>
                 <div class="footer-panel">
-                    <template v-if="from === 'uproductions'">
-                        <q-btn
-                            color="primary"
-                            label="Процес"
-                            flat
-                            icon="mdi-menu-left"
-                            @click="router.get(route('uproductions.show', { uproduction: from_id }))"
-                        />
-                    </template>
-                    <template v-else>
-                        <q-btn
-                            color="primary"
-                            label="Силози"
-                            flat
-                            icon="mdi-menu-left"
-                            @click="router.get(route('silos.index'))"
-                        />
-                    </template>
-
+                    <q-btn
+                        color="primary"
+                        label="Процес"
+                        flat
+                        icon="mdi-menu-left"
+                        @click="uproductionShow"
+                    />
                     <q-btn
                         @click.prevent="onSubmit"
                         label="Зареди"
