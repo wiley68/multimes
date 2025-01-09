@@ -2,6 +2,12 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
+const props = defineProps({
+    typeOptiont: {
+        type: Array,
+    },
+})
+
 const form = useForm({
     name: '',
     nomenklature: '',
