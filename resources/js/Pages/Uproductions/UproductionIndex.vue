@@ -121,6 +121,23 @@ const deactivateNavigation = () => {
 }
 
 const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
+
+const uproductionShow = (uproduction) => {
+    router.get(
+        route('uproductions.show', uproduction),
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
+}
 </script>
 
 <template>
@@ -183,16 +200,6 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                                     >
                                         <div v-if="col.name === 'actions'">
                                             <q-btn
-                                                v-if="hasPermission('update')"
-                                                title="Зареждане на процеса с прасета"
-                                                icon="mdi-upload-multiple-outline"
-                                                color="primary"
-                                                dense
-                                                flat
-                                                rounded
-                                                @click="router.get(route('uproductions.loading', { uproduction: props.row.id, from: 'uproductions' }))"
-                                            />
-                                            <q-btn
                                                 v-if="hasPermission('view')"
                                                 title="Управлявай процеса"
                                                 icon="mdi-file-tree"
@@ -200,7 +207,7 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                                                 dense
                                                 flat
                                                 rounded
-                                                @click="router.get(route('uproductions.show', props.row.id))"
+                                                @click="uproductionShow(props.row.id)"
                                             />
                                             <q-btn
                                                 v-if="hasPermission('delete') && props.row.status === 0"
