@@ -131,7 +131,7 @@ class SiloController extends Controller
             $products = Product::where('id', '=', $silo->product_id);
         } else {
             if (count($silo->uhalls) > 0) {
-                $products = Product::where('type', '=', 'Силоз угояване');
+                $products = Product::where('type', '=', 'Фураж угояване');
             } else {
                 $products = Product::where('type', '=', 'Силоз майки');
             }

@@ -16,7 +16,7 @@ const form = useForm({
     name: props.silo?.name,
     factory: props.silo?.factory,
     maxqt: props.silo?.maxqt,
-    stock: 0,
+    stock: props.silo?.maxqt,
     price: props.silo?.price,
     product: props.silo?.product,
 })
