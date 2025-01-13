@@ -169,13 +169,15 @@ class SiloController extends Controller
             ]);
         }
 
-        Udecrement::create([
-            'uproduction_id' => $uproduction,
-            'product_id' => $request->product['id'],
-            'quantity' => $current_quantity,
-            'price' => $current_price,
-            'status' => 1,
-        ]);
+        if ($current_quantity > 0) {
+            Udecrement::create([
+                'uproduction_id' => $uproduction,
+                'product_id' => $request->product['id'],
+                'quantity' => $current_quantity,
+                'price' => $current_price,
+                'status' => 1,
+            ]);
+        }
 
         $silo->update([
             'product_id' => $request->product['id'],
