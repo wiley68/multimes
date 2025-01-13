@@ -89,6 +89,7 @@ class ProductController extends Controller
 
         return Inertia::render('Nomenklature/Products/Edit', [
             'product' => new ProductResource($product),
+            'typeOptions' => Product::TYPE_OPTIONS,
         ]);
     }
 

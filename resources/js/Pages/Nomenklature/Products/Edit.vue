@@ -6,7 +6,11 @@ const props = defineProps({
     product: {
         type: Object,
         required: true
-    }
+    },
+    typeOptions: {
+        type: Array,
+        required: true,
+    },
 })
 
 const form = useForm({
@@ -29,10 +33,6 @@ const onSubmit = () => {
 
 const meOptions = [
     'бр', 'кг', 'л', 'м',
-]
-
-const typeOptions = [
-    'Обща употреба', 'Процес угояване', 'Силоз угояване', 'Силоз майки',
 ]
 
 const title = 'Продукт'
