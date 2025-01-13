@@ -122,11 +122,16 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
                 <div class="text-subtitle1"><span class="text-weight-medium">Очакван брой дни за провеждане на
                         процеса</span><span class="text-weight-light">: {{ uproduction.production_days }}</span>
                 </div>
-                <div class="text-subtitle1"><span class="text-weight-medium">Продукт</span><span
-                        class="text-weight-light"
-                    >: {{ `[${uproduction.product.nomenklature}] ${uproduction.product.name}` }}</span>
+                <div
+                    v-if="uproduction.product"
+                    class="text-subtitle1"
+                ><span class="text-weight-medium">Продукт</span><span class="text-weight-light">: {{
+                    `[${uproduction.product.nomenklature}] ${uproduction.product.name}` }}</span>
                 </div>
-                <div class="text-subtitle2 text-weight-light">{{ uproduction.product.description }}
+                <div
+                    v-if="uproduction.product"
+                    class="text-subtitle2 text-weight-light"
+                >{{ uproduction.product.description }}
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Текущ брой прасета [бр]</span><span
                         class="text-weight-light"
