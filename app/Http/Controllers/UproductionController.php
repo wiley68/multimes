@@ -132,6 +132,24 @@ class UproductionController extends Controller
             'status' => $validated['status'],
         ]);
 
+        $silo = $uproduction->uhall->silo;
+        $current_quantity = (float)$silo->stock;
+        $current_price = (float)$silo->price;
+        if ($current_quantity > 0) {
+            Udecrement::create([
+                'uproduction_id' => $uproduction->id,
+                'product_id' => $uproduction->product->id,
+                'quantity' => $current_quantity,
+                'price' => $current_price,
+                'status' => 1,
+            ]);
+        }
+        $silo->update([
+            'product_id' => $uproduction->product->id,
+            'stock' => 0,
+            'price' => 0,
+        ]);
+
         return back();
     }
 

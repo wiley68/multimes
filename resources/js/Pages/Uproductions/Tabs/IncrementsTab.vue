@@ -94,6 +94,7 @@ const incrementsColumns = [
 
 const totalPrice = computed(() => {
     return props.uincrements
+        .filter(item => item.status === 1)
         .reduce((total, item) => total + item.quantity * item.price, 0)
         .toFixed(2);
 })
