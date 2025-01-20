@@ -101,7 +101,7 @@ const title = `${props.silo.name} - Зареждане`
                 <div class="footer-panel">
                     <q-btn
                         color="primary"
-                        label="Процес"
+                        :label="`Процес №${uproduction}`"
                         flat
                         icon="mdi-menu-left"
                         @click="uproductionShow"
