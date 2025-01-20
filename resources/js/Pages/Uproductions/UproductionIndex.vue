@@ -145,6 +145,38 @@ const uproductionShow = (uproduction) => {
         }
     )
 }
+
+const confirm = (uproduction_id) => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Желаеш ли да изтриеш този процес? Всички данни за процеса ще бъдат унищожени. Този процес на изтриване е необратим!',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        router.delete(route('uproductions.destroy', uproduction_id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
+}
 </script>
 
 <template>

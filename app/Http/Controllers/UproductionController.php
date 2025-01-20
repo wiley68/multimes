@@ -220,8 +220,18 @@ class UproductionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Uproduction $uproduction)
+    public function destroy(Uproduction $uproduction): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $uproduction);
+
+        if ($uproduction->status === 1) {
+            return back()->withErrors([
+                'delete' => 'Не можете да изтривате приключена доставка.'
+            ]);
+        }
+
+        $uproduction->delete();
+
+        return to_route('uproductions.index');
     }
 }
