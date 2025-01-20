@@ -157,9 +157,15 @@ class UproductionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function loading(Uproduction $uproduction): Response
+    public function loading(Uproduction $uproduction): Response|RedirectResponse
     {
         Gate::authorize('update', $uproduction);
+
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'update' => 'Не можете да зареждате процес който вече е приключен!'
+            ]);
+        }
 
         $uproduction->load(['uhall', 'product']);
         if ($uproduction->product_id !== 0) {
@@ -180,6 +186,12 @@ class UproductionController extends Controller
     public function load(LoadUproductionRequest $request, Uproduction $uproduction): RedirectResponse
     {
         Gate::authorize('update', $uproduction);
+
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'update' => 'Не можете да зареждате процес който вече е приключен!'
+            ]);
+        }
 
         $product = Product::findOrFail($request->product['id']);
         $new_quantity = (float)$request->stock;

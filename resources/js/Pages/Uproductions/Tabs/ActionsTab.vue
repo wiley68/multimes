@@ -3,6 +3,7 @@ import moment from 'moment'
 import { computed } from 'vue'
 import { router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
+import { usePermission } from '@/composables/permissions'
 
 const props = defineProps({
     uproduction: {
@@ -11,6 +12,8 @@ const props = defineProps({
     },
 })
 
+const { hasPermission } = usePermission()
+
 const getDaysBetweenTodayAndDate = (targetDate) => {
     const today = moment().startOf('day')
     const target = moment(targetDate).startOf('day')
@@ -18,8 +21,12 @@ const getDaysBetweenTodayAndDate = (targetDate) => {
 }
 
 const productionPurcent = computed(() => {
-    const days = getDaysBetweenTodayAndDate(props.uproduction.created_at)
-    return parseFloat((days / parseFloat(props.uproduction.production_days)).toFixed(2))
+    if (props.uproduction.status === 1) {
+        const days = getDaysBetweenTodayAndDate(props.uproduction.created_at)
+        return parseFloat((days / parseFloat(props.uproduction.production_days)).toFixed(2))
+    } else {
+        return 1.00
+    }
 })
 const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
 const siloPurcent = computed(() => {
@@ -148,6 +155,7 @@ const uproductionLoading = () => {
                     @click="uproductionIndex"
                 />
                 <q-btn
+                    v-if="hasPermission('update') && uproduction.status === 1"
                     label="Зареди прасета"
                     title="Зарежда прасета за угояване в продукционния процес."
                     color="primary"
@@ -195,7 +203,7 @@ const uproductionLoading = () => {
             <q-card-section>
                 <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
                     uproduction.uhall.silo.product?.name
-                }}</div>
+                    }}</div>
                 <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />
