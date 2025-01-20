@@ -11,6 +11,7 @@ use App\Models\Factory;
 use App\Models\Product;
 use App\Models\Silo;
 use App\Models\Udecrement;
+use App\Models\Uproduction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -122,9 +123,16 @@ class SiloController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function loading(Silo $silo, int $uproduction): Response
+    public function loading(Silo $silo, int $uproduction_id): Response|RedirectResponse
     {
         Gate::authorize('update', $silo);
+
+        $uproduction = Uproduction::findOrFail($uproduction_id);
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'update' => 'Не можете да зареждате процес който вече е приключен!'
+            ]);
+        }
 
         $silo->load(['factory', 'product']);
         if ($silo->product_id !== 0) {
@@ -140,16 +148,23 @@ class SiloController extends Controller
         return Inertia::render('Nomenklature/Silos/Loading', [
             'silo' => new SiloResource($silo),
             'products' => ProductResource::collection($products->get()),
-            'uproduction' => $uproduction,
+            'uproduction' => $uproduction_id,
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function load(LoadSiloRequest $request, Silo $silo, int $uproduction): RedirectResponse
+    public function load(LoadSiloRequest $request, Silo $silo, int $uproduction_id): RedirectResponse
     {
         Gate::authorize('update', $silo);
+
+        $uproduction = Uproduction::findOrFail($uproduction_id);
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'update' => 'Не можете да зареждате процес който вече е приключен!'
+            ]);
+        }
 
         $product = Product::findOrFail($request->product['id']);
         $new_quantity = (float)$request->stock;
@@ -171,7 +186,7 @@ class SiloController extends Controller
 
         if ($current_quantity > 0) {
             Udecrement::create([
-                'uproduction_id' => $uproduction,
+                'uproduction_id' => $uproduction_id,
                 'product_id' => $request->product['id'],
                 'quantity' => $current_quantity,
                 'price' => $current_price,
@@ -188,7 +203,7 @@ class SiloController extends Controller
         $product->stock = $product->stock - $new_quantity;
         $product->save();
 
-        return to_route('uproductions.show', ['uproduction' => $uproduction]);
+        return to_route('uproductions.show', ['uproduction' => $uproduction_id]);
     }
 
     /**

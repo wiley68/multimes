@@ -10,7 +10,6 @@ use App\Http\Resources\UdecrementResource;
 use App\Http\Resources\UincrementResource;
 use App\Http\Resources\UproductionsResource;
 use App\Models\Product;
-use App\Models\Silo;
 use App\Models\Udecrement;
 use App\Models\Uhall;
 use App\Models\Uproduction;
@@ -146,7 +145,7 @@ class UproductionController extends Controller
             ]);
         }
         $silo->update([
-            'product_id' => $uproduction->product->id,
+            'product_id' => 0,
             'stock' => 0,
             'price' => 0,
         ]);

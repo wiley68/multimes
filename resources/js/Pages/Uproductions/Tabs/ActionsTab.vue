@@ -204,7 +204,7 @@ const uproductionLoading = () => {
             <q-card-section>
                 <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
                     uproduction.uhall.silo.product?.name
-                }}</div>
+                    }}</div>
                 <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />
@@ -219,6 +219,7 @@ const uproductionLoading = () => {
             </q-card-section>
             <q-card-actions vertical>
                 <q-btn
+                    v-if="hasPermission('update') && uproduction.status === 1"
                     label="Зареди фураж"
                     title="Зарежда фураж в силоза към този продукционен процес."
                     color="primary"
