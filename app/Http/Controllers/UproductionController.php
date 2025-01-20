@@ -130,6 +130,7 @@ class UproductionController extends Controller
 
         $uproduction->update([
             'status' => $validated['status'],
+            'finished_at' => now(),
         ]);
 
         $silo = $uproduction->uhall->silo;

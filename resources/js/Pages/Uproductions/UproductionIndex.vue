@@ -27,8 +27,8 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
+        field: 'id',
+        style: 'width:60px;',
         sortable: true,
         sortMethod: (a, b) => (a < b ? -1 : a > b ? 1 : 0),
     },
@@ -37,42 +37,49 @@ const columns = [
         align: 'left',
         label: 'Хале',
         field: 'uhall_id',
-        sortable: true
+        sortable: true,
     },
     {
         name: 'status',
         align: 'left',
         label: 'Състояние',
         field: 'status',
-        sortable: true
+        sortable: true,
     },
     {
         name: 'created_at',
         align: 'left',
         label: 'Стариран на',
         field: 'created_at',
-        sortable: true
+        sortable: true,
+    },
+    {
+        name: 'finished_at',
+        align: 'left',
+        label: 'Приключен на',
+        field: 'finished_at',
+        sortable: true,
     },
     {
         name: 'product',
         align: 'left',
         label: 'Прасета',
         field: 'product',
-        sortable: true
+        sortable: true,
     },
     {
         name: 'stock',
         align: 'left',
         label: 'Количество [бр]',
         field: 'stock',
-        sortable: true
+        sortable: true,
     },
     {
         name: 'price',
         align: 'left',
         label: 'Цена',
         field: 'price',
-        sortable: true
+        sortable: true,
     },
     {
         name: "actions",
@@ -198,7 +205,53 @@ const uproductionShow = (uproduction) => {
                                         :key="col.name"
                                         :props="props"
                                     >
-                                        <div v-if="col.name === 'actions'">
+                                        <div
+                                            v-if="col.name === 'uhall_id'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ props.row.uhall.name }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'status'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ props.row['status'] === 1 ? 'Активен' : 'Приключен' }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'created_at'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ moment(props.row['created_at']).format('DD.MM.YY HH:mm') }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'finished_at'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ moment(props.row['finished_at']).format('DD.MM.YY HH:mm') }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'product'"
+                                            style="width: 120px;"
+                                        >
+                                            {{ props.row.product ? `[${props.row.product.nomenklature}]
+                                            ${props.row.product.name}` : '' }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'stock'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ parseFloat(props.row.stock) === 0 ? '' : props.row.stock }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'price'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ parseFloat(props.row.price) === 0 ? '' : props.row.price }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'actions'"
+                                            style="width: 80px;"
+                                        >
                                             <q-btn
                                                 v-if="hasPermission('view')"
                                                 title="Управлявай процеса"
@@ -219,25 +272,6 @@ const uproductionShow = (uproduction) => {
                                                 rounded
                                                 @click="confirm(props.row.id)"
                                             />
-                                        </div>
-                                        <div v-else-if="col.name === 'status'">
-                                            {{ props.row['status'] === 1 ? 'Активен' : 'Приключен' }}
-                                        </div>
-                                        <div v-else-if="col.name === 'uhall_id'">
-                                            {{ props.row.uhall.name }}
-                                        </div>
-                                        <div v-else-if="col.name === 'created_at'">
-                                            {{ moment(props.row['created_at']).format('DD.MM.YY HH:mm') }}
-                                        </div>
-                                        <div v-else-if="col.name === 'product'">
-                                            {{ props.row.product ? `[${props.row.product.nomenklature}]
-                                            ${props.row.product.name}` : '' }}
-                                        </div>
-                                        <div v-else-if="col.name === 'stock'">
-                                            {{ parseFloat(props.row.stock) === 0 ? '' : props.row.stock }}
-                                        </div>
-                                        <div v-else-if="col.name === 'price'">
-                                            {{ parseFloat(props.row.price) === 0 ? '' : props.row.price }}
                                         </div>
                                         <div v-else>
                                             {{ props.row[col.name] }}
