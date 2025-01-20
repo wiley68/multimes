@@ -104,7 +104,7 @@ const title = `Добавяне на разход към Производств�
                         @click.prevent="router.get(route('uproductions.show', uproduction_id))"
                         color="primary"
                         flat
-                        :label="`Продукционен процес №${uproduction_id}`"
+                        :label="`Процес №${uproduction_id}`"
                         icon="mdi-menu-left"
                     />
 

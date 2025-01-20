@@ -95,6 +95,7 @@ const decrementsColumns = [
 
 const totalPrice = computed(() => {
     return props.udecrements
+        .filter(item => item.status === 1)
         .reduce((total, item) => total + item.quantity * item.price, 0)
         .toFixed(2);
 })

@@ -96,7 +96,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                 <div class="footer-panel">
                     <q-btn
                         color="primary"
-                        :label="`Процеси №${uproduction.id}`"
+                        :label="`Процес №${uproduction.id}`"
                         flat
                         icon="mdi-menu-left"
                         @click="uproductionShow"
