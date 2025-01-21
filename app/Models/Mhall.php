@@ -13,6 +13,7 @@ class Mhall extends Model
         'name',
         'factory_id',
         'silo_id',
+        'type',
     ];
 
     public function factory()

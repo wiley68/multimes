@@ -16,6 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->foreignId('factory_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->foreignId('silo_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
+            $table->enum('type', [
+                'Ремонтни',
+                'Заплождане',
+                'Условна бременност',
+                'Бременност',
+                'Родилно',
+                'Подрастване',
+            ]);
             $table->timestamps();
         });
     }
