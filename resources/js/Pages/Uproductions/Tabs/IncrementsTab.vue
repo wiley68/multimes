@@ -249,7 +249,7 @@ const confirmCompletion = (uincrement) => {
                             </div>
                             <div v-else="col.name === 'actions'">
                                 <q-btn
-                                    v-if="hasPermission('update') && props.row.status === 0"
+                                    v-if="hasPermission('update') && props.row.status === 0 && uproduction.status === 1"
                                     icon="mdi-file-document-check-outline"
                                     color="primary"
                                     title="Приключване на прихода"
@@ -268,7 +268,7 @@ const confirmCompletion = (uincrement) => {
                                     )"
                                 />
                                 <q-btn
-                                    v-if="hasPermission('update') && props.row.status === 0"
+                                    v-if="hasPermission('update') && props.row.status === 0 && uproduction.status === 1"
                                     icon="mdi-pencil-outline"
                                     color="primary"
                                     title="Промяна на прихода"
@@ -278,7 +278,7 @@ const confirmCompletion = (uincrement) => {
                                     @click="router.get(route('uincrements.edit', props.row.id))"
                                 />
                                 <q-btn
-                                    v-if="hasPermission('delete') && props.row.status === 0"
+                                    v-if="hasPermission('delete') && props.row.status === 0 && uproduction.status === 1"
                                     icon="mdi-delete-outline"
                                     color="negative"
                                     title="Изтриване на прихода"
@@ -310,6 +310,7 @@ const confirmCompletion = (uincrement) => {
             class="row items-center q-gutter-x-sm q-px-sm"
         >
             <q-btn
+                v-if="uproduction.status === 1"
                 @click="createUincrements"
                 label="Добави приход"
                 title="Добавя нов приход към продукционния процес."

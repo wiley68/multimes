@@ -29,6 +29,12 @@ class UincrementController extends Controller
 
         $uproduction = Uproduction::findOrFail($validated['uproduction_id']);
 
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да добавяте приход към вече приключен процес!"
+            ]);
+        }
+
         if ($uproduction === null) {
             return back()->withErrors([
                 'update' => 'Продукта не е открит в текущия процес!'
@@ -84,6 +90,12 @@ class UincrementController extends Controller
         }
 
         $uincrement->load(['product', 'uproduction']);
+        $uproduction = $uincrement->uproduction;
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да редактирате приход към вече приключен процес!"
+            ]);
+        }
 
         return Inertia::render('Uproductions/Tabs/Increments/Edit', [
             'uincrement' => new UincrementResource($uincrement),
@@ -110,6 +122,12 @@ class UincrementController extends Controller
             ]);
         }
 
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да редактирате приход към вече приключен процес!"
+            ]);
+        }
+
         $uincrement->update([
             'quantity' => $request->quantity,
             'price' => $request->price,
@@ -130,6 +148,13 @@ class UincrementController extends Controller
         if ($uincrement->status === 1) {
             return back()->withErrors([
                 'update' => "Не можете да приключвате вече приключен приход!"
+            ]);
+        }
+
+        $uproduction = $uincrement->uproduction;
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да приключвате приход към вече приключен процес!"
             ]);
         }
 
@@ -171,6 +196,13 @@ class UincrementController extends Controller
         if ($uincrement->status === 1) {
             return back()->withErrors([
                 'update' => 'Не можете да променяте приключен приход.'
+            ]);
+        }
+
+        $uproduction = $uincrement->uproduction;
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да изтривате приход от вече приключен процес!"
             ]);
         }
 
