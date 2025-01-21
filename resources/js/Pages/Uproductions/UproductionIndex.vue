@@ -259,7 +259,8 @@ const confirm = (uproduction_id) => {
                                             v-else-if="col.name === 'finished_at'"
                                             style="width: 80px;"
                                         >
-                                            {{ moment(props.row['finished_at']).format('DD.MM.YY HH:mm') }}
+                                            {{ props.row['finished_at'] ===
+                                                null ? '' : moment(props.row['finished_at']).format('DD.MM.YY HH:mm') }}
                                         </div>
                                         <div
                                             v-else-if="col.name === 'product'"
