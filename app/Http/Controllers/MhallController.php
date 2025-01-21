@@ -36,7 +36,7 @@ class MhallController extends Controller
         $rowsPerPage = $validated['rowsPerPage'] ?? 10;
         $page = $validated['page'] ?? 1;
         $sortBy = $validated['sortBy'] ?? 'name';
-        $sortOrder = $validated['sortOrder'] ?? 'asc';
+        $sortOrder = $validated['sortOrder'] ?? 'desc';
         $filter = $validated['filter'] ?? '';
 
         $query = Mhall::query()->with('factory', 'silo');
