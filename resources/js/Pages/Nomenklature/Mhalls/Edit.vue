@@ -8,21 +8,23 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    factories: Array,
-    silos: Array,
+    factories: { type: Array, },
+    silos: { type: Array, },
+    typeOptiont: { type: Array, },
 })
 
 const form = useForm({
     name: props.mhall?.name,
+    type: props.mhall?.type,
     factory: props.mhall?.factory,
     silo: props.mhall?.silo,
 })
 const silosFactory = ref(props.silos.filter(silo => silo.factory.id === props.mhall?.factory.id))
 
-const onSubmit = () => {
+const mhallsUpdate = () => {
     form.put(route('mhalls.update', props.mhall.id), {
         onFinish: () => {
-            form.reset('name', 'factory', 'silo')
+            form.reset('name', 'type', 'factory', 'silo')
         },
     })
 };
@@ -64,6 +66,14 @@ const title = 'Хале за майки'
                                     />
 
                                     <q-select
+                                        v-model="form.type"
+                                        :options="typeOptiont"
+                                        label="Избери Тип на халето"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.type"
+                                    />
+
+                                    <q-select
                                         v-model="form.factory"
                                         :options="factories"
                                         option-label="name"
@@ -95,7 +105,7 @@ const title = 'Хале за майки'
                     />
 
                     <q-btn
-                        @click.prevent="onSubmit"
+                        @click.prevent="mhallsUpdate"
                         label="Запиши"
                         type="submit"
                         icon="mdi-content-save-outline"

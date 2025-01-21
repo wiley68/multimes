@@ -17,6 +17,7 @@ class MhallResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'type' => $this->type,
             'factory' => new FactoryResource($this->whenLoaded('factory')),
             'silo' => new SiloResource($this->whenLoaded('silo')),
         ];
