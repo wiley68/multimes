@@ -7,6 +7,7 @@ use App\Http\Resources\ProductResource;
 use App\Http\Resources\UdecrementResource;
 use App\Models\Product;
 use App\Models\Udecrement;
+use App\Models\Uproduction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -18,13 +19,20 @@ class UdecrementController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request): Response
+    public function create(Request $request): Response|RedirectResponse
     {
         Gate::authorize('create', Udecrement::class);
 
         $validated = $request->validate([
             'uproduction_id' => 'required|integer',
         ]);
+
+        $uproduction = Uproduction::findOrFail($validated['uproduction_id']);
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да добавяте разход към вече приключен процес!"
+            ]);
+        }
 
         $products = Product::whereIn('type', ['Обща употреба', 'Силоз угояване'])->get();
 
@@ -68,6 +76,12 @@ class UdecrementController extends Controller
         }
 
         $udecrement->load(['product', 'uproduction']);
+        $uproduction = $udecrement->uproduction;
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да редактирате разход към вече приключен процес!"
+            ]);
+        }
 
         return Inertia::render('Uproductions/Tabs/Decrements/Edit', [
             'udecrement' => new UdecrementResource($udecrement),
@@ -84,6 +98,13 @@ class UdecrementController extends Controller
         if ($udecrement->status === 1) {
             return back()->withErrors([
                 'update' => 'Не можете да променяте приключен разход.'
+            ]);
+        }
+
+        $uproduction = $udecrement->uproduction;
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да редактирате разход към вече приключен процес!"
             ]);
         }
 
@@ -107,6 +128,13 @@ class UdecrementController extends Controller
         if ($udecrement->status === 1) {
             return back()->withErrors([
                 'update' => "Не можете да приключвате вече приключен разход!"
+            ]);
+        }
+
+        $uproduction = $udecrement->uproduction;
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да приключвате разход към вече приключен процес!"
             ]);
         }
 
@@ -163,6 +191,13 @@ class UdecrementController extends Controller
         if ($udecrement->status === 1) {
             return back()->withErrors([
                 'update' => 'Не можете да променяте приключен разход.'
+            ]);
+        }
+
+        $uproduction = $udecrement->uproduction;
+        if ($uproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да изтривате разход от вече приключен процес!"
             ]);
         }
 

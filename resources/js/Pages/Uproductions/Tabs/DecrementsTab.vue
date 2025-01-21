@@ -120,6 +120,20 @@ const createUdecrements = () => {
     )
 }
 
+const udecrementsEdit = (decrements_id) => {
+    router.get(route('udecrements.edit', decrements_id), {
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
+    })
+}
+
 const confirm = (decrements_id) => {
     $q.dialog({
         title: 'Потвърди',
@@ -250,7 +264,7 @@ const confirmCompletion = (udecrement) => {
                             </div>
                             <div v-else="col.name === 'actions'">
                                 <q-btn
-                                    v-if="hasPermission('update') && props.row.status === 0"
+                                    v-if="hasPermission('update') && props.row.status === 0 && uproduction.status === 1"
                                     icon="mdi-file-document-check-outline"
                                     color="primary"
                                     title="Приключване на разхода"
@@ -269,17 +283,17 @@ const confirmCompletion = (udecrement) => {
                                     )"
                                 />
                                 <q-btn
-                                    v-if="hasPermission('update') && props.row.status === 0"
+                                    v-if="hasPermission('update') && props.row.status === 0 && uproduction.status === 1"
                                     icon="mdi-pencil-outline"
                                     color="primary"
                                     title="Промяна на разхода"
                                     dense
                                     flat
                                     rounded
-                                    @click="router.get(route('udecrements.edit', props.row.id))"
+                                    @click="udecrementsEdit(props.row.id)"
                                 />
                                 <q-btn
-                                    v-if="hasPermission('delete') && props.row.status === 0"
+                                    v-if="hasPermission('delete') && props.row.status === 0 && uproduction.status === 1"
                                     icon="mdi-delete-outline"
                                     color="negative"
                                     title="Изтриване на разхода"
@@ -311,6 +325,7 @@ const confirmCompletion = (udecrement) => {
             class="row items-center q-gutter-x-sm q-px-sm"
         >
             <q-btn
+                v-if="uproduction.status === 1"
                 @click="createUdecrements"
                 label="Добави разход"
                 title="Добавя нов разход към продукционния процес."
