@@ -16,13 +16,23 @@ const getDaysBetweenTodayAndDate = (targetDate) => {
     return today.diff(target, 'days')
 }
 
+const getDaysBetweenCreateAndFinished = (createDate, finishedDate) => {
+    const create = moment(createDate).startOf('day')
+    const finished = moment(finishedDate).startOf('day')
+    return create.diff(finished, 'days')
+}
+
 const siloPurcent = computed(() => {
     return parseFloat((parseFloat(props.uproduction.uhall.silo.stock) / parseFloat(props.uproduction.uhall.silo.maxqt)).toFixed(2))
 })
 const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
 const productionPurcent = computed(() => {
-    const days = getDaysBetweenTodayAndDate(props.uproduction.created_at)
-    return parseFloat((days / parseFloat(props.uproduction.production_days)).toFixed(2))
+    if (props.uproduction.status === 1) {
+        const days = getDaysBetweenTodayAndDate(props.uproduction.created_at)
+        return parseFloat((days / parseFloat(props.uproduction.production_days)).toFixed(2))
+    } else {
+        return 1.00
+    }
 })
 const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
 </script>
@@ -119,6 +129,12 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
                         class="text-weight-light"
                     >: {{ uproduction.status === 1 ? 'Активен' : 'Приключен' }}</span>
                 </div>
+                <div
+                    v-if="uproduction.status === 0"
+                    class="text-subtitle1"
+                ><span class="text-weight-medium">Приключен на</span><span class="text-weight-light">: {{
+                    moment(uproduction.finished_at).format('DD.MM.YY HH:mm') }}</span>
+                </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Очакван брой дни за провеждане на
                         процеса</span><span class="text-weight-light">: {{ uproduction.production_days }}</span>
                 </div>
@@ -139,11 +155,15 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Брой дни в процес</span><span
                         class="text-weight-light"
-                    >: {{ getDaysBetweenTodayAndDate(uproduction.created_at) }}</span>
+                    >: {{ uproduction.status === 1 ?
+                        getDaysBetweenTodayAndDate(uproduction.created_at) :
+                        getDaysBetweenCreateAndFinished(uproduction.finished_at,
+                            uproduction.created_at) }}</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Оставащи дни до края на процеса</span><span
                         class="text-weight-light"
-                    >: {{ uproduction.production_days - getDaysBetweenTodayAndDate(uproduction.created_at) }}</span>
+                    >: {{ uproduction.status === 1 ? uproduction.production_days -
+                        getDaysBetweenTodayAndDate(uproduction.created_at) : 0 }}</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Процент на завършеност на
                         процеса</span><span class="text-weight-light">: {{ productionPurcentLabel }}</span>
