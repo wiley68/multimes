@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Mhall;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -27,16 +28,20 @@ class CreateMhallRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('mhalls', 'name')->ignore($this->mhall)
+                Rule::unique('mhalls', 'name')->ignore($this->mhall),
+            ],
+            'type' => [
+                'required',
+                Rule::in(Mhall::TYPE_OPTIONS),
             ],
             'factory' => [
                 'required',
-                'array'
+                'array',
             ],
             'silo' => [
                 'required',
-                'array'
-            ]
+                'array',
+            ],
         ];
     }
 }

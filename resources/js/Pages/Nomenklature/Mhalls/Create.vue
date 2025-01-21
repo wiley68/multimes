@@ -4,20 +4,22 @@ import { Head, router, useForm } from '@inertiajs/vue3'
 import { ref, watch } from 'vue';
 
 const props = defineProps({
-    factories: Array,
-    silos: Array,
+    factories: { type: Array, },
+    silos: { type: Array, },
+    typeOptiont: { type: Array, },
 })
 
 const form = useForm({
     name: '',
+    type: null,
     factory: null,
     silo: null,
 })
 const silosFactory = ref([])
 
-const onSubmit = () => {
+const mhallsStore = () => {
     form.post(route('mhalls.store'), {
-        onFinish: () => form.reset('name', 'factory', 'silo'),
+        onFinish: () => form.reset('name', 'type', 'factory', 'silo'),
     })
 };
 
@@ -59,6 +61,14 @@ const title = 'Хале за майки'
                                     />
 
                                     <q-select
+                                        v-model="form.type"
+                                        :options="typeOptiont"
+                                        label="Избери Тип на халето"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.type"
+                                    />
+
+                                    <q-select
                                         v-model="form.factory"
                                         :options="factories"
                                         option-label="name"
@@ -90,7 +100,7 @@ const title = 'Хале за майки'
                     />
 
                     <q-btn
-                        @click.prevent="onSubmit"
+                        @click.prevent="mhallsStore"
                         label="Запиши"
                         color="primary"
                         icon="mdi-content-save-outline"

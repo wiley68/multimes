@@ -31,7 +31,7 @@ class Product extends Model
         'Фураж бременни',
         'Прасета родилно',
         'Фураж кърмачки',
-        'Прсета подрастване',
+        'Прасета подрастване',
     ];
 
     public function subdeliveries()

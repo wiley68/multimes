@@ -16,6 +16,15 @@ class Mhall extends Model
         'type',
     ];
 
+    public const TYPE_OPTIONS = [
+        'Ремонтни',
+        'Заплождане',
+        'Условна бременност',
+        'Бременност',
+        'Родилно',
+        'Подрастване',
+    ];
+
     public function factory()
     {
         return $this->belongsTo(Factory::class);

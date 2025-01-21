@@ -98,6 +98,7 @@ class MhallController extends Controller
         return Inertia::render('Nomenklature/Mhalls/Create', [
             'factories' => FactoryResource::collection(Factory::all()),
             'silos' => SiloResource::collection(Silo::with(['factory'])->get()),
+            'typeOptiont' => Mhall::TYPE_OPTIONS,
         ]);
     }
 
@@ -110,6 +111,7 @@ class MhallController extends Controller
 
         Mhall::create([
             'name' => $request->name,
+            'type' => $request->type,
             'factory_id' => $request->factory['id'],
             'silo_id' => $request->silo['id'],
         ]);
