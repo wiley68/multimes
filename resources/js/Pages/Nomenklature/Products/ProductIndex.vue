@@ -85,7 +85,7 @@ const $q = useQuasar()
 const pagination = {
     page: props.products.meta.current_page,
     rowsPerPage: props.products.meta.per_page,
-    rowsNumber: props.products.meta.total
+    rowsNumber: props.products.meta.total,
 }
 const filter = ref(props.filter)
 

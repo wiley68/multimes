@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -48,7 +49,7 @@ class CreateProductRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                'in:Обща употреба,Прасета угояване,Фураж угояване,Процес ремонтни,Фураж ремонтни,Прасета заплождане,Прасета условна бременност,Прасета бременност,Фураж бременни,Прасета родилно,Фураж кърмачки,Прсета подрастване',
+                Rule::in(Product::TYPE_OPTIONS),
             ],
         ];
     }
