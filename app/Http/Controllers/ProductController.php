@@ -56,7 +56,7 @@ class ProductController extends Controller
         Gate::authorize('create', Product::class);
 
         return Inertia::render('Nomenklature/Products/Create', [
-            'typeOptiont' => Product::TYPE_OPTIONS,
+            'typeOptions' => Product::TYPE_OPTIONS,
         ]);
     }
 

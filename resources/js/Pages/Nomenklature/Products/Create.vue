@@ -3,7 +3,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
 const props = defineProps({
-    typeOptiont: {
+    typeOptions: {
         type: Array,
     },
 })
@@ -31,10 +31,6 @@ const onSubmit = () => {
 
 const meOptions = [
     'бр', 'кг', 'л', 'м',
-]
-
-const typeOptions = [
-    'Обща употреба', 'Процес угояване', 'Силоз угояване', 'Силоз майки',
 ]
 
 const title = 'Продукт'
