@@ -136,7 +136,11 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                         </q-tab-panel>
 
                         <q-tab-panel name="statistics">
-                            <StatisticsTab></StatisticsTab>
+                            <StatisticsTab
+                                :uproduction="uproduction"
+                                :udecrements="udecrements"
+                                :uincrements="uincrements"
+                            ></StatisticsTab>
                         </q-tab-panel>
                     </q-tab-panels>
                 </div>
