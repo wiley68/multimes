@@ -153,6 +153,10 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
                         class="text-weight-light"
                     >: {{ uproduction.stock }}</span>
                 </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Текуща цена [лв.]</span><span
+                        class="text-weight-light"
+                    >: {{ uproduction.price }}</span>
+                </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Брой дни в процес</span><span
                         class="text-weight-light"
                     >: {{ uproduction.status === 1 ?
