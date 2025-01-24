@@ -29,10 +29,6 @@ const totalIncrements = computed(() => {
         .reduce((total, item) => total + item.quantity * item.price, 0)
         .toFixed(2);
 })
-
-const resultPrice = computed(() => {
-    return ((totalDecrements.value - totalIncrements.value) / props.uproduction.stock).toFixed(2)
-})
 </script>
 
 <template>
@@ -52,14 +48,9 @@ const resultPrice = computed(() => {
                 <span class="text-weight-light">: {{ uproduction.stock }}</span>
             </div>
             <div class="text-subtitle1">
-                <span class="text-weight-medium">Цена на придобиване [{{ uproduction.product?.nomenklature }} {{
-                    uproduction.product?.name }}] [лв.]</span>
-                <span class="text-weight-light">: {{ uproduction.price }}</span>
-            </div>
-            <div class="text-subtitle1">
                 <span class="text-weight-medium">Текуща цена [{{ uproduction.product?.nomenklature }} {{
                     uproduction.product?.name }}] [лв.]</span>
-                <span class="text-weight-light">: {{ resultPrice }}</span>
+                <span class="text-weight-light">: {{ uproduction.price }}</span>
             </div>
         </q-card-section>
     </q-card>
