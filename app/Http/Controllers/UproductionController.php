@@ -201,7 +201,7 @@ class UproductionController extends Controller
 
         if ((float)$product->stock < $new_quantity) {
             return back()->withErrors([
-                'update' => 'Общата наличност е по-малка от тази която искате да прехвърлите! Не можете да запишете промяната.'
+                'update' => 'Общата наличност в склада ' . $product->stock . ', е по-малка от тази която искате да прехвърлите ' . $new_quantity . '! Не можете да запишете промяната.'
             ]);
         }
 
