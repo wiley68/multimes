@@ -174,13 +174,13 @@ class SiloController extends Controller
 
         if ((float)$silo->maxqt < $new_quantity) {
             return back()->withErrors([
-                'update' => 'Наличноста в силоза ще стане по-голяма от максимално допустимата! Не можете да запишете промяната.'
+                'update' => 'Наличноста в силоза ' . $new_quantity . ' ще стане по-голяма от максимално допустимата ' . $silo->maxqt . '! Не можете да запишете промяната.'
             ]);
         }
 
         if ((float)$product->stock < $new_quantity) {
             return back()->withErrors([
-                'update' => 'Общата наличност е по-малка от тази която искате да прехвърлите! Не можете да запишете промяната.'
+                'update' => 'Общата наличност ' . $product->stock . ' е по-малка от тази която искате да прехвърлите ' . $new_quantity . '! Не можете да запишете промяната.'
             ]);
         }
 
@@ -192,6 +192,11 @@ class SiloController extends Controller
                 'price' => $current_price,
                 'status' => 1,
             ]);
+            $udecrementTotal = $current_quantity * $current_price;
+            $uproductionStock = (float)$uproduction->stock;
+            $uproductionPrice = (float)$uproduction->price;
+            $uproduction->price = $uproductionPrice + $udecrementTotal / $uproductionStock;
+            $uproduction->save();
         }
 
         $silo->update([

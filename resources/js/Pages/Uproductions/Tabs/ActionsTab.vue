@@ -214,7 +214,7 @@ const uproductionLoading = () => {
             <q-separator />
             <q-card-section class="col">
                 <div class="text-subtitle1">Налично в склад: {{
-                    parseFloat(uproduction.uhall.silo.product?.stock).toFixed(2) }}
+                    uproduction.uhall.silo.product?.stock.toFixed(2) }}
                     {{
                         uproduction.uhall.silo.product?.me }}
                 </div>
