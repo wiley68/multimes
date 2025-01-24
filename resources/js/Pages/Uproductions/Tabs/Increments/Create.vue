@@ -2,23 +2,50 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
+import { computed } from 'vue'
 
 const props = defineProps({
     product: {
         type: Object,
         required: true,
     },
-    uproduction_id: {
-        type: String,
+    uproduction: {
+        type: Object,
+        required: true,
+    },
+    udecrements: {
+        type: Array,
+        required: true,
+    },
+    uincrements: {
+        type: Array,
         required: true,
     },
 })
 
+const totalDecrements = computed(() => {
+    return props.udecrements
+        .filter(item => item.status === 1)
+        .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2);
+})
+
+const totalIncrements = computed(() => {
+    return props.uincrements
+        .filter(item => item.status === 1)
+        .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2);
+})
+
+const resultPrice = computed(() => {
+    return ((totalDecrements.value - totalIncrements.value) / props.uproduction.stock).toFixed(2)
+})
+
 const form = useForm({
-    uproduction_id: props.uproduction_id,
+    uproduction_id: props.uproduction.id,
     product: props.product,
     quantity: 1,
-    price: props.product.price,
+    price: resultPrice.value,
     status: 0,
 })
 
@@ -99,10 +126,10 @@ const title = `Добавяне на приход към Производств�
                 </div>
                 <div class="footer-panel">
                     <q-btn
-                        @click.prevent="router.get(route('uproductions.show', uproduction_id))"
+                        @click.prevent="router.get(route('uproductions.show', uproduction.id))"
                         color="primary"
                         flat
-                        :label="`Процес №${uproduction_id}`"
+                        :label="`Процес №${uproduction.id}`"
                         icon="mdi-menu-left"
                     />
 

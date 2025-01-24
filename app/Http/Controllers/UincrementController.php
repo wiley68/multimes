@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateUincrementRequest;
 use App\Http\Resources\ProductResource;
+use App\Http\Resources\UdecrementResource;
 use App\Http\Resources\UincrementResource;
+use App\Http\Resources\UproductionsResource;
 use App\Models\Product;
 use App\Models\Uincrement;
 use App\Models\Uproduction;
@@ -43,9 +45,16 @@ class UincrementController extends Controller
 
         $product = $uproduction->product;
 
+        $udecrements = $uproduction->udecrements;
+        $udecrements->load(['product', 'uproduction']);
+        $uincrements = $uproduction->uincrements;
+        $uincrements->load(['product', 'uproduction']);
+
         return Inertia::render('Uproductions/Tabs/Increments/Create', [
-            'uproduction_id' => $validated['uproduction_id'],
+            'uproduction' => new UproductionsResource($uproduction),
             'product' => new ProductResource($product),
+            'udecrements' => UdecrementResource::collection($udecrements),
+            'uincrements' => UincrementResource::collection($uincrements),
         ]);
     }
 
