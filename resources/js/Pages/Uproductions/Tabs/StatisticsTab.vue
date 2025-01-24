@@ -35,22 +35,22 @@ const totalIncrements = computed(() => {
     <q-card class="my-card full-height column">
         <q-card-section class="col">
             <div class="text-subtitle1">
-                <span class="text-weight-medium">Общо разходи за процеса [лв.]</span>
-                <span class="text-weight-light">: {{ totalDecrements }}</span>
+                <span class="text-weight-medium">Общо разходи за процеса</span>
+                <span class="text-weight-light">: {{ totalDecrements }} лв.</span>
             </div>
             <div class="text-subtitle1">
-                <span class="text-weight-medium">Общо приходи от процеса [лв.]</span>
-                <span class="text-weight-light">: {{ totalIncrements }}</span>
+                <span class="text-weight-medium">Общо приходи от процеса</span>
+                <span class="text-weight-light">: {{ totalIncrements }} лв.</span>
             </div>
             <div class="text-subtitle1">
                 <span class="text-weight-medium">Текущ брой прасета [{{ uproduction.product?.nomenklature }} {{
-                    uproduction.product?.name }}] [бр]</span>
-                <span class="text-weight-light">: {{ uproduction.stock }}</span>
+                    uproduction.product?.name }}]</span>
+                <span class="text-weight-light">: {{ uproduction.stock }} {{ uproduction.product?.me }}</span>
             </div>
             <div class="text-subtitle1">
                 <span class="text-weight-medium">Текуща цена [{{ uproduction.product?.nomenklature }} {{
-                    uproduction.product?.name }}] [лв.]</span>
-                <span class="text-weight-light">: {{ uproduction.price }}</span>
+                    uproduction.product?.name }}]</span>
+                <span class="text-weight-light">: {{ uproduction.price }} лв.</span>
             </div>
         </q-card-section>
     </q-card>
