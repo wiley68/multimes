@@ -67,7 +67,7 @@ const onSubmit = () => {
     })
 }
 
-const title = `Добавяне на приход към Производствен Процес №${props.uproduction_id}`
+const title = `Добавяне на приход към Процес №${props.uproduction.id}`
 </script>
 
 <template>

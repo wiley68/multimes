@@ -312,8 +312,16 @@ const confirmCompletion = (uincrement) => {
             <q-btn
                 v-if="uproduction.status === 1"
                 @click="createUincrements"
-                label="Добави приход"
-                title="Добавя нов приход към продукционния процес."
+                label="Продажба на прасета"
+                title="Добавя нов приход към продукционния процес. Прихода е от продажба на прасета."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+            />
+            <q-btn
+                v-if="uproduction.status === 1"
+                @click="createUincrements"
+                label="Прасета за ремонт"
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета за ремонт."
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
