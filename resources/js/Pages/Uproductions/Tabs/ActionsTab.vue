@@ -138,7 +138,11 @@ const uproductionLoading = () => {
             </q-card-section>
             <q-separator />
             <q-card-section class="col">
-                <div class="text-subtitle1">Текущ брой прасета: {{ uproduction.stock }}
+                <div class="text-subtitle1">Налично в склад: {{ uproduction.product?.stock }} {{ uproduction.product?.me
+                    }}
+                </div>
+                <div class="text-subtitle1">Текущ брой прасета: {{ uproduction.stock }} {{ uproduction.product?.me
+                    }}
                 </div>
                 <div class="text-subtitle1">Състояние: {{ uproduction.status === 1 ? 'Активен' : 'Приключен' }}
                 </div>
@@ -209,11 +213,17 @@ const uproductionLoading = () => {
             </q-card-section>
             <q-separator />
             <q-card-section class="col">
+                <div class="text-subtitle1">Налично в склад: {{
+                    parseFloat(uproduction.uhall.silo.product?.stock).toFixed(2) }}
+                    {{
+                        uproduction.uhall.silo.product?.me }}
+                </div>
                 <div class="text-subtitle1">Максимум: {{ parseFloat(uproduction.uhall.silo.maxqt).toFixed(2) }} {{
                     uproduction.uhall.silo.product?.me }}
                 </div>
-                <div class="text-subtitle1">Текущо: {{ parseFloat(uproduction.uhall.silo.stock).toFixed(2) }} {{
-                    uproduction.uhall.silo.product?.me }}</div>
+                <div class="text-subtitle1">Налично в силоза: {{ parseFloat(uproduction.uhall.silo.stock).toFixed(2) }}
+                    {{
+                        uproduction.uhall.silo.product?.me }}</div>
                 <div class="text-subtitle1 text-accent">Процент запълване: {{ siloPurcentLabel
                     }}</div>
             </q-card-section>
