@@ -25,7 +25,7 @@ const getDaysBetweenCreateAndFinished = (createDate, finishedDate) => {
 const siloPurcent = computed(() => {
     return parseFloat((parseFloat(props.uproduction.uhall.silo.stock) / parseFloat(props.uproduction.uhall.silo.maxqt)).toFixed(2))
 })
-const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
+const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)} %`
 const productionPurcent = computed(() => {
     if (props.uproduction.status === 1) {
         const days = getDaysBetweenTodayAndDate(props.uproduction.created_at)
@@ -34,7 +34,7 @@ const productionPurcent = computed(() => {
         return 1.00
     }
 })
-const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
+const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)} %`
 </script>
 
 <template>
@@ -79,7 +79,8 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
                 <div class="text-subtitle1"><span class="text-weight-medium">Максимум</span><span
                         class="text-weight-light"
                     >: {{
-                        parseFloat(uproduction.uhall.silo.maxqt).toFixed(2) }} кг.</span>
+                        parseFloat(uproduction.uhall.silo.maxqt).toFixed(2) }} {{ uproduction.uhall.silo.product?.me
+                        }}</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Продукт</span><span
                         class="text-weight-light"
@@ -94,7 +95,8 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
                 <div class="text-subtitle1"><span class="text-weight-medium">Наличност</span><span
                         class="text-weight-light"
                     >: {{
-                        parseFloat(uproduction.uhall.silo.stock).toFixed(2) }} кг.</span>
+                        parseFloat(uproduction.uhall.silo.stock).toFixed(2) }} {{ uproduction.uhall.silo.product?.me
+                        }}</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Цена</span><span
                         class="text-weight-light">: {{
@@ -149,13 +151,13 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
                     class="text-subtitle2 text-weight-light"
                 >{{ uproduction.product.description }}
                 </div>
-                <div class="text-subtitle1"><span class="text-weight-medium">Текущ брой прасета [бр]</span><span
+                <div class="text-subtitle1"><span class="text-weight-medium">Текущ брой прасета</span><span
                         class="text-weight-light"
-                    >: {{ uproduction.stock }}</span>
+                    >: {{ uproduction.stock }} {{ uproduction.product?.me }}</span>
                 </div>
-                <div class="text-subtitle1"><span class="text-weight-medium">Текуща цена [лв.]</span><span
+                <div class="text-subtitle1"><span class="text-weight-medium">Текуща цена</span><span
                         class="text-weight-light"
-                    >: {{ uproduction.price }}</span>
+                    >: {{ uproduction.price }} лв.</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Брой дни в процес</span><span
                         class="text-weight-light"
