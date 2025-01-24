@@ -1,10 +1,8 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Head, router, usePage } from '@inertiajs/vue3'
-import { onMounted, ref } from 'vue';
-import { useQuasar } from 'quasar'
+import { Head, router } from '@inertiajs/vue3'
+import { ref } from 'vue';
 import { usePermission } from '@/composables/permissions'
-import moment from 'moment'
 
 const props = defineProps({
     stores: {
@@ -91,7 +89,6 @@ const columns = [
 
 const title = 'Наличности'
 const { hasPermission } = usePermission()
-const $q = useQuasar()
 const pagination = {
     page: props.stores.current_page,
     rowsPerPage: props.stores.per_page,
@@ -101,7 +98,7 @@ const filter = ref(props.filter)
 
 const onRequest = (requestProp) => {
     router.get(
-        route('products.index'),
+        route('stores.index'),
         {
             page: requestProp.pagination.page,
             rowsPerPage: requestProp.pagination.rowsPerPage,
