@@ -29,6 +29,10 @@ const totalIncrements = computed(() => {
         .reduce((total, item) => total + item.quantity * item.price, 0)
         .toFixed(2);
 })
+
+const totalResult = computed(() => {
+    return (totalIncrements.value - totalDecrements.value).toFixed(2)
+})
 </script>
 
 <template>
@@ -41,6 +45,16 @@ const totalIncrements = computed(() => {
             <div class="text-subtitle1">
                 <span class="text-weight-medium">Общо приходи от процеса</span>
                 <span class="text-weight-light">: {{ totalIncrements }} лв.</span>
+            </div>
+            <div class="text-h6">
+                <span
+                    class="text-weight-bold"
+                    :class="totalResult >= 0 ? 'text-green' : 'text-red'"
+                >Печалба/Загуба от процеса</span>
+                <span
+                    class="text-weight-bold"
+                    :class="totalResult >= 0 ? 'text-green' : 'text-red'"
+                >: {{ totalResult }} лв.</span>
             </div>
             <div class="text-subtitle1">
                 <span class="text-weight-medium">Текущ брой прасета [{{ uproduction.product?.nomenklature }} {{
