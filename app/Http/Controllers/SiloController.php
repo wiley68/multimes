@@ -208,7 +208,10 @@ class SiloController extends Controller
         $product->stock = $product->stock - $new_quantity;
         $product->save();
 
-        return to_route('uproductions.show', ['uproduction' => $uproduction_id]);
+        return to_route('uproductions.show', [
+            'uproduction' => $uproduction_id,
+            'tab' => 'actions',
+        ]);
     }
 
     /**
