@@ -7,7 +7,7 @@ import DecrementsTab from './Tabs/DecrementsTab.vue'
 import IncrementsTab from './Tabs/IncrementsTab.vue'
 import StatisticsTab from './Tabs/StatisticsTab.vue'
 import { useQuasar } from 'quasar'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
     uproduction: {
@@ -22,10 +22,16 @@ const props = defineProps({
     },
 })
 
-const tabName = ref(props.tab)
+const tabName = ref('actions')
+
+watch(
+    () => props.tab,
+    () => tabName.value = props.tab
+)
 
 const $q = useQuasar()
 onMounted(() => {
+    tabName.value = props.tab
     Object.values(usePage().props.errors).flat().forEach((error) => {
         $q.notify({
             message: error,
