@@ -26,6 +26,7 @@ class UincrementController extends Controller
 
         $validated = $request->validate([
             'uproduction_id' => 'required|integer',
+            'type' => 'required|string|in:Продажба,Ремонт',
         ]);
 
         $uproduction = Uproduction::findOrFail($validated['uproduction_id']);
@@ -54,6 +55,7 @@ class UincrementController extends Controller
             'product' => new ProductResource($product),
             'udecrements' => UdecrementResource::collection($udecrements),
             'uincrements' => UincrementResource::collection($uincrements),
+            'type' => $validated['type'],
         ]);
     }
 
@@ -77,6 +79,7 @@ class UincrementController extends Controller
             'quantity' => $request->quantity,
             'price' => $request->price,
             'status' => $request->status,
+            'type' => $request->type,
         ]);
 
         return to_route('uproductions.show', [

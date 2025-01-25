@@ -103,7 +103,10 @@ const $q = useQuasar()
 const createUincrements = () => {
     router.get(
         route('uincrements.create'),
-        { uproduction_id: props.uproduction.id },
+        {
+            uproduction_id: props.uproduction.id,
+            type: 'Продажба'
+        },
         {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {

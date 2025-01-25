@@ -20,6 +20,10 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    type: {
+        type: String,
+        required: true,
+    },
 })
 
 const form = useForm({
@@ -28,6 +32,7 @@ const form = useForm({
     quantity: 1,
     price: props.uproduction.price,
     status: 0,
+    type: props.type,
 })
 
 const $q = useQuasar()
