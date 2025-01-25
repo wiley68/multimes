@@ -15,6 +15,7 @@ class Uincrement extends Model
         'quantity',
         'price',
         'status',
+        'type',
     ];
 
     public function uproduction()

@@ -2,7 +2,6 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
-import { computed } from 'vue'
 
 const props = defineProps({
     product: {
@@ -23,29 +22,11 @@ const props = defineProps({
     },
 })
 
-const totalDecrements = computed(() => {
-    return props.udecrements
-        .filter(item => item.status === 1)
-        .reduce((total, item) => total + item.quantity * item.price, 0)
-        .toFixed(2);
-})
-
-const totalIncrements = computed(() => {
-    return props.uincrements
-        .filter(item => item.status === 1)
-        .reduce((total, item) => total + item.quantity * item.price, 0)
-        .toFixed(2);
-})
-
-const resultPrice = computed(() => {
-    return ((totalDecrements.value - totalIncrements.value) / props.uproduction.stock).toFixed(2)
-})
-
 const form = useForm({
     uproduction_id: props.uproduction.id,
     product: props.product,
     quantity: 1,
-    price: resultPrice.value,
+    price: props.uproduction.price,
     status: 0,
 })
 

@@ -7,7 +7,6 @@ use App\Http\Resources\ProductResource;
 use App\Http\Resources\UdecrementResource;
 use App\Http\Resources\UincrementResource;
 use App\Http\Resources\UproductionsResource;
-use App\Models\Product;
 use App\Models\Uincrement;
 use App\Models\Uproduction;
 use Illuminate\Http\RedirectResponse;
@@ -151,54 +150,6 @@ class UincrementController extends Controller
      * Complete the specified resource in storage.
      */
     public function complete(CreateUincrementRequest $request, Uincrement $uincrement): RedirectResponse
-    {
-        Gate::authorize('update', $uincrement);
-
-        if ($uincrement->status === 1) {
-            return back()->withErrors([
-                'update' => "Не можете да приключвате вече приключен приход!"
-            ]);
-        }
-
-        $uproduction = $uincrement->uproduction;
-        if ($uproduction->status === 0) {
-            return back()->withErrors([
-                'complete' => "Не можете да приключвате приход към вече приключен процес!"
-            ]);
-        }
-
-        $product = $uincrement->product;
-        if (null !== $product) {
-            $uproduction = Uproduction::findOrFail($request->uproduction_id);
-            if ($uproduction !== null && (float)$request->quantity > (float)$uproduction->stock) {
-                return back()->withErrors([
-                    'update' => 'Наличноста на продукта: [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . '] е по-малка от предвидената за изписване в прихода Ви [' . $request->quantity . ']',
-                ]);
-            }
-
-            $new_stock = $uproduction->stock - $request->quantity;
-            $new_price = $uproduction->price;
-            if ($new_stock == 0) {
-                $new_price = 0;
-            }
-
-            $uproduction->update([
-                'stock' => $new_stock,
-                'price' => $new_price,
-            ]);
-        }
-
-        $uincrement->update([
-            'status' => $request->status,
-        ]);
-
-        return back();
-    }
-
-    /**
-     * Complete the specified resource in storage.
-     */
-    public function completeRemont(CreateUincrementRequest $request, Uincrement $uincrement): RedirectResponse
     {
         Gate::authorize('update', $uincrement);
 

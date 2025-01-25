@@ -21,6 +21,7 @@ class UincrementResource extends JsonResource
             'quantity' => $this->quantity,
             'price' => $this->price,
             'status' => $this->status,
+            'type' => $this->type,
             'created_at' => $this->created_at,
         ];
     }

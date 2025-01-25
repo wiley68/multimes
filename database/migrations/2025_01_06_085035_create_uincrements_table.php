@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignId('product_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->double('quantity', 15, 2);
             $table->decimal('price', 8, 2);
+            $table->enum('type', [
+                'Продажба',
+                'Ремонт',
+            ]);
             $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();
         });

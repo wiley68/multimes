@@ -26,7 +26,6 @@ const incrementsColumns = [
         align: 'left',
         field: 'id',
         sortable: true,
-        style: 'width: 40px;',
     },
     {
         name: 'product',
@@ -36,12 +35,18 @@ const incrementsColumns = [
         sortable: true,
     },
     {
+        name: 'type',
+        align: 'left',
+        label: 'Тип',
+        field: 'type',
+        sortable: true,
+    },
+    {
         name: 'created_at',
         align: 'left',
         label: 'Създаден на',
         field: 'created_at',
         sortable: true,
-        style: 'width: 60px;',
     },
     {
         name: 'quantity',
@@ -49,7 +54,6 @@ const incrementsColumns = [
         label: 'Количество',
         field: 'quantity',
         sortable: true,
-        style: 'width: 60px;',
     },
     {
         name: 'me',
@@ -57,7 +61,6 @@ const incrementsColumns = [
         label: 'м.е.',
         field: 'me',
         sortable: false,
-        style: 'width: 40px;',
     },
     {
         name: 'price',
@@ -65,7 +68,6 @@ const incrementsColumns = [
         label: 'Цена [лв]',
         field: 'price',
         sortable: true,
-        style: 'width: 80px;',
     },
     {
         name: 'allprice',
@@ -73,7 +75,6 @@ const incrementsColumns = [
         label: 'Общо [лв]',
         field: 'allprice',
         sortable: true,
-        style: 'width: 120px;',
     },
     {
         name: 'status',
@@ -81,14 +82,12 @@ const incrementsColumns = [
         label: 'Състояние',
         field: 'status',
         sortable: true,
-        style: 'width: 80px;',
     },
     {
         name: "actions",
         label: "Управление",
         align: "center",
         field: "actions",
-        style: 'width: 80px;',
     }
 ]
 
@@ -221,7 +220,10 @@ const confirmCompletion = (uincrement) => {
                             :key="col.name"
                             :props="props"
                         >
-                            <div v-if="col.name === 'id'">
+                            <div
+                                v-if="col.name === 'id'"
+                                style="width: 40px;"
+                            >
                                 {{ props.row.id }}
                             </div>
                             <div v-else-if="col.name === 'product'">
@@ -229,25 +231,52 @@ const confirmCompletion = (uincrement) => {
                                     ''
                                 }}
                             </div>
-                            <div v-else-if="col.name === 'created_at'">
+                            <div
+                                v-else-if="col.name === 'type'"
+                                style="width: 60px;"
+                            >
+                                {{ props.row.type }}
+                            </div>
+                            <div
+                                v-else-if="col.name === 'created_at'"
+                                style="width: 60px;"
+                            >
                                 {{ moment(props.row.created_at).format('DD.MM.YY') }}
                             </div>
-                            <div v-else-if="col.name === 'quantity'">
+                            <div
+                                v-else-if="col.name === 'quantity'"
+                                style="width: 40px;"
+                            >
                                 {{ props.row.quantity }}
                             </div>
-                            <div v-else-if="col.name === 'me'">
+                            <div
+                                v-else-if="col.name === 'me'"
+                                style="width: 40px;"
+                            >
                                 {{ props.row.product.me }}
                             </div>
-                            <div v-else-if="col.name === 'price'">
+                            <div
+                                v-else-if="col.name === 'price'"
+                                style="width: 40px;"
+                            >
                                 {{ parseFloat(props.row.price).toFixed(2) }}
                             </div>
-                            <div v-else-if="col.name === 'allprice'">
+                            <div
+                                v-else-if="col.name === 'allprice'"
+                                style="width: 60px;"
+                            >
                                 {{ parseFloat(props.row.price * props.row.quantity).toFixed(2) }}
                             </div>
-                            <div v-else-if="col.name === 'status'">
+                            <div
+                                v-else-if="col.name === 'status'"
+                                style="width: 60px;"
+                            >
                                 {{ props.row['status'] === 0 ? 'Типов' : 'Приключен' }}
                             </div>
-                            <div v-else="col.name === 'actions'">
+                            <div
+                                v-else="col.name === 'actions'"
+                                style="width: 60px;"
+                            >
                                 <q-btn
                                     v-if="hasPermission('update') && props.row.status === 0 && uproduction.status === 1"
                                     icon="mdi-file-document-check-outline"
