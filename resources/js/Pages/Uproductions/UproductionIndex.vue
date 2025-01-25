@@ -96,6 +96,14 @@ const columns = [
     }
 ]
 
+const totalResult = computed(() => {
+    return props.uproductions.data
+        .reduce((total, item) => total + item.uincrements.reduce((sum, item) => sum + item.price *
+            item.quantity, 0) - item.udecrements.reduce((sum, item) => sum +
+                item.price * item.quantity, 0), 0)
+        .toFixed(2);
+});
+
 const title = 'Процеси Угояване'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
@@ -324,6 +332,17 @@ const confirm = (uproduction_id) => {
                                         <div v-else>
                                             {{ props.row[col.name] }}
                                         </div>
+                                    </q-td>
+                                </q-tr>
+                            </template>
+                            <template v-slot:bottom-row>
+                                <q-tr>
+                                    <q-td
+                                        colspan="8"
+                                        class="text-weight-bold"
+                                    >Общо:</q-td>
+                                    <q-td class="text-weight-bold">
+                                        {{ totalResult }}
                                     </q-td>
                                 </q-tr>
                             </template>
