@@ -43,7 +43,7 @@ class UproductionController extends Controller
         $filter = $validated['filter'] ?? '';
         $uhall = $validated['uhall'] ?? null;
 
-        $query = Uproduction::query()->with(['uhall', 'product']);
+        $query = Uproduction::query()->with(['uhall', 'product', 'udecrements', 'uincrements']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }

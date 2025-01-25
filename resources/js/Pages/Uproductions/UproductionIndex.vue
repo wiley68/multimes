@@ -82,6 +82,13 @@ const columns = [
         sortable: true,
     },
     {
+        name: 'result',
+        align: 'left',
+        label: 'Резултат',
+        field: 'result',
+        sortable: false,
+    },
+    {
         name: "actions",
         label: "Управление",
         align: "center",
@@ -280,6 +287,14 @@ const confirm = (uproduction_id) => {
                                             style="width: 80px;"
                                         >
                                             {{ parseFloat(props.row.price) === 0 ? '' : props.row.price }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'result'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ (props.row.uincrements.reduce((sum, item) => sum + item.price *
+                                                item.quantity, 0) - props.row.udecrements.reduce((sum, item) => sum +
+                                                    item.price * item.quantity, 0)).toFixed(2) }}
                                         </div>
                                         <div
                                             v-else-if="col.name === 'actions'"

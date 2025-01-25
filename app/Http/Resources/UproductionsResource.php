@@ -25,6 +25,7 @@ class UproductionsResource extends JsonResource
             'created_at' => $this->created_at,
             'uhall' => new UhallResource($this->whenLoaded('uhall')),
             'udecrements' => UdecrementResource::collection($this->whenLoaded('udecrements')),
+            'uincrements' => UincrementResource::collection($this->whenLoaded('uincrements')),
         ];
     }
 }
