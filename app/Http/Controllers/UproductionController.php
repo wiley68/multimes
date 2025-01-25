@@ -100,6 +100,7 @@ class UproductionController extends Controller
             'uproduction' => new UproductionsResource($uproduction),
             'udecrements' => UdecrementResource::collection($udecrements),
             'uincrements' => UincrementResource::collection($uincrements),
+            'tab' => 'actions',
         ]);
     }
 
@@ -224,6 +225,7 @@ class UproductionController extends Controller
 
         return to_route('uproductions.show', [
             'uproduction' => $uproduction,
+            'tab' => 'actions',
         ]);
     }
 

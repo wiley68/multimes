@@ -16,9 +16,13 @@ const props = defineProps({
     },
     udecrements: Array,
     uincrements: Array,
+    tab: {
+        type: String,
+        required: true
+    },
 })
 
-const tab = ref('actions')
+const tabName = ref(props.tab)
 
 const $q = useQuasar()
 onMounted(() => {
@@ -46,7 +50,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
             <div class="page-container">
                 <div class="header-panel">
                     <q-tabs
-                        v-model="tab"
+                        v-model="tabName"
                         no-caps
                         inline-label
                         class="bg-grey-1 full-width text-primary"
@@ -96,7 +100,7 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                 >
                     <q-tab-panels
                         class="col full-height"
-                        v-model="tab"
+                        v-model="tabName"
                         animated
                         transition-prev="slide-down"
                         transition-next="slide-up"
