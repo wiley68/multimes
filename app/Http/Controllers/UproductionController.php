@@ -83,7 +83,7 @@ class UproductionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Uproduction $uproduction)
+    public function show(Request $request, Uproduction $uproduction)
     {
         Gate::authorize('view', $uproduction);
 
@@ -96,11 +96,13 @@ class UproductionController extends Controller
         $uincrements = $uproduction->uincrements()->orderBy('id', 'desc')->get();
         $uincrements->load(['product', 'uproduction']);
 
+        $tab = $request->tab ?? 'actions';
+
         return Inertia::render('Uproductions/Show', [
             'uproduction' => new UproductionsResource($uproduction),
             'udecrements' => UdecrementResource::collection($udecrements),
             'uincrements' => UincrementResource::collection($uincrements),
-            'tab' => 'actions',
+            'tab' => $tab,
         ]);
     }
 
@@ -225,7 +227,6 @@ class UproductionController extends Controller
 
         return to_route('uproductions.show', [
             'uproduction' => $uproduction,
-            'tab' => 'actions',
         ]);
     }
 

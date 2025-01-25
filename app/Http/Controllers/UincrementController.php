@@ -85,6 +85,7 @@ class UincrementController extends Controller
 
         return to_route('uproductions.show', [
             "uproduction" => $request->uproduction_id,
+            'tab' => 'increments',
         ]);
     }
 
@@ -147,6 +148,7 @@ class UincrementController extends Controller
 
         return to_route('uproductions.show', [
             "uproduction" => $uincrement->uproduction_id,
+            'tab' => 'increments',
         ]);
     }
 

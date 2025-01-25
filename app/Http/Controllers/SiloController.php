@@ -210,7 +210,6 @@ class SiloController extends Controller
 
         return to_route('uproductions.show', [
             'uproduction' => $uproduction_id,
-            'tab' => 'actions',
         ]);
     }
 

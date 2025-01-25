@@ -115,7 +115,8 @@ class UdecrementController extends Controller
         ]);
 
         return to_route('uproductions.show', [
-            "uproduction" => $udecrement->uproduction_id,
+            'uproduction' => $udecrement->uproduction_id,
+            'tab' => 'decrements',
         ]);
     }
 
