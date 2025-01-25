@@ -171,7 +171,7 @@ const confirm = (mhall) => {
                                             <template v-if="props.row.mproduction !== null">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
                                                     props.row.mproduction.id
-                                                    }}
+                                                }}
                                                 </div>
                                             </template>
                                             <template v-else>
@@ -182,6 +182,35 @@ const confirm = (mhall) => {
                                         <q-card-section class="columns flex-center">
                                             <div>База: {{ props.row.factory.name }}</div>
                                             <div>Силоз: {{ props.row.silo.name }}</div>
+                                            <div><strong>Прасета</strong>: {{
+                                                props.row.mproduction ? props.row.mproduction.stock : 0 }}</div>
+                                            <template v-if="props.row.mproduction !== null">
+                                                <div
+                                                    class="q-py-sm q-ma-none"
+                                                    style="height: 36px;"
+                                                >
+                                                    <q-linear-progress
+                                                        class="full-height full-width"
+                                                        :value="productionPurcent(props.row.mproduction)"
+                                                        color="accent"
+                                                        rounded
+                                                    >
+                                                        <div class="absolute-full flex flex-center">
+                                                            <q-badge
+                                                                color="white"
+                                                                text-color="accent"
+                                                                :label="productionPurcentLabel(props.row.mproduction)"
+                                                            />
+                                                        </div>
+                                                    </q-linear-progress>
+                                                </div>
+                                            </template>
+                                            <template v-else>
+                                                <div
+                                                    class="q-py-sm q-ma-none"
+                                                    style="height: 36px;"
+                                                ></div>
+                                            </template>
                                         </q-card-section>
                                         <q-separator />
                                         <q-card-actions align="around">
