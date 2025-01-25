@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 import moment from 'moment'
@@ -172,7 +172,7 @@ const confirm = (uhall) => {
                                             <template v-if="props.row.uproduction !== null">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
                                                     props.row.uproduction.id
-                                                }}
+                                                    }}
                                                 </div>
                                             </template>
                                             <template v-else>

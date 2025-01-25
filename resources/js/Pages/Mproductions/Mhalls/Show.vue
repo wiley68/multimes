@@ -4,6 +4,7 @@ import { Head, router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
+import moment from 'moment'
 
 const props = defineProps({
     mhalls: {
@@ -58,6 +59,18 @@ const filter = ref(props.filter)
 const $q = useQuasar()
 const { hasPermission } = usePermission()
 
+const getDaysBetweenTodayAndDate = (targetDate) => {
+    const today = moment().startOf('day')
+    const target = moment(targetDate).startOf('day')
+    return today.diff(target, 'days')
+}
+
+const productionPurcent = (mproduction) => {
+    const days = getDaysBetweenTodayAndDate(mproduction.created_at)
+    return parseFloat((days / parseFloat(mproduction.production_days)).toFixed(2))
+}
+const productionPurcentLabel = (mproduction) => { return `${(productionPurcent(mproduction) * 100).toFixed(2)}%` }
+
 const onRequest = (requestProp) => {
     router.get(
         route('mhalls.show'),
@@ -94,6 +107,7 @@ const confirm = (mhall) => {
         router.post(route('mproductions.store'), {
             status: 1,
             mhall: mhall,
+            production_days: 45,
         })
     }).onCancel(() => { }).onDismiss(() => { })
 }
@@ -157,7 +171,7 @@ const confirm = (mhall) => {
                                             <template v-if="props.row.mproduction !== null">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
                                                     props.row.mproduction.id
-                                                }}
+                                                    }}
                                                 </div>
                                             </template>
                                             <template v-else>
