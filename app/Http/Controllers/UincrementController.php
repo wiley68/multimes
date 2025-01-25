@@ -7,6 +7,7 @@ use App\Http\Resources\ProductResource;
 use App\Http\Resources\UdecrementResource;
 use App\Http\Resources\UincrementResource;
 use App\Http\Resources\UproductionsResource;
+use App\Models\Product;
 use App\Models\Uincrement;
 use App\Models\Uproduction;
 use Illuminate\Http\RedirectResponse;
@@ -188,6 +189,17 @@ class UincrementController extends Controller
                 'stock' => $new_stock,
                 'price' => $new_price,
             ]);
+        }
+
+        if ($request->type === 'Ремонт') {
+            $remontni = Product::where('type', '=', 'Прасета ремонтни')->firstOrFail();
+            $old_remontni_stock = (float)$remontni->stock;
+            $new_remontni_stock = (float)$old_remontni_stock + (float)$request->quantity;
+            $remontni->stock = $new_remontni_stock;
+            $old_remontni_price = (float)$remontni->price;
+            $new_remontni_price = (($old_remontni_price * $old_remontni_stock) + ((float)$uproduction->price * (float)$request->quantity)) / ($old_remontni_stock + (float)$request->quantity);
+            $remontni->price = $new_remontni_price;
+            $remontni->save();
         }
 
         $uincrement->update([

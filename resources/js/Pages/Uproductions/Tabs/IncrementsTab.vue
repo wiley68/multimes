@@ -100,12 +100,12 @@ const totalPrice = computed(() => {
 
 const $q = useQuasar()
 
-const createUincrements = () => {
+const createUincrements = (type) => {
     router.get(
         route('uincrements.create'),
         {
             uproduction_id: props.uproduction.id,
-            type: 'Продажба'
+            type: type,
         },
         {
             onError: errors => {
@@ -177,6 +177,7 @@ const confirmCompletion = (uincrement) => {
             quantity: uincrement.quantity,
             price: uincrement.price,
             status: uincrement.status,
+            type: uincrement.type,
         })
         form.patch(route('uincrements.complete', uincrement.id), {
             onError: errors => {
@@ -296,6 +297,7 @@ const confirmCompletion = (uincrement) => {
                                             quantity: props.row.quantity,
                                             price: props.row.price,
                                             status: 1,
+                                            type: props.row.type,
                                         }
                                     )"
                                 />
@@ -343,7 +345,7 @@ const confirmCompletion = (uincrement) => {
         >
             <q-btn
                 v-if="uproduction.status === 1"
-                @click="createUincrements"
+                @click="createUincrements('Продажба')"
                 label="Продажба на прасета"
                 title="Добавя нов приход към продукционния процес. Прихода е от продажба на прасета."
                 icon="mdi-table-row-plus-after"
@@ -351,7 +353,7 @@ const confirmCompletion = (uincrement) => {
             />
             <q-btn
                 v-if="uproduction.status === 1"
-                @click="createUincrements"
+                @click="createUincrements('Ремонт')"
                 label="Прасета за ремонт"
                 title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета за ремонт."
                 icon="mdi-table-row-plus-after"
