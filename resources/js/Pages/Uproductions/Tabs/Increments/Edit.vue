@@ -16,6 +16,7 @@ const form = useForm({
     quantity: props.uincrement?.quantity,
     price: props.uincrement?.price,
     status: props.uincrement?.status,
+    type: props.uincrement?.type,
 })
 
 const $q = useQuasar()
