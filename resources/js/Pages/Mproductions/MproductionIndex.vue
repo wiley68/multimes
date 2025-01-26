@@ -27,8 +27,8 @@ const columns = [
         required: true,
         label: '№',
         align: 'left',
-        field: row => row.id,
-        format: val => `${val}`,
+        field: 'id',
+        style: 'width:60px;',
         sortable: true,
         sortMethod: (a, b) => (a < b ? -1 : a > b ? 1 : 0),
     },
@@ -37,21 +37,56 @@ const columns = [
         align: 'left',
         label: 'Хале',
         field: 'mhall_id',
-        sortable: true
+        sortable: true,
     },
     {
         name: 'status',
         align: 'left',
         label: 'Състояние',
         field: 'status',
-        sortable: true
+        sortable: true,
     },
     {
         name: 'created_at',
         align: 'left',
         label: 'Стариран на',
         field: 'created_at',
-        sortable: true
+        sortable: true,
+    },
+    {
+        name: 'finished_at',
+        align: 'left',
+        label: 'Приключен на',
+        field: 'finished_at',
+        sortable: true,
+    },
+    {
+        name: 'product',
+        align: 'left',
+        label: 'Прасета',
+        field: 'product',
+        sortable: true,
+    },
+    {
+        name: 'stock',
+        align: 'left',
+        label: 'Количество [бр]',
+        field: 'stock',
+        sortable: true,
+    },
+    {
+        name: 'price',
+        align: 'left',
+        label: 'Цена',
+        field: 'price',
+        sortable: true,
+    },
+    {
+        name: 'result',
+        align: 'left',
+        label: 'Резултат',
+        field: 'result',
+        sortable: false,
     },
     {
         name: "actions",
@@ -61,6 +96,15 @@ const columns = [
     }
 ]
 
+const totalResult = computed(() => {
+    return props.mproductions.data
+        .reduce((total, item) => total + item.mincrements.reduce((sum, item) => sum + item.price *
+            item.quantity, 0) - item.mdecrements.reduce((sum, item) => sum +
+                item.price * item.quantity, 0), 0)
+        .toFixed(2);
+});
+
+const title = 'Процеси Майки'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
 const pagination = {
@@ -70,7 +114,7 @@ const pagination = {
     sortBy: 'id',
     descending: false,
 }
-const title = 'Процеси Майки'
+
 const filter = ref(props.filter)
 const navigationActive = ref(false)
 
@@ -100,6 +144,55 @@ const deactivateNavigation = () => {
 }
 
 const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
+
+const mproductionShow = (mproduction) => {
+    router.get(
+        route('mproductions.show', mproduction),
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
+}
+
+const confirm = (mproduction_id) => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Желаеш ли да изтриеш този процес? Всички данни за процеса ще бъдат унищожени. Този процес на изтриване е необратим!',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+    }).onOk(() => {
+        router.delete(route('mproductions.destroy', mproduction_id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
+}
 </script>
 
 <template>
@@ -160,7 +253,59 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                                         :key="col.name"
                                         :props="props"
                                     >
-                                        <div v-if="col.name === 'actions'">
+                                        <div
+                                            v-if="col.name === 'mhall_id'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ props.row.mhall.name }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'status'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ props.row['status'] === 1 ? 'Активен' : 'Приключен' }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'created_at'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ moment(props.row['created_at']).format('DD.MM.YY HH:mm') }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'finished_at'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ props.row['finished_at'] ===
+                                                null ? '' : moment(props.row['finished_at']).format('DD.MM.YY HH:mm') }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'product'"
+                                            style="width: 120px;"
+                                        >
+                                            {{ props.row.product ? `[${props.row.product.nomenklature}]
+                                            ${props.row.product.name}` : '' }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'stock'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ parseFloat(props.row.stock) === 0 ? '' : props.row.stock }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'price'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ parseFloat(props.row.price) === 0 ? '' : props.row.price }}
+                                        </div>
+                                        <div
+                                            v-else-if="col.name === 'result'"
+                                            style="width: 80px;"
+                                        >
+                                            {{ (props.row.mincrements.reduce((sum, item) => sum + item.price *
+                                                item.quantity, 0) - props.row.mdecrements.reduce((sum, item) => sum +
+                                                    item.price * item.quantity, 0)).toFixed(2) }}
+                                        </div>
+                                        <div v-else-if="col.name === 'actions'">
                                             <q-btn
                                                 v-if="hasPermission('view')"
                                                 title="Управлявай процеса"
@@ -182,18 +327,20 @@ const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no
                                                 @click="confirm(props.row.id)"
                                             />
                                         </div>
-                                        <div v-else-if="col.name === 'status'">
-                                            {{ props.row['status'] === 1 ? 'Активен' : 'Приключен' }}
-                                        </div>
-                                        <div v-else-if="col.name === 'mhall_id'">
-                                            {{ props.row.mhall.name }}
-                                        </div>
-                                        <div v-else-if="col.name === 'created_at'">
-                                            {{ moment(props.row['created_at']).format('DD.MM.YY HH:mm') }}
-                                        </div>
                                         <div v-else>
                                             {{ props.row[col.name] }}
                                         </div>
+                                    </q-td>
+                                </q-tr>
+                            </template>
+                            <template v-slot:bottom-row>
+                                <q-tr>
+                                    <q-td
+                                        colspan="8"
+                                        class="text-weight-bold"
+                                    >Общо:</q-td>
+                                    <q-td class="text-weight-bold">
+                                        {{ totalResult }}
                                     </q-td>
                                 </q-tr>
                             </template>

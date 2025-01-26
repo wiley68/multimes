@@ -37,7 +37,7 @@ class MproductionController extends Controller
         $filter = $validated['filter'] ?? '';
         $mhall = $validated['mhall'] ?? null;
 
-        $query = Mproduction::query()->with('mhall');
+        $query = Mproduction::query()->with('mhall', 'product', 'mdecrements', 'mincrements');
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
