@@ -60,6 +60,8 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::get('/mproductions/{mproduction}', [MproductionController::class, 'show'])->name('mproductions.show');
     Route::put('/mproductions/{mproduction}', [MproductionController::class, 'update'])->name('mproductions.update');
     Route::delete('/mproductions/{mproduction}', [MproductionController::class, 'destroy'])->name('mproductions.destroy');
+    Route::get('/mproductions/{mproduction}/loading', [MproductionController::class, 'loading'])->name('mproductions.loading');
+    Route::put('/mproductions/{mproduction}/load', [MproductionController::class, 'load'])->name('mproductions.load');
     Route::get('/uproductions', [UproductionController::class, 'index'])->name('uproductions.index');
     Route::get('/uproductions/create', [UproductionController::class, 'create'])->name('uproductions.create');
     Route::post('/uproductions', [UproductionController::class, 'store'])->name('uproductions.store');

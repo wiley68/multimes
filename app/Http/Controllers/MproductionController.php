@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMproductionRequest;
+use App\Http\Requests\LoadMproductionRequest;
 use App\Http\Resources\MdecrementResource;
 use App\Http\Resources\MincrementResource;
 use App\Http\Resources\MproductionsResource;
+use App\Http\Resources\ProductResource;
+use App\Models\Mdecrement;
 use App\Models\Mhall;
 use App\Models\Mproduction;
+use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -123,6 +127,104 @@ class MproductionController extends Controller
             'mdecrements' => MdecrementResource::collection($mdecrements),
             'mincrements' => MincrementResource::collection($mincrements),
             'tab' => $tab,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function loading(Mproduction $mproduction): Response|RedirectResponse
+    {
+        Gate::authorize('update', $mproduction);
+
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'update' => 'Не можете да зареждате процес който вече е приключен!'
+            ]);
+        }
+
+        $mproduction->load(['mhall', 'product']);
+        if ($mproduction->product_id !== 0) {
+            $products = Product::where('id', '=', $mproduction->product_id);
+        } else {
+            switch ($mproduction->mhall['type']) {
+                case 'Ремонтни':
+                    $productType = 'Прасета ремонтни';
+                    break;
+                case 'Заплождане':
+                    $productType = 'Прасета заплождане';
+                    break;
+                case 'Условна бременност':
+                    $productType = 'Прасета условна бременност';
+                    break;
+                case 'Бременност':
+                    $productType = 'Прасета бременност';
+                    break;
+                case 'Родилно':
+                    $productType = 'Прасета родилно';
+                    break;
+                case 'Подрастване':
+                    $productType = 'Прасета подрастване';
+                    break;
+                default:
+                    $productType = '';
+                    break;
+            }
+            $products = Product::where('type', '=', $productType);
+        }
+
+        return Inertia::render('Mproductions/Loading', [
+            'mproduction' => new MproductionsResource($mproduction),
+            'products' => ProductResource::collection($products->get()),
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function load(LoadMproductionRequest $request, Mproduction $mproduction): RedirectResponse
+    {
+        Gate::authorize('update', $mproduction);
+
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'update' => 'Не можете да зареждате процес който вече е приключен!'
+            ]);
+        }
+
+        $product = Product::findOrFail($request->product['id']);
+        $new_quantity = (float)$request->stock;
+        $current_quantity = (float)$mproduction->stock;
+        $result_quantity = $current_quantity + $new_quantity;
+        $new_price = (float)$product->price;
+        $current_price = (float)$mproduction->price;
+        $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
+
+        if ((float)$product->stock < $new_quantity) {
+            return back()->withErrors([
+                'update' => 'Общата наличност в склада ' . $product->stock . ', е по-малка от тази която искате да прехвърлите ' . $new_quantity . '! Не можете да запишете промяната.'
+            ]);
+        }
+
+        $mproduction->update([
+            'product_id' => $request->product['id'],
+            'stock' => $result_quantity,
+            'price' => $result_price,
+        ]);
+
+        $product->stock = $product->stock - $new_quantity;
+        $product->save();
+
+        Mdecrement::create([
+            'mproduction_id' => $mproduction->id,
+            'product_id' => $request->product['id'],
+            'quantity' => $new_quantity,
+            'price' => $new_price,
+            'status' => 1,
+        ]);
+
+        return to_route('mproductions.show', [
+            'mproduction' => $mproduction,
         ]);
     }
 
