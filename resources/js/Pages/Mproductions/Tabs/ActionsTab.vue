@@ -6,7 +6,7 @@ import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 
 const props = defineProps({
-    uproduction: {
+    mproduction: {
         type: Object,
         required: true
     },
@@ -21,16 +21,16 @@ const getDaysBetweenTodayAndDate = (targetDate) => {
 }
 
 const productionPurcent = computed(() => {
-    if (props.uproduction.status === 1) {
-        const days = getDaysBetweenTodayAndDate(props.uproduction.created_at)
-        return parseFloat((days / parseFloat(props.uproduction.production_days)).toFixed(2))
+    if (props.mproduction.status === 1) {
+        const days = getDaysBetweenTodayAndDate(props.mproduction.created_at)
+        return parseFloat((days / parseFloat(props.mproduction.production_days)).toFixed(2))
     } else {
         return 1.00
     }
 })
 const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)}%`
 const siloPurcent = computed(() => {
-    return parseFloat((parseFloat(props.uproduction.uhall.silo.stock) / parseFloat(props.uproduction.uhall.silo.maxqt)).toFixed(2))
+    return parseFloat((parseFloat(props.mproduction.mhall.silo.stock) / parseFloat(props.mproduction.mhall.silo.maxqt)).toFixed(2))
 })
 const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
 
@@ -56,7 +56,7 @@ const confirmCompletion = () => {
         const form = useForm({
             status: 0,
         })
-        form.patch(route('uproductions.complete', props.uproduction.id), {
+        form.patch(route('mproductions.complete', props.mproduction.id), {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
                     $q.notify({
@@ -72,7 +72,7 @@ const confirmCompletion = () => {
 
 const siloLoading = () => {
     router.get(
-        route('silos.loading', { silo: props.uproduction.uhall.silo.id, uproduction: props.uproduction.id },),
+        route('silos.loading', { silo: props.mproduction.mhall.silo.id, mproduction: props.mproduction.id },),
         {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
@@ -87,9 +87,9 @@ const siloLoading = () => {
     )
 }
 
-const uproductionIndex = () => {
+const mproductionIndex = () => {
     router.get(
-        route('uproductions.index'),
+        route('mproductions.index'),
         {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
@@ -104,9 +104,9 @@ const uproductionIndex = () => {
     )
 }
 
-const uproductionLoading = () => {
+const mproductionLoading = () => {
     router.get(
-        route('uproductions.loading', { uproduction: props.uproduction.id }),
+        route('mproductions.loading', { mproduction: props.mproduction.id }),
         {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
@@ -126,25 +126,25 @@ const uproductionLoading = () => {
     <div class="col text-h4 q-mr-md">
         <q-card class="my-card full-height column">
             <q-card-section class="bg-secondary text-white">
-                <div class="text-h6 text-center">Производствен Процес №{{ uproduction.id }}
+                <div class="text-h6 text-center">Производствен Процес №{{ mproduction.id }}
                 </div>
             </q-card-section>
             <q-separator />
             <q-card-section>
-                <div class="text-h5">[{{ uproduction.product?.nomenklature }}] {{
-                    uproduction.product?.name }}
+                <div class="text-h5">[{{ mproduction.product?.nomenklature }}] {{
+                    mproduction.product?.name }}
                 </div>
-                <div class="text-caption">{{ uproduction.product?.description }}</div>
+                <div class="text-caption">{{ mproduction.product?.description }}</div>
             </q-card-section>
             <q-separator />
             <q-card-section class="col">
-                <div class="text-subtitle1">Налично в склад: {{ uproduction.product?.stock }} {{ uproduction.product?.me
+                <div class="text-subtitle1">Налично в склад: {{ mproduction.product?.stock }} {{ mproduction.product?.me
                     }}
                 </div>
-                <div class="text-subtitle1">Текущ брой прасета: {{ uproduction.stock }} {{ uproduction.product?.me
+                <div class="text-subtitle1">Текущ брой прасета: {{ mproduction.stock }} {{ mproduction.product?.me
                     }}
                 </div>
-                <div class="text-subtitle1">Състояние: {{ uproduction.status === 1 ? 'Активен' : 'Приключен' }}
+                <div class="text-subtitle1">Състояние: {{ mproduction.status === 1 ? 'Активен' : 'Приключен' }}
                 </div>
                 <div class="text-subtitle1 text-accent">Процент на завършеност на процеса: {{ productionPurcentLabel }}
                 </div>
@@ -156,19 +156,19 @@ const uproductionLoading = () => {
                     flat
                     icon="mdi-menu-left"
                     style="padding: 0px 15px;"
-                    @click="uproductionIndex"
+                    @click="mproductionIndex"
                 />
                 <q-btn
-                    v-if="hasPermission('update') && uproduction.status === 1"
+                    v-if="hasPermission('update') && mproduction.status === 1"
                     label="Зареди прасета"
                     title="Зарежда прасета за угояване в продукционния процес."
                     color="primary"
                     icon="mdi-upload-multiple-outline"
                     style="padding: 0px 15px;"
-                    @click.prevent="uproductionLoading"
+                    @click.prevent="mproductionLoading"
                 />
                 <q-btn
-                    v-if="hasPermission('update') && uproduction.status === 1"
+                    v-if="hasPermission('update') && mproduction.status === 1"
                     @click.prevent="confirmCompletion()"
                     label="Приключи процеса"
                     title="Приключва процеса. Прекъсва възможността за промяна в данните за този процес."
@@ -202,34 +202,34 @@ const uproductionLoading = () => {
     >
         <q-card class="my-card full-height column">
             <q-card-section class="bg-deep-orange text-white">
-                <div class="text-h6 text-center">{{ uproduction.uhall.silo.name }}</div>
+                <div class="text-h6 text-center">{{ mproduction.mhall.silo.name }}</div>
             </q-card-section>
             <q-separator />
             <q-card-section>
-                <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
-                    uproduction.uhall.silo.product?.name
+                <div class="text-h5">[{{ mproduction.mhall.silo.product?.nomenklature }}] {{
+                    mproduction.mhall.silo.product?.name
                     }}</div>
-                <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
+                <div class="text-caption">{{ mproduction.mhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />
             <q-card-section class="col">
                 <div class="text-subtitle1">Налично в склад: {{
-                    uproduction.uhall.silo.product?.stock.toFixed(2) }}
+                    mproduction.mhall.silo.product?.stock.toFixed(2) }}
                     {{
-                        uproduction.uhall.silo.product?.me }}
+                        mproduction.mhall.silo.product?.me }}
                 </div>
-                <div class="text-subtitle1">Максимум: {{ parseFloat(uproduction.uhall.silo.maxqt).toFixed(2) }} {{
-                    uproduction.uhall.silo.product?.me }}
+                <div class="text-subtitle1">Максимум: {{ parseFloat(mproduction.mhall.silo.maxqt).toFixed(2) }} {{
+                    mproduction.mhall.silo.product?.me }}
                 </div>
-                <div class="text-subtitle1">Налично в силоза: {{ parseFloat(uproduction.uhall.silo.stock).toFixed(2) }}
+                <div class="text-subtitle1">Налично в силоза: {{ parseFloat(mproduction.mhall.silo.stock).toFixed(2) }}
                     {{
-                        uproduction.uhall.silo.product?.me }}</div>
+                        mproduction.mhall.silo.product?.me }}</div>
                 <div class="text-subtitle1 text-accent">Процент запълване: {{ siloPurcentLabel
                     }}</div>
             </q-card-section>
             <q-card-actions vertical>
                 <q-btn
-                    v-if="hasPermission('update') && uproduction.status === 1"
+                    v-if="hasPermission('update') && mproduction.status === 1"
                     label="Зареди фураж"
                     title="Зарежда фураж в силоза към този продукционен процес."
                     color="primary"
