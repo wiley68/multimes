@@ -107,7 +107,6 @@ const confirm = (mhall) => {
         router.post(route('mproductions.store'), {
             status: 1,
             mhall: mhall,
-            production_days: 45,
         })
     }).onCancel(() => { }).onDismiss(() => { })
 }
@@ -171,7 +170,7 @@ const confirm = (mhall) => {
                                             <template v-if="props.row.mproduction !== null">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
                                                     props.row.mproduction.id
-                                                }}
+                                                    }}
                                                 </div>
                                             </template>
                                             <template v-else>

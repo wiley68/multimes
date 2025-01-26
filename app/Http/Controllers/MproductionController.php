@@ -65,9 +65,34 @@ class MproductionController extends Controller
     {
         Gate::authorize('create', Mproduction::class);
 
+        switch ($request->mhall['type']) {
+            case 'Ремонтни':
+                $production_days = 20;
+                break;
+            case 'Заплождане':
+                $production_days = 10;
+                break;
+            case 'Условна бременност':
+                $production_days = 10;
+                break;
+            case 'Бременност':
+                $production_days = 45;
+                break;
+            case 'Родилно':
+                $production_days = 5;
+                break;
+            case 'Подрастване':
+                $production_days = 20;
+                break;
+            default:
+                $production_days = 20;
+                break;
+        }
+
         Mproduction::create([
             'status' => $request->status,
-            'mhall_id' => $request->mhall['id']
+            'mhall_id' => $request->mhall['id'],
+            'production_days' => $production_days,
         ]);
 
         return back();
