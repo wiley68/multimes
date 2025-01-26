@@ -8,6 +8,8 @@ use App\Http\Resources\FactoryResource;
 use App\Http\Resources\ProductResource;
 use App\Http\Resources\SiloResource;
 use App\Models\Factory;
+use App\Models\Mdecrement;
+use App\Models\Mproduction;
 use App\Models\Product;
 use App\Models\Silo;
 use App\Models\Udecrement;
@@ -210,6 +212,118 @@ class SiloController extends Controller
 
         return to_route('uproductions.show', [
             'uproduction' => $uproduction_id,
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function mloading(Silo $silo, int $mproduction_id): Response|RedirectResponse
+    {
+        Gate::authorize('update', $silo);
+
+        $mproduction = Mproduction::findOrFail($mproduction_id);
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'update' => 'Не можете да зареждате процес който вече е приключен!'
+            ]);
+        }
+
+        $silo->load(['factory', 'product']);
+        if ($silo->product_id !== 0) {
+            $products = Product::where('id', '=', $silo->product_id);
+        } else {
+            switch ($mproduction->mhall['type']) {
+                case 'Ремонтни':
+                    $productType = 'Фураж ремонтни';
+                    break;
+                case 'Заплождане':
+                    $productType = 'Фураж бременни';
+                    break;
+                case 'Условна бременност':
+                    $productType = 'Фураж бременни';
+                    break;
+                case 'Бременност':
+                    $productType = 'Фураж бременни';
+                    break;
+                case 'Родилно':
+                    $productType = 'Фураж кърмачки';
+                    break;
+                case 'Подрастване':
+                    $productType = 'Фураж угояване';
+                    break;
+                default:
+                    $productType = '';
+                    break;
+            }
+            $products = Product::where('type', '=', $productType);
+        }
+
+        return Inertia::render('Nomenklature/Silos/Mloading', [
+            'silo' => new SiloResource($silo),
+            'products' => ProductResource::collection($products->get()),
+            'mproduction' => $mproduction_id,
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function mload(LoadSiloRequest $request, Silo $silo, int $mproduction_id): RedirectResponse
+    {
+        Gate::authorize('update', $silo);
+
+        $mproduction = Mproduction::findOrFail($mproduction_id);
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'update' => 'Не можете да зареждате процес който вече е приключен!'
+            ]);
+        }
+
+        $product = Product::findOrFail($request->product['id']);
+        $new_quantity = (float)$request->stock;
+        $current_quantity = (float)$silo->stock;
+        $new_price = (float)$product->price;
+        $current_price = (float)$silo->price;
+
+        if ((float)$silo->maxqt < $new_quantity) {
+            return back()->withErrors([
+                'update' => 'Наличноста в силоза ' . $new_quantity . ' ще стане по-голяма от максимално допустимата ' . $silo->maxqt . '! Не можете да запишете промяната.'
+            ]);
+        }
+
+        if ((float)$product->stock < $new_quantity) {
+            return back()->withErrors([
+                'update' => 'Общата наличност ' . $product->stock . ' е по-малка от тази която искате да прехвърлите ' . $new_quantity . '! Не можете да запишете промяната.'
+            ]);
+        }
+
+        if ($current_quantity > 0) {
+            Mdecrement::create([
+                'mproduction_id' => $mproduction_id,
+                'product_id' => $request->product['id'],
+                'quantity' => $current_quantity,
+                'price' => $current_price,
+                'status' => 1,
+            ]);
+            $mdecrementTotal = $current_quantity * $current_price;
+            $mproductionStock = (float)$mproduction->stock;
+            $mproductionPrice = (float)$mproduction->price;
+            $mproduction->price = $mproductionPrice + $mdecrementTotal / $mproductionStock;
+            $mproduction->save();
+        }
+
+        $silo->update([
+            'product_id' => $request->product['id'],
+            'stock' => $new_quantity,
+            'price' => $new_price,
+        ]);
+
+        $product->stock = $product->stock - $new_quantity;
+        $product->save();
+
+        return to_route('mproductions.show', [
+            'mproduction' => $mproduction_id,
         ]);
     }
 

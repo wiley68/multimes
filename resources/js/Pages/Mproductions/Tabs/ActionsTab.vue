@@ -91,7 +91,7 @@ const confirmCompletion = () => {
 
 const siloLoading = () => {
     router.get(
-        route('silos.loading', { silo: props.mproduction.mhall.silo.id, mproduction: props.mproduction.id },),
+        route('silos.mloading', { silo: props.mproduction.mhall.silo.id, mproduction: props.mproduction.id },),
         {
             onError: errors => {
                 Object.values(errors).flat().forEach((error) => {
@@ -229,7 +229,7 @@ const mproductionLoading = () => {
             <q-card-section>
                 <div class="text-h5">[{{ mproduction.mhall.silo.product?.nomenklature }}] {{
                     mproduction.mhall.silo.product?.name
-                    }}</div>
+                }}</div>
                 <div class="text-caption">{{ mproduction.mhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />
