@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMproductionRequest;
+use App\Http\Resources\MdecrementResource;
+use App\Http\Resources\MincrementResource;
 use App\Http\Resources\MproductionsResource;
 use App\Models\Mhall;
 use App\Models\Mproduction;
@@ -101,14 +103,26 @@ class MproductionController extends Controller
     /**
      * Display a resource.
      */
-    public function show(Mproduction $mproduction): Response
+    public function show(Request $request, Mproduction $mproduction): Response
     {
         Gate::authorize('view', $mproduction);
 
-        $mproduction->load('mhall');
+        $mproduction->load('mhall', 'product');
+        $mhall = $mproduction->mhall->load(['silo', 'factory']);
+        $mhall->silo->load('product');
+        $mhall->factory->load('city');
+        $mdecrements = $mproduction->mdecrements()->orderBy('id', 'desc')->get();
+        $mdecrements->load(['product', 'mproduction']);
+        $mincrements = $mproduction->mincrements()->orderBy('id', 'desc')->get();
+        $mincrements->load(['product', 'mproduction']);
+
+        $tab = $request->tab ?? 'actions';
 
         return Inertia::render('Mproductions/Show', [
             'mproduction' => new MproductionsResource($mproduction),
+            'mdecrements' => MdecrementResource::collection($mdecrements),
+            'mincrements' => MincrementResource::collection($mincrements),
+            'tab' => $tab,
         ]);
     }
 

@@ -1,16 +1,36 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
-import { Head } from '@inertiajs/vue3'
-import { ref } from 'vue';
+import { Head, usePage } from '@inertiajs/vue3'
+import { onMounted, ref } from 'vue'
+import { useQuasar } from 'quasar'
+import ActionsTab from './Tabs/ActionsTab.vue'
 
 const props = defineProps({
     mproduction: {
         type: Object,
         required: true
-    }
+    },
+    mdecrements: Array,
+    mincrements: Array,
+    tab: {
+        type: String,
+        required: true
+    },
 })
 
-const tab = ref('info')
+const tabName = ref('actions')
+
+const $q = useQuasar()
+onMounted(() => {
+    tabName.value = props.tab
+    Object.values(usePage().props.errors).flat().forEach((error) => {
+        $q.notify({
+            message: error,
+            icon: 'mdi-alert-circle-outline',
+            type: 'negative',
+        });
+    });
+})
 
 const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${props.mproduction.id}`
 </script>
@@ -27,12 +47,19 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
             <div class="page-container">
                 <div class="header-panel">
                     <q-tabs
-                        v-model="tab"
+                        v-model="tabName"
                         no-caps
                         inline-label
                         class="bg-grey-1 full-width text-primary"
                         active-color="accent"
                     >
+                        <q-tab
+                            name="actions"
+                            icon="mdi-gesture-tap-button"
+                            label="Управление"
+                            :alert="false"
+                            alert-icon="alarm_on"
+                        />
                         <q-tab
                             name="info"
                             icon="mdi-information-outline"
@@ -41,21 +68,14 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                             alert-icon="alarm_on"
                         />
                         <q-tab
-                            name="data"
-                            icon="mdi-database-edit-outline"
-                            label="Данни"
-                            :alert="false"
-                            alert-icon="alarm_on"
-                        />
-                        <q-tab
-                            name="expenses"
+                            name="decrements"
                             icon="mdi-minus-circle-outline"
                             label="Разходи"
                             :alert="false"
                             alert-icon="alarm_on"
                         />
                         <q-tab
-                            name="revenue"
+                            name="increments"
                             icon="mdi-plus-circle-outline"
                             label="Приходи"
                             :alert="false"
@@ -75,36 +95,45 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                     class="col"
                     style="overflow-y: auto;"
                 >
-                    <div class="row full-height full-width">
-                        <div class="col">
-                            <q-tab-panels
-                                v-model="tab"
-                                animated
-                                transition-prev="slide-down"
-                                transition-next="slide-up"
-                            >
-                                <q-tab-panel name="info">
-                                    <div class="text-h4 q-mb-md">Информация</div>
-                                </q-tab-panel>
+                    <q-tab-panels
+                        class="col full-height"
+                        v-model="tabName"
+                        animated
+                        transition-prev="slide-down"
+                        transition-next="slide-up"
+                    >
+                        <q-tab-panel
+                            name="actions"
+                            class="row"
+                        >
+                            <ActionsTab :mproduction="mproduction"></ActionsTab>
+                        </q-tab-panel>
 
-                                <q-tab-panel name="data">
-                                    <div class="text-h4 q-mb-md">Данни</div>
-                                </q-tab-panel>
+                        <q-tab-panel
+                            name="info"
+                            class="row"
+                        >
 
-                                <q-tab-panel name="expenses">
-                                    <div class="text-h4 q-mb-md">Разходи</div>
-                                </q-tab-panel>
+                        </q-tab-panel>
 
-                                <q-tab-panel name="revenue">
-                                    <div class="text-h4 q-mb-md">Приходи</div>
-                                </q-tab-panel>
+                        <q-tab-panel
+                            name="decrements"
+                            class="q-pa-none"
+                        >
 
-                                <q-tab-panel name="statistics">
-                                    <div class="text-h4 q-mb-md">Статистика</div>
-                                </q-tab-panel>
-                            </q-tab-panels>
-                        </div>
-                    </div>
+                        </q-tab-panel>
+
+                        <q-tab-panel
+                            name="increments"
+                            class="q-pa-none"
+                        >
+
+                        </q-tab-panel>
+
+                        <q-tab-panel name="statistics">
+
+                        </q-tab-panel>
+                    </q-tab-panels>
                 </div>
             </div>
         </q-page>
