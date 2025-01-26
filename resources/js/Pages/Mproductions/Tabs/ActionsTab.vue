@@ -12,6 +12,25 @@ const props = defineProps({
     },
 })
 
+const productName = computed(() => {
+    switch (props.mproduction.mhall.type) {
+        case 'Ремонтни':
+            return 'Прасета ремонтни'
+        case 'Заплождане':
+            return 'Прасета заплождане'
+        case 'Условна бременност':
+            return 'Прасета условна бременност'
+        case 'Бременност':
+            return 'Прасета бременност'
+        case 'Родилно':
+            return 'Прасета родилно'
+        case 'Подрастване':
+            return 'Прасета подрастване'
+        default:
+            return 'Прасета'
+    }
+})
+
 const { hasPermission } = usePermission()
 
 const getDaysBetweenTodayAndDate = (targetDate) => {
@@ -141,7 +160,9 @@ const mproductionLoading = () => {
                 <div class="text-subtitle1">Налично в склад: {{ mproduction.product?.stock }} {{ mproduction.product?.me
                     }}
                 </div>
-                <div class="text-subtitle1">Текущ брой прасета: {{ mproduction.stock }} {{ mproduction.product?.me
+                <div class="text-subtitle1">Текущ брой {{
+                    productName }}: {{ mproduction.stock }} {{
+                        mproduction.product?.me
                     }}
                 </div>
                 <div class="text-subtitle1">Състояние: {{ mproduction.status === 1 ? 'Активен' : 'Приключен' }}
@@ -152,7 +173,7 @@ const mproductionLoading = () => {
             <q-card-actions>
                 <q-btn
                     color="primary"
-                    label="Процеси угояване"
+                    label="Процеси майки"
                     flat
                     icon="mdi-menu-left"
                     style="padding: 0px 15px;"
@@ -160,8 +181,8 @@ const mproductionLoading = () => {
                 />
                 <q-btn
                     v-if="hasPermission('update') && mproduction.status === 1"
-                    label="Зареди прасета"
-                    title="Зарежда прасета за угояване в продукционния процес."
+                    :label="`Зареди ${productName}`"
+                    :title="`Зарежда ${productName} в продукционния процес.`"
                     color="primary"
                     icon="mdi-upload-multiple-outline"
                     style="padding: 0px 15px;"
