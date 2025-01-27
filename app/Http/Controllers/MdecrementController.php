@@ -129,6 +129,58 @@ class MdecrementController extends Controller
     }
 
     /**
+     * Complete the specified resource in storage.
+     */
+    public function complete(CreateMdecrementRequest $request, Mdecrement $mdecrement): RedirectResponse
+    {
+        Gate::authorize('update', $mdecrement);
+
+        if ($mdecrement->status === 1) {
+            return back()->withErrors([
+                'update' => "Не можете да приключвате вече приключен разход!"
+            ]);
+        }
+
+        $mproduction = $mdecrement->mproduction;
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да приключвате разход към вече приключен процес!"
+            ]);
+        }
+
+        $product = $mdecrement->product;
+        if (null !== $product) {
+            $new_price = (float)$mdecrement->price;
+            $new_quantity = (float)$mdecrement->quantity;
+            $current_quantity = (float)$product->stock;
+            $current_price = (float)$product->price;
+            $result_quantity = $current_quantity - $new_quantity;
+            if ($result_quantity < 0) {
+                return back()->withErrors([
+                    'update' => 'Не можете да разходвате количеството ' . $new_quantity . '. Общото налично количество в склада ' . $current_quantity . ' е по-малко!'
+                ]);
+            }
+            $result_price = ($current_price * $current_quantity + $new_price * $new_quantity) / ($current_quantity + $new_quantity);
+            $product->update([
+                'stock' => $result_quantity,
+                'price' => $result_price,
+            ]);
+        }
+
+        $mdecrement->update([
+            'status' => $request->status,
+        ]);
+
+        $mdecrementTotal = $new_quantity * $new_price;
+        $mproductionStock = (float)$mproduction->stock;
+        $mproductionPrice = (float)$mproduction->price;
+        $mproduction->price = $mproductionPrice + $mdecrementTotal / $mproductionStock;
+        $mproduction->save();
+
+        return back();
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Mdecrement $mdecrement): RedirectResponse
