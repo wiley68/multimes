@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateMdecrementRequest;
+use App\Http\Resources\MdecrementResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Mdecrement;
 use App\Models\Mproduction;
@@ -73,17 +74,58 @@ class MdecrementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Mdecrement $mdecrement)
+    public function edit(Mdecrement $mdecrement): Response|RedirectResponse
     {
-        //
+        Gate::authorize('update', $mdecrement);
+
+        if ($mdecrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен разход.'
+            ]);
+        }
+
+        $mdecrement->load(['product', 'mproduction']);
+        $mproduction = $mdecrement->mproduction;
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да редактирате разход към вече приключен процес!"
+            ]);
+        }
+
+        return Inertia::render('Mproductions/Tabs/Decrements/Edit', [
+            'mdecrement' => new MdecrementResource($mdecrement),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mdecrement $mdecrement)
+    public function update(CreateMdecrementRequest $request, Mdecrement $mdecrement): RedirectResponse
     {
-        //
+        Gate::authorize('update', $mdecrement);
+
+        if ($mdecrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен разход.'
+            ]);
+        }
+
+        $mproduction = $mdecrement->mproduction;
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да редактирате разход към вече приключен процес!"
+            ]);
+        }
+
+        $mdecrement->update([
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
+
+        return to_route('mproductions.show', [
+            'mproduction' => $mdecrement->mproduction_id,
+            'tab' => 'decrements',
+        ]);
     }
 
     /**

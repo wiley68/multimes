@@ -5,23 +5,23 @@ import { ref } from 'vue';
 import { useQuasar } from 'quasar'
 
 const props = defineProps({
-    udecrement: {
+    mdecrement: {
         type: Object,
         required: true,
     },
 })
 
 const form = useForm({
-    uproduction_id: props.udecrement?.uproduction?.id,
-    product: { value: props.udecrement?.product.id, label: props.udecrement?.product.name },
-    quantity: props.udecrement?.quantity,
-    price: props.udecrement?.price,
-    status: props.udecrement?.status,
+    mproduction_id: props.mdecrement?.mproduction?.id,
+    product: { value: props.mdecrement?.product.id, label: props.mdecrement?.product.name },
+    quantity: props.mdecrement?.quantity,
+    price: props.mdecrement?.price,
+    status: props.mdecrement?.status,
 })
 
 const $q = useQuasar()
-const onSubmit = () => {
-    form.put(route('udecrements.update', props.udecrement.id), {
+const mdecrementsUpdate = () => {
+    form.put(route('mdecrements.update', props.mdecrement.id), {
         onError: errors => {
             Object.values(errors).flat().forEach((error) => {
                 $q.notify({
@@ -36,7 +36,7 @@ const onSubmit = () => {
 
 const me = ref('')
 
-const title = `Добавяне на разход към Процес №${props.udecrement.uproduction?.id}`
+const title = `Добавяне на разход към Процес №${props.mdecrement.mproduction?.id}`
 </script>
 
 <template>
@@ -58,7 +58,7 @@ const title = `Добавяне на разход към Процес №${props
                                     autofocus
                                 >
                                     <q-input
-                                        :model-value="udecrement.product ? `[${udecrement.product.nomenklature}] ${udecrement.product.name}` : ''"
+                                        :model-value="mdecrement.product ? `[${mdecrement.product.nomenklature}] ${mdecrement.product.name}` : ''"
                                         class="col"
                                         label="Продукт"
                                         hint="Продукт избран в разхода"
@@ -97,15 +97,15 @@ const title = `Добавяне на разход към Процес №${props
                 </div>
                 <div class="footer-panel">
                     <q-btn
-                        @click.prevent="router.get(route('uproductions.show', udecrement.uproduction?.id))"
+                        @click.prevent="router.get(route('mproductions.show', mdecrement.mproduction?.id))"
                         color="primary"
                         flat
-                        :label="`Процес №${udecrement.uproduction?.id}`"
+                        :label="`Процес №${mdecrement.mproduction?.id}`"
                         icon="mdi-menu-left"
                     />
 
                     <q-btn
-                        @click.prevent="onSubmit"
+                        @click.prevent="mdecrementsUpdate"
                         label="Запиши промените"
                         color="primary"
                         icon="mdi-content-save-outline"
