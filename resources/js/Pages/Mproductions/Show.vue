@@ -5,6 +5,7 @@ import { onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import ActionsTab from './Tabs/ActionsTab.vue'
 import InfoTab from './Tabs/InfoTab.vue'
+import StatisticsTab from './Tabs/StatisticsTab.vue'
 
 const props = defineProps({
     mproduction: {
@@ -132,7 +133,11 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                         </q-tab-panel>
 
                         <q-tab-panel name="statistics">
-
+                            <StatisticsTab
+                                :mproduction="mproduction"
+                                :mdecrements="mdecrements"
+                                :mincrements="mincrements"
+                            ></StatisticsTab>
                         </q-tab-panel>
                     </q-tab-panels>
                 </div>
