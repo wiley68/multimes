@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMdecrementRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Mdecrement;
 use App\Models\Mproduction;
@@ -43,9 +44,22 @@ class MdecrementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateMdecrementRequest $request): RedirectResponse
     {
-        //
+        Gate::authorize('create', Mdecrement::class);
+
+        Mdecrement::create([
+            'mproduction_id' => $request->mproduction_id,
+            'product_id' => $request->product['value'],
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+            'status' => $request->status,
+        ]);
+
+        return to_route('mproductions.show', [
+            'mproduction' => $request->mproduction_id,
+            'tab' => 'decrements',
+        ]);
     }
 
     /**
