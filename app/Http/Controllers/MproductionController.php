@@ -153,27 +153,16 @@ class MproductionController extends Controller
             ]);
         }
 
-        $mproduction->update([
-            'status' => $validated['status'],
-            'finished_at' => now(),
-        ]);
-
         $silo = $mproduction->mhall->silo;
-        $current_quantity = (float)$silo->stock;
-        $current_price = (float)$silo->price;
-        if ($current_quantity > 0) {
-            Mdecrement::create([
-                'mproduction_id' => $mproduction->id,
-                'product_id' => $mproduction->product->id,
-                'quantity' => $current_quantity,
-                'price' => $current_price,
-                'status' => 1,
-            ]);
-        }
         $silo->update([
             'product_id' => 0,
             'stock' => 0,
             'price' => 0,
+        ]);
+
+        $mproduction->update([
+            'status' => $validated['status'],
+            'finished_at' => now(),
         ]);
 
         return back();
@@ -278,18 +267,20 @@ class MproductionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Mproduction $mproduction)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
     public function destroy(Mproduction $mproduction)
     {
-        //
+        Gate::authorize('delete', $mproduction);
+
+        if ($mproduction->status === 1) {
+            return back()->withErrors([
+                'delete' => 'Не можете да изтривате приключена доставка.'
+            ]);
+        }
+
+        $mproduction->delete();
+
+        return to_route('mproductions.index');
     }
 }

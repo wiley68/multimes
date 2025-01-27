@@ -64,14 +64,6 @@ class MdecrementController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Mdecrement $mdecrement)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Mdecrement $mdecrement): Response|RedirectResponse
@@ -171,10 +163,12 @@ class MdecrementController extends Controller
             'status' => $request->status,
         ]);
 
-        $mdecrementTotal = $new_quantity * $new_price;
-        $mproductionStock = (float)$mproduction->stock;
-        $mproductionPrice = (float)$mproduction->price;
-        $mproduction->price = $mproductionPrice + $mdecrementTotal / $mproductionStock;
+        $mdecrements = $mproduction->mdecrements;
+        $totalDecrements = 0;
+        foreach ($mdecrements as $item) {
+            $totalDecrements += (float)$item['quantity'] * (float)$item['price'];
+        }
+        $mproduction->price = $totalDecrements / (float)$mproduction->stock;
         $mproduction->save();
 
         return back();
