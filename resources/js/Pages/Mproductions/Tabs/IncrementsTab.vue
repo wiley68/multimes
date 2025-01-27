@@ -100,12 +100,11 @@ const totalPrice = computed(() => {
 
 const $q = useQuasar()
 
-const createMincrements = (type) => {
+const createMincrements = () => {
     router.get(
         route('mincrements.create'),
         {
             mproduction_id: props.mproduction.id,
-            type: type,
         },
         {
             onError: errors => {
@@ -344,18 +343,10 @@ const confirmCompletion = (mincrement) => {
             class="row items-center q-gutter-x-sm q-px-sm"
         >
             <q-btn
-                v-if="mproduction.status === 1"
-                @click="createMincrements('Продажба')"
-                label="Продажба на прасета"
-                title="Добавя нов приход към продукционния процес. Прихода е от продажба на прасета."
-                icon="mdi-table-row-plus-after"
-                color="primary"
-            />
-            <q-btn
-                v-if="mproduction.status === 1"
-                @click="createMincrements('Ремонт')"
-                label="Прасета за ремонт"
-                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета за ремонт."
+                v-if="mproduction.status === 1 && mproduction.mhall.type === 'Ремонтни'"
+                @click="createMincrements"
+                label="Прасета за заплождане"
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета за ремонт готови за заплождане."
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />

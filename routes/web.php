@@ -7,6 +7,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\FactoryController;
 use App\Http\Controllers\MdecrementController;
 use App\Http\Controllers\MhallController;
+use App\Http\Controllers\MincrementController;
 use App\Http\Controllers\MproductionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -85,6 +86,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::patch('/uincrements/{uincrement}/complete', [UincrementController::class, 'complete'])->name('uincrements.complete');
     Route::resource('/mdecrements', MdecrementController::class);
     Route::patch('/mdecrements/{mdecrement}/complete', [MdecrementController::class, 'complete'])->name('mdecrements.complete');
+    Route::resource('/mincrements', MincrementController::class);
 });
 
 require __DIR__ . '/auth.php';
