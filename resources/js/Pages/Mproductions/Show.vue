@@ -4,6 +4,7 @@ import { Head, usePage } from '@inertiajs/vue3'
 import { onMounted, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import ActionsTab from './Tabs/ActionsTab.vue'
+import InfoTab from './Tabs/InfoTab.vue'
 
 const props = defineProps({
     mproduction: {
@@ -113,7 +114,7 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                             name="info"
                             class="row"
                         >
-
+                            <InfoTab :mproduction="mproduction"></InfoTab>
                         </q-tab-panel>
 
                         <q-tab-panel
