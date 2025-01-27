@@ -7,6 +7,7 @@ import ActionsTab from './Tabs/ActionsTab.vue'
 import InfoTab from './Tabs/InfoTab.vue'
 import StatisticsTab from './Tabs/StatisticsTab.vue'
 import DecrementsTab from './Tabs/DecrementsTab.vue'
+import IncrementsTab from './Tabs/IncrementsTab.vue'
 
 const props = defineProps({
     mproduction: {
@@ -133,7 +134,10 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                             name="increments"
                             class="q-pa-none"
                         >
-
+                            <IncrementsTab
+                                :mproduction="mproduction"
+                                :mincrements="mincrements"
+                            ></IncrementsTab>
                         </q-tab-panel>
 
                         <q-tab-panel name="statistics">
