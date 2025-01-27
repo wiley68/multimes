@@ -209,7 +209,7 @@ const confirmCompletion = (mincrement) => {
                 no-results-label="Няма съответстващи записи"
                 loading-label="Данните се зареждат..."
                 table-header-class="bg-grey-3"
-                :rows="uincrements"
+                :rows="mincrements"
                 :columns="incrementsColumns"
                 row-key="id"
                 :rows-per-page-options=[7]
@@ -282,7 +282,7 @@ const confirmCompletion = (mincrement) => {
                                 style="width: 60px;"
                             >
                                 <q-btn
-                                    v-if="hasPermission('update') && props.row.status === 0 && uproduction.status === 1"
+                                    v-if="hasPermission('update') && props.row.status === 0 && mproduction.status === 1"
                                     icon="mdi-file-document-check-outline"
                                     color="primary"
                                     title="Приключване на прихода"
@@ -292,7 +292,7 @@ const confirmCompletion = (mincrement) => {
                                     @click="confirmCompletion(
                                         {
                                             id: props.row.id,
-                                            uproduction_id: props.row.uproduction?.id,
+                                            mproduction_id: props.row.mproduction?.id,
                                             product: props.row.product,
                                             quantity: props.row.quantity,
                                             price: props.row.price,
@@ -302,17 +302,17 @@ const confirmCompletion = (mincrement) => {
                                     )"
                                 />
                                 <q-btn
-                                    v-if="hasPermission('update') && props.row.status === 0 && uproduction.status === 1"
+                                    v-if="hasPermission('update') && props.row.status === 0 && mproduction.status === 1"
                                     icon="mdi-pencil-outline"
                                     color="primary"
                                     title="Промяна на прихода"
                                     dense
                                     flat
                                     rounded
-                                    @click="router.get(route('uincrements.edit', props.row.id))"
+                                    @click="router.get(route('mincrements.edit', props.row.id))"
                                 />
                                 <q-btn
-                                    v-if="hasPermission('delete') && props.row.status === 0 && uproduction.status === 1"
+                                    v-if="hasPermission('delete') && props.row.status === 0 && mproduction.status === 1"
                                     icon="mdi-delete-outline"
                                     color="negative"
                                     title="Изтриване на прихода"
@@ -344,16 +344,16 @@ const confirmCompletion = (mincrement) => {
             class="row items-center q-gutter-x-sm q-px-sm"
         >
             <q-btn
-                v-if="uproduction.status === 1"
-                @click="createUincrements('Продажба')"
+                v-if="mproduction.status === 1"
+                @click="createMincrements('Продажба')"
                 label="Продажба на прасета"
                 title="Добавя нов приход към продукционния процес. Прихода е от продажба на прасета."
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
             <q-btn
-                v-if="uproduction.status === 1"
-                @click="createUincrements('Ремонт')"
+                v-if="mproduction.status === 1"
+                @click="createMincrements('Ремонт')"
                 label="Прасета за ремонт"
                 title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета за ремонт."
                 icon="mdi-table-row-plus-after"
