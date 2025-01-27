@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateMincrementRequest;
 use App\Http\Resources\MdecrementResource;
 use App\Http\Resources\MincrementResource;
 use App\Http\Resources\MproductionsResource;
@@ -59,9 +60,29 @@ class MincrementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateMincrementRequest $request): RedirectResponse
     {
-        //
+        Gate::authorize('create', Mincrement::class);
+
+        $mproduction = Mproduction::findOrFail($request->mproduction_id);
+        if ($mproduction !== null && (float)$request->quantity > (float)$mproduction->stock) {
+            return back()->withErrors([
+                'store' => 'Наличноста на продукта: [' . $mproduction->product->nomenklature . '] ' . $mproduction->product->name . ' [' . $mproduction->stock . '] е по-малка от предвидената за изписване в прихода Ви [' . $request->quantity . ']',
+            ]);
+        }
+
+        Mincrement::create([
+            'mproduction_id' => $request->mproduction_id,
+            'product_id' => $request->product['id'],
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+            'status' => $request->status,
+        ]);
+
+        return to_route('mproductions.show', [
+            "mproduction" => $request->mproduction_id,
+            'tab' => 'increments',
+        ]);
     }
 
     /**
@@ -91,8 +112,25 @@ class MincrementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mincrement $mincrement)
+    public function destroy(Mincrement $mincrement): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $mincrement);
+
+        if ($mincrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен приход.'
+            ]);
+        }
+
+        $mproduction = $mincrement->mproduction;
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да изтривате приход от вече приключен процес!"
+            ]);
+        }
+
+        $mincrement->delete();
+
+        return back();
     }
 }
