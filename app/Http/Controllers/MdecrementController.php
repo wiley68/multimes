@@ -2,25 +2,42 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use App\Models\Mdecrement;
+use App\Models\Mproduction;
+use App\Models\Product;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class MdecrementController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request): Response|RedirectResponse
     {
-        //
+        Gate::authorize('create', Mdecrement::class);
+
+        $validated = $request->validate([
+            'mproduction_id' => 'required|integer',
+        ]);
+
+        $mproduction = Mproduction::findOrFail($validated['mproduction_id']);
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да добавяте разход към вече приключен процес!"
+            ]);
+        }
+
+        $products = Product::whereIn('type', ['Обща употреба'])->get();
+
+        return Inertia::render('Mproductions/Tabs/Decrements/Create', [
+            'mproduction_id' => $validated['mproduction_id'],
+            'products' => ProductResource::collection($products),
+        ]);
     }
 
     /**
