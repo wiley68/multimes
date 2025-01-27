@@ -131,6 +131,55 @@ class MproductionController extends Controller
     }
 
     /**
+     * Complete the specified resource in storage.
+     */
+    public function complete(Request $request, Mproduction $mproduction): RedirectResponse
+    {
+        Gate::authorize('update', $mproduction);
+
+        $validated = $request->validate([
+            'status' => 'required|integer|in:0',
+        ]);
+
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да приключвате вече приключен процес!"
+            ]);
+        }
+
+        if ((float)$mproduction->stock > 0) {
+            return back()->withErrors([
+                'complete' => 'Във Вашия прозиводствен процес все още има налични прасета [' . $mproduction->product->nomenklature . '] ' . $mproduction->product->name . ' [' . $mproduction->stock . ']. Не можете да приключите процеса докато все още имате налични прасета в него!',
+            ]);
+        }
+
+        $mproduction->update([
+            'status' => $validated['status'],
+            'finished_at' => now(),
+        ]);
+
+        $silo = $mproduction->mhall->silo;
+        $current_quantity = (float)$silo->stock;
+        $current_price = (float)$silo->price;
+        if ($current_quantity > 0) {
+            Mdecrement::create([
+                'mproduction_id' => $mproduction->id,
+                'product_id' => $mproduction->product->id,
+                'quantity' => $current_quantity,
+                'price' => $current_price,
+                'status' => 1,
+            ]);
+        }
+        $silo->update([
+            'product_id' => 0,
+            'stock' => 0,
+            'price' => 0,
+        ]);
+
+        return back();
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function loading(Mproduction $mproduction): Response|RedirectResponse
