@@ -89,8 +89,25 @@ class MdecrementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Mdecrement $mdecrement)
+    public function destroy(Mdecrement $mdecrement): RedirectResponse
     {
-        //
+        Gate::authorize('delete', $mdecrement);
+
+        if ($mdecrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен разход.'
+            ]);
+        }
+
+        $mproduction = $mdecrement->mproduction;
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да изтривате разход от вече приключен процес!"
+            ]);
+        }
+
+        $mdecrement->delete();
+
+        return back();
     }
 }

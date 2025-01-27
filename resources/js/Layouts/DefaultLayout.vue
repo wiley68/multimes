@@ -279,7 +279,7 @@ onBeforeUnmount(() => {
                             class="text-secondary"
                             active-class="bg-blue-1"
                             @click="router.get(route('mproductions.index'))"
-                            :active="usePage().component.includes('Mproductions/MproductionIndex')"
+                            :active="usePage().component.includes('Mproductions')"
                         >
                             <q-item-section avatar>
                                 <q-icon
@@ -520,7 +520,7 @@ onBeforeUnmount(() => {
             <q-toolbar class="select-none q-custom-toolbar">
                 <q-toolbar-title class="text-left text-subtitle1 text-title">{{ $page.props.app_name }}: v. {{
                     $page.props.version
-                }}</q-toolbar-title>
+                    }}</q-toolbar-title>
                 <q-separator vertical />
                 <template v-if="$page.props.auth.user.roles.length">
                     <q-toolbar-title
