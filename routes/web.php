@@ -87,6 +87,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::resource('/mdecrements', MdecrementController::class);
     Route::patch('/mdecrements/{mdecrement}/complete', [MdecrementController::class, 'complete'])->name('mdecrements.complete');
     Route::resource('/mincrements', MincrementController::class);
+    Route::patch('/mincrements/{mincrement}/complete', [MincrementController::class, 'complete'])->name('mincrements.complete');
 });
 
 require __DIR__ . '/auth.php';

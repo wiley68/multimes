@@ -9,6 +9,7 @@ use App\Http\Resources\MproductionsResource;
 use App\Http\Resources\ProductResource;
 use App\Models\Mincrement;
 use App\Models\Mproduction;
+use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -146,6 +147,65 @@ class MincrementController extends Controller
             "mproduction" => $mincrement->mproduction_id,
             'tab' => 'increments',
         ]);
+    }
+
+    /**
+     * Complete the specified resource in storage.
+     */
+    public function complete(CreateMincrementRequest $request, Mincrement $mincrement): RedirectResponse
+    {
+        Gate::authorize('update', $mincrement);
+
+        if ($mincrement->status === 1) {
+            return back()->withErrors([
+                'update' => "Не можете да приключвате вече приключен приход!"
+            ]);
+        }
+
+        $mproduction = $mincrement->mproduction;
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да приключвате приход към вече приключен процес!"
+            ]);
+        }
+
+        $product = $mincrement->product;
+        if (null !== $product) {
+            $mproduction = Mproduction::findOrFail($request->mproduction_id);
+            if ($mproduction !== null && (float)$request->quantity > (float)$mproduction->stock) {
+                return back()->withErrors([
+                    'update' => 'Наличноста на продукта: [' . $mproduction->product->nomenklature . '] ' . $mproduction->product->name . ' [' . $mproduction->stock . '] е по-малка от предвидената за изписване в прихода Ви [' . $request->quantity . ']',
+                ]);
+            }
+
+            if ($mproduction->mhall->type === 'Ремонтни') {
+                $zaplozdane = Product::where('type', '=', 'Прасета заплождане')->firstOrFail();
+                $old_zaplozdane_stock = (float)$zaplozdane->stock;
+                $new_zaplozdane_stock = (float)$old_zaplozdane_stock + (float)$request->quantity;
+                $zaplozdane->stock = $new_zaplozdane_stock;
+                $old_zaplozdane_price = (float)$zaplozdane->price;
+                $new_zaplozdane_price = (($old_zaplozdane_price * $old_zaplozdane_stock) + ((float)$mproduction->price * (float)$request->quantity)) / ($old_zaplozdane_stock + (float)$request->quantity);
+                $zaplozdane->price = $new_zaplozdane_price;
+                $zaplozdane->save();
+            }
+
+            $new_stock = $mproduction->stock - $request->quantity;
+            $new_price = $mproduction->price;
+            if ($new_stock == 0) {
+                $new_price = 0;
+            }
+
+            $mproduction->update([
+                'stock' => $new_stock,
+                'price' => $new_price,
+            ]);
+        }
+
+        $mincrement->update([
+            'status' => $request->status,
+        ]);
+
+        return back();
     }
 
     /**

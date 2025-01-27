@@ -197,7 +197,11 @@ class SiloController extends Controller
             $udecrementTotal = $current_quantity * $current_price;
             $uproductionStock = (float)$uproduction->stock;
             $uproductionPrice = (float)$uproduction->price;
-            $uproduction->price = $uproductionPrice + $udecrementTotal / $uproductionStock;
+            if ($uproductionStock == 0) {
+                $uproduction->price = $uproductionPrice;
+            } else {
+                $uproduction->price = $uproductionPrice + $udecrementTotal / $uproductionStock;
+            }
             $uproduction->save();
         }
 
@@ -309,7 +313,11 @@ class SiloController extends Controller
             $mdecrementTotal = $current_quantity * $current_price;
             $mproductionStock = (float)$mproduction->stock;
             $mproductionPrice = (float)$mproduction->price;
-            $mproduction->price = $mproductionPrice + $mdecrementTotal / $mproductionStock;
+            if ($mproductionStock == 0) {
+                $mproduction->price = $mproductionPrice;
+            } else {
+                $mproduction->price = $mproductionPrice + $mdecrementTotal / $mproductionStock;
+            }
             $mproduction->save();
         }
 

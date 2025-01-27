@@ -169,7 +169,6 @@ const confirmCompletion = (mincrement) => {
             quantity: mincrement.quantity,
             price: mincrement.price,
             status: mincrement.status,
-            type: mincrement.type,
         })
         form.patch(route('mincrements.complete', mincrement.id), {
             onError: errors => {
@@ -283,7 +282,6 @@ const confirmCompletion = (mincrement) => {
                                             quantity: props.row.quantity,
                                             price: props.row.price,
                                             status: 1,
-                                            type: props.row.type,
                                         }
                                     )"
                                 />

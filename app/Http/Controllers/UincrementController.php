@@ -181,6 +181,17 @@ class UincrementController extends Controller
                 ]);
             }
 
+            if ($request->type === 'Ремонт') {
+                $remontni = Product::where('type', '=', 'Прасета ремонтни')->firstOrFail();
+                $old_remontni_stock = (float)$remontni->stock;
+                $new_remontni_stock = (float)$old_remontni_stock + (float)$request->quantity;
+                $remontni->stock = $new_remontni_stock;
+                $old_remontni_price = (float)$remontni->price;
+                $new_remontni_price = (($old_remontni_price * $old_remontni_stock) + ((float)$uproduction->price * (float)$request->quantity)) / ($old_remontni_stock + (float)$request->quantity);
+                $remontni->price = $new_remontni_price;
+                $remontni->save();
+            }
+
             $new_stock = $uproduction->stock - $request->quantity;
             $new_price = $uproduction->price;
             if ($new_stock == 0) {
@@ -191,17 +202,6 @@ class UincrementController extends Controller
                 'stock' => $new_stock,
                 'price' => $new_price,
             ]);
-        }
-
-        if ($request->type === 'Ремонт') {
-            $remontni = Product::where('type', '=', 'Прасета ремонтни')->firstOrFail();
-            $old_remontni_stock = (float)$remontni->stock;
-            $new_remontni_stock = (float)$old_remontni_stock + (float)$request->quantity;
-            $remontni->stock = $new_remontni_stock;
-            $old_remontni_price = (float)$remontni->price;
-            $new_remontni_price = (($old_remontni_price * $old_remontni_stock) + ((float)$uproduction->price * (float)$request->quantity)) / ($old_remontni_stock + (float)$request->quantity);
-            $remontni->price = $new_remontni_price;
-            $remontni->save();
         }
 
         $uincrement->update([
