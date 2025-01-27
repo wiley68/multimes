@@ -35,13 +35,6 @@ const incrementsColumns = [
         sortable: true,
     },
     {
-        name: 'type',
-        align: 'left',
-        label: 'Тип',
-        field: 'type',
-        sortable: true,
-    },
-    {
         name: 'created_at',
         align: 'left',
         label: 'Създаден на',
@@ -233,12 +226,6 @@ const confirmCompletion = (mincrement) => {
                                 {{ props.row.product ? `[${props.row.product.nomenklature}] ${props.row.product.name}` :
                                     ''
                                 }}
-                            </div>
-                            <div
-                                v-else-if="col.name === 'type'"
-                                style="width: 60px;"
-                            >
-                                {{ props.row.type }}
                             </div>
                             <div
                                 v-else-if="col.name === 'created_at'"

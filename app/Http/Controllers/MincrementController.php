@@ -86,27 +86,66 @@ class MincrementController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Mincrement $mincrement)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Mincrement $mincrement)
+    public function edit(Mincrement $mincrement): Response|RedirectResponse
     {
-        //
+        Gate::authorize('update', $mincrement);
+
+        if ($mincrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен приход.'
+            ]);
+        }
+
+        $mincrement->load(['product', 'mproduction']);
+        $mproduction = $mincrement->mproduction;
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да редактирате приход към вече приключен процес!"
+            ]);
+        }
+
+        return Inertia::render('Mproductions/Tabs/Increments/Edit', [
+            'mincrement' => new MincrementResource($mincrement),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Mincrement $mincrement)
+    public function update(CreateMincrementRequest $request, Mincrement $mincrement): RedirectResponse
     {
-        //
+        Gate::authorize('update', $mincrement);
+
+        if ($mincrement->status === 1) {
+            return back()->withErrors([
+                'update' => 'Не можете да променяте приключен приход.'
+            ]);
+        }
+
+        $mproduction = Mproduction::findOrFail($request->mproduction_id);
+        if ($mproduction !== null && (float)$request->quantity > (float)$mproduction->stock) {
+            return back()->withErrors([
+                'update' => 'Наличноста на продукта: [' . $mproduction->product->nomenklature . '] ' . $mproduction->product->name . ' [' . $mproduction->stock . '] е по-малка от предвидената за изписване в прихода Ви [' . $request->quantity . ']',
+            ]);
+        }
+
+        if ($mproduction->status === 0) {
+            return back()->withErrors([
+                'complete' => "Не можете да редактирате приход към вече приключен процес!"
+            ]);
+        }
+
+        $mincrement->update([
+            'quantity' => $request->quantity,
+            'price' => $request->price,
+        ]);
+
+        return to_route('mproductions.show', [
+            "mproduction" => $mincrement->mproduction_id,
+            'tab' => 'increments',
+        ]);
     }
 
     /**
