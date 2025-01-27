@@ -170,9 +170,13 @@ class SiloController extends Controller
 
         $product = Product::findOrFail($request->product['id']);
         $new_quantity = (float)$request->stock;
-        $current_quantity = (float)$silo->stock;
         $new_price = (float)$product->price;
-        $current_price = (float)$silo->price;
+
+        if ((float)$uproduction->stock == 0) {
+            return back()->withErrors([
+                'update' => 'Необходимо е първо да заредите прасета за угояване!'
+            ]);
+        }
 
         if ((float)$silo->maxqt < $new_quantity) {
             return back()->withErrors([
@@ -186,25 +190,6 @@ class SiloController extends Controller
             ]);
         }
 
-        if ($current_quantity > 0) {
-            Udecrement::create([
-                'uproduction_id' => $uproduction_id,
-                'product_id' => $request->product['id'],
-                'quantity' => $current_quantity,
-                'price' => $current_price,
-                'status' => 1,
-            ]);
-            $udecrementTotal = $current_quantity * $current_price;
-            $uproductionStock = (float)$uproduction->stock;
-            $uproductionPrice = (float)$uproduction->price;
-            if ($uproductionStock == 0) {
-                $uproduction->price = $uproductionPrice;
-            } else {
-                $uproduction->price = $uproductionPrice + $udecrementTotal / $uproductionStock;
-            }
-            $uproduction->save();
-        }
-
         $silo->update([
             'product_id' => $request->product['id'],
             'stock' => $new_quantity,
@@ -213,6 +198,22 @@ class SiloController extends Controller
 
         $product->stock = $product->stock - $new_quantity;
         $product->save();
+
+        Udecrement::create([
+            'uproduction_id' => $uproduction_id,
+            'product_id' => $request->product['id'],
+            'quantity' => $new_quantity,
+            'price' => $new_price,
+            'status' => 1,
+        ]);
+
+        $udecrements = $uproduction->udecrements;
+        $totalDecrements = 0;
+        foreach ($udecrements as $item) {
+            $totalDecrements += (float)$item['quantity'] * (float)$item['price'];
+        }
+        $uproduction->price = $totalDecrements / (float)$uproduction->stock;
+        $uproduction->save();
 
         return to_route('uproductions.show', [
             'uproduction' => $uproduction_id,

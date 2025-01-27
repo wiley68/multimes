@@ -23,7 +23,7 @@ const form = useForm({
 
 const $q = useQuasar()
 
-const onSubmit = () => {
+const silosLoad = () => {
     form.put(route('silos.load', { silo: props.silo.id, uproduction: props.uproduction }), {
         onFinish: () => {
             form.reset('stock')
@@ -107,7 +107,7 @@ const title = `${props.silo.name} - Зареждане`
                         @click="uproductionShow"
                     />
                     <q-btn
-                        @click.prevent="onSubmit"
+                        @click.prevent="silosLoad"
                         label="Зареди"
                         type="submit"
                         icon="mdi-upload-multiple-outline"

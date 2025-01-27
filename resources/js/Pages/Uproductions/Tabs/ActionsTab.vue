@@ -169,7 +169,7 @@ const uproductionLoading = () => {
                 />
                 <q-btn
                     v-if="hasPermission('update') && uproduction.status === 1"
-                    @click.prevent="confirmCompletion()"
+                    @click.prevent="confirmCompletion"
                     label="Приключи процеса"
                     title="Приключва процеса. Прекъсва възможността за промяна в данните за този процес."
                     icon="mdi-file-document-check-outline"
@@ -208,7 +208,7 @@ const uproductionLoading = () => {
             <q-card-section>
                 <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
                     uproduction.uhall.silo.product?.name
-                    }}</div>
+                }}</div>
                 <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />
