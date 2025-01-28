@@ -343,6 +343,14 @@ const confirmCompletion = (mincrement) => {
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
+            <q-btn
+                v-if="mproduction.status === 1 && mproduction.mhall.type === 'Условна бременност'"
+                @click="createMincrements"
+                label="Прасета бременност"
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Условна бременност готови за Прасета бременност."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+            />
         </div>
     </div>
 </template>
