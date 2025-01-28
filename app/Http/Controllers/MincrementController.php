@@ -208,6 +208,16 @@ class MincrementController extends Controller
                 $bremenni->price = $new_bremenni_price;
                 $bremenni->save();
             }
+            if ($mproduction->mhall->type === 'Бременност') {
+                $rodilno = Product::where('type', '=', 'Прасета родилно')->firstOrFail();
+                $old_rodilno_stock = (float)$rodilno->stock;
+                $new_rodilno_stock = (float)$old_rodilno_stock + (float)$request->quantity;
+                $rodilno->stock = $new_rodilno_stock;
+                $old_rodilno_price = (float)$rodilno->price;
+                $new_rodilno_price = (($old_rodilno_price * $old_rodilno_stock) + ((float)$mproduction->price * (float)$request->quantity)) / ($old_rodilno_stock + (float)$request->quantity);
+                $rodilno->price = $new_rodilno_price;
+                $rodilno->save();
+            }
 
             $new_stock = $mproduction->stock - $request->quantity;
             $new_price = $mproduction->price;

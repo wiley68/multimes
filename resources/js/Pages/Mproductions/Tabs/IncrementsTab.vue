@@ -331,7 +331,7 @@ const confirmCompletion = (mincrement) => {
                 v-if="mproduction.status === 1 && mproduction.mhall.type === 'Ремонтни'"
                 @click="createMincrements"
                 label="Прасета за заплождане"
-                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета за ремонт готови за заплождане."
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Ремонтни готови за прасета Заплождане."
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
@@ -339,7 +339,7 @@ const confirmCompletion = (mincrement) => {
                 v-if="mproduction.status === 1 && mproduction.mhall.type === 'Заплождане'"
                 @click="createMincrements"
                 label="Прасета условна бременност"
-                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета за заплождане готови за условна бременност."
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Заплождане готови за прасета Условна бременност."
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
@@ -347,7 +347,15 @@ const confirmCompletion = (mincrement) => {
                 v-if="mproduction.status === 1 && mproduction.mhall.type === 'Условна бременност'"
                 @click="createMincrements"
                 label="Прасета бременност"
-                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Условна бременност готови за Прасета бременност."
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Условна бременност готови за прасета Бременност."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+            />
+            <q-btn
+                v-if="mproduction.status === 1 && mproduction.mhall.type === 'Бременност'"
+                @click="createMincrements"
+                label="Прасета родилно"
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Бременност готови за прасета Родилно."
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
