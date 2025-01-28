@@ -183,6 +183,54 @@ const confirmCompletion = (mincrement) => {
         })
     }).onCancel(() => { }).onDismiss(() => { })
 }
+
+const confirmCompletionPodrastvane = (mincrement) => {
+    $q.dialog({
+        title: 'Потвърди',
+        message: 'Какво количество Прасета подрастване са родени?',
+        cancel: true,
+        persistent: true,
+        ok: {
+            label: 'Да',
+            color: 'primary',
+
+        },
+        cancel: {
+            label: 'Откажи',
+            color: 'grey-1',
+            textColor: 'grey-10',
+            flat: true
+        },
+        prompt: {
+            model: mincrement.quantity,
+            type: 'number',
+            min: 1,
+            max: 1000,
+            step: 1
+        },
+    }).onOk((data) => {
+        const form = useForm({
+            mproduction_id: mincrement.mproduction_id,
+            product: mincrement.product,
+            quantity: mincrement.quantity,
+            price: mincrement.price,
+            status: mincrement.status,
+            podrastvane: data,
+            podrastvane_price: (mincrement.quantity * mincrement.price) / data,
+        })
+        form.patch(route('mincrements.complete', mincrement.id), {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+    }).onCancel(() => { }).onDismiss(() => { })
+}
 </script>
 
 <template>
@@ -266,25 +314,48 @@ const confirmCompletion = (mincrement) => {
                                 v-else="col.name === 'actions'"
                                 style="width: 60px;"
                             >
-                                <q-btn
-                                    v-if="hasPermission('update') && props.row.status === 0 && mproduction.status === 1"
-                                    icon="mdi-file-document-check-outline"
-                                    color="primary"
-                                    title="Приключване на прихода"
-                                    dense
-                                    flat
-                                    rounded
-                                    @click="confirmCompletion(
-                                        {
-                                            id: props.row.id,
-                                            mproduction_id: props.row.mproduction?.id,
-                                            product: props.row.product,
-                                            quantity: props.row.quantity,
-                                            price: props.row.price,
-                                            status: 1,
-                                        }
-                                    )"
-                                />
+                                <template v-if="mproduction.mhall.type === 'Родилно'">
+                                    <q-btn
+                                        v-if="hasPermission('update') && props.row.status === 0 && mproduction.status === 1"
+                                        icon="mdi-file-document-check-outline"
+                                        color="primary"
+                                        title="Приключване на прихода"
+                                        dense
+                                        flat
+                                        rounded
+                                        @click="confirmCompletionPodrastvane(
+                                            {
+                                                id: props.row.id,
+                                                mproduction_id: props.row.mproduction?.id,
+                                                product: props.row.product,
+                                                quantity: props.row.quantity,
+                                                price: props.row.price,
+                                                status: 1,
+                                            }
+                                        )"
+                                    />
+                                </template>
+                                <template v-else>
+                                    <q-btn
+                                        v-if="hasPermission('update') && props.row.status === 0 && mproduction.status === 1"
+                                        icon="mdi-file-document-check-outline"
+                                        color="primary"
+                                        title="Приключване на прихода"
+                                        dense
+                                        flat
+                                        rounded
+                                        @click="confirmCompletion(
+                                            {
+                                                id: props.row.id,
+                                                mproduction_id: props.row.mproduction?.id,
+                                                product: props.row.product,
+                                                quantity: props.row.quantity,
+                                                price: props.row.price,
+                                                status: 1,
+                                            }
+                                        )"
+                                    />
+                                </template>
                                 <q-btn
                                     v-if="hasPermission('update') && props.row.status === 0 && mproduction.status === 1"
                                     icon="mdi-pencil-outline"
@@ -356,6 +427,14 @@ const confirmCompletion = (mincrement) => {
                 @click="createMincrements"
                 label="Прасета родилно"
                 title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Бременност готови за прасета Родилно."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+            />
+            <q-btn
+                v-if="mproduction.status === 1 && mproduction.mhall.type === 'Родилно'"
+                @click="createMincrements"
+                label="Прасета подрастване"
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Родилно готови за прасета Заплождане плюс прасета Подрастване."
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />

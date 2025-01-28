@@ -218,6 +218,25 @@ class MincrementController extends Controller
                 $rodilno->price = $new_rodilno_price;
                 $rodilno->save();
             }
+            if ($mproduction->mhall->type === 'Родилно') {
+                $zaplozdane = Product::where('type', '=', 'Прасета заплождане')->firstOrFail();
+                $old_zaplozdane_stock = (float)$zaplozdane->stock;
+                $new_zaplozdane_stock = (float)$old_zaplozdane_stock + (float)$request->quantity;
+                $zaplozdane->stock = $new_zaplozdane_stock;
+                $old_zaplozdane_price = (float)$zaplozdane->price;
+                $new_zaplozdane_price = (($old_zaplozdane_price * $old_zaplozdane_stock)) / ($old_zaplozdane_stock + (float)$request->quantity);
+                $zaplozdane->price = $new_zaplozdane_price;
+                $zaplozdane->save();
+
+                $podrastvane = Product::where('type', '=', 'Прасета подрастване')->firstOrFail();
+                $old_podrastvane_stock = (float)$podrastvane->stock;
+                $new_podrastvane_stock = (float)$old_podrastvane_stock + (float)$request->podrastvane;
+                $podrastvane->stock = $new_podrastvane_stock;
+                $old_podrastvane_price = (float)$podrastvane->price;
+                $new_podrastvane_price = (($old_podrastvane_price * $old_podrastvane_stock) + ((float)$request->podrastvane_price * (float)$request->podrastvane)) / ($old_podrastvane_stock + (float)$request->podrastvane);
+                $podrastvane->price = $new_podrastvane_price;
+                $podrastvane->save();
+            }
 
             $new_stock = $mproduction->stock - $request->quantity;
             $new_price = $mproduction->price;
