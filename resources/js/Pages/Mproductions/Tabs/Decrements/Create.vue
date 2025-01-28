@@ -2,6 +2,7 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { ref, watch } from 'vue';
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     products: Array,
@@ -23,8 +24,19 @@ const productsOptions = props.products?.map(product => ({
     me: product.me,
 }))
 
+const $q = useQuasar()
 const mdecrementsStore = () => {
-    form.post(route('mdecrements.store'))
+    form.post(route('mdecrements.store'), {
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
+    })
 }
 
 const me = ref('')

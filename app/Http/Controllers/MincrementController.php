@@ -188,6 +188,16 @@ class MincrementController extends Controller
                 $zaplozdane->price = $new_zaplozdane_price;
                 $zaplozdane->save();
             }
+            if ($mproduction->mhall->type === 'Заплождане') {
+                $uslovna = Product::where('type', '=', 'Прасета условна бременност')->firstOrFail();
+                $old_uslovna_stock = (float)$uslovna->stock;
+                $new_uslovna_stock = (float)$old_uslovna_stock + (float)$request->quantity;
+                $uslovna->stock = $new_uslovna_stock;
+                $old_uslovna_price = (float)$uslovna->price;
+                $new_uslovna_price = (($old_uslovna_price * $old_uslovna_stock) + ((float)$mproduction->price * (float)$request->quantity)) / ($old_uslovna_stock + (float)$request->quantity);
+                $uslovna->price = $new_uslovna_price;
+                $uslovna->save();
+            }
 
             $new_stock = $mproduction->stock - $request->quantity;
             $new_price = $mproduction->price;

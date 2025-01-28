@@ -25,7 +25,7 @@ class CreateMdecrementRequest extends FormRequest
         return [
             'mproduction_id' => [
                 'required',
-                'exists:uproductions,id',
+                'exists:mproductions,id',
             ],
             'product' => [
                 'required',
