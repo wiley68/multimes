@@ -237,6 +237,16 @@ class MincrementController extends Controller
                 $podrastvane->price = $new_podrastvane_price;
                 $podrastvane->save();
             }
+            if ($mproduction->mhall->type === 'Подрастване') {
+                $ugoiavane = Product::where('type', '=', 'Прасета угояване')->firstOrFail();
+                $old_ugoiavane_stock = (float)$ugoiavane->stock;
+                $new_ugoiavane_stock = (float)$old_ugoiavane_stock + (float)$request->quantity;
+                $ugoiavane->stock = $new_ugoiavane_stock;
+                $old_ugoiavane_price = (float)$ugoiavane->price;
+                $new_ugoiavane_price = (($old_ugoiavane_price * $old_ugoiavane_stock) + ((float)$mproduction->price * (float)$request->quantity)) / ($old_ugoiavane_stock + (float)$request->quantity);
+                $ugoiavane->price = $new_ugoiavane_price;
+                $ugoiavane->save();
+            }
 
             $new_stock = $mproduction->stock - $request->quantity;
             $new_price = $mproduction->price;

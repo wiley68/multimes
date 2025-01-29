@@ -438,6 +438,14 @@ const confirmCompletionPodrastvane = (mincrement) => {
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
+            <q-btn
+                v-if="mproduction.status === 1 && mproduction.mhall.type === 'Подрастване'"
+                @click="createMincrements"
+                label="Прасета угояване"
+                title="Добавя нов приход към продукционния процес. Прихода е от предаване на прасета Подрастване готови за прасета Угояване."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+            />
         </div>
     </div>
 </template>
