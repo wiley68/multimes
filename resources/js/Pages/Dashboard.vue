@@ -21,7 +21,7 @@ const { hasPermission, hasPermissions } = usePermission()
 const confirmMproduction = (mhall) => {
   $q.dialog({
     title: 'Потвърди',
-    message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
+    message: `Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?`,
     cancel: true,
     persistent: true,
     ok: {
@@ -45,7 +45,7 @@ const confirmMproduction = (mhall) => {
 const confirmUproduction = (uhall) => {
   $q.dialog({
     title: 'Потвърди',
-    message: 'Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?',
+    message: `Ще бъде стартиран нов производствен процес! Процеса е за Угояване на прасета. Угояването ще се извърши в Хале: ${uhall.name}. Процеса е необратим. Съгласен ли сте с това?`,
     cancel: true,
     persistent: true,
     ok: {
