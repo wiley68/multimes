@@ -161,7 +161,7 @@ const uproductionLoading = () => {
                 <q-btn
                     v-if="hasPermission('update') && uproduction.status === 1"
                     label="Зареди прасета"
-                    title="Зарежда прасета за угояване в продукционния процес."
+                    :title="`Зарежда 'Прасета угояване' в продукционен процес №${uproduction.id}, Хале: ${uproduction.uhall.name}.`"
                     color="primary"
                     icon="mdi-upload-multiple-outline"
                     style="padding: 0px 15px;"
@@ -208,7 +208,7 @@ const uproductionLoading = () => {
             <q-card-section>
                 <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
                     uproduction.uhall.silo.product?.name
-                }}</div>
+                    }}</div>
                 <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />

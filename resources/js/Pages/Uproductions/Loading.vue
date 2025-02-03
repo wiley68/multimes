@@ -14,7 +14,7 @@ const props = defineProps({
 const form = useForm({
     stock: 0,
     price: props.uproduction?.price,
-    product: props.uproduction?.product,
+    product: props.uproduction.product === null ? props.products.length > 0 ? props.products[0] : null : props.uproduction?.product,
 })
 
 const $q = useQuasar()
@@ -80,14 +80,28 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                         :error="form.hasErrors"
                                         :error-message="form.errors.product"
                                     />
-                                    <q-input
-                                        v-model.number="form.stock"
-                                        type="number"
-                                        label="Количество [бр]"
-                                        hint="Брой прасета които ще се добавят към процеса [бр]"
-                                        :error="form.hasErrors"
-                                        :error-message="form.errors.stock"
-                                    />
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <q-input
+                                                v-model.number="form.stock"
+                                                type="number"
+                                                label="Количество [бр]"
+                                                hint="Брой прасета които ще се добавят към процеса [бр]"
+                                                :error="form.hasErrors"
+                                                :error-message="form.errors.stock"
+                                            />
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                                v-model.number="form.stock"
+                                                type="number"
+                                                label="Количество [бр]"
+                                                hint="Брой прасета които ще се добавят към процеса [бр]"
+                                                :error="form.hasErrors"
+                                                :error-message="form.errors.stock"
+                                            />
+                                        </div>
+                                    </div>
                                 </q-form>
                             </q-card>
                         </div>
