@@ -13,6 +13,7 @@ class Udecrement extends Model
         'uproduction_id',
         'product_id',
         'quantity',
+        'weight',
         'price',
         'status',
     ];

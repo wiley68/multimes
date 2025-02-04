@@ -19,6 +19,7 @@ class UdecrementResource extends JsonResource
             'uproduction' => new UproductionsResource($this->whenLoaded('uproduction')),
             'product' => new ProductResource($this->whenLoaded('product')),
             'quantity' => $this->quantity,
+            'weight' => $this->weight,
             'price' => $this->price,
             'status' => $this->status,
             'created_at' => $this->created_at,
