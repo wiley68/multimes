@@ -8,6 +8,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    udecrements: {
+        type: Array,
+        required: true
+    },
 })
 
 const getDaysBetweenTodayAndDate = (targetDate) => {
@@ -35,6 +39,14 @@ const productionPurcent = computed(() => {
     }
 })
 const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)} %`
+
+const siloLoadingsCount = computed(() => {
+    return props.udecrements.filter(item => item.product.type === 'Фураж угояване').length
+})
+
+const siloLoadingsWeight = computed(() => {
+    return props.udecrements.reduce((acc, item) => item.product.type === 'Фураж угояване' ? acc + item.quantity : acc, 0)
+})
 </script>
 
 <template>
@@ -101,6 +113,14 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)} %`
                 <div class="text-subtitle1"><span class="text-weight-medium">Цена</span><span
                         class="text-weight-light">: {{
                             parseFloat(uproduction.uhall.silo.price).toFixed(2) }} лв.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Брой зареждания на силоза</span><span
+                        class="text-weight-light"
+                    >: {{ siloLoadingsCount }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общо количество зареден фураж</span><span
+                        class="text-weight-light"
+                    >: {{ siloLoadingsWeight }} кг.</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Процент запълване</span><span
                         class="text-weight-light"
