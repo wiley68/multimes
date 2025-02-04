@@ -210,6 +210,7 @@ class UproductionController extends Controller
             'uproduction_id' => $uproduction->id,
             'product_id' => $request->product['id'],
             'quantity' => $new_quantity,
+            'weight' => $request->weight,
             'price' => $new_price,
             'status' => 1,
         ]);

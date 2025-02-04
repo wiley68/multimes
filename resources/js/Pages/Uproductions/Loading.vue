@@ -2,6 +2,7 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
     uproduction: {
@@ -15,6 +16,7 @@ const form = useForm({
     stock: 0,
     price: props.uproduction?.price,
     product: props.uproduction.product === null ? props.products.length > 0 ? props.products[0] : null : props.uproduction?.product,
+    weight: 0,
 })
 
 const $q = useQuasar()
@@ -52,6 +54,18 @@ const uproductionShow = () => {
         }
     )
 }
+
+onMounted(() => {
+    total.value = form.product.stock
+})
+
+const total = ref(0)
+watch(
+    () => form.product,
+    (newValue, oldValue) => {
+        total.value = newValue.stock
+    }
+)
 
 const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${props.uproduction.id} - Зареждане`
 </script>
@@ -93,15 +107,22 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                         </div>
                                         <div class="col">
                                             <q-input
-                                                v-model.number="form.stock"
+                                                v-model.number="total"
                                                 type="number"
-                                                label="Количество [бр]"
-                                                hint="Брой прасета които ще се добавят към процеса [бр]"
-                                                :error="form.hasErrors"
-                                                :error-message="form.errors.stock"
+                                                label="Общо [бр]"
+                                                readonly
+                                                hint="Общо налично количество прасета в склада [бр]"
                                             />
                                         </div>
                                     </div>
+                                    <q-input
+                                        v-model.number="form.weight"
+                                        type="number"
+                                        label="Тегло [кг]"
+                                        hint="Общо тегло на добавяните прасета [кг]"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.weight"
+                                    />
                                 </q-form>
                             </q-card>
                         </div>
