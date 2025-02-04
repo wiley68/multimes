@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('uproduction_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('product_id')->constrained()->onDelete('restrict')->onUpdate('cascade');
             $table->double('quantity', 15, 2);
+            $table->double('weight', 15, 2)->default(0);
             $table->decimal('price', 8, 2);
             $table->enum('type', [
                 'Продажба',

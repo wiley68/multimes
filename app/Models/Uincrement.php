@@ -13,6 +13,7 @@ class Uincrement extends Model
         'uproduction_id',
         'product_id',
         'quantity',
+        'weight',
         'price',
         'status',
         'type',
