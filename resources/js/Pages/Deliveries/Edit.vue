@@ -252,7 +252,7 @@ const title = `Доставка №${props.delivery.id}`
                                         v-model="form.document"
                                         class="col"
                                         label="Документ номер"
-                                        hint="Номер на насрещния документ за доставка"
+                                        hint="Номер на документа за доставка"
                                         autofocus
                                         :error="form.hasErrors"
                                         :error-message="form.errors.document"
