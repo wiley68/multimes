@@ -2,13 +2,17 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 
+const props = defineProps({
+    maxDocument: String
+});
+
 const form = useForm({
-    document: '',
-    supplier: '',
+    document: props.maxDocument ? props.maxDocument : '1',
+    supplier: 'Мултимес',
     status: { label: 'Типов документ', value: 0 },
 })
 
-const onSubmit = () => {
+const deliveriesStore = () => {
     form.post(route('deliveries.store'), {
         onFinish: () => {
             form.reset('document', 'supplier')
@@ -69,7 +73,7 @@ const title = 'Доставка'
                     />
 
                     <q-btn
-                        @click.prevent="onSubmit"
+                        @click.prevent="deliveriesStore"
                         label="Запиши"
                         icon="mdi-content-save-outline"
                         color="primary"

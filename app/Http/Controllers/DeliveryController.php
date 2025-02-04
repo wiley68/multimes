@@ -55,7 +55,11 @@ class DeliveryController extends Controller
     {
         Gate::authorize('create', Delivery::class);
 
-        return Inertia::render('Deliveries/Create');
+        $maxDocument = (int)Delivery::max('document') + 1;
+
+        return Inertia::render('Deliveries/Create', [
+            'maxDocument' => number_format($maxDocument),
+        ]);
     }
 
     /**
