@@ -20,6 +20,7 @@ const form = useForm({
 })
 
 const $q = useQuasar()
+const total = ref(0)
 
 const uproductionLoad = () => {
     form.put(route('uproductions.load', props.uproduction), {
@@ -56,10 +57,9 @@ const uproductionShow = () => {
 }
 
 onMounted(() => {
-    total.value = form.product.stock
+    total.value = form.product ? form.product.stock : 0
 })
 
-const total = ref(0)
 watch(
     () => form.product,
     (newValue, oldValue) => {

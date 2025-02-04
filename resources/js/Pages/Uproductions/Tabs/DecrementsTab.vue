@@ -224,7 +224,7 @@ const confirmCompletion = (udecrement) => {
                 :rows="udecrements"
                 :columns="decrementsColumns"
                 row-key="id"
-                :rows-per-page-options=[7]
+                :rows-per-page-options=[10]
             >
                 <template v-slot:body="props">
                     <q-tr

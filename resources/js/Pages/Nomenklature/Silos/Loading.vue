@@ -2,6 +2,7 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
+import { onMounted, ref, watch } from 'vue'
 
 const props = defineProps({
     silo: {
@@ -18,10 +19,11 @@ const form = useForm({
     maxqt: props.silo?.maxqt,
     stock: props.silo?.maxqt,
     price: props.silo?.price,
-    product: props.silo?.product,
+    product: props.silo.product === null ? props.products.length > 0 ? props.products[0] : null : props.silo?.product,
 })
 
 const $q = useQuasar()
+const total = ref(0)
 
 const silosLoad = () => {
     form.put(route('silos.load', { silo: props.silo.id, uproduction: props.uproduction }), {
@@ -57,6 +59,17 @@ const uproductionShow = () => {
     )
 }
 
+onMounted(() => {
+    total.value = form.product ? form.product.stock : 0
+})
+
+watch(
+    () => form.product,
+    (newValue, oldValue) => {
+        total.value = newValue.stock
+    }
+)
+
 const title = `${props.silo.name} - Зареждане`
 </script>
 
@@ -78,21 +91,33 @@ const title = `${props.silo.name} - Зареждане`
                                     <q-select
                                         v-model="form.product"
                                         :options="products"
-                                        :option-label="element => `[${element.nomenklature}] ${element.name} - [${element.type}]`"
+                                        :option-label="option => `[${option.nomenklature}] ${option.name} - [${option.type}]`"
                                         label="Избери продукт"
                                         hint="Избери продукт който ще се добави в силоза."
                                         :error="form.hasErrors"
                                         :error-message="form.errors.product"
                                     />
-
-                                    <q-input
-                                        v-model.number="form.stock"
-                                        type="number"
-                                        label="Количество [кг]"
-                                        hint="Количество което ще се добави в силоза [кг.]"
-                                        :error="form.hasErrors"
-                                        :error-message="form.errors.stock"
-                                    />
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <q-input
+                                                v-model.number="form.stock"
+                                                type="number"
+                                                label="Количество [кг]"
+                                                hint="Количество което ще се добави в силоза [кг.]"
+                                                :error="form.hasErrors"
+                                                :error-message="form.errors.stock"
+                                            />
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                                v-model.number="total"
+                                                type="number"
+                                                label="Общо [кг]"
+                                                readonly
+                                                hint="Общо налично количество фураж в склада [кг]"
+                                            />
+                                        </div>
+                                    </div>
                                 </q-form>
                             </q-card>
                         </div>
