@@ -1,7 +1,8 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { ref, watch } from 'vue';
+import { ref, watch } from 'vue'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     products: Array,
@@ -12,6 +13,7 @@ const form = useForm({
     uproduction_id: props.uproduction_id,
     product: null,
     quantity: 1,
+    weight: 0.00,
     price: 0.00,
     status: 0,
 })
@@ -21,13 +23,26 @@ const productsOptions = props.products?.map(product => ({
     value: product.id,
     price: product.price,
     me: product.me,
+    stock: product.stock,
 }))
 
+const $q = useQuasar()
 const onSubmit = () => {
-    form.post(route('udecrements.store'))
+    form.post(route('udecrements.store'), {
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
+    })
 }
 
 const me = ref('')
+const total = ref(0)
 
 watch(
     () => form.product,
@@ -36,6 +51,7 @@ watch(
             form.price = newValue.price
         }
         me.value = newValue.me
+        total.value = newValue.stock
     }
 )
 
@@ -57,7 +73,7 @@ const title = `Добавяне на разход към Производств�
                         <div class="column flex-grow flex-center">
                             <q-card class="q-pa-md full-width">
                                 <q-form
-                                    class="row q-gutter-xl"
+                                    class="q-gutter-xl"
                                     autofocus
                                 >
                                     <q-select
@@ -70,21 +86,36 @@ const title = `Добавяне на разход към Производств�
                                         :error="form.hasErrors"
                                         :error-message="form.errors.product"
                                     />
-
-                                    <q-input
-                                        v-model.number="form.quantity"
-                                        class="col"
-                                        type="number"
-                                        label="Количество"
-                                        hint="Количество от избрания продукт за разходване."
-                                        :error="form.hasErrors"
-                                        :error-message="form.errors.quantity"
-                                    >
-                                        <template v-slot:append>
-                                            <span class="text-subtitle1">{{ me }}</span>
-                                        </template>
-                                    </q-input>
-
+                                    <div class="row">
+                                        <div class="col-9 q-mr-md">
+                                            <q-input
+                                                v-model.number="form.quantity"
+                                                class="col"
+                                                type="number"
+                                                label="Количество"
+                                                hint="Количество от избрания продукт за разходване."
+                                                :error="form.hasErrors"
+                                                :error-message="form.errors.quantity"
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                                v-model.number="total"
+                                                type="number"
+                                                label="Наличност"
+                                                readonly
+                                                hint="Общо налично количество от продукта в склада"
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                    </div>
                                     <q-input
                                         v-model.number="form.price"
                                         class="col"
