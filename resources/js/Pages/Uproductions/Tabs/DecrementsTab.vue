@@ -77,6 +77,14 @@ const decrementsColumns = [
         style: 'width: 120px;',
     },
     {
+        name: 'allweight',
+        align: 'left',
+        label: 'Общо [кг]',
+        field: 'allweight',
+        sortable: true,
+        style: 'width: 120px;',
+    },
+    {
         name: 'status',
         align: 'left',
         label: 'Състояние',
@@ -258,6 +266,10 @@ const confirmCompletion = (udecrement) => {
                             </div>
                             <div v-else-if="col.name === 'allprice'">
                                 {{ parseFloat(props.row.price * props.row.quantity).toFixed(2) }}
+                            </div>
+                            <div v-else-if="col.name === 'allweight'">
+                                {{ parseFloat(props.row.weight) === 0.00 ? '' : parseFloat(props.row.weight).toFixed(2)
+                                }}
                             </div>
                             <div v-else-if="col.name === 'status'">
                                 {{ props.row['status'] === 0 ? 'Типов' : 'Приключен' }}
