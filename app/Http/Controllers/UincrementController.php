@@ -144,6 +144,7 @@ class UincrementController extends Controller
 
         $uincrement->update([
             'quantity' => $request->quantity,
+            'weight' => $request->weight,
             'price' => $request->price,
         ]);
 

@@ -2,6 +2,7 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
+import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
     uincrement: {
@@ -11,16 +12,17 @@ const props = defineProps({
 })
 
 const form = useForm({
-    uproduction_id: props.uincrement?.uproduction?.id,
-    product: props.uincrement?.product,
-    quantity: props.uincrement?.quantity,
-    price: props.uincrement?.price,
-    status: props.uincrement?.status,
-    type: props.uincrement?.type,
+    uproduction_id: props.uincrement.uproduction?.id,
+    product: props.uincrement.product,
+    quantity: props.uincrement.quantity,
+    weight: props.uincrement.weight,
+    price: props.uincrement.price,
+    status: props.uincrement.status,
+    type: props.uincrement.type,
 })
 
 const $q = useQuasar()
-const onSubmit = () => {
+const uincrementsUpdate = () => {
     form.put(route('uincrements.update', props.uincrement.id), {
         onError: errors => {
             Object.values(errors).flat().forEach((error) => {
@@ -34,7 +36,31 @@ const onSubmit = () => {
     })
 }
 
-const title = `Добавяне на приход към Производствен Процес №${props.uincrement?.uproduction?.id}`
+const total = ref(0)
+onMounted(() => {
+    total.value = props.uincrement?.uproduction?.stock
+})
+
+const typeTitle = computed(() => {
+    switch (props.uincrement.type) {
+        case 'Продажба':
+            return {
+                'title': 'Добавяне на приход от продажба на прасета',
+                'button': 'Запиши продажбата',
+            }
+        case 'Ремонт':
+            return {
+                'title': 'Добавяне на приход от ремонтни прасета',
+                'button': 'Запиши прехвърлянето',
+            }
+        default:
+            return {
+                'title': 'Добавяне на приход',
+                'button': 'Добави прихода',
+            }
+    }
+})
+const title = `${typeTitle.value.title} към Процес №${props.uincrement?.uproduction?.id}`
 </script>
 
 <template>
@@ -52,7 +78,7 @@ const title = `Добавяне на приход към Производств�
                         <div class="column flex-grow flex-center">
                             <q-card class="q-pa-md full-width">
                                 <q-form
-                                    class="row q-gutter-xl"
+                                    class="q-gutter-xl"
                                     autofocus
                                 >
                                     <q-input
@@ -62,23 +88,50 @@ const title = `Добавяне на приход към Производств�
                                         hint="Продукт избран в прихода"
                                         readonly
                                     />
-
+                                    <div class="row">
+                                        <div class="col-9 q-mr-md">
+                                            <q-input
+                                                v-model.number="form.quantity"
+                                                class="col"
+                                                type="number"
+                                                label="Количество"
+                                                hint="Количество от избрания продукт за приход."
+                                                :error="form.hasErrors"
+                                                :error-message="form.errors.quantity"
+                                                autofocus
+                                                numeric-keyboard-toggle
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ uincrement.product.me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                                v-model.number="total"
+                                                type="number"
+                                                label="Наличност"
+                                                readonly
+                                                hint="Общо налично количество прасета в процеса"
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ uincrement.product.me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                    </div>
                                     <q-input
-                                        v-model.number="form.quantity"
-                                        class="col"
+                                        v-model.number="form.weight"
                                         type="number"
-                                        label="Количество"
-                                        hint="Количество от избрания продукт за приход."
+                                        label="Тегло"
+                                        :hint="`Общо тегло на ${uincrement.type === 'Продажба' ? 'продаваните' : uincrement.type === 'Ремонт' ? 'ремонтните' : ''} прасета`"
                                         :error="form.hasErrors"
-                                        :error-message="form.errors.quantity"
-                                        autofocus
-                                        numeric-keyboard-toggle
+                                        :error-message="form.errors.weight"
                                     >
                                         <template v-slot:append>
-                                            <span class="text-subtitle1">{{ uincrement.product.me }}</span>
+                                            <span class="text-subtitle1">кг</span>
                                         </template>
                                     </q-input>
-
                                     <q-input
                                         v-model.number="form.price"
                                         class="col"
@@ -98,13 +151,12 @@ const title = `Добавяне на приход към Производств�
                         @click.prevent="router.get(route('uproductions.show', uincrement.uproduction?.id))"
                         color="primary"
                         flat
-                        :label="`Продукционен процес №${uincrement.uproduction?.id}`"
+                        :label="`Процес №${uincrement.uproduction?.id}`"
                         icon="mdi-menu-left"
                     />
-
                     <q-btn
-                        @click.prevent="onSubmit"
-                        label="Запиши промените"
+                        @click.prevent="uincrementsUpdate"
+                        :label="typeTitle.button"
                         color="primary"
                         icon="mdi-content-save-outline"
                     />
