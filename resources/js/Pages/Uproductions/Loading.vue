@@ -20,6 +20,7 @@ const form = useForm({
 })
 
 const $q = useQuasar()
+const me = ref('')
 const total = ref(0)
 
 const uproductionLoad = () => {
@@ -57,12 +58,14 @@ const uproductionShow = () => {
 }
 
 onMounted(() => {
+    me.value = form.product ? form.product.me : ''
     total.value = form.product ? form.product.stock : 0
 })
 
 watch(
     () => form.product,
     (newValue, oldValue) => {
+        me.value = newValue.me
         total.value = newValue.stock
     }
 )
@@ -95,34 +98,42 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                         :error-message="form.errors.product"
                                     />
                                     <div class="row">
-                                        <div class="col-9">
+                                        <div class="col-9 q-mr-md">
                                             <q-input
                                                 v-model.number="form.stock"
                                                 type="number"
-                                                label="Количество [бр]"
-                                                hint="Брой прасета които ще се добавят към процеса [бр]"
+                                                label="Количество"
+                                                hint="Брой прасета които ще се добавят към процеса"
                                                 :error="form.hasErrors"
                                                 :error-message="form.errors.stock"
-                                            />
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ me }}</span>
+                                                </template>
+                                            </q-input>
                                         </div>
                                         <div class="col">
                                             <q-input
                                                 v-model.number="total"
                                                 type="number"
-                                                label="Общо [бр]"
+                                                label="Наличност"
                                                 readonly
-                                                hint="Общо налично количество прасета в склада [бр]"
+                                                hint="Общо налично количество прасета в склада"
                                             />
                                         </div>
                                     </div>
                                     <q-input
                                         v-model.number="form.weight"
                                         type="number"
-                                        label="Тегло [кг]"
-                                        hint="Общо тегло на добавяните прасета [кг]"
+                                        label="Тегло"
+                                        hint="Общо тегло на добавяните прасета"
                                         :error="form.hasErrors"
                                         :error-message="form.errors.weight"
-                                    />
+                                    >
+                                        <template v-slot:append>
+                                            <span class="text-subtitle1">кг</span>
+                                        </template>
+                                    </q-input>
                                 </q-form>
                             </q-card>
                         </div>
