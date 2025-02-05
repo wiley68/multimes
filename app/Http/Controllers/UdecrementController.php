@@ -112,6 +112,7 @@ class UdecrementController extends Controller
 
         $udecrement->update([
             'quantity' => $request->quantity,
+            'weight' => $request->weight,
             'price' => $request->price,
         ]);
 
