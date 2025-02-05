@@ -47,6 +47,14 @@ const siloLoadingsCount = computed(() => {
 const siloLoadingsWeight = computed(() => {
     return props.udecrements.reduce((acc, item) => item.product.type === 'Фураж угояване' ? acc + item.quantity : acc, 0)
 })
+
+const productionLoadingsCount = computed(() => {
+    return props.udecrements.filter(item => item.product.type === 'Прасета угояване').length
+})
+
+const productionLoadingsWeight = computed(() => {
+    return props.udecrements.reduce((acc, item) => item.product.type === 'Прасета угояване' ? acc + item.weight : acc, 0)
+})
 </script>
 
 <template>
@@ -178,6 +186,14 @@ const siloLoadingsWeight = computed(() => {
                 <div class="text-subtitle1"><span class="text-weight-medium">Текуща цена</span><span
                         class="text-weight-light"
                     >: {{ uproduction.price }} лв.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Брой зареждания на прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionLoadingsCount }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло заредени прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionLoadingsWeight }} кг.</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Брой дни в процес</span><span
                         class="text-weight-light"
