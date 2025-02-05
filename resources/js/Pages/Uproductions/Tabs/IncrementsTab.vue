@@ -77,6 +77,13 @@ const incrementsColumns = [
         sortable: true,
     },
     {
+        name: 'allweight',
+        align: 'left',
+        label: 'Общо [кг]',
+        field: 'allweight',
+        sortable: true,
+    },
+    {
         name: 'status',
         align: 'left',
         label: 'Състояние',
@@ -95,6 +102,13 @@ const totalPrice = computed(() => {
     return props.uincrements
         .filter(item => item.status === 1)
         .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2);
+})
+
+const totalWeight = computed(() => {
+    return props.uincrements
+        .filter(item => item.status === 1)
+        .reduce((total, item) => total + item.weight, 0)
         .toFixed(2);
 })
 
@@ -273,6 +287,12 @@ const uincrementsComplete = (uincrement) => {
                                 {{ parseFloat(props.row.price * props.row.quantity).toFixed(2) }}
                             </div>
                             <div
+                                v-else-if="col.name === 'allweight'"
+                                style="width: 60px;"
+                            >
+                                {{ parseFloat(props.row.weight).toFixed(2) }}
+                            </div>
+                            <div
                                 v-else-if="col.name === 'status'"
                                 style="width: 60px;"
                             >
@@ -335,6 +355,10 @@ const uincrementsComplete = (uincrement) => {
                         >Общо:</q-td>
                         <q-td class="text-weight-bold">
                             {{ totalPrice }}
+                        </q-td>
+                        <q-td></q-td>
+                        <q-td class="text-weight-bold">
+                            {{ totalWeight }}
                         </q-td>
                         <q-td></q-td>
                     </q-tr>
