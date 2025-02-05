@@ -119,7 +119,11 @@ const title = `Хале: ${props.uproduction.uhall.name}, Процес: №${pro
                                                 label="Наличност"
                                                 readonly
                                                 hint="Общо налично количество прасета в склада"
-                                            />
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ me }}</span>
+                                                </template>
+                                            </q-input>
                                         </div>
                                     </div>
                                     <q-input
