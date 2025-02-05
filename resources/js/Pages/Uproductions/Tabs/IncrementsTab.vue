@@ -153,7 +153,7 @@ const confirm = (increments_id) => {
     }).onCancel(() => { }).onDismiss(() => { })
 }
 
-const confirmCompletion = (uincrement) => {
+const uincrementsComplete = (uincrement) => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да приключиш този приход? Количеството от избрания продукт ще бъде намалено в халето за текущия процес, като ще промени текущите наличности. Процеса е необратим!',
@@ -175,6 +175,7 @@ const confirmCompletion = (uincrement) => {
             uproduction_id: uincrement.uproduction_id,
             product: uincrement.product,
             quantity: uincrement.quantity,
+            weight: uincrement.weight,
             price: uincrement.price,
             status: uincrement.status,
             type: uincrement.type,
@@ -289,12 +290,13 @@ const confirmCompletion = (uincrement) => {
                                     dense
                                     flat
                                     rounded
-                                    @click="confirmCompletion(
+                                    @click="uincrementsComplete(
                                         {
                                             id: props.row.id,
                                             uproduction_id: props.row.uproduction?.id,
                                             product: props.row.product,
                                             quantity: props.row.quantity,
+                                            weight: props.row.weight,
                                             price: props.row.price,
                                             status: 1,
                                             type: props.row.type,
