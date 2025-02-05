@@ -12,6 +12,10 @@ const props = defineProps({
         type: Array,
         required: true
     },
+    uincrements: {
+        type: Array,
+        required: true
+    },
 })
 
 const getDaysBetweenTodayAndDate = (targetDate) => {
@@ -48,12 +52,20 @@ const siloLoadingsWeight = computed(() => {
     return props.udecrements.reduce((acc, item) => item.product.type === 'Фураж угояване' ? acc + item.quantity : acc, 0)
 })
 
-const productionLoadingsCount = computed(() => {
+const productionDecrementsCount = computed(() => {
     return props.udecrements.filter(item => item.product.type === 'Прасета угояване').length
 })
 
-const productionLoadingsWeight = computed(() => {
+const productionDecrementsWeight = computed(() => {
     return props.udecrements.reduce((acc, item) => item.product.type === 'Прасета угояване' ? acc + item.weight : acc, 0)
+})
+
+const productionIncrementsCount = computed(() => {
+    return props.uincrements.filter(item => item.product.type === 'Прасета угояване').length
+})
+
+const productionIncrementsWeight = computed(() => {
+    return props.uincrements.reduce((acc, item) => item.product.type === 'Прасета угояване' ? acc + item.weight : acc, 0)
 })
 </script>
 
@@ -189,11 +201,24 @@ const productionLoadingsWeight = computed(() => {
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Брой зареждания на прасета</span><span
                         class="text-weight-light"
-                    >: {{ productionLoadingsCount }} бр.</span>
+                    >: {{ productionDecrementsCount }} бр.</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло заредени прасета</span><span
                         class="text-weight-light"
-                    >: {{ productionLoadingsWeight }} кг.</span>
+                    >: {{ productionDecrementsWeight }} кг.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Брой продажби на прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionIncrementsCount }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло продадени прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionIncrementsWeight }} кг.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Съотношение Фураж/1кг. тегло</span><span
+                        class="text-weight-light"
+                    >: {{ (productionIncrementsWeight - productionDecrementsWeight) !== 0 ? (siloLoadingsWeight /
+                        (productionIncrementsWeight - productionDecrementsWeight)).toFixed(2) : 0 }}</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Брой дни в процес</span><span
                         class="text-weight-light"
