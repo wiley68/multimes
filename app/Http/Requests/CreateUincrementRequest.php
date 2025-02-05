@@ -42,6 +42,7 @@ class CreateUincrementRequest extends FormRequest
             'weight' => [
                 'required',
                 'numeric',
+                'min:1',
             ],
             'price' => [
                 'required',

@@ -16,7 +16,7 @@ const form = useForm({
     stock: 0,
     price: props.uproduction?.price,
     product: props.uproduction.product === null ? props.products.length > 0 ? props.products[0] : null : props.uproduction?.product,
-    weight: 0,
+    weight: 0.00,
 })
 
 const $q = useQuasar()

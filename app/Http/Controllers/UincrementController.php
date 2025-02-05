@@ -78,6 +78,7 @@ class UincrementController extends Controller
             'uproduction_id' => $request->uproduction_id,
             'product_id' => $request->product['id'],
             'quantity' => $request->quantity,
+            'weight' => $request->weight,
             'price' => $request->price,
             'status' => $request->status,
             'type' => $request->type,

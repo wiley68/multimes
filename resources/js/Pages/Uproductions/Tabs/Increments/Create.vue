@@ -31,7 +31,7 @@ const form = useForm({
     uproduction_id: props.uproduction.id,
     product: props.product,
     quantity: 1,
-    weight: 0,
+    weight: 0.00,
     price: props.uproduction.price,
     status: 0,
     type: props.type,
@@ -41,17 +41,8 @@ const $q = useQuasar()
 const uincrementsStore = () => {
     form.post(route('uincrements.store'), {
         onFinish: () => {
-            form.reset('quantity')
-        },
-        onError: errors => {
-            Object.values(errors).flat().forEach((error) => {
-                $q.notify({
-                    message: error,
-                    icon: 'mdi-alert-circle-outline',
-                    type: 'negative',
-                });
-            });
-        },
+            form.reset('quantity', 'weight')
+        }
     })
 }
 
@@ -118,6 +109,7 @@ const title = `${typeTitle.value.title} към Процес №${props.uproducti
                                                 type="number"
                                                 label="Количество"
                                                 hint="Количество от избрания продукт за приход."
+                                                autofocus
                                                 :error="form.hasErrors"
                                                 :error-message="form.errors.quantity"
                                             >
@@ -140,6 +132,18 @@ const title = `${typeTitle.value.title} към Процес №${props.uproducti
                                             </q-input>
                                         </div>
                                     </div>
+                                    <q-input
+                                        v-model.number="form.weight"
+                                        type="number"
+                                        label="Тегло"
+                                        :hint="`Общо тегло на ${type === 'Продажба' ? 'продаваните' : type === 'Ремонт' ? 'ремонтните' : ''} прасета`"
+                                        :error="form.hasErrors"
+                                        :error-message="form.errors.weight"
+                                    >
+                                        <template v-slot:append>
+                                            <span class="text-subtitle1">кг</span>
+                                        </template>
+                                    </q-input>
                                     <q-input
                                         v-model.number="form.price"
                                         class="col"
