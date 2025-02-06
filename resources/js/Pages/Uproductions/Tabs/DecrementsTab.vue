@@ -108,6 +108,13 @@ const totalPrice = computed(() => {
         .toFixed(2);
 })
 
+const totalWeight = computed(() => {
+    return props.udecrements
+        .filter(item => item.status === 1)
+        .reduce((total, item) => total + item.weight, 0)
+        .toFixed(2);
+})
+
 const $q = useQuasar()
 
 const createUdecrements = () => {
@@ -327,6 +334,9 @@ const confirmCompletion = (udecrement) => {
                         >Общо:</q-td>
                         <q-td class="text-weight-bold">
                             {{ totalPrice }}
+                        </q-td>
+                        <q-td class="text-weight-bold">
+                            {{ totalWeight }}
                         </q-td>
                         <q-td></q-td>
                     </q-tr>
