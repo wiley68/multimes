@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('type', [
                 'Продажба',
                 'Ремонт',
+                'Умрели',
             ]);
             $table->unsignedTinyInteger('status')->default(0);
             $table->timestamps();

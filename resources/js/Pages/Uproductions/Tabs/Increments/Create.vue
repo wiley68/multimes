@@ -32,7 +32,7 @@ const form = useForm({
     product: props.product,
     quantity: 1,
     weight: 0.00,
-    price: props.uproduction.price,
+    price: props.type === 'Умрели' ? 0.00 : props.uproduction.price,
     status: 0,
     type: props.type,
 })
@@ -58,18 +58,23 @@ const typeTitle = computed(() => {
     switch (props.type) {
         case 'Продажба':
             return {
-                'title': 'Добавяне на приход от продажба на прасета',
+                'title': 'Продажба на прасета',
                 'button': 'Запиши продажбата',
             }
         case 'Ремонт':
             return {
-                'title': 'Добавяне на приход от ремонтни прасета',
+                'title': 'Прасета за ремонт',
+                'button': 'Запиши прехвърлянето',
+            }
+        case 'Умрели':
+            return {
+                'title': 'Прасета умрели',
                 'button': 'Запиши прехвърлянето',
             }
         default:
             return {
                 'title': 'Добавяне на приход',
-                'button': 'Добави прихода',
+                'button': 'Запиши',
             }
     }
 })

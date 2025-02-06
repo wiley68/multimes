@@ -45,18 +45,23 @@ const typeTitle = computed(() => {
     switch (props.uincrement.type) {
         case 'Продажба':
             return {
-                'title': 'Добавяне на приход от продажба на прасета',
+                'title': 'Продажба на прасета',
                 'button': 'Запиши продажбата',
             }
         case 'Ремонт':
             return {
-                'title': 'Добавяне на приход от ремонтни прасета',
+                'title': 'Прасета за ремонт',
+                'button': 'Запиши прехвърлянето',
+            }
+        case 'Умрели':
+            return {
+                'title': 'Прасета умрели',
                 'button': 'Запиши прехвърлянето',
             }
         default:
             return {
                 'title': 'Добавяне на приход',
-                'button': 'Добави прихода',
+                'button': 'Запиши',
             }
     }
 })
