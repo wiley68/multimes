@@ -27,7 +27,7 @@ class UincrementController extends Controller
 
         $validated = $request->validate([
             'uproduction_id' => 'required|integer',
-            'type' => 'required|string|in:Продажба,Ремонт',
+            'type' => 'required|string|in:Продажба,Ремонт,Умрели',
         ]);
 
         $uproduction = Uproduction::findOrFail($validated['uproduction_id']);

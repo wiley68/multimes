@@ -385,6 +385,14 @@ const uincrementsComplete = (uincrement) => {
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
+            <q-btn
+                v-if="uproduction.status === 1"
+                @click="createUincrements('Умрели')"
+                label="Прасета умрели"
+                title="Добавя нов приход към продукционния процес. Прихода е от умрели прасета."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+            />
         </div>
     </div>
 </template>
