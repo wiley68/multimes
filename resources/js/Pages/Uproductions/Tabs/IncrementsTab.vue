@@ -371,13 +371,12 @@ const uincrementsComplete = (uincrement) => {
                 <template v-slot:bottom-row>
                     <q-tr>
                         <q-td
-                            colspan="6"
+                            colspan="7"
                             class="text-weight-bold"
                         >Общо:</q-td>
                         <q-td class="text-weight-bold">
                             {{ totalPrice }}
                         </q-td>
-                        <q-td></q-td>
                         <q-td class="text-weight-bold">
                             {{ totalWeight }}
                         </q-td>

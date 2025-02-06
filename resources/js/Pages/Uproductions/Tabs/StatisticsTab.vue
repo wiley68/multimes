@@ -88,6 +88,41 @@ const totalIncementsWeight = computed(() => {
         .toFixed(2)
 })
 
+const totalDecrementsLoadingPrice = computed(() => {
+    return props.udecrements
+        .filter(item => item.status === 1 && item.product?.type === 'Прасета угояване')
+        .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2)
+})
+
+const totalDecrementsFurazPrice = computed(() => {
+    return props.udecrements
+        .filter(item => item.status === 1 && item.product?.type === 'Фураж угояване')
+        .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2)
+})
+
+const totalDecrementsDrugiPrice = computed(() => {
+    return props.udecrements
+        .filter(item => item.status === 1 && item.product?.type === 'Обща употреба')
+        .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2)
+})
+
+const totalIncrementsSellPrice = computed(() => {
+    return props.uincrements
+        .filter(item => item.status === 1 && item.product?.type === 'Прасета угояване' && item.type === 'Продажба')
+        .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2)
+})
+
+const totalIncrementsRemontPrice = computed(() => {
+    return props.uincrements
+        .filter(item => item.status === 1 && item.product?.type === 'Прасета угояване' && item.type === 'Ремонт')
+        .reduce((total, item) => total + item.quantity * item.price, 0)
+        .toFixed(2)
+})
+
 const totalDecrements = computed(() => {
     return props.udecrements
         .filter(item => item.status === 1)
@@ -197,32 +232,47 @@ const totalResult = computed(() => {
             <q-separator />
             <q-card-section class="col">
                 <div class="text-subtitle1">
+                    <span class="text-weight-medium">{{ `Текущ брой ${uproduction.product?.name}: ` }}</span>
+                    <span class="text-weight-light"> {{ uproduction.stock }} бр</span>
+                </div>
+                <div class="text-subtitle1">
+                    <span class="text-weight-medium">{{ `Текуща цена ${uproduction.product?.name}: ` }}</span>
+                    <span class="text-weight-light">{{ uproduction.price }} лв</span>
+                </div>
+                <q-separator />
+                <div class="text-subtitle1">
+                    <span class="text-weight-medium">Разходи за зареждане на прасета</span>
+                    <span class="text-weight-light">: {{ totalDecrementsLoadingPrice }} лв</span>
+                </div>
+                <div class="text-subtitle1">
+                    <span class="text-weight-medium">Разходи за зареждане на фураж</span>
+                    <span class="text-weight-light">: {{ totalDecrementsFurazPrice }} лв</span>
+                </div>
+                <div class="text-subtitle1">
+                    <span class="text-weight-medium">Разходи други</span>
+                    <span class="text-weight-light">: {{ totalDecrementsDrugiPrice }} лв</span>
+                </div>
+                <div class="text-subtitle1">
                     <span class="text-weight-medium">Общо разходи за процеса</span>
                     <span class="text-weight-light">: {{ totalDecrements }} лв.</span>
+                </div>
+                <q-separator />
+                <div class="text-subtitle1">
+                    <span class="text-weight-medium">Приходи от продажби на прасета</span>
+                    <span class="text-weight-light">: {{ totalIncrementsSellPrice }} лв</span>
+                </div>
+                <div class="text-subtitle1">
+                    <span class="text-weight-medium">Приходи от ремонтни прасета</span>
+                    <span class="text-weight-light">: {{ totalIncrementsRemontPrice }} лв</span>
                 </div>
                 <div class="text-subtitle1">
                     <span class="text-weight-medium">Общо приходи от процеса</span>
                     <span class="text-weight-light">: {{ totalIncrements }} лв.</span>
                 </div>
-                <div class="text-h6">
-                    <span
-                        class="text-weight-bold"
-                        :class="totalResult >= 0 ? 'text-green' : 'text-red'"
-                    >Печалба/Загуба от процеса</span>
-                    <span
-                        class="text-weight-bold"
-                        :class="totalResult >= 0 ? 'text-green' : 'text-red'"
-                    >: {{ totalResult }} лв.</span>
-                </div>
-                <div class="text-subtitle1">
-                    <span class="text-weight-medium">Текущ брой прасета [{{ uproduction.product?.nomenklature }} {{
-                        uproduction.product?.name }}]</span>
-                    <span class="text-weight-light">: {{ uproduction.stock }} {{ uproduction.product?.me }}</span>
-                </div>
-                <div class="text-subtitle1">
-                    <span class="text-weight-medium">Текуща цена [{{ uproduction.product?.nomenklature }} {{
-                        uproduction.product?.name }}]</span>
-                    <span class="text-weight-light">: {{ uproduction.price }} лв.</span>
+                <q-separator />
+                <div class="text-subtitle1 text-accent">
+                    <span class="text-weight-medium">Печалба/Загуба от процеса</span>
+                    <span class="text-weight-light">: {{ totalResult }} лв.</span>
                 </div>
             </q-card-section>
         </q-card>
