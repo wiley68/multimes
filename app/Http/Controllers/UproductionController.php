@@ -115,6 +115,7 @@ class UproductionController extends Controller
 
         $validated = $request->validate([
             'status' => 'required|integer|in:0',
+            'rest' => 'required|numeric|min:0',
         ]);
 
         if ($uproduction->status === 0) {
@@ -128,6 +129,28 @@ class UproductionController extends Controller
                 'complete' => 'Във Вашия прозиводствен процес все още има налични прасета [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . ']. Не можете да приключите процеса докато все още имате налични прасета в него!',
             ]);
         }
+
+        $lastUdecrement = $uproduction->udecrements()
+            ->whereHas('product', function ($query) {
+                $query->where('type', 'Фураж угояване')
+                    ->where('status', 1);
+            })
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ((float)$lastUdecrement->quantity < (float)$validated['rest']) {
+            return back()->withErrors([
+                'complete' => 'Количеството фураж зареден в последния процес [' . $lastUdecrement->quantity . '] е по-малко от остатъчното количество фураж в силоза [' . $validated['rest'] . ']. Операцията не може да се извърши. Остатъчното количество фураж трабва да е по-малко от последно заредения фураж в силоза!',
+            ]);
+        }
+
+        $lastUdecrement->quantity = (float)$lastUdecrement->quantity - (float)$validated['rest'];
+        $lastUdecrement->save();
+
+        $product = $lastUdecrement->product;
+        $product->stock = (float)$product->stock + (float)$validated['rest'];
+        $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$uproduction->uhall->silo->price) / ((float)$product->stock + (float)$validated['rest']);
+        $product->save();
 
         $silo = $uproduction->uhall->silo;
         $silo->update([
