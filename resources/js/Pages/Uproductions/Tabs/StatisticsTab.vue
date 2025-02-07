@@ -151,22 +151,22 @@ const totalResult = computed(() => {
             <q-separator />
             <q-card-section class="col">
                 <div class="text-subtitle1">
-                    <span class="text-weight-medium">{{ `Брой заредени ${uproduction.product?.name}: ` }}</span>
+                    <span class="text-weight-medium">{{ `Брой вкарани ${uproduction.product?.name}: ` }}</span>
                     <span class="text-weight-light">{{ totalDecrementsMaterial }} бр</span>
                 </div>
                 <div class="text-subtitle1">
-                    <span class="text-weight-medium">{{ `Тегло заредени ${uproduction.product?.name}: ` }}</span>
+                    <span class="text-weight-medium">{{ `Тегло вкарани ${uproduction.product?.name}: ` }}</span>
                     <span class="text-weight-light">{{ totalDecrementsMaterialWeight }} кг</span>
                 </div>
                 <div class="text-subtitle1">
                     <span class="text-weight-medium">
-                        {{ `Брой зареждания на ${uproduction.uhall.silo?.product.name}: ` }}
+                        {{ `Брой зареждания на Фураж угояване: ` }}
                     </span>
                     <span class="text-weight-light">{{ totalDecrementsFuraz }} бр</span>
                 </div>
                 <div class="text-subtitle1">
                     <span class="text-weight-medium">
-                        {{ `Тегло зареден ${uproduction.uhall.silo?.product.name}: ` }}
+                        {{ `Тегло зареден Фураж угояване: ` }}
                     </span>
                     <span class="text-weight-light">{{ totalDecrementsFurazWeight }} кг</span>
                 </div>
@@ -196,7 +196,7 @@ const totalResult = computed(() => {
                     <span class="text-weight-light">{{ totalIncementsUmreliWeight }} кг</span>
                 </div>
                 <div class="text-subtitle1">
-                    <span class="text-weight-medium">{{ `Общо тегло излезли ${uproduction.product?.name}: ` }}</span>
+                    <span class="text-weight-medium">{{ `Общо тегло изкарани ${uproduction.product?.name}: ` }}</span>
                     <span class="text-weight-light">{{ totalIncementsWeight }} кг</span>
                 </div>
                 <q-separator />
@@ -241,7 +241,7 @@ const totalResult = computed(() => {
                 </div>
                 <q-separator />
                 <div class="text-subtitle1">
-                    <span class="text-weight-medium">Разходи за зареждане на прасета</span>
+                    <span class="text-weight-medium">Разходи за вкарване на прасета</span>
                     <span class="text-weight-light">: {{ totalDecrementsLoadingPrice }} лв</span>
                 </div>
                 <div class="text-subtitle1">

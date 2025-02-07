@@ -56,12 +56,20 @@ const productionDecrementsCount = computed(() => {
     return props.udecrements.filter(item => item.product.type === 'Прасета угояване').length
 })
 
+const productionDecrementsQuantity = computed(() => {
+    return props.udecrements.reduce((acc, item) => item.product.type === 'Прасета угояване' ? acc + item.quantity : acc, 0)
+})
+
 const productionDecrementsWeight = computed(() => {
     return props.udecrements.reduce((acc, item) => item.product.type === 'Прасета угояване' ? acc + item.weight : acc, 0)
 })
 
 const productionIncrementsCount = computed(() => {
     return props.uincrements.filter(item => item.product.type === 'Прасета угояване').length
+})
+
+const productionIncrementsQuantity = computed(() => {
+    return props.uincrements.reduce((acc, item) => item.product.type === 'Прасета угояване' ? acc + item.quantity : acc, 0)
 })
 
 const productionIncrementsWeight = computed(() => {
@@ -199,19 +207,27 @@ const productionIncrementsWeight = computed(() => {
                         class="text-weight-light"
                     >: {{ uproduction.price }} лв.</span>
                 </div>
-                <div class="text-subtitle1"><span class="text-weight-medium">Брой зареждания на прасета</span><span
+                <div class="text-subtitle1"><span class="text-weight-medium">Брой вкарвания на прасета</span><span
                         class="text-weight-light"
                     >: {{ productionDecrementsCount }} бр.</span>
                 </div>
-                <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло заредени прасета</span><span
+                <div class="text-subtitle1"><span class="text-weight-medium">Общ брой вкарани прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionDecrementsQuantity }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло вкарани прасета</span><span
                         class="text-weight-light"
                     >: {{ productionDecrementsWeight }} кг.</span>
                 </div>
-                <div class="text-subtitle1"><span class="text-weight-medium">Брой продажби на прасета</span><span
+                <div class="text-subtitle1"><span class="text-weight-medium">Брой изкарвания на прасета</span><span
                         class="text-weight-light"
                     >: {{ productionIncrementsCount }} бр.</span>
                 </div>
-                <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло продадени прасета</span><span
+                <div class="text-subtitle1"><span class="text-weight-medium">Общ брой изкарани прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionIncrementsQuantity }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло изкарани прасета</span><span
                         class="text-weight-light"
                     >: {{ productionIncrementsWeight }} кг.</span>
                 </div>
