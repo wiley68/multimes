@@ -254,9 +254,9 @@ class UproductionController extends Controller
     {
         Gate::authorize('delete', $uproduction);
 
-        if ($uproduction->status === 1) {
+        if ($uproduction->status === 1 && (float)$uproduction->stock !== 0.00 && (int)$uproduction->product_id !== 0) {
             return back()->withErrors([
-                'delete' => 'Не можете да изтривате приключена доставка.'
+                'delete' => 'Не можете да изтривате активен процес или процес с налични прасета.'
             ]);
         }
 

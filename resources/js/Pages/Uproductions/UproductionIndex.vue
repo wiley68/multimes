@@ -300,9 +300,9 @@ const confirm = (uproduction_id) => {
                                             v-else-if="col.name === 'result'"
                                             style="width: 80px;"
                                         >
-                                            {{ (props.row.uincrements.reduce((sum, item) => sum + item.price *
+                                            {{(props.row.uincrements.reduce((sum, item) => sum + item.price *
                                                 item.quantity, 0) - props.row.udecrements.reduce((sum, item) => sum +
-                                                    item.price * item.quantity, 0)).toFixed(2) }}
+                                                    item.price * item.quantity, 0)).toFixed(2)}}
                                         </div>
                                         <div
                                             v-else-if="col.name === 'actions'"
@@ -319,7 +319,7 @@ const confirm = (uproduction_id) => {
                                                 @click="uproductionShow(props.row.id)"
                                             />
                                             <q-btn
-                                                v-if="hasPermission('delete') && props.row.status === 0"
+                                                v-if="hasPermission('delete') && (props.row.status === 0 || (props.row.product === null && props.row.udecrements.length === 0 && props.row.uincrements.length === 0))"
                                                 title="Изтрий процеса"
                                                 icon="mdi-delete-outline"
                                                 color="negative"
