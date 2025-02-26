@@ -20,6 +20,8 @@ return new class extends Migration
             $table->double('stock', 15, 2)->default(0);
             $table->decimal('price', 8, 2)->default(0);
             $table->unsignedBigInteger('product_id')->default(0);
+            $table->unsignedInteger('group_number');
+            $table->unsignedInteger('partida_number');
             $table->timestamps();
         });
     }

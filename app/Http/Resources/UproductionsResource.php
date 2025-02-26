@@ -22,6 +22,8 @@ class UproductionsResource extends JsonResource
             'stock' => $this->stock,
             'price' => $this->price,
             'product' => new ProductResource($this->whenLoaded('product')),
+            'group_number' => $this->group_number,
+            'partida_number' => $this->partida_number,
             'created_at' => $this->created_at,
             'uhall' => new UhallResource($this->whenLoaded('uhall')),
             'udecrements' => UdecrementResource::collection($this->whenLoaded('udecrements')),

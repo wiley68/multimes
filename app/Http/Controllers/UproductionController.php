@@ -30,7 +30,7 @@ class UproductionController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,uhall_id,status,created_at',
+            'sortBy' => 'nullable|string|in:id,uhall_id,status,group_number,partida_number,created_at',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
             'uhall' => 'nullable|integer|exists:uhalls,id',
@@ -75,6 +75,8 @@ class UproductionController extends Controller
             'status' => $request->status,
             'uhall_id' => $request->uhall['id'],
             'production_days' => $request->production_days,
+            'group_number' => $request->group_number,
+            'partida_number' => $request->partida_number,
         ]);
 
         return back();

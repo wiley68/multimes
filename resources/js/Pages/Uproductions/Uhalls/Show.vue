@@ -2,9 +2,9 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { ref } from 'vue'
-import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 import moment from 'moment'
+import ConfirmDialog from '@/Components/ConfirmDialog.vue';
 
 const props = defineProps({
     uhalls: {
@@ -57,7 +57,6 @@ const pagination = {
 
 const title = 'Халета Угояване'
 const filter = ref(props.filter)
-const $q = useQuasar()
 const { hasPermission } = usePermission()
 
 const getDaysBetweenTodayAndDate = (targetDate) => {
@@ -88,29 +87,30 @@ const onRequest = (requestProp) => {
     );
 }
 
+const showPrompt = ref(false)
+const selectedUhall = ref(null)
+
 const confirm = (uhall) => {
-    $q.dialog({
-        title: 'Потвърди',
-        message: `Ще бъде стартиран нов производствен процес! Процеса е за Угояване на прасета. Угояването ще се извърши в Хале: ${uhall.name}. Процеса е необратим. Съгласен ли сте с това?`,
-        cancel: true,
-        persistent: true,
-        ok: {
-            label: 'Да',
-            color: 'primary',
-        },
-        cancel: {
-            label: 'Откажи',
-            color: 'grey-1',
-            textColor: 'grey-10',
-            flat: true
-        },
-    }).onOk(() => {
-        router.post(route('uproductions.store'), {
-            status: 1,
-            uhall: uhall,
-            production_days: 45,
-        })
-    }).onCancel(() => { }).onDismiss(() => { })
+    selectedUhall.value = uhall
+    showPrompt.value = true
+}
+
+const handleOk = (data) => {
+    console.log(data)
+    return
+    router.post(route('uproductions.store'), {
+        status: 1,
+        uhall: selectedUhall.value,
+        production_days: 45,
+        group_number: data.groupNumber,
+        partida_number: data.partidaNumber
+    });
+
+    showPrompt.value = false
+}
+
+const handleCancel = () => {
+    showPrompt.value = false
 }
 </script>
 
@@ -126,6 +126,13 @@ const confirm = (uhall) => {
             <div class="page-container">
                 <div class="body-panel">
                     <div class="scrollable-content">
+                        <ConfirmDialog
+                            :show="showPrompt"
+                            title="Потвърди"
+                            message="Ще бъде стартиран нов производствен процес! Процесът е необратим. Въведете номера на група и партида."
+                            @ok="handleOk"
+                            @cancel="handleCancel"
+                        />
                         <q-table
                             grid
                             grid-header
@@ -172,7 +179,7 @@ const confirm = (uhall) => {
                                             <template v-if="props.row.uproduction !== null">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
                                                     props.row.uproduction.id
-                                                    }}
+                                                }}
                                                 </div>
                                             </template>
                                             <template v-else>

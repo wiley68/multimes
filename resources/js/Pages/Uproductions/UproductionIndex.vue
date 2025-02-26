@@ -40,6 +40,20 @@ const columns = [
         sortable: true,
     },
     {
+        name: 'group_number',
+        align: 'left',
+        label: 'Група',
+        field: 'group_number',
+        sortable: true,
+    },
+    {
+        name: 'partida_number',
+        align: 'left',
+        label: 'Партида',
+        field: 'partida_number',
+        sortable: true,
+    },
+    {
         name: 'status',
         align: 'left',
         label: 'Състояние',
@@ -338,7 +352,7 @@ const confirm = (uproduction_id) => {
                             <template v-slot:bottom-row>
                                 <q-tr>
                                     <q-td
-                                        colspan="8"
+                                        colspan="10"
                                         class="text-weight-bold"
                                     >Общо:</q-td>
                                     <q-td class="text-weight-bold">
