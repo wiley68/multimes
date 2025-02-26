@@ -131,7 +131,8 @@ const uproductionLoading = () => {
     <div class="col text-h4 q-mr-md">
         <q-card class="my-card full-height column">
             <q-card-section class="bg-secondary text-white">
-                <div class="text-h6 text-center">Производствен Процес №{{ uproduction.id }}
+                <div class="text-h6 text-center">Производствен Процес №{{ uproduction.id }} - {{
+                    uproduction.group_number }}/{{ uproduction.partida_number }}
                 </div>
             </q-card-section>
             <q-separator />
@@ -143,11 +144,15 @@ const uproductionLoading = () => {
             </q-card-section>
             <q-separator />
             <q-card-section class="col">
+                <div class="text-subtitle1">Група №: {{ uproduction.group_number }}
+                </div>
+                <div class="text-subtitle1">Партида №: {{ uproduction.partida_number }}
+                </div>
                 <div class="text-subtitle1">Налично в склад: {{ uproduction.product?.stock }} {{ uproduction.product?.me
-                    }}
+                }}
                 </div>
                 <div class="text-subtitle1">Текущ брой прасета: {{ uproduction.stock }} {{ uproduction.product?.me
-                    }}
+                }}
                 </div>
                 <div class="text-subtitle1">Състояние: {{ uproduction.status === 1 ? 'Активен' : 'Приключен' }}
                 </div>
@@ -213,7 +218,7 @@ const uproductionLoading = () => {
             <q-card-section>
                 <div class="text-h5">[{{ uproduction.uhall.silo.product?.nomenklature }}] {{
                     uproduction.uhall.silo.product?.name
-                    }}</div>
+                }}</div>
                 <div class="text-caption">{{ uproduction.uhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />
@@ -230,7 +235,7 @@ const uproductionLoading = () => {
                     {{
                         uproduction.uhall.silo.product?.me }}</div>
                 <div class="text-subtitle1 text-accent">Процент запълване: {{ siloPurcentLabel
-                    }}</div>
+                }}</div>
             </q-card-section>
             <q-card-actions vertical>
                 <q-btn

@@ -171,6 +171,14 @@ const productionIncrementsWeight = computed(() => {
                         class="text-weight-light"
                     >: {{ uproduction.id }}</span>
                 </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Група №</span><span
+                        class="text-weight-light"
+                    >: {{ uproduction.group_number }}</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Партида №</span><span
+                        class="text-weight-light"
+                    >: {{ uproduction.partida_number }}</span>
+                </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Стартиран на</span><span
                         class="text-weight-light"
                     >: {{ moment(uproduction.created_at).format('DD.MM.YY HH:mm') }}</span>
