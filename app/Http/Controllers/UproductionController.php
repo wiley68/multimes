@@ -149,7 +149,11 @@ class UproductionController extends Controller
 
         $product = $lastUdecrement->product;
         $product->stock = (float)$product->stock + (float)$validated['rest'];
-        $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$uproduction->uhall->silo->price) / ((float)$product->stock + (float)$validated['rest']);
+        if ((float)$product->stock === 0.00) {
+            $product->price = 0;
+        } else {
+            $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$uproduction->uhall->silo->price) / $product->stock;
+        }
         $product->save();
 
         $silo = $uproduction->uhall->silo;
