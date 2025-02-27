@@ -100,6 +100,13 @@ const productionPurcent = (production) => {
         v-if="hasPermissions(['create', 'update', 'view', 'delete'])"
         class="row wrap q-gutter-sm full-height"
       >
+        <ConfirmDialog
+          :show="showPrompt"
+          title="Потвърди"
+          message="Ще бъде стартиран нов производствен процес! Процесът е необратим. Въведете номера на група и партида."
+          @ok="handleOk"
+          @cancel="handleCancel"
+        />
         <div
           class="col"
           style="min-width: 300px;"
