@@ -8,6 +8,14 @@ const props = defineProps({
         type: Object,
         required: true
     },
+    mdecrements: {
+        type: Array,
+        required: true
+    },
+    mincrements: {
+        type: Array,
+        required: true
+    },
 })
 
 const getDaysBetweenTodayAndDate = (targetDate) => {
@@ -35,6 +43,39 @@ const productionPurcent = computed(() => {
     }
 })
 const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)} %`
+
+const siloLoadingsCount = computed(() => {
+    return props.mdecrements.filter(item => item.product.type === 'Фураж ремонтни').length
+})
+
+const siloLoadingsWeight = computed(() => {
+    return props.mdecrements.reduce((acc, item) => item.product.type === 'Фураж ремонтни' ? acc + item.quantity : acc, 0)
+})
+
+const productionDecrementsCount = computed(() => {
+    return props.mdecrements.filter(item => item.product.type === 'Прасета ремонтни').length
+})
+
+const productionDecrementsQuantity = computed(() => {
+    return props.mdecrements.reduce((acc, item) => item.product.type === 'Прасета ремонтни' ? acc + item.quantity : acc, 0)
+})
+
+const productionDecrementsWeight = computed(() => {
+    return props.mdecrements.reduce((acc, item) => item.product.type === 'Прасета ремонтни' ? acc + item.weight : acc, 0)
+})
+
+const productionIncrementsCount = computed(() => {
+    return props.mincrements.filter(item => item.product.type === 'Прасета ремонтни').length
+})
+
+const productionIncrementsQuantity = computed(() => {
+    return props.mincrements.reduce((acc, item) => item.product.type === 'Прасета ремонтни' ? acc + item.quantity : acc, 0)
+})
+
+const productionIncrementsWeight = computed(() => {
+    return props.mincrements.reduce((acc, item) => item.product.type === 'Прасета ремонтни' ? acc + item.weight : acc, 0)
+})
+
 </script>
 
 <template>
@@ -102,6 +143,14 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)} %`
                         class="text-weight-light">: {{
                             parseFloat(mproduction.mhall.silo.price).toFixed(2) }} лв.</span>
                 </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Брой зареждания на силоза</span><span
+                        class="text-weight-light"
+                    >: {{ siloLoadingsCount }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общо количество зареден фураж</span><span
+                        class="text-weight-light"
+                    >: {{ siloLoadingsWeight }} кг.</span>
+                </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Процент запълване</span><span
                         class="text-weight-light"
                     >: {{ siloPurcentLabel }}</span>
@@ -122,6 +171,14 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)} %`
                 <div class="text-subtitle1"><span class="text-weight-medium">Производствен процес №</span><span
                         class="text-weight-light"
                     >: {{ mproduction.id }}</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Група №</span><span
+                        class="text-weight-light"
+                    >: {{ mproduction.group_number }}</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Партида №</span><span
+                        class="text-weight-light"
+                    >: {{ mproduction.partida_number }}</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Стартиран на</span><span
                         class="text-weight-light"
@@ -158,6 +215,35 @@ const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)} %`
                 <div class="text-subtitle1"><span class="text-weight-medium">Текуща цена</span><span
                         class="text-weight-light"
                     >: {{ mproduction.price }} лв.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Брой вкарвания на прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionDecrementsCount }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общ брой вкарани прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionDecrementsQuantity }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло вкарани прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionDecrementsWeight }} кг.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Брой изкарвания на прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionIncrementsCount }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общ брой изкарани прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionIncrementsQuantity }} бр.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Общо тегло изкарани прасета</span><span
+                        class="text-weight-light"
+                    >: {{ productionIncrementsWeight }} кг.</span>
+                </div>
+                <div class="text-subtitle1"><span class="text-weight-medium">Съотношение Фураж/1кг. тегло</span><span
+                        class="text-weight-light"
+                    >: {{ (productionIncrementsWeight - productionDecrementsWeight) !== 0 ? (siloLoadingsWeight /
+                        (productionIncrementsWeight - productionDecrementsWeight)).toFixed(2) : 0 }}</span>
                 </div>
                 <div class="text-subtitle1"><span class="text-weight-medium">Брой дни в процес</span><span
                         class="text-weight-light"

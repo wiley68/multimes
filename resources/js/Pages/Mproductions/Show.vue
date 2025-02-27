@@ -117,7 +117,11 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                             name="info"
                             class="row"
                         >
-                            <InfoTab :mproduction="mproduction"></InfoTab>
+                            <InfoTab
+                                :mproduction="mproduction"
+                                :mdecrements="mdecrements"
+                                :mincrements="mincrements"
+                            ></InfoTab>
                         </q-tab-panel>
 
                         <q-tab-panel
