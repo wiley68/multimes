@@ -20,39 +20,38 @@ const title = 'Табло'
 const $q = useQuasar()
 const { hasPermission, hasPermissions } = usePermission()
 
+const showPromptMproduction = ref(false)
+const selectedMhall = ref(null)
+
 const confirmMproduction = (mhall) => {
-  $q.dialog({
-    title: 'Потвърди',
-    message: `Ще бъде стартиран нов производствен процес! Процеса е необратим. Съгласен ли сте с това?`,
-    cancel: true,
-    persistent: true,
-    ok: {
-      label: 'Да',
-      color: 'primary',
-    },
-    cancel: {
-      label: 'Откажи',
-      color: 'grey-1',
-      textColor: 'grey-10',
-      flat: true
-    },
-  }).onOk(() => {
-    router.post(route('mproductions.store'), {
-      status: 1,
-      mhall: mhall,
-    })
-  }).onCancel(() => { }).onDismiss(() => { })
+  selectedMhall.value = mhall
+  showPromptMproduction.value = true
 }
 
-const showPrompt = ref(false)
+const handleOkMproduction = (data) => {
+  router.post(route('mproductions.store'), {
+    status: 1,
+    mhall: selectedMhall.value,
+    group_number: data.groupNumber,
+    partida_number: data.partidaNumber
+  });
+
+  showPromptMproduction.value = false
+}
+
+const handleCancelMproduction = () => {
+  showPromptMproduction.value = false
+}
+
+const showPromptUproduction = ref(false)
 const selectedUhall = ref(null)
 
 const confirmUproduction = (uhall) => {
   selectedUhall.value = uhall
-  showPrompt.value = true
+  showPromptUproduction.value = true
 }
 
-const handleOk = (data) => {
+const handleOkUproduction = (data) => {
   router.post(route('uproductions.store'), {
     status: 1,
     uhall: selectedUhall.value,
@@ -61,11 +60,11 @@ const handleOk = (data) => {
     partida_number: data.partidaNumber
   });
 
-  showPrompt.value = false
+  showPromptUproduction.value = false
 }
 
-const handleCancel = () => {
-  showPrompt.value = false
+const handleCancelUproduction = () => {
+  showPromptUproduction.value = false
 }
 
 const getDaysBetweenTodayAndDate = (targetDate) => {
@@ -101,11 +100,18 @@ const productionPurcent = (production) => {
         class="row wrap q-gutter-sm full-height"
       >
         <ConfirmDialog
-          :show="showPrompt"
+          :show="showPromptUproduction"
           title="Потвърди"
           message="Ще бъде стартиран нов производствен процес! Процесът е необратим. Въведете номера на група и партида."
-          @ok="handleOk"
-          @cancel="handleCancel"
+          @ok="handleOkUproduction"
+          @cancel="handleCancelUproduction"
+        />
+        <ConfirmDialog
+          :show="showPromptMproduction"
+          title="Потвърди"
+          message="Ще бъде стартиран нов производствен процес! Процесът е необратим. Въведете номера на група и партида."
+          @ok="handleOkMproduction"
+          @cancel="handleCancelMproduction"
         />
         <div
           class="col"
