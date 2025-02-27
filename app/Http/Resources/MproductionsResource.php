@@ -22,6 +22,8 @@ class MproductionsResource extends JsonResource
             'stock' => $this->stock,
             'price' => $this->price,
             'product' => new ProductResource($this->whenLoaded('product')),
+            'group_number' => $this->group_number,
+            'partida_number' => $this->partida_number,
             'created_at' => $this->created_at,
             'mhall' => new MhallResource($this->whenLoaded('mhall')),
             'mdecrements' => MdecrementResource::collection($this->whenLoaded('mdecrements')),

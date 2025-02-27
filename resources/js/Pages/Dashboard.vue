@@ -34,6 +34,16 @@ const handleOkMproduction = (data) => {
     mhall: selectedMhall.value,
     group_number: data.groupNumber,
     partida_number: data.partidaNumber
+  }, {
+    onError: errors => {
+      Object.values(errors).flat().forEach((error) => {
+        $q.notify({
+          message: error,
+          icon: 'mdi-alert-circle-outline',
+          type: 'negative',
+        });
+      });
+    },
   });
 
   showPromptMproduction.value = false
@@ -58,6 +68,16 @@ const handleOkUproduction = (data) => {
     production_days: 45,
     group_number: data.groupNumber,
     partida_number: data.partidaNumber
+  }, {
+    onError: errors => {
+      Object.values(errors).flat().forEach((error) => {
+        $q.notify({
+          message: error,
+          icon: 'mdi-alert-circle-outline',
+          type: 'negative',
+        });
+      });
+    },
   });
 
   showPromptUproduction.value = false

@@ -30,7 +30,39 @@ class CreateMproductionRequest extends FormRequest
             'mhall' => [
                 'required',
                 'array'
-            ]
+            ],
+            'finished_at' => [
+                'nullable',
+                'timestamp',
+            ],
+            'stock' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
+            'price' => [
+                'nullable',
+                'numeric',
+                'min:0',
+            ],
+            'group_number' => [
+                'required',
+                'integer',
+                'min:0',
+            ],
+            'partida_number' => [
+                'required',
+                'integer',
+                'min:0',
+            ],
+            'product' => [
+                'nullable',
+                'array',
+            ],
+            'product.id' => [
+                'nullable',
+                'exists:products,id',
+            ],
         ];
     }
 }

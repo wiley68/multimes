@@ -17,6 +17,8 @@ class Mproduction extends Model
         'stock',
         'price',
         'product_id',
+        'group_number',
+        'partida_number',
         'created_at',
     ];
 

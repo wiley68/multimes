@@ -99,6 +99,8 @@ class MproductionController extends Controller
             'status' => $request->status,
             'mhall_id' => $request->mhall['id'],
             'production_days' => $production_days,
+            'group_number' => $request->group_number,
+            'partida_number' => $request->partida_number,
         ]);
 
         return back();
