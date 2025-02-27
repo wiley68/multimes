@@ -4,6 +4,8 @@ import { Head, router } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 import moment from 'moment'
+import ConfirmDialog from '@/Components/ConfirmDialog.vue'
+import { ref } from 'vue'
 
 const props = defineProps({
   mhalls: {
@@ -42,29 +44,28 @@ const confirmMproduction = (mhall) => {
   }).onCancel(() => { }).onDismiss(() => { })
 }
 
+const showPrompt = ref(false)
+const selectedUhall = ref(null)
+
 const confirmUproduction = (uhall) => {
-  $q.dialog({
-    title: 'Потвърди',
-    message: `Ще бъде стартиран нов производствен процес! Процеса е за Угояване на прасета. Угояването ще се извърши в Хале: ${uhall.name}. Процеса е необратим. Съгласен ли сте с това?`,
-    cancel: true,
-    persistent: true,
-    ok: {
-      label: 'Да',
-      color: 'primary',
-    },
-    cancel: {
-      label: 'Откажи',
-      color: 'grey-1',
-      textColor: 'grey-10',
-      flat: true
-    },
-  }).onOk(() => {
-    router.post(route('uproductions.store'), {
-      status: 1,
-      uhall: uhall,
-      production_days: 45,
-    })
-  }).onCancel(() => { }).onDismiss(() => { })
+  selectedUhall.value = uhall
+  showPrompt.value = true
+}
+
+const handleOk = (data) => {
+  router.post(route('uproductions.store'), {
+    status: 1,
+    uhall: selectedUhall.value,
+    production_days: 45,
+    group_number: data.groupNumber,
+    partida_number: data.partidaNumber
+  });
+
+  showPrompt.value = false
+}
+
+const handleCancel = () => {
+  showPrompt.value = false
 }
 
 const getDaysBetweenTodayAndDate = (targetDate) => {

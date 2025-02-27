@@ -4,7 +4,7 @@ import { Head, router } from '@inertiajs/vue3'
 import { ref } from 'vue'
 import { usePermission } from '@/composables/permissions'
 import moment from 'moment'
-import ConfirmDialog from '@/Components/ConfirmDialog.vue';
+import ConfirmDialog from '@/Components/ConfirmDialog.vue'
 
 const props = defineProps({
     uhalls: {
@@ -96,8 +96,6 @@ const confirm = (uhall) => {
 }
 
 const handleOk = (data) => {
-    console.log(data)
-    return
     router.post(route('uproductions.store'), {
         status: 1,
         uhall: selectedUhall.value,
@@ -179,7 +177,7 @@ const handleCancel = () => {
                                             <template v-if="props.row.uproduction !== null">
                                                 <div class="text-subtitle2">Активен производствен процес: №{{
                                                     props.row.uproduction.id
-                                                }}
+                                                    }}
                                                 </div>
                                             </template>
                                             <template v-else>
