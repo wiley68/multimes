@@ -37,16 +37,6 @@ class LoadUproductionRequest extends FormRequest
                 'numeric',
                 'min:0',
             ],
-            'group_number' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
-            'partida_number' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
             'product' => [
                 'required',
                 'array',
