@@ -145,7 +145,8 @@ const mproductionLoading = () => {
     <div class="col text-h4 q-mr-md">
         <q-card class="my-card full-height column">
             <q-card-section class="bg-secondary text-white">
-                <div class="text-h6 text-center">Производствен Процес №{{ mproduction.id }}
+                <div class="text-h6 text-center">Производствен Процес №{{ mproduction.id }} - {{
+                    mproduction.group_number }}/{{ mproduction.partida_number }}
                 </div>
             </q-card-section>
             <q-separator />
@@ -157,12 +158,15 @@ const mproductionLoading = () => {
             </q-card-section>
             <q-separator />
             <q-card-section class="col">
+                <div class="text-subtitle1">Група №: {{ mproduction.group_number }}
+                </div>
+                <div class="text-subtitle1">Партида №: {{ mproduction.partida_number }}
+                </div>
                 <div class="text-subtitle1">Налично в склад: {{ mproduction.product?.stock }} {{ mproduction.product?.me
                     }}
                 </div>
-                <div class="text-subtitle1">Текущ брой {{
-                    productName }}: {{ mproduction.stock }} {{
-                        mproduction.product?.me
+                <div class="text-subtitle1">Текущ брой {{ productName }}: {{ mproduction.stock }} {{
+                    mproduction.product?.me
                     }}
                 </div>
                 <div class="text-subtitle1">Състояние: {{ mproduction.status === 1 ? 'Активен' : 'Приключен' }}
