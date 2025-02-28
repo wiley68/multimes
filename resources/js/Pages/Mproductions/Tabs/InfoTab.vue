@@ -16,6 +16,10 @@ const props = defineProps({
         type: Array,
         required: true
     },
+    mhallInfo: {
+        type: Object,
+        required: true
+    },
 })
 
 const getDaysBetweenTodayAndDate = (targetDate) => {
@@ -45,35 +49,35 @@ const productionPurcent = computed(() => {
 const productionPurcentLabel = `${(productionPurcent.value * 100).toFixed(2)} %`
 
 const siloLoadingsCount = computed(() => {
-    return props.mdecrements.filter(item => item.product.type === 'Фураж ремонтни').length
+    return props.mdecrements.filter(item => item.product.type === props.mhallInfo.furaz).length
 })
 
 const siloLoadingsWeight = computed(() => {
-    return props.mdecrements.reduce((acc, item) => item.product.type === 'Фураж ремонтни' ? acc + item.quantity : acc, 0)
+    return props.mdecrements.reduce((acc, item) => item.product.type === props.mhallInfo.furaz ? acc + item.quantity : acc, 0)
 })
 
 const productionDecrementsCount = computed(() => {
-    return props.mdecrements.filter(item => item.product.type === 'Прасета ремонтни').length
+    return props.mdecrements.filter(item => item.product.type === props.mhallInfo.product).length
 })
 
 const productionDecrementsQuantity = computed(() => {
-    return props.mdecrements.reduce((acc, item) => item.product.type === 'Прасета ремонтни' ? acc + item.quantity : acc, 0)
+    return props.mdecrements.reduce((acc, item) => item.product.type === props.mhallInfo.product ? acc + item.quantity : acc, 0)
 })
 
 const productionDecrementsWeight = computed(() => {
-    return props.mdecrements.reduce((acc, item) => item.product.type === 'Прасета ремонтни' ? acc + item.weight : acc, 0)
+    return props.mdecrements.reduce((acc, item) => item.product.type === props.mhallInfo.product ? acc + item.weight : acc, 0)
 })
 
 const productionIncrementsCount = computed(() => {
-    return props.mincrements.filter(item => item.product.type === 'Прасета ремонтни').length
+    return props.mincrements.filter(item => item.product.type === props.mhallInfo.product).length
 })
 
 const productionIncrementsQuantity = computed(() => {
-    return props.mincrements.reduce((acc, item) => item.product.type === 'Прасета ремонтни' ? acc + item.quantity : acc, 0)
+    return props.mincrements.reduce((acc, item) => item.product.type === props.mhallInfo.product ? acc + item.quantity : acc, 0)
 })
 
 const productionIncrementsWeight = computed(() => {
-    return props.mincrements.reduce((acc, item) => item.product.type === 'Прасета ремонтни' ? acc + item.weight : acc, 0)
+    return props.mincrements.reduce((acc, item) => item.product.type === props.mhallInfo.product ? acc + item.weight : acc, 0)
 })
 
 </script>

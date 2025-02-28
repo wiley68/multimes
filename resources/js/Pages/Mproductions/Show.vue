@@ -164,6 +164,7 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                                 :mproduction="mproduction"
                                 :mdecrements="mdecrements"
                                 :mincrements="mincrements"
+                                :mhall-info="mhallInfo()"
                             ></InfoTab>
                         </q-tab-panel>
 
