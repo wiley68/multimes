@@ -36,6 +36,46 @@ onMounted(() => {
     });
 })
 
+const mhallInfo = () => {
+    switch (props.mproduction.mhall.type) {
+        case 'Ремонтни':
+            return {
+                product: 'Прасета ремонтни',
+                furaz: 'Фураж ремонтни',
+            }
+        case 'Заплождане':
+            return {
+                product: 'Прасета заплождане',
+                furaz: 'Фураж бременни',
+            }
+        case 'Условна бременност':
+            return {
+                product: 'Прасета условна бременност',
+                furaz: 'Фураж бременни',
+            }
+        case 'Бременност':
+            return {
+                product: 'Прасета бременност',
+                furaz: 'Фураж бременни',
+            }
+        case 'Родилно':
+            return {
+                product: 'Прасета родилно',
+                furaz: 'Фураж кърмачки',
+            }
+        case 'Подрастване':
+            return {
+                product: 'Прасета подрастване',
+                furaz: 'Фураж угояване',
+            }
+        default:
+            return {
+                product: 'Прасета',
+                furaz: 'Фураж',
+            }
+    }
+}
+
 const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${props.mproduction.id}`
 </script>
 
@@ -110,7 +150,10 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                             name="actions"
                             class="row"
                         >
-                            <ActionsTab :mproduction="mproduction"></ActionsTab>
+                            <ActionsTab
+                                :mproduction="mproduction"
+                                :mhall-info="mhallInfo()"
+                            ></ActionsTab>
                         </q-tab-panel>
 
                         <q-tab-panel

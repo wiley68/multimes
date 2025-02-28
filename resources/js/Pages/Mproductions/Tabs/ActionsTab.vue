@@ -10,25 +10,10 @@ const props = defineProps({
         type: Object,
         required: true
     },
-})
-
-const productName = computed(() => {
-    switch (props.mproduction.mhall.type) {
-        case 'Ремонтни':
-            return 'Прасета ремонтни'
-        case 'Заплождане':
-            return 'Прасета заплождане'
-        case 'Условна бременност':
-            return 'Прасета условна бременност'
-        case 'Бременност':
-            return 'Прасета бременност'
-        case 'Родилно':
-            return 'Прасета родилно'
-        case 'Подрастване':
-            return 'Прасета подрастване'
-        default:
-            return 'Прасета'
-    }
+    mhallInfo: {
+        type: Object,
+        required: true
+    },
 })
 
 const { hasPermission } = usePermission()
@@ -163,11 +148,11 @@ const mproductionLoading = () => {
                 <div class="text-subtitle1">Партида №: {{ mproduction.partida_number }}
                 </div>
                 <div class="text-subtitle1">Налично в склад: {{ mproduction.product?.stock }} {{ mproduction.product?.me
-                    }}
+                }}
                 </div>
-                <div class="text-subtitle1">Текущ брой {{ productName }}: {{ mproduction.stock }} {{
+                <div class="text-subtitle1">Текущ брой {{ mhallInfo.product }}: {{ mproduction.stock }} {{
                     mproduction.product?.me
-                    }}
+                }}
                 </div>
                 <div class="text-subtitle1">Състояние: {{ mproduction.status === 1 ? 'Активен' : 'Приключен' }}
                 </div>
@@ -185,8 +170,8 @@ const mproductionLoading = () => {
                 />
                 <q-btn
                     v-if="hasPermission('update') && mproduction.status === 1"
-                    :label="`Зареди ${productName}`"
-                    :title="`Зарежда ${productName} в продукционния процес.`"
+                    :label="`Зареди ${mhallInfo.product}`"
+                    :title="`Зарежда ${(mhallInfo.product)} в продукционния процес.`"
                     color="primary"
                     icon="mdi-upload-multiple-outline"
                     style="padding: 0px 15px;"
@@ -233,7 +218,7 @@ const mproductionLoading = () => {
             <q-card-section>
                 <div class="text-h5">[{{ mproduction.mhall.silo.product?.nomenklature }}] {{
                     mproduction.mhall.silo.product?.name
-                    }}</div>
+                }}</div>
                 <div class="text-caption">{{ mproduction.mhall.silo.product?.description }}</div>
             </q-card-section>
             <q-separator />
@@ -250,7 +235,7 @@ const mproductionLoading = () => {
                     {{
                         mproduction.mhall.silo.product?.me }}</div>
                 <div class="text-subtitle1 text-accent">Процент запълване: {{ siloPurcentLabel
-                    }}</div>
+                }}</div>
             </q-card-section>
             <q-card-actions vertical>
                 <q-btn
