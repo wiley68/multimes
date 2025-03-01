@@ -142,6 +142,7 @@ class MproductionController extends Controller
 
         $validated = $request->validate([
             'status' => 'required|integer|in:0',
+            'rest' => 'required|numeric|min:0',
         ]);
 
         if ($mproduction->status === 0) {
@@ -152,9 +153,52 @@ class MproductionController extends Controller
 
         if ((float)$mproduction->stock > 0) {
             return back()->withErrors([
-                'complete' => 'Във Вашия прозиводствен процес все още има налични прасета [' . $mproduction->product->nomenklature . '] ' . $mproduction->product->name . ' [' . $mproduction->stock . ']. Не можете да приключите процеса докато все още имате налични прасета в него!',
+                'complete' => 'Във Вашия прозиводствен процес все още има налични прасета [' .
+                    $mproduction->product->nomenklature . '] ' .
+                    $mproduction->product->name . ' [' .
+                    $mproduction->stock . ']. Не можете да приключите процеса докато все още имате налични прасета в него!',
             ]);
         }
+
+        $furaz = optional($mproduction->mhall->silo->product)->type;
+
+        $lastUdecrement = null;
+        if ($furaz) {
+            $lastUdecrement = $mproduction->mdecrements()
+                ->whereHas('product', function ($query) use ($furaz) {
+                    $query->where('type', $furaz)
+                        ->where('status', 1);
+                })
+                ->orderBy('id', 'desc')
+                ->first();
+        }
+
+        if (!$lastUdecrement) {
+            return back()->withErrors([
+                'complete' => 'Не е намерен последен запис за изваждане на фураж. Операцията не може да се извърши.',
+            ]);
+        }
+
+        if ((float)$lastUdecrement->quantity < (float)$validated['rest']) {
+            return back()->withErrors([
+                'complete' => 'Количеството фураж зареден в последния процес [' .
+                    $lastUdecrement->quantity . '] е по-малко от остатъчното количество фураж в силоза [' .
+                    $validated['rest'] . ']. Операцията не може да се извърши.',
+            ]);
+        }
+
+        $lastUdecrement->quantity -= (float)$validated['rest'];
+        $lastUdecrement->save();
+
+        $product = $lastUdecrement->product;
+        $product->stock += (float)$validated['rest'];
+        if ((float)$product->stock > 0) {
+            $siloPrice = optional($mproduction->mhall->silo)->price ?? 0;
+            $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$siloPrice) / $product->stock;
+        } else {
+            $product->price = 0;
+        }
+        $product->save();
 
         $silo = $mproduction->mhall->silo;
         $silo->update([

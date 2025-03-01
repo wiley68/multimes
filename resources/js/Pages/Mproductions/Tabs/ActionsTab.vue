@@ -43,6 +43,11 @@ const confirmCompletion = () => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да приключиш този Производствен процес? След приключването на процеса няма да могат да бъдат извършвани промени по него. Халето в което се извършва процеса ще бъде освободено за стартиране на нов процес. Процеса е необратим!',
+        prompt: {
+            model: '0',
+            type: 'number',
+            label: 'Остатъчно количество фураж в силоза, при приключване на процеса.',
+        },
         cancel: true,
         persistent: true,
         ok: {
@@ -56,9 +61,10 @@ const confirmCompletion = () => {
             textColor: 'grey-10',
             flat: true
         },
-    }).onOk(() => {
+    }).onOk((data) => {
         const form = useForm({
             status: 0,
+            rest: parseFloat(data)
         })
         form.patch(route('mproductions.complete', props.mproduction.id), {
             onError: errors => {
