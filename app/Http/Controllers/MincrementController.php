@@ -27,6 +27,7 @@ class MincrementController extends Controller
 
         $validated = $request->validate([
             'mproduction_id' => 'required|integer',
+            'type' => 'required|string|in:Продажба,Прехвърляне,Умрели',
         ]);
 
         $mproduction = Mproduction::findOrFail($validated['mproduction_id']);
@@ -55,6 +56,7 @@ class MincrementController extends Controller
             'product' => new ProductResource($product),
             'mdecrements' => MdecrementResource::collection($mdecrements),
             'mincrements' => MincrementResource::collection($mincrements),
+            'type' => $validated['type'],
         ]);
     }
 

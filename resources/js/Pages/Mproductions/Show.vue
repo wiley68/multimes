@@ -42,26 +42,31 @@ const mhallInfo = () => {
             return {
                 product: 'Прасета ремонтни',
                 furaz: 'Фураж ремонтни',
+                nextproduct: 'Прасета заплождане',
             }
         case 'Заплождане':
             return {
                 product: 'Прасета заплождане',
                 furaz: 'Фураж бременни',
+                nextproduct: 'Прасета условна бременност',
             }
         case 'Условна бременност':
             return {
                 product: 'Прасета условна бременност',
                 furaz: 'Фураж бременни',
+                nextproduct: 'Прасета бременност',
             }
         case 'Бременност':
             return {
                 product: 'Прасета бременност',
                 furaz: 'Фураж бременни',
+                nextproduct: 'Прасета родилно',
             }
         case 'Родилно':
             return {
                 product: 'Прасета родилно',
                 furaz: 'Фураж кърмачки',
+                nextproduct: 'Прасета подрастване',
             }
         case 'Подрастване':
             return {
@@ -72,6 +77,7 @@ const mhallInfo = () => {
             return {
                 product: 'Прасета',
                 furaz: 'Фураж',
+                nextproduct: 'Прасета',
             }
     }
 }
@@ -185,6 +191,7 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                             <IncrementsTab
                                 :mproduction="mproduction"
                                 :mincrements="mincrements"
+                                :mhall-info="mhallInfo()"
                             ></IncrementsTab>
                         </q-tab-panel>
 
