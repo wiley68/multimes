@@ -128,25 +128,40 @@ class UproductionController extends Controller
 
         if ((float)$uproduction->stock > 0) {
             return back()->withErrors([
-                'complete' => 'Във Вашия прозиводствен процес все още има налични прасета [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . ']. Не можете да приключите процеса докато все още имате налични прасета в него!',
+                'complete' => 'Във Вашия прозиводствен процес все още има налични прасета [' .
+                    $uproduction->product->nomenklature . '] ' .
+                    $uproduction->product->name . ' [' .
+                    $uproduction->stock . ']. Не можете да приключите процеса докато все още имате налични прасета в него!',
             ]);
         }
 
-        $lastUdecrement = $uproduction->udecrements()
-            ->whereHas('product', function ($query) {
-                $query->where('type', 'Фураж угояване')
-                    ->where('status', 1);
-            })
-            ->orderBy('id', 'desc')
-            ->first();
+        $furaz = optional($uproduction->uhall->silo->product)->type;
+        $lastUdecrement = null;
+        if ($furaz) {
+            $lastUdecrement = $uproduction->udecrements()
+                ->whereHas('product', function ($query) use ($furaz) {
+                    $query->where('type', $furaz)
+                        ->where('status', 1);
+                })
+                ->orderBy('id', 'desc')
+                ->first();
+        }
+
+        if (!$lastUdecrement) {
+            return back()->withErrors([
+                'complete' => 'В силоза не е зареждан фураж. Операцията не може да се извърши.',
+            ]);
+        }
 
         if ((float)$lastUdecrement->quantity < (float)$validated['rest']) {
             return back()->withErrors([
-                'complete' => 'Количеството фураж зареден в последния процес [' . $lastUdecrement->quantity . '] е по-малко от остатъчното количество фураж в силоза [' . $validated['rest'] . ']. Операцията не може да се извърши. Остатъчното количество фураж трабва да е по-малко от последно заредения фураж в силоза!',
+                'complete' => 'Количеството фураж зареден в последния процес [' .
+                    $lastUdecrement->quantity . '] е по-малко от остатъчното количество фураж в силоза [' .
+                    $validated['rest'] . ']. Операцията не може да се извърши.',
             ]);
         }
 
-        $lastUdecrement->quantity = (float)$lastUdecrement->quantity - (float)$validated['rest'];
+        $lastUdecrement->quantity -= (float)$validated['rest'];
         $lastUdecrement->save();
 
         $product = $lastUdecrement->product;
@@ -154,7 +169,8 @@ class UproductionController extends Controller
         if ((float)$product->stock === 0.00) {
             $product->price = 0;
         } else {
-            $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$uproduction->uhall->silo->price) / $product->stock;
+            $siloPrice = optional($uproduction->uhall->silo)->price ?? 0;
+            $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$siloPrice) / $product->stock;
         }
         $product->save();
 

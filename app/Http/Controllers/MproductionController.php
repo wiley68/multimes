@@ -162,9 +162,9 @@ class MproductionController extends Controller
 
         $furaz = optional($mproduction->mhall->silo->product)->type;
 
-        $lastUdecrement = null;
+        $lastMdecrement = null;
         if ($furaz) {
-            $lastUdecrement = $mproduction->mdecrements()
+            $lastMdecrement = $mproduction->mdecrements()
                 ->whereHas('product', function ($query) use ($furaz) {
                     $query->where('type', $furaz)
                         ->where('status', 1);
@@ -173,24 +173,24 @@ class MproductionController extends Controller
                 ->first();
         }
 
-        if (!$lastUdecrement) {
+        if (!$lastMdecrement) {
             return back()->withErrors([
-                'complete' => 'Не е намерен последен запис за изваждане на фураж. Операцията не може да се извърши.',
+                'complete' => 'В силоза не е зареждан фураж. Операцията не може да се извърши.',
             ]);
         }
 
-        if ((float)$lastUdecrement->quantity < (float)$validated['rest']) {
+        if ((float)$lastMdecrement->quantity < (float)$validated['rest']) {
             return back()->withErrors([
                 'complete' => 'Количеството фураж зареден в последния процес [' .
-                    $lastUdecrement->quantity . '] е по-малко от остатъчното количество фураж в силоза [' .
+                    $lastMdecrement->quantity . '] е по-малко от остатъчното количество фураж в силоза [' .
                     $validated['rest'] . ']. Операцията не може да се извърши.',
             ]);
         }
 
-        $lastUdecrement->quantity -= (float)$validated['rest'];
-        $lastUdecrement->save();
+        $lastMdecrement->quantity -= (float)$validated['rest'];
+        $lastMdecrement->save();
 
-        $product = $lastUdecrement->product;
+        $product = $lastMdecrement->product;
         $product->stock += (float)$validated['rest'];
         if ((float)$product->stock > 0) {
             $siloPrice = optional($mproduction->mhall->silo)->price ?? 0;

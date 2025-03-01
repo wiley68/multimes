@@ -72,6 +72,7 @@ const mhallInfo = () => {
             return {
                 product: 'Прасета подрастване',
                 furaz: 'Фураж угояване',
+                nextproduct: 'Прасета угояване',
             }
         default:
             return {

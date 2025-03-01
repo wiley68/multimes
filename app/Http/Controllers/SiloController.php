@@ -172,12 +172,6 @@ class SiloController extends Controller
         $new_quantity = (float)$request->stock;
         $new_price = (float)$product->price;
 
-        if ((float)$uproduction->stock == 0) {
-            return back()->withErrors([
-                'update' => 'Необходимо е първо да заредите прасета ремонтни!'
-            ]);
-        }
-
         if ((float)$silo->maxqt < $new_quantity) {
             return back()->withErrors([
                 'update' => 'Наличноста в силоза ' . $new_quantity . ' ще стане по-голяма от максимално допустимата ' . $silo->maxqt . '! Не можете да запишете промяната.'
@@ -212,7 +206,11 @@ class SiloController extends Controller
         foreach ($udecrements as $item) {
             $totalDecrements += (float)$item['quantity'] * (float)$item['price'];
         }
-        $uproduction->price = $totalDecrements / (float)$uproduction->stock;
+        if ((float)$uproduction->stock == 0) {
+            $uproduction->price = 0;
+        } else {
+            $uproduction->price = $totalDecrements / (float)$uproduction->stock;
+        }
         $uproduction->save();
 
         return to_route('uproductions.show', [
