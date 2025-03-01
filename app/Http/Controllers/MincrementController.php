@@ -78,8 +78,10 @@ class MincrementController extends Controller
             'mproduction_id' => $request->mproduction_id,
             'product_id' => $request->product['id'],
             'quantity' => $request->quantity,
+            'weight' => $request->weight,
             'price' => $request->price,
             'status' => $request->status,
+            'type' => $request->type,
         ]);
 
         return to_route('mproductions.show', [

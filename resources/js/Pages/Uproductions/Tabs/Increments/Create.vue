@@ -42,7 +42,16 @@ const uincrementsStore = () => {
     form.post(route('uincrements.store'), {
         onFinish: () => {
             form.reset('quantity', 'weight')
-        }
+        },
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
     })
 }
 
@@ -78,6 +87,7 @@ const typeTitle = computed(() => {
             }
     }
 })
+
 const title = `${typeTitle.value.title} към Процес №${props.uproduction.id}`
 </script>
 

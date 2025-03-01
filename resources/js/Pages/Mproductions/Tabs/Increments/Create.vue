@@ -2,6 +2,7 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
+import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
     product: {
@@ -20,21 +21,27 @@ const props = defineProps({
         type: Array,
         required: true,
     },
+    type: {
+        type: String,
+        required: true,
+    },
 })
 
 const form = useForm({
     mproduction_id: props.mproduction.id,
     product: props.product,
     quantity: 1,
-    price: props.mproduction.price,
+    weight: 0.00,
+    price: props.type === 'Умрели' ? 0.00 : props.mproduction.price,
     status: 0,
+    type: props.type,
 })
 
 const $q = useQuasar()
 const mincrementsStore = () => {
     form.post(route('mincrements.store'), {
         onFinish: () => {
-            form.reset('quantity')
+            form.reset('quantity', 'weight')
         },
         onError: errors => {
             Object.values(errors).flat().forEach((error) => {
@@ -48,7 +55,40 @@ const mincrementsStore = () => {
     })
 }
 
-const title = `Добавяне на приход към Процес №${props.mproduction.id}`
+const me = ref('')
+const total = ref(0)
+
+onMounted(() => {
+    me.value = props.mproduction.product?.me
+    total.value = props.mproduction.stock
+})
+
+const typeTitle = computed(() => {
+    switch (props.type) {
+        case 'Продажба':
+            return {
+                'title': 'Продажба на прасета',
+                'button': 'Запиши продажбата',
+            }
+        case 'Прехвърляне':
+            return {
+                'title': 'Прасета за прехвърляне',
+                'button': 'Запиши прехвърлянето',
+            }
+        case 'Умрели':
+            return {
+                'title': 'Прасета умрели',
+                'button': 'Запиши прехвърлянето',
+            }
+        default:
+            return {
+                'title': 'Добавяне на приход',
+                'button': 'Запиши',
+            }
+    }
+})
+
+const title = `${typeTitle.value.title} към Процес №${props.mproduction.id}`
 </script>
 
 <template>
@@ -66,7 +106,7 @@ const title = `Добавяне на приход към Процес №${props
                         <div class="column flex-grow flex-center">
                             <q-card class="q-pa-md full-width">
                                 <q-form
-                                    class="row q-gutter-xl"
+                                    class="q-gutter-xl"
                                     autofocus
                                 >
                                     <q-input
@@ -76,21 +116,49 @@ const title = `Добавяне на приход към Процес №${props
                                         hint="Продукт избран в прихода"
                                         readonly
                                     />
-
+                                    <div class="row">
+                                        <div class="col-9 q-mr-md">
+                                            <q-input
+                                                v-model.number="form.quantity"
+                                                class="col"
+                                                type="number"
+                                                label="Количество"
+                                                hint="Количество от избрания продукт за приход."
+                                                autofocus
+                                                :error="form.hasErrors"
+                                                :error-message="form.errors.quantity"
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ product.me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                                v-model.number="total"
+                                                type="number"
+                                                label="Наличност"
+                                                readonly
+                                                hint="Общо налично количество прасета в процеса"
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                    </div>
                                     <q-input
-                                        v-model.number="form.quantity"
-                                        class="col"
+                                        v-model.number="form.weight"
                                         type="number"
-                                        label="Количество"
-                                        hint="Количество от избрания продукт за приход."
+                                        label="Тегло"
+                                        :hint="`Общо тегло на ${type === 'Продажба' ? 'продаваните' : type === 'Прехвърляне' ? 'прехвърляните' : ''} прасета`"
                                         :error="form.hasErrors"
-                                        :error-message="form.errors.quantity"
+                                        :error-message="form.errors.weight"
                                     >
                                         <template v-slot:append>
-                                            <span class="text-subtitle1">{{ product.me }}</span>
+                                            <span class="text-subtitle1">кг</span>
                                         </template>
                                     </q-input>
-
                                     <q-input
                                         v-model.number="form.price"
                                         class="col"
