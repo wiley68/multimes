@@ -144,6 +144,7 @@ class MincrementController extends Controller
 
         $mincrement->update([
             'quantity' => $request->quantity,
+            'weight' => $request->weight,
             'price' => $request->price,
         ]);
 

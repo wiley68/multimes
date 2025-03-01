@@ -186,8 +186,10 @@ const confirmCompletion = (mincrement) => {
             mproduction_id: mincrement.mproduction_id,
             product: mincrement.product,
             quantity: mincrement.quantity,
+            weight: mincrement.weight,
             price: mincrement.price,
             status: mincrement.status,
+            type: mincrement.type,
         })
         form.patch(route('mincrements.complete', mincrement.id), {
             onError: errors => {
@@ -381,8 +383,10 @@ const confirmCompletionPodrastvane = (mincrement) => {
                                                 mproduction_id: props.row.mproduction?.id,
                                                 product: props.row.product,
                                                 quantity: props.row.quantity,
+                                                weight: props.row.weight,
                                                 price: props.row.price,
                                                 status: 1,
+                                                type: props.row.type,
                                             }
                                         )"
                                     />
