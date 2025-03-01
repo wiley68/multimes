@@ -449,6 +449,14 @@ const confirmCompletionPodrastvane = (mincrement) => {
                 icon="mdi-table-row-plus-after"
                 color="primary"
             />
+            <q-btn
+                v-if="mproduction.status === 1"
+                @click="createMincrements('Умрели')"
+                label="Прасета умрели"
+                title="Извършва се премахване на умрели прасета от процеса."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+            />
         </div>
     </div>
 </template>
