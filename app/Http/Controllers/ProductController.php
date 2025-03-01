@@ -110,7 +110,7 @@ class ProductController extends Controller
             'type' => $request->type,
         ]);
 
-        return back();
+        return to_route('products.index');
     }
 
     /**

@@ -1,6 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     typeOptions: {
@@ -18,13 +19,23 @@ const form = useForm({
     type: 'Обща употреба',
 })
 
-const onSubmit = () => {
+const $q = useQuasar()
+const productsStore = () => {
     form.post(route('products.store'), {
         onFinish: () => {
             form.reset('name', 'nomenklature', 'description', 'price')
             form.me = 'бр'
             form.stock = 0
             form.type = 'Обща употреба'
+        },
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
         },
     })
 };
@@ -125,7 +136,7 @@ const title = 'Продукт'
                     />
 
                     <q-btn
-                        @click.prevent="onSubmit"
+                        @click.prevent="productsStore"
                         label="Запиши"
                         color="primary"
                         icon="mdi-content-save-outline"
