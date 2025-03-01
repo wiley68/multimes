@@ -53,6 +53,7 @@ class MdecrementController extends Controller
             'mproduction_id' => $request->mproduction_id,
             'product_id' => $request->product['value'],
             'quantity' => $request->quantity,
+            'weight' => $request->weight,
             'price' => $request->price,
             'status' => $request->status,
         ]);

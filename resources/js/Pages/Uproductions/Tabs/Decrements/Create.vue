@@ -27,7 +27,7 @@ const productsOptions = props.products?.map(product => ({
 }))
 
 const $q = useQuasar()
-const onSubmit = () => {
+const udecrementsStore = () => {
     form.post(route('udecrements.store'), {
         onError: errors => {
             Object.values(errors).flat().forEach((error) => {
@@ -55,7 +55,7 @@ watch(
     }
 )
 
-const title = `Добавяне на разход към Производствен Процес №${props.uproduction_id}`
+const title = `Добавяне на разход към Процес №${props.uproduction_id}`
 </script>
 
 <template>
@@ -140,7 +140,7 @@ const title = `Добавяне на разход към Производств�
                     />
 
                     <q-btn
-                        @click.prevent="onSubmit"
+                        @click.prevent="udecrementsStore"
                         label="Добави разхода"
                         color="primary"
                         icon="mdi-plus"
