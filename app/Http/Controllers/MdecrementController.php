@@ -112,6 +112,7 @@ class MdecrementController extends Controller
 
         $mdecrement->update([
             'quantity' => $request->quantity,
+            'weight' => $request->weight,
             'price' => $request->price,
         ]);
 

@@ -1,7 +1,7 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useQuasar } from 'quasar'
 
 const props = defineProps({
@@ -15,6 +15,7 @@ const form = useForm({
     mproduction_id: props.mdecrement?.mproduction?.id,
     product: { value: props.mdecrement?.product.id, label: props.mdecrement?.product.name },
     quantity: props.mdecrement?.quantity,
+    weight: 0.00,
     price: props.mdecrement?.price,
     status: props.mdecrement?.status,
 })
@@ -35,6 +36,12 @@ const mdecrementsUpdate = () => {
 }
 
 const me = ref('')
+const total = ref(0)
+
+onMounted(() => {
+    me.value = props.mdecrement.product?.me
+    total.value = props.mdecrement.product?.stock
+})
 
 const title = `Добавяне на разход към Процес №${props.mdecrement.mproduction?.id}`
 </script>
@@ -54,7 +61,7 @@ const title = `Добавяне на разход към Процес №${props
                         <div class="column flex-grow flex-center">
                             <q-card class="q-pa-md full-width">
                                 <q-form
-                                    class="row q-gutter-xl"
+                                    class="q-gutter-xl"
                                     autofocus
                                 >
                                     <q-input
@@ -64,23 +71,38 @@ const title = `Добавяне на разход към Процес №${props
                                         hint="Продукт избран в разхода"
                                         readonly
                                     />
-
-                                    <q-input
-                                        v-model.number="form.quantity"
-                                        class="col"
-                                        type="number"
-                                        label="Количество"
-                                        hint="Количество от избрания продукт за разходване."
-                                        :error="form.hasErrors"
-                                        :error-message="form.errors.quantity"
-                                        autofocus
-                                        numeric-keyboard-toggle
-                                    >
-                                        <template v-slot:append>
-                                            <span class="text-subtitle1">{{ me }}</span>
-                                        </template>
-                                    </q-input>
-
+                                    <div class="row">
+                                        <div class="col-9 q-mr-md">
+                                            <q-input
+                                                v-model.number="form.quantity"
+                                                class="col"
+                                                type="number"
+                                                label="Количество"
+                                                hint="Количество от избрания продукт за разходване."
+                                                :error="form.hasErrors"
+                                                :error-message="form.errors.quantity"
+                                                autofocus
+                                                numeric-keyboard-toggle
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                                v-model.number="total"
+                                                type="number"
+                                                label="Наличност"
+                                                readonly
+                                                hint="Общо налично количество от продукта в склада"
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                    </div>
                                     <q-input
                                         v-model.number="form.price"
                                         class="col"
