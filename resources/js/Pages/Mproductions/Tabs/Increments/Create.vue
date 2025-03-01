@@ -184,7 +184,7 @@ const title = `${typeTitle.value.title} към Процес №${props.mproducti
 
                     <q-btn
                         @click.prevent="mincrementsStore"
-                        label="Добави прихода"
+                        :label="typeTitle.button"
                         color="primary"
                         icon="mdi-plus"
                     />

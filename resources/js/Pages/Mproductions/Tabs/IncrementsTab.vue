@@ -435,6 +435,14 @@ const confirmCompletionPodrastvane = (mincrement) => {
         >
             <q-btn
                 v-if="mproduction.status === 1"
+                @click="createMincrements('Продажба')"
+                label="Продажба на прасета"
+                title="Извършване на продажба на прасета. Продадените прасета се премахват от процеса. В процеса се вписва приход на средства."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+            />
+            <q-btn
+                v-if="mproduction.status === 1"
                 @click="createMincrements('Прехвърляне')"
                 :label="mhallInfo.nextproduct"
                 :title="`Добавя нов приход към продукционния процес. Прихода е от предаване на ${mhallInfo.product} готови за ${mhallInfo.nextproduct}.`"
