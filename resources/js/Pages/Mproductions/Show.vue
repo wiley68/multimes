@@ -188,11 +188,15 @@ const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${pro
                             ></IncrementsTab>
                         </q-tab-panel>
 
-                        <q-tab-panel name="statistics">
+                        <q-tab-panel
+                            name="statistics"
+                            class="row"
+                        >
                             <StatisticsTab
                                 :mproduction="mproduction"
                                 :mdecrements="mdecrements"
                                 :mincrements="mincrements"
+                                :mhall-info="mhallInfo()"
                             ></StatisticsTab>
                         </q-tab-panel>
                     </q-tab-panels>

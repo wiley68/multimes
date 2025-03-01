@@ -39,6 +39,11 @@ class CreateMincrementRequest extends FormRequest
                 'required',
                 'numeric',
             ],
+            'weight' => [
+                'required',
+                'numeric',
+                'min:0',
+            ],
             'price' => [
                 'required',
                 'numeric',
@@ -46,6 +51,10 @@ class CreateMincrementRequest extends FormRequest
             'status' => [
                 'required',
                 Rule::in([0, 1]),
+            ],
+            'type' => [
+                'required',
+                Rule::in(['Продажба', 'Прехвърляне', 'Умрели']),
             ],
         ];
     }

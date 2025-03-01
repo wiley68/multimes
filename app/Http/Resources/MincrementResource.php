@@ -19,8 +19,10 @@ class MincrementResource extends JsonResource
             'mproduction' => new MproductionsResource($this->whenLoaded('mproduction')),
             'product' => new ProductResource($this->whenLoaded('product')),
             'quantity' => $this->quantity,
+            'weight' => $this->weight,
             'price' => $this->price,
             'status' => $this->status,
+            'type' => $this->type,
             'created_at' => $this->created_at,
         ];
     }

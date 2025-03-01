@@ -13,8 +13,10 @@ class Mincrement extends Model
         'mproduction_id',
         'product_id',
         'quantity',
+        'weight',
         'price',
         'status',
+        'type',
     ];
 
     public function mproduction()

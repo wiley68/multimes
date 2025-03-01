@@ -189,22 +189,22 @@ class MproductionController extends Controller
             $products = Product::where('id', '=', $mproduction->product_id);
         } else {
             switch ($mproduction->mhall['type']) {
-                case Mhall::TYPE_OPTIONS[0]:
+                case 'Ремонтни':
                     $productType = 'Прасета ремонтни';
                     break;
-                case Mhall::TYPE_OPTIONS[1]:
+                case 'Заплождане':
                     $productType = 'Прасета заплождане';
                     break;
-                case Mhall::TYPE_OPTIONS[2]:
+                case 'Условна бременност':
                     $productType = 'Прасета условна бременност';
                     break;
-                case Mhall::TYPE_OPTIONS[3]:
+                case 'Бременност':
                     $productType = 'Прасета бременност';
                     break;
-                case Mhall::TYPE_OPTIONS[4]:
+                case 'Родилно':
                     $productType = 'Прасета родилно';
                     break;
-                case Mhall::TYPE_OPTIONS[5]:
+                case 'Подрастване':
                     $productType = 'Прасета подрастване';
                     break;
                 default:

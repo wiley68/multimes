@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { computed } from 'vue'
 
 const props = defineProps({
     uproduction: {
@@ -226,7 +226,7 @@ const totalPrirast = computed(() => {
                     <span class="text-weight-medium">Съотношение кг фураж за 1кг живо тегло: </span>
                     <span class="text-weight-light">{{ totalPrirast !== 0.00 ? (totalDecrementsFurazWeight /
                         totalPrirast).toFixed(2) : '0.00'
-                        }}</span>
+                    }}</span>
                 </div>
                 <div class="text-subtitle1 text-accent">
                     <span class="text-weight-medium">Смъртност количество умрели прасета: </span>
