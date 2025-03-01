@@ -39,6 +39,13 @@ const incrementsColumns = [
         sortable: true,
     },
     {
+        name: 'type',
+        align: 'left',
+        label: 'Тип',
+        field: 'type',
+        sortable: true,
+    },
+    {
         name: 'created_at',
         align: 'left',
         label: 'Създаден на',
@@ -71,6 +78,13 @@ const incrementsColumns = [
         align: 'left',
         label: 'Общо [лв]',
         field: 'allprice',
+        sortable: true,
+    },
+    {
+        name: 'allweight',
+        align: 'left',
+        label: 'Общо [кг]',
+        field: 'allweight',
         sortable: true,
     },
     {
@@ -280,6 +294,12 @@ const confirmCompletionPodrastvane = (mincrement) => {
                                 }}
                             </div>
                             <div
+                                v-else-if="col.name === 'type'"
+                                style="width: 60px;"
+                            >
+                                {{ props.row.type }}
+                            </div>
+                            <div
                                 v-else-if="col.name === 'created_at'"
                                 style="width: 60px;"
                             >
@@ -308,6 +328,12 @@ const confirmCompletionPodrastvane = (mincrement) => {
                                 style="width: 60px;"
                             >
                                 {{ parseFloat(props.row.price * props.row.quantity).toFixed(2) }}
+                            </div>
+                            <div
+                                v-else-if="col.name === 'allweight'"
+                                style="width: 60px;"
+                            >
+                                {{ parseFloat(props.row.weight).toFixed(2) }}
                             </div>
                             <div
                                 v-else-if="col.name === 'status'"
@@ -388,7 +414,7 @@ const confirmCompletionPodrastvane = (mincrement) => {
                 <template v-slot:bottom-row>
                     <q-tr>
                         <q-td
-                            colspan="6"
+                            colspan="7"
                             class="text-weight-bold"
                         >Общо:</q-td>
                         <q-td class="text-weight-bold">
