@@ -2,6 +2,7 @@
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router, useForm } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
+import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
     mincrement: {
@@ -14,6 +15,7 @@ const form = useForm({
     mproduction_id: props.mincrement?.mproduction?.id,
     product: props.mincrement?.product,
     quantity: props.mincrement?.quantity,
+    weight: props.mincrement.weight,
     price: props.mincrement?.price,
     status: props.mincrement?.status,
     type: props.mincrement?.type,
@@ -34,7 +36,37 @@ const mincrementsUpdate = () => {
     })
 }
 
-const title = `Добавяне на приход към Процес №${props.mincrement?.mproduction?.id}`
+const total = ref(0)
+onMounted(() => {
+    total.value = props.mincrement?.mproduction?.stock
+})
+
+const typeTitle = computed(() => {
+    switch (props.mincrement.type) {
+        case 'Продажба':
+            return {
+                'title': 'Продажба на прасета',
+                'button': 'Запиши продажбата',
+            }
+        case 'Прехвърляне':
+            return {
+                'title': 'Прасета за прехвърляне',
+                'button': 'Запиши прехвърлянето',
+            }
+        case 'Умрели':
+            return {
+                'title': 'Прасета умрели',
+                'button': 'Запиши прехвърлянето',
+            }
+        default:
+            return {
+                'title': 'Добавяне на приход',
+                'button': 'Запиши',
+            }
+    }
+})
+
+const title = `${typeTitle.value.title} към Процес №${props.mincrement?.mproduction?.id}`
 </script>
 
 <template>
@@ -52,7 +84,7 @@ const title = `Добавяне на приход към Процес №${props
                         <div class="column flex-grow flex-center">
                             <q-card class="q-pa-md full-width">
                                 <q-form
-                                    class="row q-gutter-xl"
+                                    class="q-gutter-xl"
                                     autofocus
                                 >
                                     <q-input
@@ -62,23 +94,50 @@ const title = `Добавяне на приход към Процес №${props
                                         hint="Продукт избран в прихода"
                                         readonly
                                     />
-
+                                    <div class="row">
+                                        <div class="col-9 q-mr-md">
+                                            <q-input
+                                                v-model.number="form.quantity"
+                                                class="col"
+                                                type="number"
+                                                label="Количество"
+                                                hint="Количество от избрания продукт за приход."
+                                                :error="form.hasErrors"
+                                                :error-message="form.errors.quantity"
+                                                autofocus
+                                                numeric-keyboard-toggle
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ mincrement.product.me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                        <div class="col">
+                                            <q-input
+                                                v-model.number="total"
+                                                type="number"
+                                                label="Наличност"
+                                                readonly
+                                                hint="Общо налично количество прасета в процеса"
+                                            >
+                                                <template v-slot:append>
+                                                    <span class="text-subtitle1">{{ mincrement.product.me }}</span>
+                                                </template>
+                                            </q-input>
+                                        </div>
+                                    </div>
                                     <q-input
-                                        v-model.number="form.quantity"
-                                        class="col"
+                                        v-model.number="form.weight"
                                         type="number"
-                                        label="Количество"
-                                        hint="Количество от избрания продукт за приход."
+                                        label="Тегло"
+                                        :hint="`Общо тегло на ${mincrement.type === 'Продажба' ? 'продаваните' : mincrement.type === 'Ремонт' ? 'ремонтните' : ''} прасета`"
                                         :error="form.hasErrors"
-                                        :error-message="form.errors.quantity"
-                                        autofocus
-                                        numeric-keyboard-toggle
+                                        :error-message="form.errors.weight"
                                     >
                                         <template v-slot:append>
-                                            <span class="text-subtitle1">{{ mincrement.product.me }}</span>
+                                            <span class="text-subtitle1">кг</span>
                                         </template>
                                     </q-input>
-
                                     <q-input
                                         v-model.number="form.price"
                                         class="col"
@@ -98,13 +157,13 @@ const title = `Добавяне на приход към Процес №${props
                         @click.prevent="router.get(route('mproductions.show', mincrement.mproduction?.id))"
                         color="primary"
                         flat
-                        :label="`Продукционен процес №${mincrement.mproduction?.id}`"
+                        :label="`Процес №${mincrement.mproduction?.id}`"
                         icon="mdi-menu-left"
                     />
 
                     <q-btn
                         @click.prevent="mincrementsUpdate"
-                        label="Запиши промените"
+                        :label="typeTitle.button"
                         color="primary"
                         icon="mdi-content-save-outline"
                     />

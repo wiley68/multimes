@@ -65,6 +65,7 @@ const typeTitle = computed(() => {
             }
     }
 })
+
 const title = `${typeTitle.value.title} към Процес №${props.uincrement?.uproduction?.id}`
 </script>
 
