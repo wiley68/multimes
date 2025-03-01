@@ -188,6 +188,7 @@ const confirmCompletion = (mdecrement) => {
             mproduction_id: mdecrement.mproduction_id,
             product: mdecrement.product,
             quantity: mdecrement.quantity,
+            weight: 0.00,
             price: mdecrement.price,
             status: mdecrement.status,
         })
