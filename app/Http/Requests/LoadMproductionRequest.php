@@ -27,6 +27,11 @@ class LoadMproductionRequest extends FormRequest
                 'numeric',
                 'min:1',
             ],
+            'weight' => [
+                'required',
+                'numeric',
+                'min:0',
+            ],
             'price' => [
                 'required',
                 'numeric',

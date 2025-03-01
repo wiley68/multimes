@@ -13,6 +13,7 @@ class Mdecrement extends Model
         'mproduction_id',
         'product_id',
         'quantity',
+        'weight',
         'price',
         'status',
     ];

@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
+use function back;
 
 class MproductionController extends Controller
 {
@@ -188,22 +189,22 @@ class MproductionController extends Controller
             $products = Product::where('id', '=', $mproduction->product_id);
         } else {
             switch ($mproduction->mhall['type']) {
-                case 'Ремонтни':
+                case Mhall::TYPE_OPTIONS[0]:
                     $productType = 'Прасета ремонтни';
                     break;
-                case 'Заплождане':
+                case Mhall::TYPE_OPTIONS[1]:
                     $productType = 'Прасета заплождане';
                     break;
-                case 'Условна бременност':
+                case Mhall::TYPE_OPTIONS[2]:
                     $productType = 'Прасета условна бременност';
                     break;
-                case 'Бременност':
+                case Mhall::TYPE_OPTIONS[3]:
                     $productType = 'Прасета бременност';
                     break;
-                case 'Родилно':
+                case Mhall::TYPE_OPTIONS[4]:
                     $productType = 'Прасета родилно';
                     break;
-                case 'Подрастване':
+                case Mhall::TYPE_OPTIONS[5]:
                     $productType = 'Прасета подрастване';
                     break;
                 default:
@@ -259,6 +260,7 @@ class MproductionController extends Controller
             'mproduction_id' => $mproduction->id,
             'product_id' => $request->product['id'],
             'quantity' => $new_quantity,
+            'weight' => $request->weight,
             'price' => $new_price,
             'status' => 1,
         ]);
