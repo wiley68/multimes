@@ -39,7 +39,7 @@ const siloPurcent = computed(() => {
 const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)}%`
 
 const $q = useQuasar()
-const confirmCompletion = () => {
+const mproductionsComplete = () => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да приключиш този Производствен процес? След приключването на процеса няма да могат да бъдат извършвани промени по него. Халето в което се извършва процеса ще бъде освободено за стартиране на нов процес. Процеса е необратим!',
@@ -185,7 +185,7 @@ const mproductionLoading = () => {
                 />
                 <q-btn
                     v-if="hasPermission('update') && mproduction.status === 1"
-                    @click.prevent="confirmCompletion"
+                    @click.prevent="mproductionsComplete"
                     label="Приключи процеса"
                     title="Приключва процеса. Прекъсва възможността за промяна в данните за този процес."
                     icon="mdi-file-document-check-outline"

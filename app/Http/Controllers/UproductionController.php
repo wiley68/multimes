@@ -147,32 +147,22 @@ class UproductionController extends Controller
                 ->first();
         }
 
-        if (!$lastUdecrement) {
-            return back()->withErrors([
-                'complete' => 'В силоза не е зареждан фураж. Операцията не може да се извърши.',
-            ]);
-        }
+        if ($lastUdecrement) {
+            if ((float)$lastUdecrement->quantity >= (float)$validated['rest']) {
+                $lastUdecrement->quantity -= (float)$validated['rest'];
+                $lastUdecrement->save();
 
-        if ((float)$lastUdecrement->quantity < (float)$validated['rest']) {
-            return back()->withErrors([
-                'complete' => 'Количеството фураж зареден в последния процес [' .
-                    $lastUdecrement->quantity . '] е по-малко от остатъчното количество фураж в силоза [' .
-                    $validated['rest'] . ']. Операцията не може да се извърши.',
-            ]);
+                $product = $lastUdecrement->product;
+                $product->stock = (float)$product->stock + (float)$validated['rest'];
+                if ((float)$product->stock === 0.00) {
+                    $product->price = 0;
+                } else {
+                    $siloPrice = optional($uproduction->uhall->silo)->price ?? 0;
+                    $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$siloPrice) / $product->stock;
+                }
+                $product->save();
+            }
         }
-
-        $lastUdecrement->quantity -= (float)$validated['rest'];
-        $lastUdecrement->save();
-
-        $product = $lastUdecrement->product;
-        $product->stock = (float)$product->stock + (float)$validated['rest'];
-        if ((float)$product->stock === 0.00) {
-            $product->price = 0;
-        } else {
-            $siloPrice = optional($uproduction->uhall->silo)->price ?? 0;
-            $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$siloPrice) / $product->stock;
-        }
-        $product->save();
 
         $silo = $uproduction->uhall->silo;
         $silo->update([

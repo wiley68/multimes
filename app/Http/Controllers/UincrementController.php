@@ -38,13 +38,12 @@ class UincrementController extends Controller
             ]);
         }
 
-        if ($uproduction === null) {
+        $product = $uproduction->product;
+        if ($product === null) {
             return back()->withErrors([
-                'update' => 'Продукта не е открит в текущия процес!'
+                'update' => 'Нямате заредени прасета!'
             ]);
         }
-
-        $product = $uproduction->product;
 
         $udecrements = $uproduction->udecrements;
         $udecrements->load(['product', 'uproduction']);

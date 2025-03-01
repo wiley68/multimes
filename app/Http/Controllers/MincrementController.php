@@ -38,13 +38,13 @@ class MincrementController extends Controller
             ]);
         }
 
-        if ($mproduction === null) {
+        $product = $mproduction->product;
+
+        if ($product === null) {
             return back()->withErrors([
-                'update' => 'Продукта не е открит в текущия процес!'
+                'update' => 'Нямате заредени прасета!'
             ]);
         }
-
-        $product = $mproduction->product;
 
         $mdecrements = $mproduction->mdecrements;
         $mdecrements->load(['product', 'mproduction']);

@@ -173,32 +173,22 @@ class MproductionController extends Controller
                 ->first();
         }
 
-        if (!$lastMdecrement) {
-            return back()->withErrors([
-                'complete' => 'В силоза не е зареждан фураж. Операцията не може да се извърши.',
-            ]);
-        }
+        if ($lastMdecrement) {
+            if ((float)$lastMdecrement->quantity >= (float)$validated['rest']) {
+                $lastMdecrement->quantity -= (float)$validated['rest'];
+                $lastMdecrement->save();
 
-        if ((float)$lastMdecrement->quantity < (float)$validated['rest']) {
-            return back()->withErrors([
-                'complete' => 'Количеството фураж зареден в последния процес [' .
-                    $lastMdecrement->quantity . '] е по-малко от остатъчното количество фураж в силоза [' .
-                    $validated['rest'] . ']. Операцията не може да се извърши.',
-            ]);
+                $product = $lastMdecrement->product;
+                $product->stock += (float)$validated['rest'];
+                if ((float)$product->stock > 0) {
+                    $siloPrice = optional($mproduction->mhall->silo)->price ?? 0;
+                    $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$siloPrice) / $product->stock;
+                } else {
+                    $product->price = 0;
+                }
+                $product->save();
+            }
         }
-
-        $lastMdecrement->quantity -= (float)$validated['rest'];
-        $lastMdecrement->save();
-
-        $product = $lastMdecrement->product;
-        $product->stock += (float)$validated['rest'];
-        if ((float)$product->stock > 0) {
-            $siloPrice = optional($mproduction->mhall->silo)->price ?? 0;
-            $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$siloPrice) / $product->stock;
-        } else {
-            $product->price = 0;
-        }
-        $product->save();
 
         $silo = $mproduction->mhall->silo;
         $silo->update([

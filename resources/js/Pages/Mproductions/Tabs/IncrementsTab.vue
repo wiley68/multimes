@@ -111,7 +111,7 @@ const totalPrice = computed(() => {
 
 const $q = useQuasar()
 
-const createMincrements = (type) => {
+const mincrementsCreate = (type) => {
     router.get(
         route('mincrements.create'),
         {
@@ -439,7 +439,7 @@ const confirmCompletionPodrastvane = (mincrement) => {
         >
             <q-btn
                 v-if="mproduction.status === 1"
-                @click="createMincrements('Продажба')"
+                @click="mincrementsCreate('Продажба')"
                 label="Продажба на прасета"
                 title="Извършване на продажба на прасета. Продадените прасета се премахват от процеса. В процеса се вписва приход на средства."
                 icon="mdi-table-row-plus-after"
@@ -447,7 +447,7 @@ const confirmCompletionPodrastvane = (mincrement) => {
             />
             <q-btn
                 v-if="mproduction.status === 1"
-                @click="createMincrements('Прехвърляне')"
+                @click="mincrementsCreate('Прехвърляне')"
                 :label="mhallInfo.nextproduct"
                 :title="`Добавя нов приход към продукционния процес. Прихода е от предаване на ${mhallInfo.product} готови за ${mhallInfo.nextproduct}.`"
                 icon="mdi-table-row-plus-after"
@@ -455,7 +455,7 @@ const confirmCompletionPodrastvane = (mincrement) => {
             />
             <q-btn
                 v-if="mproduction.status === 1"
-                @click="createMincrements('Умрели')"
+                @click="mincrementsCreate('Умрели')"
                 label="Прасета умрели"
                 title="Извършва се премахване на умрели прасета от процеса."
                 icon="mdi-table-row-plus-after"
