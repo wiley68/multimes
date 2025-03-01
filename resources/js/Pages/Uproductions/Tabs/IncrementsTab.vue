@@ -391,14 +391,6 @@ const uincrementsComplete = (uincrement) => {
         >
             <q-btn
                 v-if="uproduction.status === 1"
-                @click="createUincrements('Продажба')"
-                label="Продажба на прасета"
-                title="Извършване на продажба на прасета. Продадените прасета се премахват от процеса. В процеса се вписва приход на средства."
-                icon="mdi-table-row-plus-after"
-                color="primary"
-            />
-            <q-btn
-                v-if="uproduction.status === 1"
                 @click="createUincrements('Ремонт')"
                 label="Прасета за ремонт"
                 title="Извършва се прехвърляне на прасета за ремонт. Прехвърлените прасета се премахват от процеса. В склада се прехвърлят ремонтни прасета."
@@ -407,11 +399,21 @@ const uincrementsComplete = (uincrement) => {
             />
             <q-btn
                 v-if="uproduction.status === 1"
+                @click="createUincrements('Продажба')"
+                label="Продажба на прасета"
+                title="Извършване на продажба на прасета. Продадените прасета се премахват от процеса. В процеса се вписва приход на средства."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+                outline
+            />
+            <q-btn
+                v-if="uproduction.status === 1"
                 @click="createUincrements('Умрели')"
                 label="Прасета умрели"
                 title="Извършва се премахване на умрели прасета от процеса."
                 icon="mdi-table-row-plus-after"
                 color="primary"
+                outline
             />
         </div>
     </div>

@@ -439,14 +439,6 @@ const confirmCompletionPodrastvane = (mincrement) => {
         >
             <q-btn
                 v-if="mproduction.status === 1"
-                @click="mincrementsCreate('Продажба')"
-                label="Продажба на прасета"
-                title="Извършване на продажба на прасета. Продадените прасета се премахват от процеса. В процеса се вписва приход на средства."
-                icon="mdi-table-row-plus-after"
-                color="primary"
-            />
-            <q-btn
-                v-if="mproduction.status === 1"
                 @click="mincrementsCreate('Прехвърляне')"
                 :label="mhallInfo.nextproduct"
                 :title="`Добавя нов приход към продукционния процес. Прихода е от предаване на ${mhallInfo.product} готови за ${mhallInfo.nextproduct}.`"
@@ -455,11 +447,21 @@ const confirmCompletionPodrastvane = (mincrement) => {
             />
             <q-btn
                 v-if="mproduction.status === 1"
+                @click="mincrementsCreate('Продажба')"
+                label="Продажба на прасета"
+                title="Извършване на продажба на прасета. Продадените прасета се премахват от процеса. В процеса се вписва приход на средства."
+                icon="mdi-table-row-plus-after"
+                color="primary"
+                outline
+            />
+            <q-btn
+                v-if="mproduction.status === 1"
                 @click="mincrementsCreate('Умрели')"
                 label="Прасета умрели"
                 title="Извършва се премахване на умрели прасета от процеса."
                 icon="mdi-table-row-plus-after"
                 color="primary"
+                outline
             />
         </div>
     </div>
