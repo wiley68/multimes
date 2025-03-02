@@ -52,17 +52,22 @@ class StoreController extends Controller
     {
         Gate::authorize('view', Product::class);
 
+        $stores = [];
+        $key = 0;
         $product = Product::findOrFail($id);
         $silos = $product->silos;
         $uproductions = $product->uproductions;
+        $mproductions = $product->mproductions;
 
-        $stores[0]['nomenklature'] = $product['nomenklature'];
-        $stores[0]['name'] = $product['name'];
-        $stores[0]['type'] = $product['type'];
-        $stores[0]['quantity'] = $product['stock'];
-        $stores[0]['me'] = $product['me'];
-        $stores[0]['object'] = 'Склад';
-        $key = 1;
+        if ((int)$product['stock'] !== 0) {
+            $stores[0]['nomenklature'] = $product['nomenklature'];
+            $stores[0]['name'] = $product['name'];
+            $stores[0]['type'] = $product['type'];
+            $stores[0]['quantity'] = $product['stock'];
+            $stores[0]['me'] = $product['me'];
+            $stores[0]['object'] = 'Склад';
+            $key = 1;
+        }
         foreach ($silos as $silo) {
             $stores[$key]['nomenklature'] = $product['nomenklature'];
             $stores[$key]['name'] = $product['name'];
@@ -79,6 +84,15 @@ class StoreController extends Controller
             $stores[$key]['quantity'] = $uproduction['stock'];
             $stores[$key]['me'] = $product['me'];
             $stores[$key]['object'] = 'Продукционен процес: ' . $uproduction['id'];
+            $key++;
+        }
+        foreach ($mproductions as $mproduction) {
+            $stores[$key]['nomenklature'] = $product['nomenklature'];
+            $stores[$key]['name'] = $product['name'];
+            $stores[$key]['type'] = $product['type'];
+            $stores[$key]['quantity'] = $mproduction['stock'];
+            $stores[$key]['me'] = $product['me'];
+            $stores[$key]['object'] = 'Продукционен процес: ' . $mproduction['id'];
             $key++;
         }
 
