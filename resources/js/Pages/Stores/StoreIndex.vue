@@ -48,6 +48,14 @@ const columns = [
         sortable: true,
     },
     {
+        name: 'price',
+        align: 'left',
+        label: 'Цена склад',
+        field: 'price',
+        style: 'width: 100px;',
+        sortable: false,
+    },
+    {
         name: 'stock',
         align: 'left',
         label: 'Наличност склад',
@@ -202,6 +210,9 @@ const dashboard = () => {
                                                 rounded
                                                 @click="storesShow(props.row)"
                                             />
+                                        </div>
+                                        <div v-else-if="col.name === 'price'">
+                                            {{ props.row.price }}
                                         </div>
                                         <div v-else-if="col.name === 'stock'">
                                             {{ props.row.stock.toFixed(2) }}
