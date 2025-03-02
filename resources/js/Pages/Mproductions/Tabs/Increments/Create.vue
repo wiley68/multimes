@@ -55,6 +55,10 @@ const mincrementsStore = () => {
     })
 }
 
+const mproductionsShow = () => {
+    router.get(route('mproductions.show', props.mproduction.id))
+}
+
 const me = ref('')
 const total = ref(0)
 
@@ -175,7 +179,7 @@ const title = `${typeTitle.value.title} към Процес №${props.mproducti
                 </div>
                 <div class="footer-panel">
                     <q-btn
-                        @click.prevent="router.get(route('mproductions.show', mproduction.id))"
+                        @click.prevent="mproductionsShow"
                         color="primary"
                         flat
                         :label="`Процес №${mproduction.id}`"

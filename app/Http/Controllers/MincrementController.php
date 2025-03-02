@@ -202,7 +202,7 @@ class MincrementController extends Controller
                 $uslovna->price = $new_uslovna_price;
                 $uslovna->save();
             }
-            if ($mproduction->mhall->type === 'Условна бременност') {
+            if ($mproduction->mhall->type === 'Условна бременност' && $request->type === 'Прехвърляне') {
                 $bremenni = Product::where('type', '=', 'Прасета бременност')->firstOrFail();
                 $old_bremenni_stock = (float)$bremenni->stock;
                 $new_bremenni_stock = (float)$old_bremenni_stock + (float)$request->quantity;
@@ -212,7 +212,7 @@ class MincrementController extends Controller
                 $bremenni->price = $new_bremenni_price;
                 $bremenni->save();
             }
-            if ($mproduction->mhall->type === 'Бременност') {
+            if ($mproduction->mhall->type === 'Бременност' && $request->type === 'Прехвърляне') {
                 $rodilno = Product::where('type', '=', 'Прасета родилно')->firstOrFail();
                 $old_rodilno_stock = (float)$rodilno->stock;
                 $new_rodilno_stock = (float)$old_rodilno_stock + (float)$request->quantity;
@@ -222,7 +222,7 @@ class MincrementController extends Controller
                 $rodilno->price = $new_rodilno_price;
                 $rodilno->save();
             }
-            if ($mproduction->mhall->type === 'Родилно') {
+            if ($mproduction->mhall->type === 'Родилно' && $request->type === 'Прехвърляне') {
                 $zaplozdane = Product::where('type', '=', 'Прасета заплождане')->firstOrFail();
                 $old_zaplozdane_stock = (float)$zaplozdane->stock;
                 $new_zaplozdane_stock = (float)$old_zaplozdane_stock + (float)$request->quantity;
@@ -237,7 +237,7 @@ class MincrementController extends Controller
                 $new_podrastvane_stock = (float)$old_podrastvane_stock + (float)$request->podrastvane;
                 $podrastvane->stock = $new_podrastvane_stock;
                 $old_podrastvane_price = (float)$podrastvane->price;
-                $new_podrastvane_price = (($old_podrastvane_price * $old_podrastvane_stock) + ((float)$request->podrastvane_price * (float)$request->podrastvane)) / ($old_podrastvane_stock + (float)$request->podrastvane);
+                $new_podrastvane_price = (($old_podrastvane_price * $old_podrastvane_stock)) / ($old_podrastvane_stock + (float)$request->podrastvane);
                 $podrastvane->price = $new_podrastvane_price;
                 $podrastvane->save();
             }

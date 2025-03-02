@@ -209,7 +209,7 @@ const mincrementsComplete = (mincrement) => {
     }).onCancel(() => { }).onDismiss(() => { })
 }
 
-const confirmCompletionPodrastvane = (mincrement) => {
+const mincrementsCompletePodrastvane = (mincrement) => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Какво количество Прасета подрастване са родени?',
@@ -243,7 +243,6 @@ const confirmCompletionPodrastvane = (mincrement) => {
             status: mincrement.status,
             type: mincrement.type,
             podrastvane: data,
-            podrastvane_price: (mincrement.quantity * mincrement.price) / data,
         })
         form.patch(route('mincrements.complete', mincrement.id), {
             onError: errors => {
@@ -362,7 +361,7 @@ const confirmCompletionPodrastvane = (mincrement) => {
                                         dense
                                         flat
                                         rounded
-                                        @click="confirmCompletionPodrastvane(
+                                        @click="mincrementsCompletePodrastvane(
                                             {
                                                 id: props.row.id,
                                                 mproduction_id: props.row.mproduction?.id,
