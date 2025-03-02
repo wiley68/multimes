@@ -182,8 +182,7 @@ class MincrementController extends Controller
                     'update' => 'Наличноста на продукта: [' . $mproduction->product->nomenklature . '] ' . $mproduction->product->name . ' [' . $mproduction->stock . '] е по-малка от предвидената за изписване в прихода Ви [' . $request->quantity . ']',
                 ]);
             }
-
-            if ($mproduction->mhall->type === 'Ремонтни' && $mproduction->type === 'Прехвърляне') {
+            if ($mproduction->mhall->type === 'Ремонтни' && $request->type === 'Прехвърляне') {
                 $zaplozdane = Product::where('type', '=', 'Прасета заплождане')->firstOrFail();
                 $old_zaplozdane_stock = (float)$zaplozdane->stock;
                 $new_zaplozdane_stock = (float)$old_zaplozdane_stock + (float)$request->quantity;
@@ -193,7 +192,7 @@ class MincrementController extends Controller
                 $zaplozdane->price = $new_zaplozdane_price;
                 $zaplozdane->save();
             }
-            if ($mproduction->mhall->type === 'Заплождане' && $mproduction->type === 'Прехвърляне') {
+            if ($mproduction->mhall->type === 'Заплождане' && $request->type === 'Прехвърляне') {
                 $uslovna = Product::where('type', '=', 'Прасета условна бременност')->firstOrFail();
                 $old_uslovna_stock = (float)$uslovna->stock;
                 $new_uslovna_stock = (float)$old_uslovna_stock + (float)$request->quantity;
