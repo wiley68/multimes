@@ -174,7 +174,7 @@ class SiloController extends Controller
 
         if ((float)$silo->maxqt < $new_quantity) {
             return back()->withErrors([
-                'update' => 'Наличноста в силоза ' . $new_quantity . ' ще стане по-голяма от максимално допустимата ' . $silo->maxqt . '! Не можете да запишете промяната.'
+                'update' => 'Максимално допустимото количество е: ' . $silo->maxqt . '! Не можете да го надхвърляте.'
             ]);
         }
 
@@ -289,7 +289,7 @@ class SiloController extends Controller
 
         if ((float)$silo->maxqt < $new_quantity) {
             return back()->withErrors([
-                'update' => 'Наличноста в силоза ' . $new_quantity . ' ще стане по-голяма от максимално допустимата ' . $silo->maxqt . '! Не можете да запишете промяната.'
+                'update' => 'Максимално допустимото количество е: ' . $silo->maxqt . '! Не можете да го надхвърляте.'
             ]);
         }
 
