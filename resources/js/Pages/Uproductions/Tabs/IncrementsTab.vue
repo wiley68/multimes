@@ -156,7 +156,7 @@ const createUincrements = (type) => {
     )
 }
 
-const confirm = (increments_id) => {
+const uincrementsDestroy = (increments_id) => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да изтриеш прихода?',
@@ -186,6 +186,10 @@ const confirm = (increments_id) => {
             },
         })
     }).onCancel(() => { }).onDismiss(() => { })
+}
+
+const uincrementsEdit = (increments_id) => {
+    router.get(route('uincrements.edit', increments_id))
 }
 
 const uincrementsComplete = (uincrement) => {
@@ -352,7 +356,7 @@ const uincrementsComplete = (uincrement) => {
                                     dense
                                     flat
                                     rounded
-                                    @click="router.get(route('uincrements.edit', props.row.id))"
+                                    @click="uincrementsEdit(props.row.id)"
                                 />
                                 <q-btn
                                     v-if="hasPermission('delete') && props.row.status === 0 && uproduction.status === 1"
@@ -362,7 +366,7 @@ const uincrementsComplete = (uincrement) => {
                                     dense
                                     flat
                                     rounded
-                                    @click="confirm(props.row.id)"
+                                    @click="uincrementsDestroy(props.row.id)"
                                 />
                             </div>
                         </q-td>

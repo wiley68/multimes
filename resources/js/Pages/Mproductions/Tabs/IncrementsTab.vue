@@ -132,7 +132,7 @@ const mincrementsCreate = (type) => {
     )
 }
 
-const confirm = (increments_id) => {
+const mincrementsDestroy = (increments_id) => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да изтриеш прихода?',
@@ -164,7 +164,11 @@ const confirm = (increments_id) => {
     }).onCancel(() => { }).onDismiss(() => { })
 }
 
-const confirmCompletion = (mincrement) => {
+const mincrementsEdit = (increments_id) => {
+    router.get(route('mincrements.edit', increments_id))
+}
+
+const mincrementsComplete = (mincrement) => {
     $q.dialog({
         title: 'Потвърди',
         message: 'Желаеш ли да приключиш този приход? Количеството от избрания продукт ще бъде намалено в халето за текущия процес, като ще промени текущите наличности. Процеса е необратим!',
@@ -381,7 +385,7 @@ const confirmCompletionPodrastvane = (mincrement) => {
                                         dense
                                         flat
                                         rounded
-                                        @click="confirmCompletion(
+                                        @click="mincrementsComplete(
                                             {
                                                 id: props.row.id,
                                                 mproduction_id: props.row.mproduction?.id,
@@ -403,7 +407,7 @@ const confirmCompletionPodrastvane = (mincrement) => {
                                     dense
                                     flat
                                     rounded
-                                    @click="router.get(route('mincrements.edit', props.row.id))"
+                                    @click="mincrementsEdit(props.row.id)"
                                 />
                                 <q-btn
                                     v-if="hasPermission('delete') && props.row.status === 0 && mproduction.status === 1"
@@ -413,7 +417,7 @@ const confirmCompletionPodrastvane = (mincrement) => {
                                     dense
                                     flat
                                     rounded
-                                    @click="confirm(props.row.id)"
+                                    @click="mincrementsDestroy(props.row.id)"
                                 />
                             </div>
                         </q-td>
