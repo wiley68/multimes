@@ -3,6 +3,7 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { ref } from 'vue';
 import { usePermission } from '@/composables/permissions'
+import { useQuasar } from 'quasar'
 
 const props = defineProps({
     stores: {
@@ -96,7 +97,8 @@ const pagination = {
 }
 const filter = ref(props.filter)
 
-const onRequest = (requestProp) => {
+const $q = useQuasar()
+const storesIndex = (requestProp) => {
     router.get(
         route('stores.index'),
         {
@@ -108,8 +110,48 @@ const onRequest = (requestProp) => {
         },
         {
             preserveState: false,
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
         }
-    );
+    )
+}
+
+const storesShow = (row) => {
+    router.get(
+        route('stores.show', row.id),
+        {
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        })
+}
+
+const dashboard = () => {
+    router.get(
+        route('dashboard'), {
+        onError: errors => {
+            Object.values(errors).flat().forEach((error) => {
+                $q.notify({
+                    message: error,
+                    icon: 'mdi-alert-circle-outline',
+                    type: 'negative',
+                });
+            });
+        },
+    })
 }
 </script>
 
@@ -140,7 +182,7 @@ const onRequest = (requestProp) => {
                             row-key="id"
                             :pagination="pagination"
                             :filter="filter"
-                            @request="onRequest"
+                            @request="storesIndex"
                         >
                             <template v-slot:body="props">
                                 <q-tr :props="props">
@@ -158,25 +200,29 @@ const onRequest = (requestProp) => {
                                                 dense
                                                 flat
                                                 rounded
-                                                @click="router.get(route('stores.show', props.row.id))"
+                                                @click="storesShow(props.row)"
                                             />
                                         </div>
                                         <div v-else-if="col.name === 'stock'">
                                             {{ props.row.stock.toFixed(2) }}
                                         </div>
                                         <div v-else-if="col.name === 'stock_out'">
-                                            {{ (props.row.silos.reduce((sum, item) => {
+                                            {{(props.row.silos.reduce((sum, item) => {
                                                 return sum + parseFloat(item.stock)
                                             }, 0) + props.row.uproductions.reduce((sum, item) => {
                                                 return sum + parseFloat(item.stock)
-                                            }, 0)).toFixed(2) }}
+                                            }, 0) + props.row.mproductions.reduce((sum, item) => {
+                                                return sum + parseFloat(item.stock)
+                                            }, 0)).toFixed(2)}}
                                         </div>
                                         <div v-else-if="col.name === 'total'">
-                                            {{ (props.row.stock + props.row.silos.reduce((sum, item) => {
+                                            {{(props.row.stock + props.row.silos.reduce((sum, item) => {
                                                 return sum + parseFloat(item.stock)
                                             }, 0) + props.row.uproductions.reduce((sum, item) => {
                                                 return sum + parseFloat(item.stock)
-                                            }, 0)).toFixed(2) }}
+                                            }, 0) + props.row.mproductions.reduce((sum, item) => {
+                                                return sum + parseFloat(item.stock)
+                                            }, 0)).toFixed(2)}}
                                         </div>
                                         <div v-else>
                                             {{ props.row[col.name] }}
@@ -207,7 +253,7 @@ const onRequest = (requestProp) => {
                         label="Табло"
                         flat
                         icon="mdi-menu-left"
-                        @click="router.get(route('dashboard'))"
+                        @click="dashboard"
                     />
                 </div>
             </div>

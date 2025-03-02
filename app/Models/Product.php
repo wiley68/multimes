@@ -58,4 +58,19 @@ class Product extends Model
     {
         return $this->hasMany(Uincrement::class);
     }
+
+    public function mproductions()
+    {
+        return $this->hasMany(Mproduction::class);
+    }
+
+    public function mdecrements()
+    {
+        return $this->hasMany(Mdecrement::class);
+    }
+
+    public function mincrements()
+    {
+        return $this->hasMany(Mincrement::class);
+    }
 }
