@@ -241,7 +241,7 @@ class MincrementController extends Controller
                 $podrastvane->price = $new_podrastvane_price;
                 $podrastvane->save();
             }
-            if ($mproduction->mhall->type === 'Подрастване') {
+            if ($mproduction->mhall->type === 'Подрастване' && $request->type === 'Прехвърляне') {
                 $ugoiavane = Product::where('type', '=', 'Прасета угояване')->firstOrFail();
                 $old_ugoiavane_stock = (float)$ugoiavane->stock;
                 $new_ugoiavane_stock = (float)$old_ugoiavane_stock + (float)$request->quantity;
