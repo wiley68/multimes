@@ -73,11 +73,11 @@ const productionIncrementsCount = computed(() => {
 })
 
 const productionIncrementsQuantity = computed(() => {
-    return props.mincrements.reduce((acc, item) => item.product.type === props.mhallInfo.product ? acc + item.quantity : acc, 0)
+    return props.mincrements.reduce((acc, item) => (item.status === 1 && item.product.type === props.mhallInfo.product) ? acc + item.quantity : acc, 0)
 })
 
 const productionIncrementsWeight = computed(() => {
-    return props.mincrements.reduce((acc, item) => item.product.type === props.mhallInfo.product ? acc + item.weight : acc, 0)
+    return props.mincrements.reduce((acc, item) => (item.status === 1 && item.product.type === props.mhallInfo.product) ? acc + item.weight : acc, 0)
 })
 
 </script>

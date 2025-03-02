@@ -84,7 +84,7 @@ const totalIncementsUmreli = computed(() => {
 })
 
 const totalIncementsUmreliWeight = computed(() => {
-    return parseFloat(props.uincrements
+    return parseFloat(props.mincrements
         .filter(item => item.status === 1 && item.product?.type === props.mhallInfo.product && item.type === 'Умрели')
         .reduce((total, item) => total + item.weight, 0)
     )
@@ -216,7 +216,7 @@ const totalPrirast = computed(() => {
                 <div class="text-subtitle1">
                     <span class="text-weight-medium">{{ `Тегло умрели ${mproduction.product ? mproduction.product.name :
                         'прасета'}: ` }}</span>
-                    <span class="text-weight-light">{{ totalIncementsPrehvarlianeWeight.toFixed(2) }} кг</span>
+                    <span class="text-weight-light">{{ totalIncementsUmreliWeight.toFixed(2) }} кг</span>
                 </div>
                 <div class="text-subtitle1">
                     <span class="text-weight-medium">{{ `Общо тегло изкарани ${mproduction.product ?
@@ -232,7 +232,7 @@ const totalPrirast = computed(() => {
                     <span class="text-weight-medium">Съотношение кг фураж за 1кг живо тегло: </span>
                     <span class="text-weight-light">{{ totalPrirast !== 0.00 ? (totalDecrementsFurazWeight /
                         totalPrirast).toFixed(2) : '0.00'
-                        }}</span>
+                    }}</span>
                 </div>
                 <div class="text-subtitle1 text-accent">
                     <span class="text-weight-medium">Смъртност количество умрели прасета: </span>
