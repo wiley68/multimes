@@ -179,13 +179,18 @@ class MproductionController extends Controller
                 $lastMdecrement->save();
 
                 $product = $lastMdecrement->product;
-                $product->stock += (float)$validated['rest'];
+                $newstock = (float)$product->stock + (float)$validated['rest'];
+                $siloPrice = optional($mproduction->mhall->silo)->price ?? 0;
                 if ((float)$product->stock > 0) {
-                    $siloPrice = optional($mproduction->mhall->silo)->price ?? 0;
-                    $product->price = ((float)$product->stock * (float)$product->price + (float)$validated['rest'] * (float)$siloPrice) / $product->stock;
+                    $product->price = (((float)$product->stock * (float)$product->price) + ((float)$validated['rest'] * (float)$siloPrice)) / $product->stock;
                 } else {
-                    $product->price = 0;
+                    if ($newstock > 0) {
+                        $product->price = (float)$siloPrice;
+                    } else {
+                        $product->price = 0;
+                    }
                 }
+                $product->stock = $newstock;
                 $product->save();
             }
         }
