@@ -12,6 +12,12 @@ const props = defineProps({
     filter: {
         type: String,
     },
+    hasMore: {
+        type: Boolean,
+    },
+    page: {
+        type: Number,
+    },
 })
 
 const columns = [
@@ -86,6 +92,39 @@ const columns = [
     }
 ]
 
+const silosRows = ref(props.silos)
+const page = ref(props.page)
+const hasMore = ref(props.hasMore)
+const loading = ref(false)
+const filter = ref(props.filter)
+const navigationActive = ref(false)
+
+const onLoadMore = () => {
+    if (loading.value || !hasMore.value) return; // Ако вече зареждаме или няма още записи, спираме
+
+    loading.value = true;
+    page.value++; // Увеличаваме "страницата"
+
+    router.get(route('silos.index'), {
+        page: page.value,
+        rowsPerPage: 10,
+        filter: filter.value,
+    }, {
+        preserveState: true,
+        preserveScroll: true,
+        onSuccess: ({ props }) => {
+            if (props.silos.length > 0) {
+                silosRows.value = [...silosRows.value, ...props.silos]; // Добавяме новите записи
+            }
+            hasMore.value = props.hasMore; // Обновяваме дали има още записи
+            loading.value = false;
+        },
+        onError: () => {
+            loading.value = false;
+        }
+    });
+}
+
 const fieldHalls = (row) => {
     var hallbetween = ''
     const mhalls = row.mhalls?.map(obj => obj.name).join(', ')
@@ -99,37 +138,36 @@ const fieldHalls = (row) => {
 const title = 'Силози'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
-const pagination = {
-    page: props.silos.meta.current_page,
-    rowsPerPage: props.silos.meta.per_page,
-    rowsNumber: props.silos.meta.total
-}
-const filter = ref(props.filter)
-const navigationActive = ref(false)
+// const pagination = {
+//     page: props.silos.meta.current_page,
+//     rowsPerPage: props.silos.meta.per_page,
+//     rowsNumber: props.silos.meta.total
+// }
 
-const onRequest = (requestProp) => {
-    router.get(
-        route('silos.index'),
-        {
-            page: requestProp.pagination.page,
-            rowsPerPage: requestProp.pagination.rowsPerPage,
-            sortBy: requestProp.pagination.sortBy,
-            sortOrder: requestProp.pagination.descending ? 'desc' : 'asc',
-            filter: filter.value,
-        },
-        {
-            preserveState: false,
-        }
-    );
-}
 
-const activateNavigation = () => {
-    navigationActive.value = true
-}
+// const onRequest = (requestProp) => {
+//     router.get(
+//         route('silos.index'),
+//         {
+//             page: requestProp.pagination.page,
+//             rowsPerPage: requestProp.pagination.rowsPerPage,
+//             sortBy: requestProp.pagination.sortBy,
+//             sortOrder: requestProp.pagination.descending ? 'desc' : 'asc',
+//             filter: filter.value,
+//         },
+//         {
+//             preserveState: false,
+//         }
+//     );
+// }
 
-const deactivateNavigation = () => {
-    navigationActive.value = false
-}
+// const activateNavigation = () => {
+//     navigationActive.value = true
+// }
+
+// const deactivateNavigation = () => {
+//     navigationActive.value = false
+// }
 
 const tableClass = computed(() => navigationActive.value === true ? 'shadow-8 no-outline' : null)
 
@@ -183,20 +221,18 @@ const confirm = (silo_id) => {
                             :class="tableClass"
                             bordered
                             title="Силози"
-                            rows-per-page-label="Записи на страница"
                             separator="cell"
                             no-data-label="Липсват данни"
                             no-results-label="Няма съответстващи записи"
                             loading-label="Данните се зареждат..."
                             table-header-class="bg-grey-3"
-                            :rows="silos.data"
+                            :rows="silos"
                             :columns="columns"
                             row-key="id"
-                            :pagination="pagination"
-                            :filter="filter"
-                            @request="onRequest"
-                            @focusin="activateNavigation"
-                            @focusout="deactivateNavigation"
+                            virtual-scroll
+                            :virtual-scroll-sticky-size-start="48"
+                            :rows-per-page-options="[0]"
+                            @virtual-scroll="onLoadMore()"
                         >
                             <template v-slot:top-right>
                                 <q-input
