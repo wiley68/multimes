@@ -31,6 +31,7 @@ class MincrementController extends Controller
         ]);
 
         $mproduction = Mproduction::findOrFail($validated['mproduction_id']);
+        $mproduction->load(['mhall']);
 
         if ($mproduction->status === 0) {
             return back()->withErrors([
@@ -105,6 +106,8 @@ class MincrementController extends Controller
 
         $mincrement->load(['product', 'mproduction']);
         $mproduction = $mincrement->mproduction;
+        $mproduction->load(['mhall']);
+
         if ($mproduction->status === 0) {
             return back()->withErrors([
                 'complete' => "Не можете да редактирате приход към вече приключен процес!"

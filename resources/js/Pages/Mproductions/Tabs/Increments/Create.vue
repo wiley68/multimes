@@ -67,21 +67,40 @@ onMounted(() => {
     total.value = props.mproduction.stock
 })
 
+const nextProduct = (productType) => {
+    switch (productType) {
+        case 'Прасета ремонтни':
+            return 'Прасета заплождане'
+        case 'Прасета заплождане':
+            return 'Прасета условна бременност'
+        case 'Прасета условна бременност':
+            return 'Прасета бременност'
+        case 'Прасета бременност':
+            return 'Прасета родилно'
+        case 'Прасета родилно':
+            return 'Прасета подрастване'
+        case 'Прасета подрастване':
+            return 'Прасета угояване'
+        default:
+            return 'Прасета'
+    }
+}
+
 const typeTitle = computed(() => {
     switch (props.type) {
         case 'Продажба':
             return {
-                'title': 'Продажба на прасета',
+                'title': `Продажба [${props.product.type}]`,
                 'button': 'Запиши продажбата',
             }
         case 'Прехвърляне':
             return {
-                'title': 'Прасета за прехвърляне',
+                'title': `Прехвърляне [${props.product.type} >> ${nextProduct(props.product.type)}]`,
                 'button': 'Запиши прехвърлянето',
             }
         case 'Умрели':
             return {
-                'title': 'Прасета умрели',
+                'title': `Смърт [${props.product.type}]`,
                 'button': 'Запиши прехвърлянето',
             }
         default:
@@ -92,7 +111,7 @@ const typeTitle = computed(() => {
     }
 })
 
-const title = `${typeTitle.value.title} към Процес №${props.mproduction.id}`
+const title = `Хале: ${props.mproduction.mhall?.name}, Процес №${props.mproduction.id}`
 </script>
 
 <template>
@@ -108,6 +127,7 @@ const title = `${typeTitle.value.title} към Процес №${props.mproducti
                 <div class="body-panel">
                     <div class="scrollable-content">
                         <div class="column flex-grow flex-center">
+                            <h4 class="text-h6">{{ typeTitle.title }}</h4>
                             <q-card class="q-pa-md full-width">
                                 <q-form
                                     class="q-gutter-xl"
