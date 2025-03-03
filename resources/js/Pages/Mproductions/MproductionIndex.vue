@@ -351,7 +351,7 @@ const confirm = (mproduction_id) => {
                             <template v-slot:bottom-row>
                                 <q-tr>
                                     <q-td
-                                        colspan="8"
+                                        colspan="10"
                                         class="text-weight-bold"
                                     >Общо:</q-td>
                                     <q-td class="text-weight-bold">
