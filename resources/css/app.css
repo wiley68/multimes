@@ -9,3 +9,9 @@
 body {
     font-family: "Exo 2", sans-serif;
 }
+
+.multiline-text {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word;
+}

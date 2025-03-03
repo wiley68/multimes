@@ -40,6 +40,20 @@ const columns = [
         sortable: true,
     },
     {
+        name: 'group_number',
+        align: 'left',
+        label: 'Група',
+        field: 'group_number',
+        sortable: true,
+    },
+    {
+        name: 'partida_number',
+        align: 'left',
+        label: 'Партида',
+        field: 'partida_number',
+        sortable: true,
+    },
+    {
         name: 'status',
         align: 'left',
         label: 'Състояние',
@@ -255,7 +269,8 @@ const confirm = (mproduction_id) => {
                                     >
                                         <div
                                             v-if="col.name === 'mhall_id'"
-                                            style="width: 80px;"
+                                            style="width: 100px;"
+                                            class="multiline-text"
                                         >
                                             {{ props.row.mhall.name }}
                                         </div>
@@ -280,7 +295,7 @@ const confirm = (mproduction_id) => {
                                         </div>
                                         <div
                                             v-else-if="col.name === 'product'"
-                                            style="width: 120px;"
+                                            class="multiline-text"
                                         >
                                             {{ props.row.product ? `[${props.row.product.nomenklature}]
                                             ${props.row.product.name}` : '' }}
@@ -301,9 +316,9 @@ const confirm = (mproduction_id) => {
                                             v-else-if="col.name === 'result'"
                                             style="width: 80px;"
                                         >
-                                            {{ (props.row.mincrements.reduce((sum, item) => sum + item.price *
+                                            {{(props.row.mincrements.reduce((sum, item) => sum + item.price *
                                                 item.quantity, 0) - props.row.mdecrements.reduce((sum, item) => sum +
-                                                    item.price * item.quantity, 0)).toFixed(2) }}
+                                                    item.price * item.quantity, 0)).toFixed(2)}}
                                         </div>
                                         <div v-else-if="col.name === 'actions'">
                                             <q-btn

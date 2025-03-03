@@ -268,7 +268,8 @@ const confirm = (uproduction_id) => {
                                     >
                                         <div
                                             v-if="col.name === 'uhall_id'"
-                                            style="width: 80px;"
+                                            style="width: 100px;"
+                                            class="multiline-text"
                                         >
                                             {{ props.row.uhall.name }}
                                         </div>
@@ -293,7 +294,7 @@ const confirm = (uproduction_id) => {
                                         </div>
                                         <div
                                             v-else-if="col.name === 'product'"
-                                            style="width: 120px;"
+                                            class="multiline-text"
                                         >
                                             {{ props.row.product ? `[${props.row.product.nomenklature}]
                                             ${props.row.product.name}` : '' }}
