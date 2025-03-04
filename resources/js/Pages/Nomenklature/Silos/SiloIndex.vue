@@ -127,8 +127,6 @@ const getSortBy = (sortBy) => {
 }
 
 const storesIndex = (requestProp) => {
-    console.log(requestProp.getCellValue(5, 5))
-    return
     router.get(
         route('silos.index'),
         {
