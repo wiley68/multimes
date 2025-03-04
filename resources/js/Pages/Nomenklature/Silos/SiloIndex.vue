@@ -13,6 +13,12 @@ const props = defineProps({
     filter: {
         type: String,
     },
+    sortBy: {
+        type: String,
+    },
+    sortOrder: {
+        type: String,
+    },
 })
 
 const columns = [
@@ -61,7 +67,7 @@ const columns = [
         align: 'left',
         label: 'Продукт',
         field: 'product',
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'stock',
@@ -87,14 +93,17 @@ const columns = [
     }
 ]
 
+const title = 'Силози'
+const { hasPermission } = usePermission()
+const $q = useQuasar()
 const pagination = ref({
-    rowsPerPage: 0
+    page: props.silos.meta.current_page,
+    rowsPerPage: props.silos.meta.per_page,
+    rowsNumber: props.silos.meta.total,
+    sortBy: props.sortBy,
+    descending: props.sortOrder === 'desc',
 })
 const filter = ref(props.filter)
-const loading = ref(false)
-const pageSize = ref(props.silos.meta.per_page)
-const lastPage = ref(props.silos.meta.last_page)
-const nextPage = ref(props.silos.meta.current_page + 1)
 
 const fieldHalls = (row) => {
     var hallbetween = ''
@@ -106,36 +115,27 @@ const fieldHalls = (row) => {
     return mhalls + hallbetween + uhalls
 }
 
-const title = 'Силози'
-const { hasPermission } = usePermission()
-const $q = useQuasar()
-
-const onScroll = ({ to, index, ref }) => {
-    if (index > 0) {
-        const lastIndex = props.silos.data.length - 1
-        if (loading.value !== true && nextPage.value < lastPage.value && to === lastIndex) {
-            loading.value = true
-            setTimeout(() => {
-                nextPage.value++
-                nextTick(() => {
-                    console.log('stores.index')
-                    ref.refresh()
-                    loading.value = false
-                })
-            }, 500)
-        }
+const getSortBy = (sortBy) => {
+    if (sortBy === pagination.value.sortBy) {
+        pagination.value.descending = !pagination.value.descending
+        return pagination.value.descending ? 'desc' : 'asc'
+    } else {
+        pagination.value.descending = false
+        pagination.value.sortBy = sortBy
+        return 'asc';
     }
+}
 
-
-
+const storesIndex = (requestProp) => {
+    console.log(requestProp.getCellValue(5, 5))
     return
     router.get(
-        route('stores.index'),
+        route('silos.index'),
         {
             page: requestProp.pagination.page,
             rowsPerPage: requestProp.pagination.rowsPerPage,
             sortBy: requestProp.pagination.sortBy,
-            sortOrder: requestProp.pagination.descending ? 'desc' : 'asc',
+            sortOrder: getSortBy(requestProp.pagination.sortBy),
             filter: filter.value,
         },
         {
@@ -199,20 +199,21 @@ const confirm = (silo_id) => {
                 <div class="body-panel">
                     <div class="scrollable-content">
                         <q-table
-                            style="height: 400px"
-                            flat
+                            class="my-sticky-header-table"
                             bordered
                             :title="title"
+                            rows-per-page-label="Записи на страница"
+                            separator="cell"
+                            no-data-label="Липсват данни"
+                            no-results-label="Няма съответстващи записи"
+                            loading-label="Данните се зареждат..."
+                            table-header-class="bg-grey-3"
                             :rows="silos.data"
                             :columns="columns"
                             row-key="id"
-                            :loading="loading"
-                            virtual-scroll
-                            :virtual-scroll-item-size="48"
-                            :virtual-scroll-sticky-size-start="48"
                             :pagination="pagination"
-                            :rows-per-page-options="[0]"
-                            @virtual-scroll="onScroll"
+                            :filter="filter"
+                            @request="storesIndex"
                         >
                             <template v-slot:top-right>
                                 <q-input

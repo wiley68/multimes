@@ -30,24 +30,32 @@ class SiloController extends Controller
         Gate::authorize('viewAny', Silo::class);
 
         $validated = $request->validate([
-            'filter' => 'nullable|string|max:255',
+            'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
+            'sortBy' => 'nullable|string|in:id,factory_id,name,maxqt,stock',
+            'sortOrder' => 'in:asc,desc',
+            'filter' => 'nullable|string|max:255',
         ]);
 
-        $rowsPerPage = 5;
-        $filter = $validated['filter'] ?? '';
+        $rowsPerPage = $validated['rowsPerPage'] ?? 10;
         $page = $validated['page'] ?? 1;
+        $sortBy = $validated['sortBy'] ?? 'id';
+        $sortOrder = $validated['sortOrder'] ?? 'asc';
+        $filter = $validated['filter'] ?? '';
 
         $query = Silo::query()->with(['product', 'factory', 'mhalls', 'uhalls']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
 
-        $silos = $query->paginate($rowsPerPage, ['*'], 'page', $page);
+        $silos = $query->orderBy($sortBy, $sortOrder)
+            ->paginate($rowsPerPage, ['*'], 'page', $page);
 
         return Inertia::render('Nomenklature/Silos/SiloIndex', [
             'silos' => SiloResource::collection($silos),
             'filter' => $filter,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 
