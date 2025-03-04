@@ -44,28 +44,25 @@ class SiloController extends Controller
         $filter = $validated['filter'] ?? '';
 
         $query = Silo::query()->with(['product', 'factory', 'mhalls', 'uhalls']);
-        if (!empty($filter)) {
-            $query->where('name', 'like', '%' . $filter . '%');
-        }
+        // if (!empty($filter)) {
+        //     $query->where('name', 'like', '%' . $filter . '%');
+        // }
 
-        $silos = $query->orderBy($sortBy, $sortOrder)
-            ->offset(($page - 1) * $rowsPerPage)
-            ->limit($rowsPerPage + 1) // Зареждаме +1 запис, за да проверим дали има още
-            ->get();
+        $silos = $query->get();
 
-        $hasMore = $silos->count() > $rowsPerPage;
+        // $hasMore = $silos->count() > $rowsPerPage;
 
-        if ($hasMore) {
-            $silos->pop();
-        }
+        // if ($hasMore) {
+        //     $silos->pop();
+        // }
 
         // $silos = SiloResource::collection($query->orderBy($sortBy, $sortOrder)
         //     ->paginate($rowsPerPage, ['*'], 'page', $page));
 
         return Inertia::render('Nomenklature/Silos/SiloIndex', [
             'silos' => SiloResource::collection($silos),
-            'hasMore' => $hasMore,
-            'page' => (int)$page,
+            // 'hasMore' => $hasMore,
+            // 'page' => (int)$page,
             'filter' => $filter,
         ]);
     }

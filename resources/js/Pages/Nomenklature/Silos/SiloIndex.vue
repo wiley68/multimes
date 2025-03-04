@@ -12,12 +12,12 @@ const props = defineProps({
     filter: {
         type: String,
     },
-    hasMore: {
-        type: Boolean,
-    },
-    page: {
-        type: Number,
-    },
+    // hasMore: {
+    //     type: Boolean,
+    // },
+    // page: {
+    //     type: Number,
+    // },
 })
 
 const columns = [
@@ -92,38 +92,48 @@ const columns = [
     }
 ]
 
-const silosRows = ref(props.silos)
-const page = ref(props.page)
-const hasMore = ref(props.hasMore)
-const loading = ref(false)
+// let silosRows = []
+// for (let i = 0; i < 1000; i++) {
+//     silosRows = silosRows.concat(props.silos.slice(0).map(r => ({ ...r })))
+// }
+// silosRows.forEach((row, index) => {
+//     row.index = index
+// })
+const pagination = ref({
+    rowsPerPage: 0
+})
+
+// const page = ref(props.page)
+// const hasMore = ref(props.hasMore)
+// const loading = ref(false)
 const filter = ref(props.filter)
-const navigationActive = ref(false)
+// const navigationActive = ref(false)
 
-const onLoadMore = () => {
-    if (loading.value || !hasMore.value) return; // Ако вече зареждаме или няма още записи, спираме
+// const onLoadMore = () => {
+//     if (loading.value || !hasMore.value) return; // Ако вече зареждаме или няма още записи, спираме
 
-    loading.value = true;
-    page.value++; // Увеличаваме "страницата"
+//     loading.value = true;
+//     page.value++; // Увеличаваме "страницата"
 
-    router.get(route('silos.index'), {
-        page: page.value,
-        rowsPerPage: 10,
-        filter: filter.value,
-    }, {
-        preserveState: true,
-        preserveScroll: true,
-        onSuccess: ({ props }) => {
-            if (props.silos.length > 0) {
-                silosRows.value = [...silosRows.value, ...props.silos]; // Добавяме новите записи
-            }
-            hasMore.value = props.hasMore; // Обновяваме дали има още записи
-            loading.value = false;
-        },
-        onError: () => {
-            loading.value = false;
-        }
-    });
-}
+//     router.get(route('silos.index'), {
+//         page: page.value,
+//         rowsPerPage: 10,
+//         filter: filter.value,
+//     }, {
+//         preserveState: true,
+//         preserveScroll: true,
+//         onSuccess: ({ props }) => {
+//             if (props.silos.length > 0) {
+//                 silosRows.value = [...silosRows.value, ...props.silos]; // Добавяме новите записи
+//             }
+//             hasMore.value = props.hasMore; // Обновяваме дали има още записи
+//             loading.value = false;
+//         },
+//         onError: () => {
+//             loading.value = false;
+//         }
+//     });
+// }
 
 const fieldHalls = (row) => {
     var hallbetween = ''
@@ -217,22 +227,15 @@ const confirm = (silo_id) => {
                 <div class="body-panel">
                     <div class="scrollable-content">
                         <q-table
-                            class="my-sticky-header-table text-wrap-table"
-                            :class="tableClass"
+                            flat
                             bordered
-                            title="Силози"
-                            separator="cell"
-                            no-data-label="Липсват данни"
-                            no-results-label="Няма съответстващи записи"
-                            loading-label="Данните се зареждат..."
-                            table-header-class="bg-grey-3"
+                            title="Treats"
                             :rows="silos"
                             :columns="columns"
-                            row-key="id"
+                            row-key="index"
                             virtual-scroll
-                            :virtual-scroll-sticky-size-start="48"
+                            v-model:pagination="pagination"
                             :rows-per-page-options="[0]"
-                            @virtual-scroll="onLoadMore()"
                         >
                             <template v-slot:top-right>
                                 <q-input
