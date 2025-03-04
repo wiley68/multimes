@@ -1,13 +1,13 @@
 <script setup>
 import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
-import { computed, ref } from 'vue';
+import { nextTick, ref } from 'vue';
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 
 const props = defineProps({
     silos: {
-        type: Array,
+        type: Object,
         required: true,
     },
     filter: {
@@ -90,6 +90,11 @@ const columns = [
 const pagination = ref({
     rowsPerPage: 0
 })
+const filter = ref(props.filter)
+const loading = ref(false)
+const pageSize = ref(props.silos.meta.per_page)
+const lastPage = ref(props.silos.meta.last_page)
+const nextPage = ref(props.silos.meta.current_page + 1)
 
 const fieldHalls = (row) => {
     var hallbetween = ''
@@ -104,6 +109,49 @@ const fieldHalls = (row) => {
 const title = 'Силози'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
+
+const onScroll = ({ to, index, ref }) => {
+    if (index > 0) {
+        const lastIndex = props.silos.data.length - 1
+        if (loading.value !== true && nextPage.value < lastPage.value && to === lastIndex) {
+            loading.value = true
+            setTimeout(() => {
+                nextPage.value++
+                nextTick(() => {
+                    console.log('stores.index')
+                    ref.refresh()
+                    loading.value = false
+                })
+            }, 500)
+        }
+    }
+
+
+
+    return
+    router.get(
+        route('stores.index'),
+        {
+            page: requestProp.pagination.page,
+            rowsPerPage: requestProp.pagination.rowsPerPage,
+            sortBy: requestProp.pagination.sortBy,
+            sortOrder: requestProp.pagination.descending ? 'desc' : 'asc',
+            filter: filter.value,
+        },
+        {
+            preserveState: false,
+            onError: errors => {
+                Object.values(errors).flat().forEach((error) => {
+                    $q.notify({
+                        message: error,
+                        icon: 'mdi-alert-circle-outline',
+                        type: 'negative',
+                    });
+                });
+            },
+        }
+    )
+}
 
 const confirm = (silo_id) => {
     $q.dialog({
@@ -154,15 +202,19 @@ const confirm = (silo_id) => {
                             style="height: 400px"
                             flat
                             bordered
-                            title="Treats"
-                            :rows="silos"
+                            :title="title"
+                            :rows="silos.data"
                             :columns="columns"
-                            row-key="index"
+                            row-key="id"
+                            :loading="loading"
                             virtual-scroll
-                            v-model:pagination="pagination"
+                            :virtual-scroll-item-size="48"
+                            :virtual-scroll-sticky-size-start="48"
+                            :pagination="pagination"
                             :rows-per-page-options="[0]"
+                            @virtual-scroll="onScroll"
                         >
-                            <!-- <template v-slot:top-right>
+                            <template v-slot:top-right>
                                 <q-input
                                     v-model="filter"
                                     borderless
@@ -174,8 +226,8 @@ const confirm = (silo_id) => {
                                     <template v-slot:append>
                                         <q-icon name="mdi-magnify" />
                                     </template>
-</q-input>
-</template> -->
+                                </q-input>
+                            </template>
                             <template v-slot:body-cell-actions="props">
                                 <q-td
                                     align="center"

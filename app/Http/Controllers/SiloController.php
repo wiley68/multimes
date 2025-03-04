@@ -31,16 +31,19 @@ class SiloController extends Controller
 
         $validated = $request->validate([
             'filter' => 'nullable|string|max:255',
+            'page' => 'integer|min:1',
         ]);
 
+        $rowsPerPage = 5;
         $filter = $validated['filter'] ?? '';
+        $page = $validated['page'] ?? 1;
 
         $query = Silo::query()->with(['product', 'factory', 'mhalls', 'uhalls']);
         if (!empty($filter)) {
             $query->where('name', 'like', '%' . $filter . '%');
         }
 
-        $silos = $query->get();
+        $silos = $query->paginate($rowsPerPage, ['*'], 'page', $page);
 
         return Inertia::render('Nomenklature/Silos/SiloIndex', [
             'silos' => SiloResource::collection($silos),
