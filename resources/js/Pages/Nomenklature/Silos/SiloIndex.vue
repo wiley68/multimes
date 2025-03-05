@@ -29,7 +29,7 @@ const columns = [
         align: 'left',
         field: 'id',
         style: 'width: 80px;',
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'factory_id',
@@ -37,7 +37,7 @@ const columns = [
         label: 'База',
         field: row => row.factory.name,
         style: 'width: 200px;',
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'name',
@@ -45,7 +45,7 @@ const columns = [
         label: 'Име',
         field: 'name',
         style: 'width: 140px;',
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'halls',
@@ -60,7 +60,7 @@ const columns = [
         label: 'Макс. [кг.]',
         field: 'maxqt',
         style: 'width: 80px;',
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'product',
@@ -75,7 +75,7 @@ const columns = [
         label: 'Налично [кг.]',
         field: 'stock',
         style: 'width: 80px;',
-        sortable: true,
+        sortable: false,
     },
     {
         name: 'price',
@@ -101,7 +101,7 @@ const pagination = ref({
     rowsPerPage: props.silos.meta.per_page,
     rowsNumber: props.silos.meta.total,
     sortBy: props.sortBy,
-    descending: props.sortOrder === 'desc',
+    sortOrder: props.sortOrder,
 })
 const filter = ref(props.filter)
 
@@ -115,25 +115,14 @@ const fieldHalls = (row) => {
     return mhalls + hallbetween + uhalls
 }
 
-const getSortBy = (sortBy) => {
-    if (sortBy === pagination.value.sortBy) {
-        pagination.value.descending = !pagination.value.descending
-        return pagination.value.descending ? 'desc' : 'asc'
-    } else {
-        pagination.value.descending = false
-        pagination.value.sortBy = sortBy
-        return 'asc';
-    }
-}
-
 const storesIndex = (requestProp) => {
     router.get(
         route('silos.index'),
         {
             page: requestProp.pagination.page,
             rowsPerPage: requestProp.pagination.rowsPerPage,
-            sortBy: requestProp.pagination.sortBy,
-            sortOrder: getSortBy(requestProp.pagination.sortBy),
+            sortBy: pagination.value.sortBy,
+            sortOrder: pagination.value.sortOrder,
             filter: filter.value,
         },
         {
@@ -149,6 +138,16 @@ const storesIndex = (requestProp) => {
             },
         }
     )
+}
+
+const sortId = (col) => {
+    if (pagination.value.sortBy === col) {
+        pagination.value.sortOrder = pagination.value.sortOrder === 'asc' ? 'desc' : 'asc'
+    } else {
+        pagination.value.sortBy = col
+        pagination.value.sortOrder = 'asc'
+    }
+    storesIndex({ pagination })
 }
 
 const confirm = (silo_id) => {
@@ -213,6 +212,15 @@ const confirm = (silo_id) => {
                             :filter="filter"
                             @request="storesIndex"
                         >
+                            <template v-slot:header-cell="props">
+                                <q-th
+                                    :props="props"
+                                    class="text-center"
+                                    @click="sortId(props.col.name)"
+                                >
+                                    {{ props.col.label }}
+                                </q-th>
+                            </template>
                             <template v-slot:top-right>
                                 <q-input
                                     v-model="filter"
