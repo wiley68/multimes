@@ -17,7 +17,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
-use function back;
 
 class MproductionController extends Controller
 {
@@ -40,7 +39,7 @@ class MproductionController extends Controller
         $rowsPerPage = $validated['rowsPerPage'] ?? 10;
         $page = $validated['page'] ?? 1;
         $sortBy = $validated['sortBy'] ?? 'id';
-        $sortOrder = $validated['sortOrder'] ?? 'asc';
+        $sortOrder = $validated['sortOrder'] ?? 'desc';
         $filter = $validated['filter'] ?? '';
         $mhall = $validated['mhall'] ?? null;
 
@@ -54,11 +53,11 @@ class MproductionController extends Controller
             $mhall_name = Mhall::findOrFail((int)$mhall)->name;
         }
 
-        $mproductions = MproductionsResource::collection($query->orderBy($sortBy, $sortOrder)
-            ->paginate($rowsPerPage, ['*'], 'page', $page));
+        $mproductions = $query->orderBy($sortBy, $sortOrder)
+            ->paginate($rowsPerPage, ['*'], 'page', $page);
 
         return Inertia::render('Mproductions/MproductionIndex', [
-            'mproductions' => $mproductions,
+            'mproductions' => MproductionsResource::collection($mproductions),
             'filter' => $filter,
             'mhall' => $mhall,
             'mhall_name' => $mhall_name,

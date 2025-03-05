@@ -173,7 +173,7 @@ const uproductionsIndex = (requestProp) => {
       uhall: props.uhall,
     },
     {
-      preserveState: true,
+      preserveState: false,
       onError: (errors) => {
         Object.values(errors)
           .flat()

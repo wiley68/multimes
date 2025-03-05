@@ -174,7 +174,7 @@ const mproductionsIndex = (requestProp) => {
       mhall: props.mhall,
     },
     {
-      preserveState: true,
+      preserveState: false,
       onError: (errors) => {
         Object.values(errors)
           .flat()
