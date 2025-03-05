@@ -17,6 +17,7 @@ use App\Models\Uproduction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -83,7 +84,7 @@ class SiloController extends Controller
             'factory_id' => $request->factory['id'],
             'maxqt' => $request->maxqt,
         ]);
-
+        return Route::to('silos.index');
         return to_route('silos.index');
     }
 

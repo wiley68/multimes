@@ -93,6 +93,10 @@ const columns = [
     }
 ]
 
+const isSortColumn = (col) => {
+    return ["id", "factory_id", "name", 'maxqt', 'stock'].includes(col)
+}
+
 const title = 'Силози'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
@@ -215,10 +219,14 @@ const confirm = (silo_id) => {
                             <template v-slot:header-cell="props">
                                 <q-th
                                     :props="props"
-                                    class="text-center"
-                                    @click="sortId(props.col.name)"
+                                    :class="isSortColumn(props.col.name) ? 'cursor-pointer text-center' : 'text-center'"
+                                    @click="isSortColumn(props.col.name) ? sortId(props.col.name) : null"
                                 >
-                                    {{ props.col.label }}
+                                    {{ props.col.label }}&nbsp;
+                                    <q-icon
+                                        v-if="isSortColumn(props.col.name)"
+                                        :name="props.col.name === pagination.sortBy && pagination.sortOrder === 'desc' ? 'mdi-sort-ascending' : 'mdi-sort-descending'"
+                                    />
                                 </q-th>
                             </template>
                             <template v-slot:top-right>
