@@ -31,7 +31,7 @@ class MproductionController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,mhall_id,status,created_at',
+            'sortBy' => 'nullable|string|in:id,mhall_id,group_number,partida_number,status,created_at,finished_at,stock,price',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
             'mhall' => 'nullable|integer|exists:mhalls,id',
@@ -62,6 +62,8 @@ class MproductionController extends Controller
             'filter' => $filter,
             'mhall' => $mhall,
             'mhall_name' => $mhall_name,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 
