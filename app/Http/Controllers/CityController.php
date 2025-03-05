@@ -45,6 +45,8 @@ class CityController extends Controller
         return Inertia::render('Nomenklature/Cities/CityIndex', [
             'cities' => $cities,
             'filter' => $filter,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 
