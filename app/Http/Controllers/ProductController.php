@@ -45,6 +45,8 @@ class ProductController extends Controller
         return Inertia::render('Nomenklature/Products/ProductIndex', [
             'products' => $products,
             'filter' => $filter,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 
