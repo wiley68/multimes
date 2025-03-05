@@ -50,6 +50,8 @@ class UhallController extends Controller
         return Inertia::render('Nomenklature/Uhalls/UhallIndex', [
             'uhalls' => $uhalls,
             'filter' => $filter,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 
