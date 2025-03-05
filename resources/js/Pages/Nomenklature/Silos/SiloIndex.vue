@@ -119,7 +119,7 @@ const fieldHalls = (row) => {
   return mhalls + hallbetween + uhalls
 }
 
-const storesIndex = (requestProp) => {
+const silosIndex = (requestProp) => {
   router.get(
     route('silos.index'),
     {
@@ -154,7 +154,7 @@ const sortByColumn = (col) => {
     pagination.value.sortBy = col
     pagination.value.sortOrder = 'asc'
   }
-  storesIndex({ pagination })
+  silosIndex({ pagination })
 }
 
 const confirm = (silo_id) => {
@@ -197,7 +197,10 @@ const confirm = (silo_id) => {
 <template>
   <Head :title="title"></Head>
 
-  <DefaultLayout :title="title" icon="mdi-file-document-outline">
+  <DefaultLayout
+    :title="title"
+    icon="mdi-file-document-outline"
+  >
     <q-page class="q-pa-none">
       <div class="page-container">
         <div class="body-panel">
@@ -217,7 +220,7 @@ const confirm = (silo_id) => {
               row-key="id"
               :pagination="pagination"
               :filter="filter"
-              @request="storesIndex"
+              @request="silosIndex"
             >
               <template v-slot:header-cell="props">
                 <q-th
@@ -260,7 +263,10 @@ const confirm = (silo_id) => {
                 </q-input>
               </template>
               <template v-slot:body-cell-actions="props">
-                <q-td align="center" style="width: 120px">
+                <q-td
+                  align="center"
+                  style="width: 120px"
+                >
                   <q-btn
                     v-if="hasPermission('update')"
                     icon="mdi-pencil-outline"
@@ -284,7 +290,10 @@ const confirm = (silo_id) => {
                 </q-td>
               </template>
               <template v-slot:body-cell-halls="props">
-                <q-td :props="props" class="text-wrap">
+                <q-td
+                  :props="props"
+                  class="text-wrap"
+                >
                   {{ fieldHalls(props.row) }}
                 </q-td>
               </template>

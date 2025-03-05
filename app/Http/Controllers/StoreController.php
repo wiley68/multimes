@@ -20,7 +20,7 @@ class StoreController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,name',
+            'sortBy' => 'nullable|string|in:id,name,nomenklature,type',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
@@ -42,6 +42,8 @@ class StoreController extends Controller
         return Inertia::render('Stores/StoreIndex', [
             'stores' => $stores,
             'filter' => $filter,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 
