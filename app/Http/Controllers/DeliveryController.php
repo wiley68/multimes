@@ -45,6 +45,8 @@ class DeliveryController extends Controller
         return Inertia::render('Deliveries/DeliveryIndex', [
             'deliveries' => $deliveries,
             'filter' => $filter,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 
