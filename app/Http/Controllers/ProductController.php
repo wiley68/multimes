@@ -23,7 +23,7 @@ class ProductController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,nomenklature,name,type',
+            'sortBy' => 'nullable|string|in:id,nomenklature,name,type,stock,me,price',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);

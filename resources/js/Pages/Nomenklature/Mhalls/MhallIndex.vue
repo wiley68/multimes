@@ -71,7 +71,7 @@ const columns = [
 ]
 
 const isSortColumn = (col) => {
-  return ['id', 'factory_id', 'silo_id', 'name'].includes(col)
+  return ['id', 'factory_id', 'type', 'silo_id', 'name'].includes(col)
 }
 
 const title = 'Халета за майки'

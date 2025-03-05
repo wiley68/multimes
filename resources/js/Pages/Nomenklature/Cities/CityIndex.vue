@@ -150,7 +150,10 @@ const confirm = (city_id) => {
 <template>
   <Head :title="title"></Head>
 
-  <DefaultLayout :title="title" icon="mdi-file-document-outline">
+  <DefaultLayout
+    :title="title"
+    icon="mdi-file-document-outline"
+  >
     <q-page class="q-pa-none">
       <div class="page-container">
         <div class="body-panel">
@@ -214,7 +217,10 @@ const confirm = (city_id) => {
                 </q-input>
               </template>
               <template v-slot:body-cell-actions="props">
-                <q-td align="center" style="width: 120px">
+                <q-td
+                  align="center"
+                  style="width: 120px"
+                >
                   <q-btn
                     v-if="hasPermission('update')"
                     icon="mdi-pencil-outline"
@@ -238,7 +244,10 @@ const confirm = (city_id) => {
                 </q-td>
               </template>
               <template v-slot:body-cell-factories="props">
-                <q-td :props="props" class="text-wrap">
+                <q-td
+                  :props="props"
+                  class="text-wrap"
+                >
                   {{ fieldFactories(props.row) }}
                 </q-td>
               </template>

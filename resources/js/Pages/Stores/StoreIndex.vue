@@ -104,7 +104,15 @@ const columns = [
 ]
 
 const isSortColumn = (col) => {
-  return ['id', 'nomenklature', 'name', 'type'].includes(col)
+  return [
+    'id',
+    'nomenklature',
+    'name',
+    'type',
+    'price',
+    'stock',
+    'me',
+  ].includes(col)
 }
 
 const title = 'Наличности'

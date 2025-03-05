@@ -28,7 +28,7 @@ class MhallController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,factory_id,silo_id,name',
+            'sortBy' => 'nullable|string|in:id,factory_id,type,silo_id,name',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
