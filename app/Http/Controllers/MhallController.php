@@ -50,6 +50,8 @@ class MhallController extends Controller
         return Inertia::render('Nomenklature/Mhalls/MhallIndex', [
             'mhalls' => $mhalls,
             'filter' => $filter,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 

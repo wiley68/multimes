@@ -41,7 +41,7 @@ class SiloController extends Controller
         $rowsPerPage = $validated['rowsPerPage'] ?? 10;
         $page = $validated['page'] ?? 1;
         $sortBy = $validated['sortBy'] ?? 'id';
-        $sortOrder = $validated['sortOrder'] ?? 'asc';
+        $sortOrder = $validated['sortOrder'] ?? 'desc';
         $filter = $validated['filter'] ?? '';
 
         $query = Silo::query()->with(['product', 'factory', 'mhalls', 'uhalls']);
