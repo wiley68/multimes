@@ -47,6 +47,8 @@ class FactoryController extends Controller
         return Inertia::render('Nomenklature/Factories/FactoryIndex', [
             'factories' => $factories,
             'filter' => $filter,
+            'sortBy' => $sortBy,
+            'sortOrder' => $sortOrder,
         ]);
     }
 
