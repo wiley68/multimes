@@ -97,20 +97,18 @@ const columns = [
     label: 'Цена',
     sortable: false,
   },
-  //   {
-  //     name: 'result',
-  //     align: 'left',
-  //     label: 'Резултат',
-  //     field: 'result',
-  //     sortable: false,
-  //   },
-  //   {
-  //     name: 'actions',
-  //     label: 'Управление',
-  //     align: 'center',
-  //     field: 'actions',
-  //     sortable: false,
-  //   },
+  {
+    name: 'result',
+    align: 'left',
+    label: 'Резултат',
+    sortable: false,
+  },
+  {
+    name: 'actions',
+    label: 'Управление',
+    align: 'center',
+    sortable: false,
+  },
 ]
 
 const isSortColumn = (col) => {
@@ -390,20 +388,17 @@ const confirm = (mproduction_id) => {
                         parseFloat(props.row.price) === 0 ? '' : props.row.price
                       }}
                     </div>
-                    <!-- <div v-else-if="col.name === 'result'" style="width: 80px">
+                    <div
+                      v-else-if="col.name === 'result'"
+                      style="width: 80px"
+                    >
                       {{
                         (
-                          props.row.mincrements.reduce(
-                            (sum, item) => sum + item.price * item.quantity,
-                            0
-                          ) -
-                          props.row.mdecrements.reduce(
-                            (sum, item) => sum + item.price * item.quantity,
-                            0
-                          )
+                          props.row.increments_result -
+                          props.row.decrements_result
                         ).toFixed(2)
                       }}
-                    </div> -->
+                    </div>
                     <div v-else-if="col.name === 'actions'">
                       <q-btn
                         v-if="hasPermission('view')"
