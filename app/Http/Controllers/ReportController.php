@@ -26,7 +26,7 @@ class ReportController extends Controller
         $validated = $request->validate([
             'rowsPerPage' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'sortBy' => 'nullable|string|in:id,hall_id,group_number,partida_number,status,created_at,finished_at,stock,price',
+            'sortBy' => 'nullable|string|in:id,hall_name,group_number,partida_number,status,created_at,finished_at,stock,price',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
             'hall' => 'nullable|integer',
@@ -44,7 +44,6 @@ class ReportController extends Controller
         $mproductionQuery = DB::table('mproductions')
             ->selectRaw("
             mproductions.id,
-            mproductions.mhall_id as hall_id,
             mhalls.name as hall_name,
             'M' as type,
             mproductions.group_number,
@@ -57,33 +56,15 @@ class ReportController extends Controller
             mproductions.product_id,
             products.name as product_name,
             products.nomenklature as product_nomenklature,
-            COALESCE(SUM(mincrements.price * mincrements.quantity), 0) as increments_result,
-            COALESCE(SUM(mdecrements.price * mdecrements.quantity), 0) as decrements_result
+            (SELECT SUM(mincrements.price * mincrements.quantity) FROM mincrements WHERE mincrements.mproduction_id = mproductions.id GROUP BY mincrements.mproduction_id) AS increments_result,
+            (SELECT SUM(mdecrements.price * mdecrements.quantity) FROM mdecrements WHERE mdecrements.mproduction_id = mproductions.id GROUP BY mdecrements.mproduction_id) AS decrements_result
         ")
             ->leftJoin('mhalls', 'mproductions.mhall_id', '=', 'mhalls.id')
-            ->leftJoin('products', 'mproductions.product_id', '=', 'products.id')
-            ->leftJoin('mincrements', 'mproductions.id', '=', 'mincrements.mproduction_id')
-            ->leftJoin('mdecrements', 'mproductions.id', '=', 'mdecrements.mproduction_id')
-            ->groupBy([
-                'mproductions.id',
-                'mproductions.mhall_id',
-                'mhalls.name',
-                'mproductions.group_number',
-                'mproductions.partida_number',
-                'mproductions.status',
-                'mproductions.created_at',
-                'mproductions.finished_at',
-                'mproductions.stock',
-                'mproductions.price',
-                'mproductions.product_id',
-                'products.name',
-                'products.nomenklature'
-            ]);
+            ->leftJoin('products', 'mproductions.product_id', '=', 'products.id');
 
         $uproductionQuery = DB::table('uproductions')
             ->selectRaw("
             uproductions.id,
-            uproductions.uhall_id as hall_id,
             uhalls.name as hall_name,
             'U' as type,
             uproductions.group_number,
@@ -96,28 +77,11 @@ class ReportController extends Controller
             uproductions.product_id,
             products.name as product_name,
             products.nomenklature as product_nomenklature,
-            COALESCE(SUM(uincrements.price * uincrements.quantity), 0) as increments_result,
-            COALESCE(SUM(udecrements.price * udecrements.quantity), 0) as decrements_result
+            (SELECT SUM(uincrements.price * uincrements.quantity) FROM uincrements WHERE uincrements.uproduction_id = uproductions.id GROUP BY uincrements.uproduction_id) AS increments_result,
+            (SELECT SUM(udecrements.price * udecrements.quantity) FROM udecrements WHERE udecrements.uproduction_id = uproductions.id GROUP BY udecrements.uproduction_id) AS decrements_result
         ")
             ->leftJoin('uhalls', 'uproductions.uhall_id', '=', 'uhalls.id')
-            ->leftJoin('products', 'uproductions.product_id', '=', 'products.id')
-            ->leftJoin('uincrements', 'uproductions.id', '=', 'uincrements.uproduction_id')
-            ->leftJoin('udecrements', 'uproductions.id', '=', 'udecrements.uproduction_id')
-            ->groupBy([
-                'uproductions.id',
-                'uproductions.uhall_id',
-                'uhalls.name',
-                'uproductions.group_number',
-                'uproductions.partida_number',
-                'uproductions.status',
-                'uproductions.created_at',
-                'uproductions.finished_at',
-                'uproductions.stock',
-                'uproductions.price',
-                'uproductions.product_id',
-                'products.name',
-                'products.nomenklature'
-            ]);
+            ->leftJoin('products', 'uproductions.product_id', '=', 'products.id');
 
         if (!empty($filter)) {
             $mproductionQuery->where('mproductions.group_number', 'like', '%' . $filter . '%');

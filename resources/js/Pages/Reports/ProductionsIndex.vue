@@ -42,9 +42,15 @@ const columns = [
     sortMethod: (a, b) => (a < b ? -1 : a > b ? 1 : 0),
   },
   {
-    name: 'hall_id',
+    name: 'hall_name',
     align: 'left',
     label: 'Хале',
+    sortable: false,
+  },
+  {
+    name: 'type',
+    align: 'left',
+    label: 'Тип',
     sortable: false,
   },
   {
@@ -86,18 +92,6 @@ const columns = [
     sortable: false,
   },
   {
-    name: 'stock',
-    align: 'left',
-    label: 'Количество [бр]',
-    sortable: false,
-  },
-  {
-    name: 'price',
-    align: 'left',
-    label: 'Цена',
-    sortable: false,
-  },
-  {
     name: 'result',
     align: 'left',
     label: 'Резултат',
@@ -114,7 +108,7 @@ const columns = [
 const isSortColumn = (col) => {
   return [
     'id',
-    'hall_id',
+    'hall_name',
     'group_number',
     'partida_number',
     'status',
@@ -198,6 +192,22 @@ const sortByColumn = (col) => {
 
 const mproductionShow = (mproduction) => {
   router.get(route('mproductions.show', mproduction), {
+    onError: (errors) => {
+      Object.values(errors)
+        .flat()
+        .forEach((error) => {
+          $q.notify({
+            message: error,
+            icon: 'mdi-alert-circle-outline',
+            type: 'negative',
+          })
+        })
+    },
+  })
+}
+
+const uproductionShow = (uproduction) => {
+  router.get(route('uproductions.show', uproduction), {
     onError: (errors) => {
       Object.values(errors)
         .flat()
@@ -329,11 +339,17 @@ const confirm = (mproduction_id) => {
                     :props="props"
                   >
                     <div
-                      v-if="col.name === 'hall_id'"
-                      style="width: 100px"
+                      v-if="col.name === 'hall_name'"
                       class="multiline-text"
                     >
                       {{ props.row.hall_name }}
+                    </div>
+                    <div
+                      v-else-if="col.name === 'type'"
+                      style="width: 60px"
+                      class="multiline-text"
+                    >
+                      {{ props.row.type === 'M' ? 'Майки' : 'Угояване' }}
                     </div>
                     <div
                       v-else-if="col.name === 'status'"
@@ -343,7 +359,7 @@ const confirm = (mproduction_id) => {
                     </div>
                     <div
                       v-else-if="col.name === 'created_at'"
-                      style="width: 80px"
+                      style="width: 60px"
                     >
                       {{
                         moment(props.row.created_at).format('DD.MM.YY HH:mm')
@@ -351,7 +367,7 @@ const confirm = (mproduction_id) => {
                     </div>
                     <div
                       v-else-if="col.name === 'finished_at'"
-                      style="width: 80px"
+                      style="width: 60px"
                     >
                       {{
                         props.row.finished_at === null
@@ -373,24 +389,8 @@ const confirm = (mproduction_id) => {
                       }}
                     </div>
                     <div
-                      v-else-if="col.name === 'stock'"
-                      style="width: 80px"
-                    >
-                      {{
-                        parseFloat(props.row.stock) === 0 ? '' : props.row.stock
-                      }}
-                    </div>
-                    <div
-                      v-else-if="col.name === 'price'"
-                      style="width: 80px"
-                    >
-                      {{
-                        parseFloat(props.row.price) === 0 ? '' : props.row.price
-                      }}
-                    </div>
-                    <div
                       v-else-if="col.name === 'result'"
-                      style="width: 80px"
+                      style="width: 60px"
                     >
                       {{
                         (
@@ -399,7 +399,10 @@ const confirm = (mproduction_id) => {
                         ).toFixed(2)
                       }}
                     </div>
-                    <div v-else-if="col.name === 'actions'">
+                    <div
+                      v-else-if="col.name === 'actions'"
+                      style="width: 60px"
+                    >
                       <q-btn
                         v-if="hasPermission('view')"
                         title="Управлявай процеса"
@@ -408,7 +411,11 @@ const confirm = (mproduction_id) => {
                         dense
                         flat
                         rounded
-                        @click="mproductionShow(props.row.id)"
+                        @click="
+                          props.row.type === 'M'
+                            ? mproductionShow(props.row.id)
+                            : uproductionShow(props.row.id)
+                        "
                       />
                       <q-btn
                         v-if="hasPermission('delete') && props.row.status === 0"
