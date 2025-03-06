@@ -29,22 +29,28 @@ const confirmMproduction = (mhall) => {
 }
 
 const handleOkMproduction = (data) => {
-  router.post(route('mproductions.store'), {
-    status: 1,
-    mhall: selectedMhall.value,
-    group_number: data.groupNumber,
-    partida_number: data.partidaNumber
-  }, {
-    onError: errors => {
-      Object.values(errors).flat().forEach((error) => {
-        $q.notify({
-          message: error,
-          icon: 'mdi-alert-circle-outline',
-          type: 'negative',
-        });
-      });
+  router.post(
+    route('mproductions.store'),
+    {
+      status: 1,
+      mhall: selectedMhall.value,
+      group_number: data.groupNumber,
+      partida_number: data.partidaNumber,
     },
-  });
+    {
+      onError: (errors) => {
+        Object.values(errors)
+          .flat()
+          .forEach((error) => {
+            $q.notify({
+              message: error,
+              icon: 'mdi-alert-circle-outline',
+              type: 'negative',
+            })
+          })
+      },
+    }
+  )
 
   showPromptMproduction.value = false
 }
@@ -62,23 +68,29 @@ const confirmUproduction = (uhall) => {
 }
 
 const handleOkUproduction = (data) => {
-  router.post(route('uproductions.store'), {
-    status: 1,
-    uhall: selectedUhall.value,
-    production_days: 45,
-    group_number: data.groupNumber,
-    partida_number: data.partidaNumber
-  }, {
-    onError: errors => {
-      Object.values(errors).flat().forEach((error) => {
-        $q.notify({
-          message: error,
-          icon: 'mdi-alert-circle-outline',
-          type: 'negative',
-        });
-      });
+  router.post(
+    route('uproductions.store'),
+    {
+      status: 1,
+      uhall: selectedUhall.value,
+      production_days: 45,
+      group_number: data.groupNumber,
+      partida_number: data.partidaNumber,
     },
-  });
+    {
+      onError: (errors) => {
+        Object.values(errors)
+          .flat()
+          .forEach((error) => {
+            $q.notify({
+              message: error,
+              icon: 'mdi-alert-circle-outline',
+              type: 'negative',
+            })
+          })
+      },
+    }
+  )
 
   showPromptUproduction.value = false
 }
@@ -96,7 +108,9 @@ const getDaysBetweenTodayAndDate = (targetDate) => {
 const productionPurcent = (production) => {
   if (production !== null) {
     const days = getDaysBetweenTodayAndDate(production.created_at)
-    return parseFloat((days / parseFloat(production.production_days)).toFixed(2))
+    return parseFloat(
+      (days / parseFloat(production.production_days)).toFixed(2)
+    )
   } else {
     return 0
   }
@@ -104,7 +118,6 @@ const productionPurcent = (production) => {
 </script>
 
 <template>
-
   <Head :title="title"></Head>
 
   <DefaultLayout
@@ -113,7 +126,7 @@ const productionPurcent = (production) => {
   >
     <div
       class="column q-px-sm q-gutter-y-sm"
-      style="height: calc(100vh - 82px);"
+      style="height: calc(100vh - 82px)"
     >
       <div
         v-if="hasPermissions(['create', 'update', 'view', 'delete'])"
@@ -135,7 +148,7 @@ const productionPurcent = (production) => {
         />
         <div
           class="col"
-          style="min-width: 300px;"
+          style="min-width: 300px"
         >
           <q-card class="column fit">
             <q-card-section class="bg-teal text-white">
@@ -145,7 +158,7 @@ const productionPurcent = (production) => {
 
             <q-card-section
               class="column"
-              style="flex-grow: 1; overflow-x: hidden;overflow-y: auto;"
+              style="flex-grow: 1; overflow-x: hidden; overflow-y: auto"
             >
               <div
                 class="row q-gutter-x-sm q-my-sm"
@@ -161,37 +174,57 @@ const productionPurcent = (production) => {
                 >
                   <div
                     class="absolute-full flex flex-center"
-                    style="border-radius: 0.25rem;"
-                    :style="mhall.mproduction !== null ? 'border:1px solid #4DB6AC;' : ''"
+                    style="border-radius: 0.25rem"
+                    :style="
+                      mhall.mproduction !== null
+                        ? 'border:1px solid #4DB6AC;'
+                        : ''
+                    "
                   >
                     <q-badge
                       class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
+                      style="user-select: none"
                       color="white"
                       rounded
                       text-color="teal-10"
-                      :label="mhall.mproduction !== null ? `Хале: ${mhall.name} [Процес №${mhall.mproduction.id}: ${(productionPurcent(mhall.mproduction) * 100).toFixed(2)}%]` : `Хале: ${mhall.name}`"
+                      :label="
+                        mhall.mproduction !== null
+                          ? `Хале: ${mhall.name} [Процес №${
+                              mhall.mproduction.id
+                            }: ${(
+                              productionPurcent(mhall.mproduction) * 100
+                            ).toFixed(2)}%]`
+                          : `Хале: ${mhall.name}`
+                      "
                     />
                   </div>
                 </q-linear-progress>
                 <template v-if="mhall.mproduction !== null">
                   <q-btn
                     flat
-                    style="min-width: 190px;"
+                    style="min-width: 190px"
                     class="text-accent"
-                    @click="router.get(route('mproductions.show', { mproduction: mhall.mproduction }))"
-                  >Управлявай процеса</q-btn>
+                    @click="
+                      router.get(
+                        route('mproductions.show', {
+                          mproduction: mhall.mproduction,
+                        })
+                      )
+                    "
+                    >Управлявай процеса</q-btn
+                  >
                 </template>
                 <template v-else>
                   <template v-if="hasPermission('create')">
                     <q-btn
                       outline
-                      style="min-width: 190px;"
+                      style="min-width: 190px"
                       @click="confirmMproduction(mhall)"
-                    >Стартирай процес</q-btn>
+                      >Стартирай процес</q-btn
+                    >
                   </template>
                   <template v-else>
-                    <div style="min-width: 190px;"></div>
+                    <div></div>
                   </template>
                 </template>
               </div>
@@ -201,22 +234,24 @@ const productionPurcent = (production) => {
 
             <q-card-actions
               align="around"
-              style="height: 60px;"
+              style="height: 60px"
             >
               <q-btn
                 @click="router.get(route('mhalls.show'))"
                 flat
-              >Покажи халета Майки</q-btn>
+                >Покажи халета Майки</q-btn
+              >
               <q-btn
                 @click="router.get(route('mproductions.index'))"
                 flat
-              >Покажи процеси Майки</q-btn>
+                >Покажи процеси Майки</q-btn
+              >
             </q-card-actions>
           </q-card>
         </div>
         <div
           class="col"
-          style="min-width: 300px;"
+          style="min-width: 300px"
         >
           <q-card class="column fit">
             <q-card-section class="bg-indigo text-white">
@@ -226,7 +261,7 @@ const productionPurcent = (production) => {
 
             <q-card-section
               class="column"
-              style="flex-grow: 1; overflow-x: hidden;overflow-y: auto;"
+              style="flex-grow: 1; overflow-x: hidden; overflow-y: auto"
             >
               <div
                 class="row q-gutter-x-sm q-my-sm"
@@ -242,37 +277,57 @@ const productionPurcent = (production) => {
                 >
                   <div
                     class="absolute-full flex flex-center"
-                    style="border-radius: 0.25rem;"
-                    :style="uhall.uproduction !== null ? 'border:1px solid #1A237E;' : ''"
+                    style="border-radius: 0.25rem"
+                    :style="
+                      uhall.uproduction !== null
+                        ? 'border:1px solid #1A237E;'
+                        : ''
+                    "
                   >
                     <q-badge
                       class="q-px-sm q-py-xs text-caption text-weight-medium"
-                      style="user-select: none;"
+                      style="user-select: none"
                       color="white"
                       rounded
                       text-color="indigo-10"
-                      :label="uhall.uproduction !== null ? `Хале: ${uhall.name} [Процес №${uhall.uproduction.id}: ${(productionPurcent(uhall.uproduction) * 100).toFixed(2)}%]` : `Хале: ${uhall.name}`"
+                      :label="
+                        uhall.uproduction !== null
+                          ? `Хале: ${uhall.name} [Процес №${
+                              uhall.uproduction.id
+                            }: ${(
+                              productionPurcent(uhall.uproduction) * 100
+                            ).toFixed(2)}%]`
+                          : `Хале: ${uhall.name}`
+                      "
                     />
                   </div>
                 </q-linear-progress>
                 <template v-if="uhall.uproduction !== null">
                   <q-btn
                     flat
-                    style="min-width: 190px;"
+                    style="min-width: 190px"
                     class="text-accent"
-                    @click="router.get(route('uproductions.show', { uproduction: uhall.uproduction }))"
-                  >Управлявай процеса</q-btn>
+                    @click="
+                      router.get(
+                        route('uproductions.show', {
+                          uproduction: uhall.uproduction,
+                        })
+                      )
+                    "
+                    >Управлявай процеса</q-btn
+                  >
                 </template>
                 <template v-else>
                   <template v-if="hasPermission('create')">
                     <q-btn
                       outline
-                      style="min-width: 190px;"
+                      style="min-width: 190px"
                       @click="confirmUproduction(uhall)"
-                    >Стартирай процес</q-btn>
+                      >Стартирай процес</q-btn
+                    >
                   </template>
                   <template v-else>
-                    <div style="min-width: 190px;"></div>
+                    <div></div>
                   </template>
                 </template>
               </div>
@@ -282,16 +337,18 @@ const productionPurcent = (production) => {
 
             <q-card-actions
               align="around"
-              style="height: 60px;"
+              style="height: 60px"
             >
               <q-btn
                 flat
                 @click="router.get(route('uhalls.show'))"
-              >Покажи халета Угояване</q-btn>
+                >Покажи халета Угояване</q-btn
+              >
               <q-btn
                 flat
                 @click="router.get(route('uproductions.index'))"
-              >Покажи процеси Угояване</q-btn>
+                >Покажи процеси Угояване</q-btn
+              >
             </q-card-actions>
           </q-card>
         </div>
