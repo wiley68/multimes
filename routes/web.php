@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\PermissinController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RemoveRoleFromUserController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RevokePermissionFromRoleController;
 use App\Http\Controllers\RevokePermissionFromUserController;
 use App\Http\Controllers\SiloController;
@@ -89,6 +90,7 @@ Route::middleware(['auth', 'exclude.admin', 'permission:create|update|delete|vie
     Route::patch('/mdecrements/{mdecrement}/complete', [MdecrementController::class, 'complete'])->name('mdecrements.complete');
     Route::resource('/mincrements', MincrementController::class);
     Route::patch('/mincrements/{mincrement}/complete', [MincrementController::class, 'complete'])->name('mincrements.complete');
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
 });
 
 require __DIR__ . '/auth.php';
