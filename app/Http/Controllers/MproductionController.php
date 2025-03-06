@@ -36,7 +36,7 @@ class MproductionController extends Controller
             'mhall' => 'nullable|integer|exists:mhalls,id',
         ]);
 
-        $rowsPerPage = $validated['rowsPerPage'] ?? 10;
+        $rowsPerPage = $validated['rowsPerPage'] ?? 7;
         $page = $validated['page'] ?? 1;
         $sortBy = $validated['sortBy'] ?? 'id';
         $sortOrder = $validated['sortOrder'] ?? 'desc';
