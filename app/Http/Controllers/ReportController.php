@@ -7,6 +7,7 @@ use App\Models\Mhall;
 use App\Models\Mproduction;
 use App\Models\Uhall;
 use App\Models\Uproduction;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -40,64 +41,67 @@ class ReportController extends Controller
         $hall = $validated['hall'] ?? null;
         $type = $validated['type'] ?? null;
 
-        $mproductionQuery = Mproduction::query()
+        $mproductionQuery = DB::table('mproductions')
             ->selectRaw("
-            id,
-            mhall_id as hall_id,
+            mproductions.id,
+            mproductions.mhall_id as hall_id,
+            mhalls.name as hall_name,
             'M' as type,
-            group_number,
-            partida_number,
-            status,
-            created_at,
-            finished_at,
-            stock,
-            price,
-            product_id
+            mproductions.group_number,
+            mproductions.partida_number,
+            mproductions.status,
+            mproductions.created_at,
+            mproductions.finished_at,
+            mproductions.stock,
+            mproductions.price,
+            mproductions.product_id,
+            products.name as product_name,
+            products.nomenklature as product_nomenklature
         ")
-            ->with(['mhall', 'product']);
+            ->leftJoin('mhalls', 'mproductions.mhall_id', '=', 'mhalls.id')
+            ->leftJoin('products', 'mproductions.product_id', '=', 'products.id');
 
-        $uproductionQuery = Uproduction::query()
+        $uproductionQuery = DB::table('uproductions')
             ->selectRaw("
-            id,
-            uhall_id as hall_id,
+            uproductions.id,
+            uproductions.uhall_id as hall_id,
+            uhalls.name as hall_name,
             'U' as type,
-            group_number,
-            partida_number,
-            status,
-            created_at,
-            finished_at,
-            stock,
-            price,
-            product_id
+            uproductions.group_number,
+            uproductions.partida_number,
+            uproductions.status,
+            uproductions.created_at,
+            uproductions.finished_at,
+            uproductions.stock,
+            uproductions.price,
+            uproductions.product_id,
+            products.name as product_name,
+            products.nomenklature as product_nomenklature
         ")
-            ->with(['uhall', 'product']);
+            ->leftJoin('uhalls', 'uproductions.uhall_id', '=', 'uhalls.id')
+            ->leftJoin('products', 'uproductions.product_id', '=', 'products.id');
 
         if (!empty($filter)) {
-            $mproductionQuery->where('name', 'like', '%' . $filter . '%');
-            $uproductionQuery->where('name', 'like', '%' . $filter . '%');
+            $mproductionQuery->where('mproductions.group_number', 'like', '%' . $filter . '%');
+            $uproductionQuery->where('uproductions.group_number', 'like', '%' . $filter . '%');
         }
 
-        $hall_name = null;
-        if (!empty($hall) && $type === 'M') {
-            $mproductionQuery->where('mhall_id', '=', (int)$hall);
-            $hall_name = Mhall::findOrFail((int)$hall)->name;
-        }
-        if (!empty($hall) && $type === 'U') {
-            $uproductionQuery->where('uhall_id', '=', (int)$hall);
-            $hall_name = Uhall::findOrFail((int)$hall)->name;
+        if (!empty($hall)) {
+            $mproductionQuery->where('mproductions.mhall_id', '=', (int)$hall);
+            $uproductionQuery->where('uproductions.uhall_id', '=', (int)$hall);
         }
 
         $query = $mproductionQuery->union($uproductionQuery);
 
-        $query->orderBy($sortBy, $sortOrder);
-
-        $productions = $query->paginate($rowsPerPage, ['*'], 'page', $page);
+        $productions = DB::table(DB::raw("({$query->toSql()}) as merged"))
+            ->mergeBindings($query)
+            ->orderBy($sortBy, $sortOrder)
+            ->paginate($rowsPerPage, ['*'], 'page', $page);
 
         return Inertia::render('Reports/ProductionsIndex', [
             'productions' => $productions,
             'filter' => $filter,
             'hall' => $hall,
-            'hall_name' => $hall_name,
             'sortBy' => $sortBy,
             'sortOrder' => $sortOrder,
             'type' => $type,
