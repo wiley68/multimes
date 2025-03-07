@@ -56,8 +56,8 @@ class ReportController extends Controller
             mproductions.product_id,
             products.name as product_name,
             products.nomenklature as product_nomenklature,
-            (SELECT SUM(mincrements.price * mincrements.quantity) FROM mincrements WHERE mincrements.mproduction_id = mproductions.id GROUP BY mincrements.mproduction_id) AS increments_result,
-            (SELECT SUM(mdecrements.price * mdecrements.quantity) FROM mdecrements WHERE mdecrements.mproduction_id = mproductions.id GROUP BY mdecrements.mproduction_id) AS decrements_result
+            (SELECT SUM(mincrements.price * mincrements.quantity) FROM mincrements WHERE mincrements.mproduction_id = mproductions.id AND mincrements.status = 1 GROUP BY mincrements.mproduction_id) AS increments_result,
+            (SELECT SUM(mdecrements.price * mdecrements.quantity) FROM mdecrements WHERE mdecrements.mproduction_id = mproductions.id AND mdecrements.status = 1 GROUP BY mdecrements.mproduction_id) AS decrements_result
         ")
             ->leftJoin('mhalls', 'mproductions.mhall_id', '=', 'mhalls.id')
             ->leftJoin('products', 'mproductions.product_id', '=', 'products.id');
@@ -77,8 +77,8 @@ class ReportController extends Controller
             uproductions.product_id,
             products.name as product_name,
             products.nomenklature as product_nomenklature,
-            (SELECT SUM(uincrements.price * uincrements.quantity) FROM uincrements WHERE uincrements.uproduction_id = uproductions.id GROUP BY uincrements.uproduction_id) AS increments_result,
-            (SELECT SUM(udecrements.price * udecrements.quantity) FROM udecrements WHERE udecrements.uproduction_id = uproductions.id GROUP BY udecrements.uproduction_id) AS decrements_result
+            (SELECT SUM(uincrements.price * uincrements.quantity) FROM uincrements WHERE uincrements.uproduction_id = uproductions.id AND uincrements.status = 1 GROUP BY uincrements.uproduction_id) AS increments_result,
+            (SELECT SUM(udecrements.price * udecrements.quantity) FROM udecrements WHERE udecrements.uproduction_id = uproductions.id AND udecrements.status = 1 GROUP BY udecrements.uproduction_id) AS decrements_result
         ")
             ->leftJoin('uhalls', 'uproductions.uhall_id', '=', 'uhalls.id')
             ->leftJoin('products', 'uproductions.product_id', '=', 'products.id');
