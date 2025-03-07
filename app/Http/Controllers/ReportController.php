@@ -24,7 +24,7 @@ class ReportController extends Controller
         Gate::authorize('viewAny', Uproduction::class);
 
         $validated = $request->validate([
-            'rowsPerPage' => 'integer|min:1|max:100',
+            'rowsPerPage' => 'integer|min:0|max:100',
             'page' => 'integer|min:1',
             'sortBy' => 'nullable|string|in:id,hall_name,group_number,partida_number,status,created_at,finished_at,stock,price',
             'sortOrder' => 'in:asc,desc',
@@ -95,6 +95,12 @@ class ReportController extends Controller
 
         $query = $mproductionQuery->union($uproductionQuery);
 
+        if ($rowsPerPage == 0) {
+            $total = DB::table(DB::raw("({$query->toSql()}) as merged"))
+                ->mergeBindings($query)
+                ->count();
+            $rowsPerPage = $total;
+        }
         $productions = DB::table(DB::raw("({$query->toSql()}) as merged"))
             ->mergeBindings($query)
             ->orderBy($sortBy, $sortOrder)

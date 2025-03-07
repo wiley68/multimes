@@ -119,24 +119,6 @@ const isSortColumn = (col) => {
   ].includes(col)
 }
 
-// const totalResult = computed(() => {
-//   return props.productions.data
-//     .reduce(
-//       (total, item) =>
-//         total +
-//         item.mincrements.reduce(
-//           (sum, item) => sum + item.price * item.quantity,
-//           0
-//         ) -
-//         item.mdecrements.reduce(
-//           (sum, item) => sum + item.price * item.quantity,
-//           0
-//         ),
-//       0
-//     )
-//     .toFixed(2)
-// })
-
 const title = 'Всички Производствени Процеси'
 const { hasPermission } = usePermission()
 const $q = useQuasar()
@@ -222,42 +204,15 @@ const uproductionShow = (uproduction) => {
   })
 }
 
-const confirm = (mproduction_id) => {
-  $q.dialog({
-    title: 'Потвърди',
-    message:
-      'Желаеш ли да изтриеш този процес? Всички данни за процеса ще бъдат унищожени. Този процес на изтриване е необратим!',
-    cancel: true,
-    persistent: true,
-    ok: {
-      label: 'Да',
-      color: 'primary',
-    },
-    cancel: {
-      label: 'Откажи',
-      color: 'grey-1',
-      textColor: 'grey-10',
-      flat: true,
-    },
-  })
-    .onOk(() => {
-      router.delete(route('mproductions.destroy', mproduction_id), {
-        onError: (errors) => {
-          Object.values(errors)
-            .flat()
-            .forEach((error) => {
-              $q.notify({
-                message: error,
-                icon: 'mdi-alert-circle-outline',
-                type: 'negative',
-              })
-            })
-        },
-      })
-    })
-    .onCancel(() => {})
-    .onDismiss(() => {})
-}
+const totalResult = computed(() => {
+  return props.productions.data
+    .reduce(
+      (total, item) =>
+        total + (item.increments_result - item.decrements_result),
+      0
+    )
+    .toFixed(2)
+})
 </script>
 
 <template>
@@ -417,16 +372,6 @@ const confirm = (mproduction_id) => {
                             : uproductionShow(props.row.id)
                         "
                       />
-                      <q-btn
-                        v-if="hasPermission('delete') && props.row.status === 0"
-                        title="Изтрий процеса"
-                        icon="mdi-delete-outline"
-                        color="negative"
-                        dense
-                        flat
-                        rounded
-                        @click="confirm(props.row.id)"
-                      />
                     </div>
                     <div v-else>
                       {{ props.row[col.name] }}
@@ -437,12 +382,12 @@ const confirm = (mproduction_id) => {
               <template v-slot:bottom-row>
                 <q-tr>
                   <q-td
-                    colspan="10"
+                    colspan="9"
                     class="text-weight-bold"
                     >Общо:</q-td
                   >
                   <q-td class="text-weight-bold">
-                    <!-- {{ totalResult }} -->
+                    {{ totalResult }}
                   </q-td>
                 </q-tr>
               </template>
