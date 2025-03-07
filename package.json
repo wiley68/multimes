@@ -24,8 +24,10 @@
     },
     "dependencies": {
         "@quasar/extras": "^1.16.13",
+        "file-saver": "^2.0.5",
         "moment": "^2.30.1",
         "quasar": "^2.17.4",
-        "vue-multiselect": "^3.0.0-beta.3"
+        "vue-multiselect": "^3.0.0-beta.3",
+        "xlsx": "^0.18.5"
     }
 }

@@ -5,6 +5,8 @@ import { computed, ref } from 'vue'
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
 import moment from 'moment'
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 
 const props = defineProps({
   productions: {
@@ -213,6 +215,17 @@ const totalResult = computed(() => {
     )
     .toFixed(2)
 })
+
+const exportToExcel = () => {
+  const ws = XLSX.utils.json_to_sheet(props.productions.data)
+  const wb = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(wb, ws, 'Productions')
+  const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+  saveAs(
+    new Blob([wbout], { type: 'application/octet-stream' }),
+    'productions.xlsx'
+  )
+}
 </script>
 
 <template>
@@ -401,6 +414,10 @@ const totalResult = computed(() => {
             flat
             icon="mdi-menu-left"
             @click="router.get(route('dashboard'))"
+          /><q-btn
+            label="Експорт в Excel"
+            color="primary"
+            @click="exportToExcel"
           />
         </div>
       </div>

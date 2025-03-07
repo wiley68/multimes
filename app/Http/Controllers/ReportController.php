@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\MproductionsResource;
-use App\Models\Mhall;
 use App\Models\Mproduction;
-use App\Models\Uhall;
 use App\Models\Uproduction;
 use DB;
 use Illuminate\Http\Request;
