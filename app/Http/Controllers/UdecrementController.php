@@ -165,13 +165,15 @@ class UdecrementController extends Controller
             'status' => $request->status,
         ]);
 
-        $udecrements = $uproduction->udecrements;
-        $totalDecrements = 0;
-        foreach ($udecrements as $item) {
-            $totalDecrements += (float)$item['quantity'] * (float)$item['price'];
+        if ((float)$uproduction->stock > 0.00) {
+            $udecrements = $uproduction->udecrements;
+            $totalDecrements = 0;
+            foreach ($udecrements as $item) {
+                $totalDecrements += (float)$item['quantity'] * (float)$item['price'];
+            }
+            $uproduction->price = $totalDecrements / (float)$uproduction->stock;
+            $uproduction->save();
         }
-        $uproduction->price = $totalDecrements / (float)$uproduction->stock;
-        $uproduction->save();
 
         return back();
     }

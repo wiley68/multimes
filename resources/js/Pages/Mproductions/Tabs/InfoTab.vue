@@ -39,15 +39,15 @@ const getDaysBetweenCreateAndFinished = (createDate, finishedDate) => {
   return create.diff(finished, 'days')
 }
 
-const siloPurcent = computed(() => {
+const totalDecrementsDrugiPrice = computed(() => {
   return parseFloat(
-    (
-      parseFloat(props.mproduction.mhall.silo.stock) /
-      parseFloat(props.mproduction.mhall.silo.maxqt)
-    ).toFixed(2)
+    props.mdecrements
+      .filter(
+        (item) => item.status === 1 && item.product?.type === 'Обща употреба'
+      )
+      .reduce((total, item) => total + item.quantity * item.price, 0)
   )
 })
-const siloPurcentLabel = `${(siloPurcent.value * 100).toFixed(2)} %`
 
 const siloLoadingsCount = computed(() => {
   return props.mdecrements.filter(
@@ -195,16 +195,18 @@ const productionIncrementsWeight = computed(() => {
           >
         </div>
         <div class="text-subtitle1">
+          <span class="text-weight-medium">ФРЗ и други</span
+          ><span class="text-weight-light"
+            >: {{ totalDecrementsDrugiPrice }} лв.</span
+          >
+        </div>
+        <div class="text-subtitle1">
           <span class="text-weight-medium">Брой зареждания на силоза</span
           ><span class="text-weight-light">: {{ siloLoadingsCount }} бр.</span>
         </div>
         <div class="text-subtitle1">
           <span class="text-weight-medium">Общо количество зареден фураж</span
           ><span class="text-weight-light">: {{ siloLoadingsWeight }} кг.</span>
-        </div>
-        <div class="text-subtitle1">
-          <span class="text-weight-medium">Процент запълване</span
-          ><span class="text-weight-light">: {{ siloPurcentLabel }}</span>
         </div>
       </q-card-section>
       <q-card-actions vertical> </q-card-actions>

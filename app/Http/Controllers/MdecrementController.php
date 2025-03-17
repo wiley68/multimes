@@ -165,13 +165,15 @@ class MdecrementController extends Controller
             'status' => $request->status,
         ]);
 
-        $mdecrements = $mproduction->mdecrements;
-        $totalDecrements = 0;
-        foreach ($mdecrements as $item) {
-            $totalDecrements += (float)$item['quantity'] * (float)$item['price'];
+        if ((float)$mproduction->stock > 0.00) {
+            $mdecrements = $mproduction->mdecrements;
+            $totalDecrements = 0;
+            foreach ($mdecrements as $item) {
+                $totalDecrements += (float)$item['quantity'] * (float)$item['price'];
+            }
+            $mproduction->price = $totalDecrements / (float)$mproduction->stock;
+            $mproduction->save();
         }
-        $mproduction->price = $totalDecrements / (float)$mproduction->stock;
-        $mproduction->save();
 
         return back();
     }
