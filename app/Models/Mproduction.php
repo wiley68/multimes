@@ -12,7 +12,6 @@ class Mproduction extends Model
     protected $fillable = [
         'status',
         'mhall_id',
-        'production_days',
         'finished_at',
         'stock',
         'price',

@@ -31,11 +31,6 @@ class CreateUproductionRequest extends FormRequest
                 'required',
                 'array',
             ],
-            'production_days' => [
-                'required',
-                'integer',
-                'min:0',
-            ],
             'finished_at' => [
                 'nullable',
                 'timestamp',

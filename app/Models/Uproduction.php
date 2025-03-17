@@ -12,7 +12,6 @@ class Uproduction extends Model
     protected $fillable = [
         'status',
         'uhall_id',
-        'production_days',
         'finished_at',
         'stock',
         'price',

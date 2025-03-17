@@ -17,7 +17,6 @@ class MproductionsResource extends JsonResource
         return [
             'id' => $this->id,
             'status' => $this->status,
-            'production_days' => $this->production_days,
             'finished_at' => $this->finished_at,
             'stock' => $this->stock,
             'price' => $this->price,
