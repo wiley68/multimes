@@ -3,7 +3,6 @@ import DefaultLayout from '@/Layouts/DefaultLayout.vue'
 import { Head, router } from '@inertiajs/vue3'
 import { useQuasar } from 'quasar'
 import { usePermission } from '@/composables/permissions'
-import moment from 'moment'
 import ConfirmDialog from '@/Components/ConfirmDialog.vue'
 import { ref } from 'vue'
 
@@ -73,7 +72,6 @@ const handleOkUproduction = (data) => {
     {
       status: 1,
       uhall: selectedUhall.value,
-      production_days: 45,
       group_number: data.groupNumber,
       partida_number: data.partidaNumber,
     },
@@ -97,23 +95,6 @@ const handleOkUproduction = (data) => {
 
 const handleCancelUproduction = () => {
   showPromptUproduction.value = false
-}
-
-const getDaysBetweenTodayAndDate = (targetDate) => {
-  const today = moment().startOf('day')
-  const target = moment(targetDate).startOf('day')
-  return today.diff(target, 'days')
-}
-
-const productionPurcent = (production) => {
-  if (production !== null) {
-    const days = getDaysBetweenTodayAndDate(production.created_at)
-    return parseFloat(
-      (days / parseFloat(production.production_days)).toFixed(2)
-    )
-  } else {
-    return 0
-  }
 }
 </script>
 
@@ -169,7 +150,7 @@ const productionPurcent = (production) => {
                   class="col"
                   rounded
                   size="40px"
-                  :value="productionPurcent(mhall.mproduction)"
+                  :value="mhall.mproduction !== null ? 100 : 0"
                   color="teal-2"
                 >
                   <div
@@ -189,11 +170,7 @@ const productionPurcent = (production) => {
                       text-color="teal-10"
                       :label="
                         mhall.mproduction !== null
-                          ? `Хале: ${mhall.name} [Процес №${
-                              mhall.mproduction.id
-                            }: ${(
-                              productionPurcent(mhall.mproduction) * 100
-                            ).toFixed(2)}%]`
+                          ? `Хале: ${mhall.name} [Процес №${mhall.mproduction.id}]`
                           : `Хале: ${mhall.name}`
                       "
                     />
@@ -272,7 +249,7 @@ const productionPurcent = (production) => {
                   class="col"
                   rounded
                   size="40px"
-                  :value="productionPurcent(uhall.uproduction)"
+                  :value="uhall.uproduction !== null ? 100 : 0"
                   color="indigo-2"
                 >
                   <div
@@ -292,11 +269,7 @@ const productionPurcent = (production) => {
                       text-color="indigo-10"
                       :label="
                         uhall.uproduction !== null
-                          ? `Хале: ${uhall.name} [Процес №${
-                              uhall.uproduction.id
-                            }: ${(
-                              productionPurcent(uhall.uproduction) * 100
-                            ).toFixed(2)}%]`
+                          ? `Хале: ${uhall.name} [Процес №${uhall.uproduction.id}]`
                           : `Хале: ${uhall.name}`
                       "
                     />
