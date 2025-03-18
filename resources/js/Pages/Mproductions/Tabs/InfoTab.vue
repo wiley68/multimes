@@ -63,12 +63,6 @@ const siloLoadingsWeight = computed(() => {
   )
 })
 
-const productionDecrementsCount = computed(() => {
-  return props.mdecrements.filter(
-    (item) => item.product.type === props.mhallInfo.product
-  ).length
-})
-
 const productionDecrementsQuantity = computed(() => {
   return props.mdecrements.reduce(
     (acc, item) =>
@@ -83,12 +77,6 @@ const productionDecrementsWeight = computed(() => {
       item.product.type === props.mhallInfo.product ? acc + item.weight : acc,
     0
   )
-})
-
-const productionIncrementsCount = computed(() => {
-  return props.mincrements.filter(
-    (item) => item.product.type === props.mhallInfo.product
-  ).length
 })
 
 const productionIncrementsQuantity = computed(() => {
@@ -181,13 +169,6 @@ const productionIncrementsWeight = computed(() => {
           }}</span>
         </div>
         <div class="text-subtitle1">
-          <span class="text-weight-medium">Наличност</span
-          ><span class="text-weight-light"
-            >: {{ parseFloat(mproduction.mhall.silo.stock).toFixed(2) }}
-            {{ mproduction.mhall.silo.product?.me }}</span
-          >
-        </div>
-        <div class="text-subtitle1">
           <span class="text-weight-medium">Цена</span
           ><span class="text-weight-light"
             >:
@@ -245,9 +226,15 @@ const productionIncrementsWeight = computed(() => {
           >
         </div>
         <div class="text-subtitle1">
-          <span class="text-weight-medium">Състояние</span
+          <span class="text-weight-medium">Общ брой вкарани прасета</span
           ><span class="text-weight-light"
-            >: {{ mproduction.status === 1 ? 'Активен' : 'Приключен' }}</span
+            >: {{ productionDecrementsQuantity }} бр.</span
+          >
+        </div>
+        <div class="text-subtitle1">
+          <span class="text-weight-medium">Общо тегло вкарани прасета</span
+          ><span class="text-weight-light"
+            >: {{ productionDecrementsWeight }} кг.</span
           >
         </div>
         <div
@@ -291,30 +278,6 @@ const productionIncrementsWeight = computed(() => {
         <div class="text-subtitle1">
           <span class="text-weight-medium">Текуща цена</span
           ><span class="text-weight-light">: {{ mproduction.price }} лв.</span>
-        </div>
-        <div class="text-subtitle1">
-          <span class="text-weight-medium">Брой вкарвания на прасета</span
-          ><span class="text-weight-light"
-            >: {{ productionDecrementsCount }} бр.</span
-          >
-        </div>
-        <div class="text-subtitle1">
-          <span class="text-weight-medium">Общ брой вкарани прасета</span
-          ><span class="text-weight-light"
-            >: {{ productionDecrementsQuantity }} бр.</span
-          >
-        </div>
-        <div class="text-subtitle1">
-          <span class="text-weight-medium">Общо тегло вкарани прасета</span
-          ><span class="text-weight-light"
-            >: {{ productionDecrementsWeight }} кг.</span
-          >
-        </div>
-        <div class="text-subtitle1">
-          <span class="text-weight-medium">Брой изкарвания на прасета</span
-          ><span class="text-weight-light"
-            >: {{ productionIncrementsCount }} бр.</span
-          >
         </div>
         <div class="text-subtitle1">
           <span class="text-weight-medium">Общ брой изкарани прасета</span
