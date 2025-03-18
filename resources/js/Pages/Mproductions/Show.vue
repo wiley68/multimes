@@ -85,7 +85,7 @@ const mhallInfo = () => {
   }
 }
 
-const title = `Хале: ${props.mproduction.mhall.name}, Процес: №${props.mproduction.id}`
+const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mproduction.group_number}, Партида: ${props.mproduction.partida_number}`
 </script>
 
 <template>
