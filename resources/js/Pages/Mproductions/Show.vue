@@ -113,13 +113,6 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
               alert-icon="alarm_on"
             />
             <q-tab
-              name="info"
-              icon="mdi-information-outline"
-              label="Информация"
-              :alert="false"
-              alert-icon="alarm_on"
-            />
-            <q-tab
               name="decrements"
               icon="mdi-minus-circle-outline"
               label="Разходи"
@@ -130,6 +123,13 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
               name="increments"
               icon="mdi-plus-circle-outline"
               label="Приходи"
+              :alert="false"
+              alert-icon="alarm_on"
+            />
+            <q-tab
+              name="info"
+              icon="mdi-information-outline"
+              label="Информация"
               :alert="false"
               alert-icon="alarm_on"
             />
@@ -165,18 +165,6 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
             </q-tab-panel>
 
             <q-tab-panel
-              name="info"
-              class="row"
-            >
-              <InfoTab
-                :mproduction="mproduction"
-                :mdecrements="mdecrements"
-                :mincrements="mincrements"
-                :mhall-info="mhallInfo()"
-              ></InfoTab>
-            </q-tab-panel>
-
-            <q-tab-panel
               name="decrements"
               class="q-pa-none"
             >
@@ -195,6 +183,18 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
                 :mincrements="mincrements"
                 :mhall-info="mhallInfo()"
               ></IncrementsTab>
+            </q-tab-panel>
+
+            <q-tab-panel
+              name="info"
+              class="row"
+            >
+              <InfoTab
+                :mproduction="mproduction"
+                :mdecrements="mdecrements"
+                :mincrements="mincrements"
+                :mhall-info="mhallInfo()"
+              ></InfoTab>
             </q-tab-panel>
 
             <q-tab-panel

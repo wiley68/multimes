@@ -66,13 +66,6 @@ const title = `Хале: ${props.uproduction.uhall.name}, Група: ${props.up
               alert-icon="alarm_on"
             />
             <q-tab
-              name="info"
-              icon="mdi-information-outline"
-              label="Информация"
-              :alert="false"
-              alert-icon="alarm_on"
-            />
-            <q-tab
               name="decrements"
               icon="mdi-minus-circle-outline"
               label="Разходи"
@@ -83,6 +76,13 @@ const title = `Хале: ${props.uproduction.uhall.name}, Група: ${props.up
               name="increments"
               icon="mdi-plus-circle-outline"
               label="Приходи"
+              :alert="false"
+              alert-icon="alarm_on"
+            />
+            <q-tab
+              name="info"
+              icon="mdi-information-outline"
+              label="Информация"
               :alert="false"
               alert-icon="alarm_on"
             />
@@ -115,17 +115,6 @@ const title = `Хале: ${props.uproduction.uhall.name}, Група: ${props.up
             </q-tab-panel>
 
             <q-tab-panel
-              name="info"
-              class="row"
-            >
-              <InfoTab
-                :uproduction="uproduction"
-                :udecrements="udecrements"
-                :uincrements="uincrements"
-              ></InfoTab>
-            </q-tab-panel>
-
-            <q-tab-panel
               name="decrements"
               class="q-pa-none"
             >
@@ -143,6 +132,17 @@ const title = `Хале: ${props.uproduction.uhall.name}, Група: ${props.up
                 :uproduction="uproduction"
                 :uincrements="uincrements"
               ></IncrementsTab>
+            </q-tab-panel>
+
+            <q-tab-panel
+              name="info"
+              class="row"
+            >
+              <InfoTab
+                :uproduction="uproduction"
+                :udecrements="udecrements"
+                :uincrements="uincrements"
+              ></InfoTab>
             </q-tab-panel>
 
             <q-tab-panel
