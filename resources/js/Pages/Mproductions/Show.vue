@@ -45,42 +45,49 @@ const mhallInfo = () => {
         product: 'Прасета ремонтни',
         furaz: 'Фураж ремонтни',
         nextproduct: 'Прасета заплождане',
+        nextproduct2: '',
       }
     case 'Заплождане':
       return {
         product: 'Прасета заплождане',
         furaz: 'Фураж бременни',
         nextproduct: 'Прасета условна бременност',
+        nextproduct2: '',
       }
     case 'Условна бременност':
       return {
         product: 'Прасета условна бременност',
         furaz: 'Фураж бременни',
         nextproduct: 'Прасета бременност',
+        nextproduct2: '',
       }
     case 'Бременност':
       return {
         product: 'Прасета бременност',
         furaz: 'Фураж бременни',
         nextproduct: 'Прасета родилно',
+        nextproduct2: '',
       }
     case 'Родилно':
       return {
         product: 'Прасета родилно',
         furaz: 'Фураж кърмачки',
         nextproduct: 'Прасета подрастване',
+        nextproduct2: '',
       }
     case 'Подрастване':
       return {
         product: 'Прасета подрастване',
         furaz: 'Фураж угояване',
         nextproduct: 'Прасета угояване',
+        nextproduct2: 'Прасета ремонтни',
       }
     default:
       return {
         product: 'Прасета',
         furaz: 'Фураж',
         nextproduct: 'Прасета',
+        nextproduct2: '',
       }
   }
 }
@@ -91,10 +98,7 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
 <template>
   <Head :title="title"></Head>
 
-  <DefaultLayout
-    :title="title"
-    icon="mdi-file-document-outline"
-  >
+  <DefaultLayout :title="title" icon="mdi-file-document-outline">
     <q-page class="q-pa-none">
       <div class="page-container">
         <div class="header-panel">
@@ -143,10 +147,7 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
           </q-tabs>
         </div>
 
-        <div
-          class="col"
-          style="overflow-y: auto"
-        >
+        <div class="col" style="overflow-y: auto">
           <q-tab-panels
             class="col full-height"
             v-model="tabName"
@@ -154,30 +155,21 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
             transition-prev="slide-down"
             transition-next="slide-up"
           >
-            <q-tab-panel
-              name="actions"
-              class="row"
-            >
+            <q-tab-panel name="actions" class="row">
               <ActionsTab
                 :mproduction="mproduction"
                 :mhall-info="mhallInfo()"
               ></ActionsTab>
             </q-tab-panel>
 
-            <q-tab-panel
-              name="decrements"
-              class="q-pa-none"
-            >
+            <q-tab-panel name="decrements" class="q-pa-none">
               <DecrementsTab
                 :mproduction="mproduction"
                 :mdecrements="mdecrements"
               ></DecrementsTab>
             </q-tab-panel>
 
-            <q-tab-panel
-              name="increments"
-              class="q-pa-none"
-            >
+            <q-tab-panel name="increments" class="q-pa-none">
               <IncrementsTab
                 :mproduction="mproduction"
                 :mincrements="mincrements"
@@ -185,10 +177,7 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
               ></IncrementsTab>
             </q-tab-panel>
 
-            <q-tab-panel
-              name="info"
-              class="row"
-            >
+            <q-tab-panel name="info" class="row">
               <InfoTab
                 :mproduction="mproduction"
                 :mdecrements="mdecrements"
@@ -197,10 +186,7 @@ const title = `Хале: ${props.mproduction.mhall.name}, Група: ${props.mp
               ></InfoTab>
             </q-tab-panel>
 
-            <q-tab-panel
-              name="statistics"
-              class="row"
-            >
+            <q-tab-panel name="statistics" class="row">
               <StatisticsTab
                 :mproduction="mproduction"
                 :mdecrements="mdecrements"

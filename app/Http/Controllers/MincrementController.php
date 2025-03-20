@@ -27,7 +27,7 @@ class MincrementController extends Controller
 
         $validated = $request->validate([
             'mproduction_id' => 'required|integer',
-            'type' => 'required|string|in:Продажба,Прехвърляне,Умрели',
+            'type' => 'required|string|in:Продажба,Прехвърляне,Умрели,Ремонтни',
         ]);
 
         $mproduction = Mproduction::findOrFail($validated['mproduction_id']);
@@ -244,15 +244,27 @@ class MincrementController extends Controller
                 $podrastvane->price = $new_podrastvane_price;
                 $podrastvane->save();
             }
-            if ($mproduction->mhall->type === 'Подрастване' && $request->type === 'Прехвърляне') {
-                $ugoiavane = Product::where('type', '=', 'Прасета угояване')->firstOrFail();
-                $old_ugoiavane_stock = (float)$ugoiavane->stock;
-                $new_ugoiavane_stock = (float)$old_ugoiavane_stock + (float)$request->quantity;
-                $ugoiavane->stock = $new_ugoiavane_stock;
-                $old_ugoiavane_price = (float)$ugoiavane->price;
-                $new_ugoiavane_price = (($old_ugoiavane_price * $old_ugoiavane_stock) + ((float)$mproduction->price * (float)$request->quantity)) / ($old_ugoiavane_stock + (float)$request->quantity);
-                $ugoiavane->price = $new_ugoiavane_price;
-                $ugoiavane->save();
+            if ($mproduction->mhall->type === 'Подрастване') {
+                if ($request->type === 'Прехвърляне') {
+                    $ugoiavane = Product::where('type', '=', 'Прасета угояване')->firstOrFail();
+                    $old_ugoiavane_stock = (float)$ugoiavane->stock;
+                    $new_ugoiavane_stock = (float)$old_ugoiavane_stock + (float)$request->quantity;
+                    $ugoiavane->stock = $new_ugoiavane_stock;
+                    $old_ugoiavane_price = (float)$ugoiavane->price;
+                    $new_ugoiavane_price = (($old_ugoiavane_price * $old_ugoiavane_stock) + ((float)$mproduction->price * (float)$request->quantity)) / ($old_ugoiavane_stock + (float)$request->quantity);
+                    $ugoiavane->price = $new_ugoiavane_price;
+                    $ugoiavane->save();
+                }
+                if ($request->type === 'Ремонтни') {
+                    $remontni = Product::where('type', '=', 'Прасета ремонтни')->firstOrFail();
+                    $old_remontni_stock = (float)$remontni->stock;
+                    $new_remontni_stock = (float)$old_remontni_stock + (float)$request->quantity;
+                    $remontni->stock = $new_remontni_stock;
+                    $old_remontni_price = (float)$remontni->price;
+                    $new_remontni_price = (($old_remontni_price * $old_remontni_stock) + ((float)$mproduction->price * (float)$request->quantity)) / ($old_remontni_stock + (float)$request->quantity);
+                    $remontni->price = $new_remontni_price;
+                    $remontni->save();
+                }
             }
 
             $new_stock = $mproduction->stock - $request->quantity;

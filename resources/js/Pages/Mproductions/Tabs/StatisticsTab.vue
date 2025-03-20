@@ -95,9 +95,10 @@ const totalIncementsPrehvarliane = computed(() => {
     props.mincrements
       .filter(
         (item) =>
-          item.status === 1 &&
-          item.product?.type === props.mhallInfo.product &&
-          item.type === 'Прехвърляне'
+          (item.status === 1 &&
+            item.product?.type === props.mhallInfo.product &&
+            item.type === 'Прехвърляне') ||
+          'Ремонтни'
       )
       .reduce((total, item) => total + item.quantity, 0)
   )
@@ -108,9 +109,10 @@ const totalIncementsPrehvarlianeWeight = computed(() => {
     props.mincrements
       .filter(
         (item) =>
-          item.status === 1 &&
-          item.product?.type === props.mhallInfo.product &&
-          item.type === 'Прехвърляне'
+          (item.status === 1 &&
+            item.product?.type === props.mhallInfo.product &&
+            item.type === 'Прехвърляне') ||
+          'Ремонтни'
       )
       .reduce((total, item) => total + item.weight, 0)
   )
@@ -203,9 +205,10 @@ const totalIncrementsPrehvarlianePrice = computed(() => {
     props.mincrements
       .filter(
         (item) =>
-          item.status === 1 &&
-          item.product?.type === props.mhallInfo.product &&
-          item.type === 'Прехвърляне'
+          (item.status === 1 &&
+            item.product?.type === props.mhallInfo.product &&
+            item.type === 'Прехвърляне') ||
+          'Ремонтни'
       )
       .reduce((total, item) => total + item.quantity * item.price, 0)
   )

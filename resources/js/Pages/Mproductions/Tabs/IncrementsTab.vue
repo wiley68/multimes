@@ -299,15 +299,8 @@ const mincrementsCompletePodrastvane = (mincrement) => {
             :props="props"
             :class="props.row.status === 1 ? 'bg-red-3' : ''"
           >
-            <q-td
-              v-for="col in props.cols"
-              :key="col.name"
-              :props="props"
-            >
-              <div
-                v-if="col.name === 'id'"
-                style="width: 40px"
-              >
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              <div v-if="col.name === 'id'" style="width: 40px">
                 {{ props.row.id }}
               </div>
               <div v-else-if="col.name === 'product'">
@@ -317,60 +310,33 @@ const mincrementsCompletePodrastvane = (mincrement) => {
                     : ''
                 }}
               </div>
-              <div
-                v-else-if="col.name === 'type'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'type'" style="width: 60px">
                 {{ props.row.type }}
               </div>
-              <div
-                v-else-if="col.name === 'created_at'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'created_at'" style="width: 60px">
                 {{ moment(props.row.created_at).format('DD.MM.YY') }}
               </div>
-              <div
-                v-else-if="col.name === 'quantity'"
-                style="width: 40px"
-              >
+              <div v-else-if="col.name === 'quantity'" style="width: 40px">
                 {{ props.row.quantity }}
               </div>
-              <div
-                v-else-if="col.name === 'me'"
-                style="width: 40px"
-              >
+              <div v-else-if="col.name === 'me'" style="width: 40px">
                 {{ props.row.product.me }}
               </div>
-              <div
-                v-else-if="col.name === 'price'"
-                style="width: 40px"
-              >
+              <div v-else-if="col.name === 'price'" style="width: 40px">
                 {{ parseFloat(props.row.price).toFixed(2) }}
               </div>
-              <div
-                v-else-if="col.name === 'allprice'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'allprice'" style="width: 60px">
                 {{
                   parseFloat(props.row.price * props.row.quantity).toFixed(2)
                 }}
               </div>
-              <div
-                v-else-if="col.name === 'allweight'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'allweight'" style="width: 60px">
                 {{ parseFloat(props.row.weight).toFixed(2) }}
               </div>
-              <div
-                v-else-if="col.name === 'status'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'status'" style="width: 60px">
                 {{ props.row['status'] === 0 ? 'Типов' : 'Приключен' }}
               </div>
-              <div
-                v-else="col.name === 'actions'"
-                style="width: 60px"
-              >
+              <div v-else="col.name === 'actions'" style="width: 60px">
                 <template v-if="mproduction.mhall.type === 'Родилно'">
                   <q-btn
                     v-if="
@@ -459,11 +425,7 @@ const mincrementsCompletePodrastvane = (mincrement) => {
         </template>
         <template v-slot:bottom-row>
           <q-tr>
-            <q-td
-              colspan="7"
-              class="text-weight-bold"
-              >Общо:</q-td
-            >
+            <q-td colspan="7" class="text-weight-bold">Общо:</q-td>
             <q-td class="text-weight-bold">
               {{ totalPrice }}
             </q-td>
@@ -472,10 +434,7 @@ const mincrementsCompletePodrastvane = (mincrement) => {
         </template>
       </q-table>
     </div>
-    <div
-      style="height: 48px"
-      class="row items-center q-gutter-x-sm q-px-sm"
-    >
+    <div style="height: 48px" class="row items-center q-gutter-x-sm q-px-sm">
       <q-btn
         v-if="hasPermission('create') && mproduction.status === 1"
         @click="mincrementsCreate('Прехвърляне')"
@@ -483,6 +442,15 @@ const mincrementsCompletePodrastvane = (mincrement) => {
         :title="`Добавя нов приход към продукционния процес. Прихода е от предаване на ${mhallInfo.product} готови за ${mhallInfo.nextproduct}.`"
         icon="mdi-table-row-plus-after"
         color="primary"
+      />
+      <q-btn
+        v-if="hasPermission('create') && mproduction.status === 1"
+        @click="mincrementsCreate('Ремонтни')"
+        :label="mhallInfo.nextproduct2"
+        :title="`Добавя нов приход към продукционния процес. Прихода е от предаване на ${mhallInfo.product} готови за ${mhallInfo.nextproduct2}.`"
+        icon="mdi-table-row-plus-after"
+        color="primary"
+        outline
       />
       <q-btn
         v-if="hasPermission('create') && mproduction.status === 1"

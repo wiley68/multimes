@@ -54,7 +54,7 @@ class CreateMincrementRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                Rule::in(['Продажба', 'Прехвърляне', 'Умрели']),
+                Rule::in(['Продажба', 'Прехвърляне', 'Умрели', 'Ремонтни']),
             ],
         ];
     }
