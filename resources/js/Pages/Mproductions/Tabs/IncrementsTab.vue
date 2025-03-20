@@ -444,7 +444,11 @@ const mincrementsCompletePodrastvane = (mincrement) => {
         color="primary"
       />
       <q-btn
-        v-if="hasPermission('create') && mproduction.status === 1"
+        v-if="
+          hasPermission('create') &&
+          mproduction.status === 1 &&
+          mhallInfo.nextproduct2
+        "
         @click="mincrementsCreate('Ремонтни')"
         :label="mhallInfo.nextproduct2"
         :title="`Добавя нов приход към продукционния процес. Прихода е от предаване на ${mhallInfo.product} готови за ${mhallInfo.nextproduct2}.`"
