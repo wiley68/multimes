@@ -88,6 +88,25 @@ const nextProduct = (productType) => {
   }
 }
 
+const nextProduct2 = (productType) => {
+  switch (productType) {
+    case 'Прасета ремонтни':
+      return ''
+    case 'Прасета заплождане':
+      return ''
+    case 'Прасета условна бременност':
+      return ''
+    case 'Прасета бременност':
+      return ''
+    case 'Прасета родилно':
+      return ''
+    case 'Прасета подрастване':
+      return 'Прасета ремонтни'
+    default:
+      return ''
+  }
+}
+
 const typeTitle = computed(() => {
   switch (props.type) {
     case 'Продажба':
@@ -98,6 +117,13 @@ const typeTitle = computed(() => {
     case 'Прехвърляне':
       return {
         title: `Прехвърляне [${props.product.type} >> ${nextProduct(
+          props.product.type
+        )}]`,
+        button: 'Запиши прехвърлянето',
+      }
+    case 'Ремонтни':
+      return {
+        title: `Прехвърляне [${props.product.type} >> ${nextProduct2(
           props.product.type
         )}]`,
         button: 'Запиши прехвърлянето',
