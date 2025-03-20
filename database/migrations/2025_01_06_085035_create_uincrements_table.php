@@ -20,7 +20,6 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->enum('type', [
                 'Продажба',
-                'Ремонт',
                 'Умрели',
             ]);
             $table->unsignedTinyInteger('status')->default(0);

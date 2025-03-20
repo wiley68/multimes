@@ -27,7 +27,7 @@ class UincrementController extends Controller
 
         $validated = $request->validate([
             'uproduction_id' => 'required|integer',
-            'type' => 'required|string|in:Продажба,Ремонт,Умрели',
+            'type' => 'required|string|in:Продажба,Умрели',
         ]);
 
         $uproduction = Uproduction::findOrFail($validated['uproduction_id']);
@@ -180,17 +180,6 @@ class UincrementController extends Controller
                 return back()->withErrors([
                     'update' => 'Наличноста на продукта: [' . $uproduction->product->nomenklature . '] ' . $uproduction->product->name . ' [' . $uproduction->stock . '] е по-малка от предвидената за изписване в прихода Ви [' . $request->quantity . ']',
                 ]);
-            }
-
-            if ($request->type === 'Ремонт') {
-                $remontni = Product::where('type', '=', 'Прасета ремонтни')->firstOrFail();
-                $old_remontni_stock = (float)$remontni->stock;
-                $new_remontni_stock = (float)$old_remontni_stock + (float)$request->quantity;
-                $remontni->stock = $new_remontni_stock;
-                $old_remontni_price = (float)$remontni->price;
-                $new_remontni_price = (($old_remontni_price * $old_remontni_stock) + ((float)$uproduction->price * (float)$request->quantity)) / ($old_remontni_stock + (float)$request->quantity);
-                $remontni->price = $new_remontni_price;
-                $remontni->save();
             }
 
             $new_stock = $uproduction->stock - $request->quantity;

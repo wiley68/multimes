@@ -54,7 +54,7 @@ class CreateUincrementRequest extends FormRequest
             ],
             'type' => [
                 'required',
-                Rule::in(['Продажба', 'Ремонт', 'Умрели']),
+                Rule::in(['Продажба', 'Умрели']),
             ],
         ];
     }

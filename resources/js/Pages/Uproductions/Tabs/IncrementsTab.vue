@@ -119,11 +119,6 @@ const typeTitle = (uincrement) => {
         title:
           'Желаеш ли да приключиш този приход? С броя заявени за продажба прасета ще бъде намален общия брой прасета в процеса. Обявеното тегло ще бъде добавено към общото тегло на продадените, ремонтни или умрели до момента прасета.',
       }
-    case 'Ремонт':
-      return {
-        title:
-          'Желаеш ли да приключиш този приход? С броя заявени ремонтни прасета ще бъде намален общия брой прасета в процеса. Обявеното тегло ще бъде добавено към общото тегло на продадените, ремонтни или умрели до момента прасета. В склада ще се добави броя прасета към общия брой ремонтни прасета.',
-      }
     case 'Умрели':
       return {
         title:
@@ -272,15 +267,8 @@ const uincrementsComplete = (uincrement) => {
             :props="props"
             :class="props.row.status === 1 ? 'bg-red-3' : ''"
           >
-            <q-td
-              v-for="col in props.cols"
-              :key="col.name"
-              :props="props"
-            >
-              <div
-                v-if="col.name === 'id'"
-                style="width: 40px"
-              >
+            <q-td v-for="col in props.cols" :key="col.name" :props="props">
+              <div v-if="col.name === 'id'" style="width: 40px">
                 {{ props.row.id }}
               </div>
               <div v-else-if="col.name === 'product'">
@@ -290,60 +278,33 @@ const uincrementsComplete = (uincrement) => {
                     : ''
                 }}
               </div>
-              <div
-                v-else-if="col.name === 'type'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'type'" style="width: 60px">
                 {{ props.row.type }}
               </div>
-              <div
-                v-else-if="col.name === 'created_at'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'created_at'" style="width: 60px">
                 {{ moment(props.row.created_at).format('DD.MM.YY') }}
               </div>
-              <div
-                v-else-if="col.name === 'quantity'"
-                style="width: 40px"
-              >
+              <div v-else-if="col.name === 'quantity'" style="width: 40px">
                 {{ props.row.quantity }}
               </div>
-              <div
-                v-else-if="col.name === 'me'"
-                style="width: 40px"
-              >
+              <div v-else-if="col.name === 'me'" style="width: 40px">
                 {{ props.row.product.me }}
               </div>
-              <div
-                v-else-if="col.name === 'price'"
-                style="width: 40px"
-              >
+              <div v-else-if="col.name === 'price'" style="width: 40px">
                 {{ parseFloat(props.row.price).toFixed(2) }}
               </div>
-              <div
-                v-else-if="col.name === 'allprice'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'allprice'" style="width: 60px">
                 {{
                   parseFloat(props.row.price * props.row.quantity).toFixed(2)
                 }}
               </div>
-              <div
-                v-else-if="col.name === 'allweight'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'allweight'" style="width: 60px">
                 {{ parseFloat(props.row.weight).toFixed(2) }}
               </div>
-              <div
-                v-else-if="col.name === 'status'"
-                style="width: 60px"
-              >
+              <div v-else-if="col.name === 'status'" style="width: 60px">
                 {{ props.row['status'] === 0 ? 'Типов' : 'Приключен' }}
               </div>
-              <div
-                v-else="col.name === 'actions'"
-                style="width: 60px"
-              >
+              <div v-else="col.name === 'actions'" style="width: 60px">
                 <q-btn
                   v-if="
                     hasPermission('update') &&
@@ -403,11 +364,7 @@ const uincrementsComplete = (uincrement) => {
         </template>
         <template v-slot:bottom-row>
           <q-tr>
-            <q-td
-              colspan="7"
-              class="text-weight-bold"
-              >Общо:</q-td
-            >
+            <q-td colspan="7" class="text-weight-bold">Общо:</q-td>
             <q-td class="text-weight-bold">
               {{ totalPrice }}
             </q-td>
@@ -419,10 +376,7 @@ const uincrementsComplete = (uincrement) => {
         </template>
       </q-table>
     </div>
-    <div
-      style="height: 48px"
-      class="row items-center q-gutter-x-sm q-px-sm"
-    >
+    <div style="height: 48px" class="row items-center q-gutter-x-sm q-px-sm">
       <q-btn
         v-if="hasPermission('create') && uproduction.status === 1"
         @click="createUincrements('Продажба')"
@@ -430,15 +384,6 @@ const uincrementsComplete = (uincrement) => {
         title="Извършване на продажба на прасета. Продадените прасета се премахват от процеса. В процеса се вписва приход на средства."
         icon="mdi-table-row-plus-after"
         color="primary"
-      />
-      <q-btn
-        v-if="hasPermission('create') && uproduction.status === 1"
-        @click="createUincrements('Ремонт')"
-        label="Прасета за ремонт"
-        title="Извършва се прехвърляне на прасета за ремонт. Прехвърлените прасета се премахват от процеса. В склада се прехвърлят ремонтни прасета."
-        icon="mdi-table-row-plus-after"
-        color="primary"
-        outline
       />
       <q-btn
         v-if="hasPermission('create') && uproduction.status === 1"
