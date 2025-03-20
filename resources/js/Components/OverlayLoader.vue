@@ -1,7 +1,14 @@
 <template>
-  <div v-if="visible" class="overlay-loader">
-    <q-spinner size="50px" color="orange" :size="xl" />
-    <div class="text">Зареждане...</div>
+  <div
+    v-if="visible"
+    class="overlay-loader"
+  >
+    <q-spinner
+      size="50px"
+      color="orange-9"
+      :size="xl"
+    />
+    <div class="text text-grey-10">Зареждане...</div>
   </div>
 </template>
 
