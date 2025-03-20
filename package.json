@@ -23,6 +23,7 @@
         "vue": "^3.4.0"
     },
     "dependencies": {
+        "@inertiajs/progress": "^0.2.7",
         "@quasar/extras": "^1.16.13",
         "dayjs": "^1.11.13",
         "file-saver": "^2.0.5",

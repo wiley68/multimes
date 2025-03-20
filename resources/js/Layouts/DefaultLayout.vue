@@ -2,6 +2,7 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { router, usePage } from '@inertiajs/vue3'
 import { usePermission } from '@/composables/permissions'
+import OverlayLoader from '@/Components/OverlayLoader.vue'
 
 defineProps({
   title: String,
@@ -70,6 +71,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <OverlayLoader />
   <q-layout view="hHh lpR fFf">
     <q-header bordered class="bg-primary text-white select-none">
       <q-toolbar>
