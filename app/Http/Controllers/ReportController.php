@@ -30,7 +30,7 @@ class ReportController extends Controller
             'type' => 'nullable|string|in:M,U',
         ]);
 
-        $rowsPerPage = $validated['rowsPerPage'] ?? 7;
+        $rowsPerPage = $validated['rowsPerPage'] ?? 50;
         $page = $validated['page'] ?? 1;
         $sortBy = $validated['sortBy'] ?? 'id';
         $sortOrder = $validated['sortOrder'] ?? 'desc';

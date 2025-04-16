@@ -21,14 +21,14 @@ class CityController extends Controller
         Gate::authorize('viewAny', City::class);
 
         $validated = $request->validate([
-            'rowsPerPage' => 'integer|min:1|max:100',
+            'rowsPerPage' => 'integer|min:0|max:100',
             'page' => 'integer|min:1',
             'sortBy' => 'nullable|string|in:id,name',
             'sortOrder' => 'in:asc,desc',
             'filter' => 'nullable|string|max:255',
         ]);
 
-        $rowsPerPage = $validated['rowsPerPage'] ?? 10;
+        $rowsPerPage = $validated['rowsPerPage'] ?? 50;
         $page = $validated['page'] ?? 1;
         $sortBy = $validated['sortBy'] ?? 'id';
         $sortOrder = $validated['sortOrder'] ?? 'asc';

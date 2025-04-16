@@ -28,7 +28,7 @@ class MproductionController extends Controller
         Gate::authorize('viewAny', Mproduction::class);
 
         $validated = $request->validate([
-            'rowsPerPage' => 'integer|min:1|max:100',
+            'rowsPerPage' => 'integer|min:0|max:100',
             'page' => 'integer|min:1',
             'sortBy' => 'nullable|string|in:id,mhall_id,group_number,partida_number,status,created_at,finished_at,stock,price',
             'sortOrder' => 'in:asc,desc',
@@ -36,7 +36,7 @@ class MproductionController extends Controller
             'mhall' => 'nullable|integer|exists:mhalls,id',
         ]);
 
-        $rowsPerPage = $validated['rowsPerPage'] ?? 7;
+        $rowsPerPage = $validated['rowsPerPage'] ?? 50;
         $page = $validated['page'] ?? 1;
         $sortBy = $validated['sortBy'] ?? 'id';
         $sortOrder = $validated['sortOrder'] ?? 'desc';
